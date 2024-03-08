@@ -1,0 +1,33 @@
+logtail: {
+    name: root
+    title: Root
+    file: ./app/logs/app.log
+    lastLines: 100
+    sampleInterval: 300
+    visualizing: true
+    measurement: {
+       sampleInterval: 5000
+   }
+}
+logtail: {
+    name: demo
+    title: Demo
+    file: ./app/logs/demo.log
+    lastLines: 100
+    sampleInterval: 300
+    visualizing: true
+    measurement: {
+       sampleInterval: 5000
+   }
+}
+logtail: {
+    name: jpetstore
+    title: JPetStore
+    file: ./app/logs/jpetstore.log
+    lastLines: 100
+    sampleInterval: 300
+    visualizing: true
+    measurement: {
+       sampleInterval: 5000
+   }
+}

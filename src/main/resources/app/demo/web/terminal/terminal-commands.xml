@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 8.0//EN"
+        "http://aspectran.github.io/dtd/aspectran-8.dtd">
+<aspectran>
+
+    <settings>
+        <setting name="transletNamePrefix" value="/commands"/>
+    </settings>
+
+    <translet name="/hello">
+        <transform format="text">
+            <template style="apon">
+                |Hello, World!
+            </template>
+        </transform>
+    </translet>
+
+</aspectran>

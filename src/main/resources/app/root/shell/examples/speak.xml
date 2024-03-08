@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 8.0//EN"
+        "http://aspectran.github.io/dtd/aspectran-8.dtd">
+<aspectran>
+
+    <description>
+        Simple program to demonstrate the use of the FreeTTS speech synthesizer.
+    </description>
+
+    <translet name="speak">
+        <description style="apon">
+            |
+            |   Converts any written text into spoken words.
+            |   If your system's audio works well, it will speak the text
+            |   you type.
+            |
+        </description>
+        <request>
+            <parameters>
+                <item name="text"/>
+            </parameters>
+        </request>
+        <action bean="voice-kevin16" method="speak">
+            <arguments>
+                <item>${text:Hello}</item>
+            </arguments>
+        </action>
+        <transform format="text">
+            <template>${text}</template>
+        </transform>
+    </translet>
+
+    <translet name="speak ${text}">
+        <description style="apon">
+            |
+            |   To call this translet, type "speak [TEXT]".
+            |   If your system's audio works well, it will speak the text
+            |   you type.
+            |
+        </description>
+        <action bean="voice-kevin16" method="speak">
+            <arguments>
+                <item>${text:Hello}</item>
+            </arguments>
+        </action>
+        <transform format="text">
+            <template>${text}</template>
+        </transform>
+    </translet>
+
+</aspectran>

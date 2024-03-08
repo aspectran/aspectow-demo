@@ -1,0 +1,36 @@
+system: {
+    properties: {
+        aspectran.encryption.password: demo!
+    }
+}
+context: {
+    rules: classpath:app/jpetstore/jpetstore-context.xml
+    resources: [
+    ]
+    scan: [
+        app.jpetstore
+    ]
+    profiles: {
+        default: [
+            h2
+        ]
+    }
+    autoReload: {
+        scanIntervalSeconds: 5
+        enabled: false
+    }
+    singleton: false
+}
+scheduler: {
+    startDelaySeconds: 3
+    waitOnShutdown: true
+    enabled: false
+}
+web: {
+    uriDecoding: utf-8
+    defaultServletName: none
+    trailingSlashRedirect: true
+    exposals: {
+        +: /**
+    }
+}

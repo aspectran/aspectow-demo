@@ -4,6 +4,7 @@ system: {
     }
 }
 context: {
+    name: demo
     rules: classpath:app/demo/demo-context.xml
     resources: [
     ]

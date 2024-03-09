@@ -21,6 +21,7 @@ import com.aspectran.utils.apon.ParameterKey;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +54,11 @@ public class LogTailConfig extends AbstractParameters {
     public LogTailConfig(File file) throws IOException {
         this();
         readFrom(file);
+    }
+
+    public LogTailConfig(Reader reader) throws IOException {
+        this();
+        readFrom(reader);
     }
 
     public List<LogTailInfo> getLogTailInfoList() {

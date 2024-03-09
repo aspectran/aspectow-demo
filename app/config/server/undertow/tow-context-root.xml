@@ -34,9 +34,6 @@
             <item name="servletSessionConfig">
                 <bean class="io.undertow.servlet.api.ServletSessionConfig"/>
             </item>
-            <item name="initParams" type="map">
-                <entry name="LOGGER_NAME" value="%{tow.context.root.name}"/>
-            </item>
             <item name="servlets" type="array">
                 <bean class="com.aspectran.undertow.server.servlet.TowServlet">
                     <arguments>

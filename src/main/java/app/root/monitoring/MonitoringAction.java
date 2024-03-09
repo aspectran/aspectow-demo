@@ -32,7 +32,6 @@ import com.aspectran.utils.security.TimeLimitedPBTokenIssuer;
 import com.aspectran.web.activity.response.DefaultRestResponse;
 import com.aspectran.web.activity.response.RestResponse;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +63,7 @@ public class MonitoringAction {
     }
 
     @RequestToGet("/monitoring/endpoints/${token}")
-    public RestResponse getEndpoints(Translet translet, @Required String token) throws IOException {
+    public RestResponse getEndpoints(@Required String token) throws IOException {
         try {
             TimeLimitedPBTokenIssuer.validate(token);
         } catch (InvalidPBTokenException e) {
@@ -73,8 +72,7 @@ public class MonitoringAction {
             }
             return new DefaultRestResponse().forbidden();
         }
-        File file = ResourceUtils.getResourceAsFile(ENDPOINT_CONFIG_FILE);
-        EndpointConfig endpointConfig = new EndpointConfig(file);
+        EndpointConfig endpointConfig = new EndpointConfig(ResourceUtils.getResourceAsReader(ENDPOINT_CONFIG_FILE));
         List<EndpointInfo> endpointInfoList = endpointConfig.getEndpointInfoList();
         for (EndpointInfo endpointInfo : endpointInfoList) {
             String url = endpointInfo.getUrl();

@@ -70,8 +70,8 @@
                                 <li><a href="https://jpetstore.aspectran.com">JPetStore Demo</a></li>
                             </aspectran:profile>
                             <aspectran:profile expression="!prod">
-                                <li><a href="/demo/">Aspectran Demo</a></li>
-                                <li><a href="/jpetstore/">JPetStore Demo</a></li>
+                                <li><a href="<aspectran:url value="/demo/"/>">Aspectran Demo</a></li>
+                                <li><a href="<aspectran:url value="/jpetstore/"/>">JPetStore Demo</a></li>
                             </aspectran:profile>
                         </ul>
                     </li>
@@ -80,7 +80,7 @@
             <div class="top-bar-right">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <li>
-                        <a href="/monitoring/">Monitoring</a>
+                        <a href="<aspectran:url value="/monitoring"/>">Monitoring</a>
                     </li>
                 </ul>
                 <div class="quick-search-box">

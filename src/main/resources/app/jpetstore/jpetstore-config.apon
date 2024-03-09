@@ -4,6 +4,7 @@ system: {
     }
 }
 context: {
+    name: jpetstore
     rules: classpath:app/jpetstore/jpetstore-context.xml
     resources: [
     ]

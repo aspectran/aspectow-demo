@@ -20,6 +20,7 @@ import com.aspectran.utils.apon.ParameterKey;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.List;
 
 /**
@@ -51,6 +52,11 @@ public class EndpointConfig extends AbstractParameters {
     public EndpointConfig(File file) throws IOException {
         this();
         readFrom(file);
+    }
+
+    public EndpointConfig(Reader reader) throws IOException {
+        this();
+        readFrom(reader);
     }
 
     public List<EndpointInfo> getEndpointInfoList() {

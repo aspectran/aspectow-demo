@@ -26,7 +26,7 @@ import static com.aspectran.core.context.config.AspectranConfig.BASE_PATH_PROPER
 /**
  * Test for Demo App.
  */
-public class DemoApp {
+public class AspectowDemo {
 
     public static void main(String[] args) {
         try {

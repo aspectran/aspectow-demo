@@ -3,7 +3,7 @@
 
     <!-- Undertow Access Logging -->
     <appender name="SIFT-ACCESSLOG" class="ch.qos.logback.classic.sift.SiftingAppender">
-        <discriminator class="app.root.logging.WebServiceBasedDiscriminator">
+        <discriminator class="com.aspectran.core.context.ContextBasedLoggerDiscriminator">
             <key>LOGGER_NAME</key>
             <defaultValue>app</defaultValue>
         </discriminator>

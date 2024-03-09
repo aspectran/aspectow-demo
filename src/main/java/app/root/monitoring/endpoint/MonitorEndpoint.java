@@ -78,8 +78,7 @@ public class MonitorEndpoint extends InstantActivitySupport implements Initializ
 
     @Override
     public void initialize() throws Exception {
-        File logtailConfigFile = ResourceUtils.getResourceAsFile(LOGTAIL_CONFIG_FILE);
-        LogTailConfig logTailConfig = new LogTailConfig(logtailConfigFile);
+        LogTailConfig logTailConfig = new LogTailConfig(ResourceUtils.getResourceAsReader(LOGTAIL_CONFIG_FILE));
         this.logTailerManager = new LogTailerManager(this, logTailConfig);
         this.measuringManager = new MeasuringManager(this, logTailConfig.getMeasurementInfoList());
     }

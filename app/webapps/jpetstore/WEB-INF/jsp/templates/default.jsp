@@ -71,15 +71,13 @@
             <div class="top-bar-right">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <li>
-                        <a title="Demo Applications made with Aspectran">More Demo Apps</a>
+                        <a title="Sample applications built on Aspectran">More Sample Apps</a>
                         <ul class="submenu menu vertical" data-submenu>
                             <aspectran:profile expression="prod">
                                 <li><a href="https://demo.aspectran.com">Aspectran Demo</a></li>
-                                <li><a href="https://jpetstore.aspectran.com">JPetStore Demo</a></li>
                             </aspectran:profile>
                             <aspectran:profile expression="!prod">
                                 <li><a href="/demo/">Aspectran Demo</a></li>
-                                <li><a href="/jpetstore/">JPetStore Demo</a></li>
                             </aspectran:profile>
                         </ul>
                     </li>
@@ -100,7 +98,7 @@
             <div class="grid-container ${page.style}">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <li><a href="<aspectran:url value="/"/>">Demo Apps</a></li>
+                        <li><a href="/">Aspectow Demo</a></li>
                         <li><a href="<aspectran:url value="/"/>">JPetStore Demo</a></li>
                     </ul>
                 </nav>
@@ -114,7 +112,8 @@
             <div class="grid-x">
                 <div class="small-12 cell">
                     <header>
-                        <p class="subheadline" itemprop="alternativeHeadline">${page.subheadline}</p>
+                        <p class="subheadline" itemprop="alternativeHeadline">
+                            Recommended best practices developed with Aspectran</p>
                         <h1 itemprop="headline">JPetStore Demo</h1>
                         <p class="teaser" itemprop="description">
                             JPetStore is a full web application built on top of MyBatis 3, Aspectran 8.
@@ -134,7 +133,7 @@
             <div class="cell">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <li><a href="<aspectran:url value="/"/>">Demo Apps</a></li>
+                        <li><a href="/">Aspectow Demo</a></li>
                         <li><a href="<aspectran:url value="/"/>">JPetStore Demo</a></li>
                     </ul>
                 </nav>
@@ -377,7 +376,7 @@
 </script>
 <script>
     $(function() {
-        let menuitem = $("#gnb-menu .dropdown li a[href='" + location.pathname + "']").last();
+        let menuitem = $("#gnb-menu .top-bar-left .dropdown li a[href='" + location.pathname + "']").last();
         if (menuitem.length > 0) {
             let arr = [];
             arr.push({'name': menuitem.text(), 'href': null});

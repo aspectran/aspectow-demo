@@ -63,15 +63,15 @@
             <div class="top-bar-left">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <li>
-                        <a title="Demo Applications made with Aspectran">Demo Apps</a>
+                        <a title="Sample applications built on Aspectran">Sample Apps</a>
                         <ul class="submenu menu vertical" data-submenu>
                             <aspectran:profile expression="prod">
-                                <li><a href="https://demo.aspectran.com">Aspectran Demo</a></li>
+                                <li><a href="https://examples.aspectran.com">Aspectran Demo</a></li>
                                 <li><a href="https://jpetstore.aspectran.com">JPetStore Demo</a></li>
                             </aspectran:profile>
                             <aspectran:profile expression="!prod">
-                                <li><a href="<aspectran:url value="/demo/"/>">Aspectran Demo</a></li>
-                                <li><a href="<aspectran:url value="/jpetstore/"/>">JPetStore Demo</a></li>
+                                <li><a href="/demo/">Aspectran Demo</a></li>
+                                <li><a href="/jpetstore/">JPetStore Demo</a></li>
                             </aspectran:profile>
                         </ul>
                     </li>
@@ -86,7 +86,7 @@
             <div class="top-bar-right">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <li>
-                        <a href="<aspectran:url value="/monitoring"/>">Monitoring</a>
+                        <a href="<aspectran:url value="/monitoring/"/>">Monitoring</a>
                     </li>
                 </ul>
                 <div class="quick-search-box">

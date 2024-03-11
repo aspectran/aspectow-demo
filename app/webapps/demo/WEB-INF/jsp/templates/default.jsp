@@ -63,7 +63,7 @@
             <div class="top-bar-left">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <li>
-                        <a>Examples</a>
+                        <a href="<aspectran:url value="/"/>">Examples</a>
                         <ul class="submenu menu vertical" data-submenu>
                             <li><a href="<aspectran:url value="/examples/hello-world"/>">Hello World</a></li>
                             <li><a href="<aspectran:url value="/examples/gs-rest-service/"/>">RESTful Web Service</a></li>
@@ -84,14 +84,12 @@
             <div class="top-bar-right">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <li>
-                        <a title="Demo Applications made with Aspectran">More Demo Apps</a>
+                        <a title="Sample applications built on Aspectran">More Sample Apps</a>
                         <ul class="submenu menu vertical" data-submenu>
                             <aspectran:profile expression="prod">
-                                <li><a href="https://demo.aspectran.com">Aspectran Demo</a></li>
                                 <li><a href="https://jpetstore.aspectran.com">JPetStore Demo</a></li>
                             </aspectran:profile>
                             <aspectran:profile expression="!prod">
-                                <li><a href="/demo/">Aspectran Demo</a></li>
                                 <li><a href="/jpetstore/">JPetStore Demo</a></li>
                             </aspectran:profile>
                         </ul>
@@ -113,8 +111,8 @@
             <div class="grid-container ${page.style}">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <li><a href="https://aspectran.com/en/">Aspectran</a></li>
-                        <li><a href="<aspectran:url value="/"/>">Demo</a></li>
+                        <li><a href="/">Aspectow Demo</a></li>
+                        <li><a href="<aspectran:url value="/"/>">Aspectran Demo</a></li>
                     </ul>
                 </nav>
             </div>
@@ -156,8 +154,8 @@
             <div class="cell">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <li><a href="https://aspectran.com/en/">Aspectran</a></li>
-                        <li><a href="<aspectran:url value="/"/>">Demo</a></li>
+                        <li><a href="/">Aspectow Demo</a></li>
+                        <li><a href="<aspectran:url value="/"/>">Aspectran Demo</a></li>
                     </ul>
                 </nav>
             </div>
@@ -390,7 +388,7 @@
 </script>
 <script>
     $(function() {
-        let menuitem = $("#gnb-menu .dropdown li a[href='" + location.pathname + "']").last();
+        let menuitem = $("#gnb-menu .top-bar-left .dropdown li a[href='" + location.pathname + "']").last();
         if (menuitem.length > 0) {
             let arr = [];
             arr.push({'name': menuitem.text(), 'href': null});

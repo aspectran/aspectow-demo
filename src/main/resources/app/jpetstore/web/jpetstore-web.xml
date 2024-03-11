@@ -82,6 +82,5 @@
     <append resource="app/jpetstore/web/common/xss-prevent.xml"/>
     <append resource="app/jpetstore/web/common/static-codes.xml"/>
     <append resource="app/jpetstore/web/common/user.xml"/>
-    <append resource="app/jpetstore/web/monitoring/monitoring.xml"/>
 
 </aspectran>

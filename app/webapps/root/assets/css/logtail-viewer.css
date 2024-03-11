@@ -1,5 +1,4 @@
 .options {
-    /*margin-top: -15px;*/
     font-size: 90%;
     text-align: right;
 }
@@ -192,6 +191,7 @@ ul.layout-options li.on a {
 
 .measurement-box .panel {
     border: 1px solid #ccc;
+    border-bottom: 2px solid #ccc;
     border-radius: 0;
     height: 260px;
 }

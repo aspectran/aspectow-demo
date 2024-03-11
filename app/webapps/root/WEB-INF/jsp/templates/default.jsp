@@ -75,6 +75,12 @@
                             </aspectran:profile>
                         </ul>
                     </li>
+                    <li>
+                        <a>Get Involved</a>
+                        <ul class="submenu menu vertical" data-submenu>
+                            <li><a href="https://github.com/aspectran/aspectow-demo">GitHub</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <div class="top-bar-right">
@@ -125,15 +131,15 @@
                     <c:if test="${not empty page.headinclude}">
                         <jsp:include page="/WEB-INF/jsp/${page.headinclude}.jsp"/>
                     </c:if>
-                    <div class="hexagons">
-                        <div class="hexagon hex1"></div>
-                        <div class="hexagon hex2"></div>
-                        <div class="hexagon hex3"></div>
-                        <c:if test="${not fn:contains(page.style, 'compact') and not empty page.headline}">
-                        <div class="hexagon hex5"></div>
-                        <div class="hexagon hex6"></div>
-                        </c:if>
-                    </div>
+                    <c:if test="${not fn:contains(page.style, 'compact') and not empty page.headline}">
+                        <div class="hexagons">
+                            <div class="hexagon hex1"></div>
+                            <div class="hexagon hex2"></div>
+                            <div class="hexagon hex3"></div>
+                            <div class="hexagon hex5"></div>
+                            <div class="hexagon hex6"></div>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </div>

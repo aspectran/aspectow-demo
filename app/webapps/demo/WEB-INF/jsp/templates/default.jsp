@@ -73,6 +73,12 @@
                             <li><a href="<aspectran:url value="/skylark/"/>">Skylark Terminal</a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a>Get Involved</a>
+                        <ul class="submenu menu vertical" data-submenu>
+                            <li><a href="https://github.com/aspectran/demo-app">GitHub</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <div class="top-bar-right">
@@ -121,19 +127,28 @@
             <div class="grid-x">
                 <div class="cell">
                     <header>
-                        <p class="subheadline" itemprop="alternativeHeadline">${page.subheadline}</p>
-                        <h1 itemprop="headline">${page.headline}</h1>
-                        <p class="teaser" itemprop="description">
-                            ${page.teaser}
-                        </p>
+                        <c:if test="${not empty page.subheadline}">
+                            <p class="subheadline" itemprop="alternativeHeadline">${page.subheadline}</p>
+                        </c:if>
+                        <c:if test="${not empty page.headline}">
+                            <h1 itemprop="headline">${page.headline}</h1>
+                        </c:if>
+                        <c:if test="${not empty page.teaser}">
+                            <p class="teaser" itemprop="description">${page.teaser}</p>
+                        </c:if>
                     </header>
-                    <div class="hexagons">
-                        <div class="hexagon hex1"></div>
-                        <div class="hexagon hex2"></div>
-                        <div class="hexagon hex3"></div>
-                        <div class="hexagon hex5"></div>
-                        <div class="hexagon hex6"></div>
-                    </div>
+                    <c:if test="${not empty page.headinclude}">
+                        <jsp:include page="/WEB-INF/jsp/${page.headinclude}.jsp"/>
+                    </c:if>
+                    <c:if test="${not fn:contains(page.style, 'compact') and not empty page.headline}">
+                        <div class="hexagons">
+                            <div class="hexagon hex1"></div>
+                            <div class="hexagon hex2"></div>
+                            <div class="hexagon hex3"></div>
+                            <div class="hexagon hex5"></div>
+                            <div class="hexagon hex6"></div>
+                        </div>
+                    </c:if>
                 </div>
             </div>
         </div>

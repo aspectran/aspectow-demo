@@ -33,7 +33,7 @@
         </div>
         <pre class="logtail"></pre>
         <div class="grid-x measurement-box" style="display: none">
-            <div class="cell small-12 large-5 stats-cell">
+            <div class="cell small-12 large-4 stats-cell">
 <%--                <h3>Session Statistics--%>
 <%--                    <a id="anchor3" href="#anchor3" class="float-right hide-for-large"><span class="icon fi-anchor"></span></a></h3>--%>
                 <div class="panel stats-box">
@@ -54,7 +54,7 @@
                     <p class="text-right"><i>Elapsed <span class="elapsed"></span></i></p>
                 </div>
             </div>
-            <div class="cell small-12 large-7 sessions-cell">
+            <div class="cell small-12 large-8 sessions-cell">
 <%--                <h3>Current Sessions--%>
 <%--                    <a id="anchor2" href="#anchor2" class="float-right show-for-large"><span class="icon fi-anchor"></span></a></h3>--%>
                 <div class="panel sessions-box">
@@ -236,11 +236,11 @@
                     break;
             }
             if (columns > 1) {
-                measurementBox.find(".stats-cell").removeClass("large-5 large-7");
-                measurementBox.find(".sessions-cell").removeClass("large-5 large-7");
+                measurementBox.find(".stats-cell").removeClass("large-4 large-8");
+                measurementBox.find(".sessions-cell").removeClass("large-4 large-8");
             } else {
-                measurementBox.find(".stats-cell").removeClass("large-5 large-7").addClass("large-5");
-                measurementBox.find(".sessions-cell").removeClass("large-5 large-7").addClass("large-7");
+                measurementBox.find(".stats-cell").removeClass("large-8 large-8").addClass("large-4");
+                measurementBox.find(".sessions-cell").removeClass("large-8 large-8").addClass("large-8");
             }
         });
     }

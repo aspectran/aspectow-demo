@@ -132,7 +132,7 @@
                             <directory>app/work</directory>
                             <includes>
                                 <include>_resource_*/</include>
-                                <include>_webroot/</include>
+                                <include>_webapps/</include>
                             </includes>
                             <excludes>
                                 <exclude>.gitignore</exclude>
@@ -168,12 +168,6 @@
             <groupId>com.aspectran</groupId>
             <artifactId>aspectran-with-mybatis</artifactId>
             <version>${aspectran.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>aspectran-with-logback</artifactId>
-            <version>${aspectran.version}</version>
-            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>net.sf.sociaal</groupId>

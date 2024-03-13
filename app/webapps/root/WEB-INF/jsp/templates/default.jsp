@@ -66,7 +66,7 @@
                         <a title="Sample applications built on Aspectran">Sample Apps</a>
                         <ul class="submenu menu vertical" data-submenu>
                             <aspectran:profile expression="prod">
-                                <li><a href="https://examples.aspectran.com">Aspectran Demo</a></li>
+                                <li><a href="https://demo.aspectran.com">Aspectran Demo</a></li>
                                 <li><a href="https://jpetstore.aspectran.com">JPetStore Demo</a></li>
                             </aspectran:profile>
                             <aspectran:profile expression="!prod">
@@ -367,6 +367,7 @@
     /* Creating custom :external selector */
     $.expr[':'].external = function(obj) {
         return obj.href
+            && !obj.href.match(/aspectran.com/)
             && !obj.href.match(/^javascript:/)
             && !obj.href.match(/^mailto:/)
             && (obj.hostname !== location.hostname);

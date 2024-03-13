@@ -134,7 +134,10 @@ public class LogTailInfo extends AbstractParameters {
     }
 
     public void setMeasurementInfo(MeasurementInfo measurementInfo) {
-        putValue(LogTailInfo.measurement, measurementInfo);
+        putValue(measurement, measurementInfo);
+        if (measurementInfo != null && !hasValue(measuring)) {
+            putValue(measuring, true);
+        }
     }
 
 }

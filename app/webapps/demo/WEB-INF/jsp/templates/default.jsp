@@ -44,7 +44,12 @@
 <nav id="navigation" class="no-js">
     <div class="title-bar" data-responsive-toggle="gnb-menu" data-hide-for="large" style="display:none">
         <div class="title-bar-left">
-            <a class="logo" href="/" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+            <aspectran:profile expression="prod">
+                <a class="logo" href="https://public.aspectran.com" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+            </aspectran:profile>
+            <aspectran:profile expression="!prod">
+                <a class="logo" href="/" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+            </aspectran:profile>
         </div>
         <div class="title-bar-center">
             <a href="#top-of-page">Aspectran</a>
@@ -57,7 +62,12 @@
         <div class="grid-container ${page.style}">
             <div class="top-bar-logo">
                 <div class="circle">
-                    <a class="logo" href="/" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                    <aspectran:profile expression="prod">
+                        <a class="logo" href="https://public.aspectran.com" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                    </aspectran:profile>
+                    <aspectran:profile expression="!prod">
+                        <a class="logo" href="/" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                    </aspectran:profile>
                 </div>
             </div>
             <div class="top-bar-left">
@@ -111,7 +121,12 @@
             <div class="grid-container ${page.style}">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <li><a href="/">Aspectow Demo</a></li>
+                        <aspectran:profile expression="prod">
+                            <li><a href="https://public.aspectran.com">Aspectow Demo</a></li>
+                        </aspectran:profile>
+                        <aspectran:profile expression="!prod">
+                            <li><a href="/">Aspectow Demo</a></li>
+                        </aspectran:profile>
                         <li><a href="<aspectran:url value="/"/>">Aspectran Demo</a></li>
                     </ul>
                 </nav>
@@ -154,7 +169,12 @@
             <div class="cell">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <li><a href="/">Aspectow Demo</a></li>
+                        <aspectran:profile expression="prod">
+                            <li><a href="https://public.aspectran.com">Aspectow Demo</a></li>
+                        </aspectran:profile>
+                        <aspectran:profile expression="!prod">
+                            <li><a href="/">Aspectow Demo</a></li>
+                        </aspectran:profile>
                         <li><a href="<aspectran:url value="/"/>">Aspectran Demo</a></li>
                     </ul>
                 </nav>

@@ -30,7 +30,6 @@ public class LogTailInfo extends AbstractParameters {
     private static final ParameterKey file;
     private static final ParameterKey charset;
     private static final ParameterKey sampleInterval;
-    private static final ParameterKey bufferSize;
     private static final ParameterKey lastLines;
     private static final ParameterKey visualizing;
     private static final ParameterKey measuring;
@@ -44,7 +43,6 @@ public class LogTailInfo extends AbstractParameters {
         title = new ParameterKey("title", ValueType.STRING);
         charset = new ParameterKey("charset", ValueType.STRING);
         sampleInterval = new ParameterKey("sampleInterval", ValueType.INT);
-        bufferSize = new ParameterKey("bufferSize", ValueType.INT);
         lastLines = new ParameterKey("lastLines", ValueType.INT);
         visualizing = new ParameterKey("visualizing", ValueType.BOOLEAN);
         measuring = new ParameterKey("measuring", ValueType.BOOLEAN);
@@ -56,7 +54,6 @@ public class LogTailInfo extends AbstractParameters {
                 file,
                 charset,
                 sampleInterval,
-                bufferSize,
                 lastLines,
                 visualizing,
                 measuring,
@@ -106,14 +103,6 @@ public class LogTailInfo extends AbstractParameters {
 
     public void setSampleInterval(int sampleInterval) {
         putValue(LogTailInfo.sampleInterval, sampleInterval);
-    }
-
-    public int getBufferSize() {
-        return getInt(bufferSize, 0);
-    }
-
-    public void setBufferSize(int bufferSize) {
-        putValue(LogTailInfo.bufferSize, bufferSize);
     }
 
     public int getLastLines() {

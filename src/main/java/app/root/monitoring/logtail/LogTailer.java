@@ -38,16 +38,11 @@ public class LogTailer extends AbstractLifeCycle {
 
     private static final int DEFAULT_SAMPLE_INTERVAL = 1000;
 
-    private static final int DEFAULT_BUFFER_SIZE = 4096;
-
     private final LogTailerManager manager;
 
+    private final LogTailInfo info;
+
     private final String name;
-
-    private final String title;
-
-    /** the log file to tail */
-    private final String file;
 
     /** the Charset to be used for reading the file */
     private final Charset charset;
@@ -55,69 +50,30 @@ public class LogTailer extends AbstractLifeCycle {
     /** how frequently to check for file changes; defaults to 1 second */
     private final int sampleInterval;
 
-    private final int bufferSize;
-
     private final int lastLines;
 
-    private final boolean visualizing;
-
-    private final boolean measuring;
+    /** the log file to tail */
+    private final File logFile;
 
     private Tailer tailer;
 
-    public LogTailer(LogTailerManager manager, @NonNull LogTailInfo info) {
+    public LogTailer(LogTailerManager manager, @NonNull LogTailInfo info, File logFile) {
         this.manager = manager;
+        this.info = info;
         this.name = info.getName();
-        this.title = info.getTitle();
-        this.file = info.getFile();
         this.charset = (info.getCharset() != null ? Charset.forName(info.getCharset()): DEFAULT_CHARSET);
         this.sampleInterval = (info.getSampleInterval() > 0 ? info.getSampleInterval() : DEFAULT_SAMPLE_INTERVAL);
-        this.bufferSize = (info.getBufferSize() > 0 ? info.getBufferSize() : DEFAULT_BUFFER_SIZE);
         this.lastLines = info.getLastLines();
-        this.visualizing = info.isVisualizing();
-        this.measuring = info.isMeasuring();
+        this.logFile = logFile;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getFile() {
-        return file;
-    }
-
-    public Charset getCharset() {
-        return charset;
-    }
-
-    public int getSampleInterval() {
-        return sampleInterval;
-    }
-
-    public int getBufferSize() {
-        return bufferSize;
-    }
-
-    public int getLastLines() {
-        return lastLines;
-    }
-
-    public boolean isMeasuring() {
-        return measuring;
-    }
-
-    public boolean isVisualizing() {
-        return visualizing;
+    public LogTailInfo getInfo() {
+        return info;
     }
 
     protected void readLastLines() {
         if (lastLines > 0) {
             try {
-                File logFile = new File(file).getCanonicalFile();
                 if (logFile.exists()) {
                     String[] lines = readLastLines(logFile, lastLines);
                     for (String line : lines) {
@@ -125,7 +81,7 @@ public class LogTailer extends AbstractLifeCycle {
                     }
                 }
             } catch (IOException e) {
-                logger.error("Failed to read log file: " + file, e);
+                logger.error("Failed to read log file " + logFile, e);
             }
         }
     }
@@ -153,7 +109,7 @@ public class LogTailer extends AbstractLifeCycle {
     @Override
     protected void doStart() throws Exception {
         tailer = Tailer.builder()
-                .setFile(new File(file))
+                .setFile(logFile)
                 .setTailerListener(new LogTailerListener(manager, name))
                 .setDelayDuration(Duration.ofMillis(sampleInterval))
                 .setTailFromEnd(true)

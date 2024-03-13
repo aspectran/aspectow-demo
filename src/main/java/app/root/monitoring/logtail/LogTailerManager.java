@@ -20,6 +20,8 @@ import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 import jakarta.websocket.Session;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -47,21 +49,24 @@ public class LogTailerManager {
         }
         List<LogTailInfo> tailerInfoList = logTailConfig.getLogTailInfoList();
         for (LogTailInfo logTailInfo : tailerInfoList) {
-            LogTailer tailer = new LogTailer(this, logTailInfo);
-            this.tailers.put(tailer.getName(), tailer);
+            File logFile = null;
+            try {
+                String file = endpoint.getActivityContext().getApplicationAdapter().toRealPath(logTailInfo.getFile());
+                logFile = new File(file).getCanonicalFile();
+            } catch (IOException e) {
+                logger.error("Failed to resolve absolute path to log file " + logTailInfo.getFile(), e);
+            }
+            if (logFile != null) {
+                LogTailer tailer = new LogTailer(this, logTailInfo, logFile);
+                this.tailers.put(logTailInfo.getName(), tailer);
+            }
         }
     }
 
     public List<LogTailInfo> getLogTailInfoList() {
         List<LogTailInfo> tailerInfoList = new ArrayList<>();
         for (LogTailer logTailer : tailers.values()) {
-            LogTailInfo logTailInfo = new LogTailInfo();
-            logTailInfo.setName(logTailer.getName());
-            logTailInfo.setTitle(logTailer.getTitle());
-            logTailInfo.setFile(logTailer.getFile());
-            logTailInfo.setVisualizing(logTailer.isVisualizing());
-            logTailInfo.setMeasuring(logTailer.isMeasuring());
-            tailerInfoList.add(logTailInfo);
+            tailerInfoList.add(logTailer.getInfo());
         }
         return tailerInfoList;
     }

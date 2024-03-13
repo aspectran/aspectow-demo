@@ -1,7 +1,7 @@
 logtail: {
     name: root
     title: Root
-    file: ./app/logs/app.log
+    file: /logs/app.log
     lastLines: 100
     sampleInterval: 300
     visualizing: true
@@ -12,7 +12,7 @@ logtail: {
 logtail: {
     name: demo
     title: Demo
-    file: ./app/logs/demo.log
+    file: /logs/demo.log
     lastLines: 100
     sampleInterval: 300
     visualizing: true
@@ -23,7 +23,7 @@ logtail: {
 logtail: {
     name: jpetstore
     title: JPetStore
-    file: ./app/logs/jpetstore.log
+    file: /logs/jpetstore.log
     lastLines: 100
     sampleInterval: 300
     visualizing: true

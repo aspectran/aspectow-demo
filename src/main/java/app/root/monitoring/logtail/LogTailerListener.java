@@ -15,7 +15,6 @@
  */
 package app.root.monitoring.logtail;
 
-import app.root.monitoring.endpoint.MonitorEndpoint;
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListener;
 

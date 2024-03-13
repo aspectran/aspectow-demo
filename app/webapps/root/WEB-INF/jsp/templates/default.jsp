@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta name="google" content="notranslate">
-    <title>${empty page.title ? "Aspectran Demo" : page.title}</title>
+    <title>${empty page.title ? "Aspectow Demo" : page.title}</title>
     <meta name="description" content="${empty page.description ? "Welcome to the Aspectran Demo Site" : page.description}" />
     <link rel="stylesheet" type="text/css" href="https://aspectran.com/assets/css/aspectran.css" />
     <link href="https://fonts.googleapis.com/css?family=Raleway:500,500i,700" rel="stylesheet">
@@ -367,7 +367,7 @@
     /* Creating custom :external selector */
     $.expr[':'].external = function(obj) {
         return obj.href
-            && !obj.href.match(/aspectran.com/)
+            && !obj.href.match(/aspectran.com\//)
             && !obj.href.match(/^javascript:/)
             && !obj.href.match(/^mailto:/)
             && (obj.hostname !== location.hostname);

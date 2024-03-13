@@ -59,6 +59,8 @@ public class LogTailer extends AbstractLifeCycle {
 
     private final int lastLines;
 
+    private final boolean visualizing;
+
     private final boolean measuring;
 
     private Tailer tailer;
@@ -72,6 +74,7 @@ public class LogTailer extends AbstractLifeCycle {
         this.sampleInterval = (info.getSampleInterval() > 0 ? info.getSampleInterval() : DEFAULT_SAMPLE_INTERVAL);
         this.bufferSize = (info.getBufferSize() > 0 ? info.getBufferSize() : DEFAULT_BUFFER_SIZE);
         this.lastLines = info.getLastLines();
+        this.visualizing = info.isVisualizing();
         this.measuring = info.isMeasuring();
     }
 
@@ -105,6 +108,10 @@ public class LogTailer extends AbstractLifeCycle {
 
     public boolean isMeasuring() {
         return measuring;
+    }
+
+    public boolean isVisualizing() {
+        return visualizing;
     }
 
     protected void readLastLines() {

@@ -34,8 +34,6 @@
         <pre class="logtail"></pre>
         <div class="grid-x measurement-box" style="display: none">
             <div class="cell small-12 large-4 stats-cell">
-<%--                <h3>Session Statistics--%>
-<%--                    <a id="anchor3" href="#anchor3" class="float-right hide-for-large"><span class="icon fi-anchor"></span></a></h3>--%>
                 <div class="panel stats-box">
                     <dl class="stats">
                         <dt>Current Active Sessions</dt>
@@ -55,8 +53,6 @@
                 </div>
             </div>
             <div class="cell small-12 large-8 sessions-cell">
-<%--                <h3>Current Sessions--%>
-<%--                    <a id="anchor2" href="#anchor2" class="float-right show-for-large"><span class="icon fi-anchor"></span></a></h3>--%>
                 <div class="panel sessions-box">
                     <ul class="sessions">
                     </ul>

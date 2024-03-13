@@ -59,6 +59,7 @@ public class LogTailerManager {
             logTailInfo.setName(logTailer.getName());
             logTailInfo.setTitle(logTailer.getTitle());
             logTailInfo.setFile(logTailer.getFile());
+            logTailInfo.setVisualizing(logTailer.isVisualizing());
             logTailInfo.setMeasuring(logTailer.isMeasuring());
             tailerInfoList.add(logTailInfo);
         }

@@ -297,7 +297,7 @@
                 .attr("data-visualizing", logtail.visualizing)
                 .show();
         }
-        if (logtail.measuring !== false) {
+        if (logtail.measurement && logtail.measuring !== false) {
             logtailBox.find(".measurement-box").show();
         }
         return logtailBox.show();

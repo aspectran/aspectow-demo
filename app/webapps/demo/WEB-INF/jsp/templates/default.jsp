@@ -93,6 +93,7 @@
             </div>
             <div class="top-bar-right">
                 <ul class="dropdown menu" data-dropdown-menu>
+                    <li><a href="/monitoring/#demo">Monitoring</a></li>
                     <li>
                         <a title="Sample applications built on Aspectran">More Sample Apps</a>
                         <ul class="submenu menu vertical" data-submenu>

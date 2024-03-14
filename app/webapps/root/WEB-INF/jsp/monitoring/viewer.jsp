@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<link rel="stylesheet" href="/assets/css/logtail-viewer.css">
+<link rel="stylesheet" href="/assets/css/logtail-viewer.css?20240314">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment-with-locales.min.js"></script>
-<script src="/assets/js/logtail-viewer.js"></script>
+<script src="/assets/js/logtail-viewer.js?20240314"></script>
 <div class="grid-x endpoint-box">
     <div class="cell options t10 b5">
         <ul class="layout-options">
@@ -13,7 +13,8 @@
         </ul>
     </div>
     <dl class="cell logtails tabs b0">
-        <dd class="tabs-title"><a><span class="bullet fi-list-bullet"></span> <span class="title"> </span> <span class="indicator fi-loop"></span></a></dd>
+        <dd class="tabs-title"><a><span class="bullet fi-list-bullet"></span>
+            <span class="title"> </span> <span class="indicator fi-loop"></span></a></dd>
     </dl>
     <div class="cell logtail-box">
         <div class="status-bar">
@@ -119,8 +120,16 @@
         function onEstablishCompleted() {
             if (endpointIndex < endpoints.length - 1) {
                 establishEndpoint(++endpointIndex);
-            } else {
+            } else if (endpointIndex === endpoints.length - 1) {
                 initializeTabs();
+                if (location.hash) {
+                    let name = location.hash.substring(1);
+                    let tab = $(".endpoint-box[data-index=" + endpointIndex + "] .tabs-title[data-name=" + name + "]");
+                    if (tab.length > 0) {
+                        $(".endpoint-box[data-index=" + endpointIndex + "] .tabs-title.available").removeClass("is-active");
+                        tab.addClass("is-active");
+                    }
+                }
             }
         }
         let logViewer = new LogtailViewer(endpoints[endpointIndex], onEndpointEstablished, onEstablishCompleted);
@@ -205,7 +214,6 @@
             let endpoint = endpoints[endpointIndex];
             endpoint.viewer.clear(logtail);
         });
-
         $(".layout-options li a").click(function() {
             $(".layout-options li").removeClass("on");
             $(this).parent().addClass("on");
@@ -264,9 +272,11 @@
         a.find(".title").text(" " + endpoint.title + " ");
         tab.show().appendTo(tabs);
         let content = $(".endpoint-box").eq(0).hide().clone();
-        content.addClass("available");
-        content.attr("data-index", index).attr("data-name", endpoint.name).attr("data-title", endpoint.title);
-        content.insertAfter($(".endpoint-box").last());
+        content.addClass("available")
+            .attr("data-index", index)
+            .attr("data-name", endpoint.name)
+            .attr("data-title", endpoint.title)
+            .insertAfter($(".endpoint-box").last());
         return content;
     }
 
@@ -279,6 +289,7 @@
         let tab = tab0.hide().clone()
             .addClass("available")
             .attr("data-index", index)
+            .attr("data-name", logtail.name)
             .attr("title", endpointTitle + " ›› " + logtail.title);
         tab.find("a .title").text(" " + logtail.title + " ");
         tab.show().appendTo(tabs);

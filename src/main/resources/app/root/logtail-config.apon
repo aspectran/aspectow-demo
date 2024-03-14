@@ -1,7 +1,7 @@
 logtail: {
     name: root
     title: Root
-    file: /logs/app.log
+    file: /logs/root.log
     lastLines: 100
     sampleInterval: 300
     visualizing: true

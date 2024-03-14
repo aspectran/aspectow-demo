@@ -1,5 +1,6 @@
 package app.root.monitoring.measurement.session;
 
+import app.jpetstore.common.user.UserSession;
 import com.aspectran.core.component.session.DefaultSession;
 import com.aspectran.core.component.session.SessionHandler;
 import com.aspectran.core.component.session.SessionStatistics;
@@ -13,6 +14,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import static app.jpetstore.common.user.UserSessionManager.USER_SESSION_KEY;
 
 public class TowSessionStats {
 
@@ -44,13 +47,17 @@ public class TowSessionStats {
         stats.setRejectedSessionCount(statistics.getRejectedSessions());
         stats.setElapsedTime(formatDuration(statistics.getStartTime()));
 
-        // Current Users
+        // Current sessions
         List<String> currentSessions = new ArrayList<>();
         Set<String> sessionIds = sessionHandler.getActiveSessions();
         for (String sessionId : sessionIds) {
             DefaultSession session = sessionHandler.getSession(sessionId);
             if (session != null) {
-                currentSessions.add("1:Session " + session.getId() + " created at " +
+                UserSession userSession = session.getAttribute(USER_SESSION_KEY);
+                String loggedIn = (userSession != null && userSession.isAuthenticated() ? "1" : "0");
+                String username = (userSession != null && userSession.getAccount() != null ?
+                        "(" + userSession.getAccount().getUsername() + ") " : "");
+                currentSessions.add(loggedIn + ":" + username + "Session " + session.getId() + " created at " +
                         formatTime(session.getCreationTime()));
             }
         }

@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="<aspectran:url value="/css/jpetstore.css"/>"/>
     <link href="https://fonts.googleapis.com/css?family=Raleway:500,500i,700" rel="stylesheet">
     <script src="https://aspectran.com/assets/js/modernizr-custom.js"></script>
-    <script src="https://aspectran.com/assets/js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="mask-icon" href="https://aspectran.com/assets/img/aspectran-logo.svg" color="#4B555A"/>
     <link rel="apple-touch-icon" sizes="57x57" href="https://aspectran.com/assets/img/apple-icon-57x57.png"/>
     <link rel="apple-touch-icon" sizes="60x60" href="https://aspectran.com/assets/img/apple-icon-60x60.png"/>
@@ -30,13 +30,13 @@
     <link rel="icon" type="image/png" sizes="96x96" href="https://aspectran.com/assets/img/favicon-96x96.png"/>
     <meta name="msapplication-TileImage" content="https://aspectran.com/assets/img/ms-icon-144x144.png"/>
     <meta name="msapplication-TileColor" content="#4B555A"/>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PBGW9BF7P6"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-PBGW9BF7P6');
-    </script>
+<%--    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PBGW9BF7P6"></script>--%>
+<%--    <script>--%>
+<%--        window.dataLayer = window.dataLayer || [];--%>
+<%--        function gtag(){dataLayer.push(arguments);}--%>
+<%--        gtag('js', new Date());--%>
+<%--        gtag('config', 'G-PBGW9BF7P6');--%>
+<%--    </script>--%>
 </head>
 <body id="top-of-page" class="plate solid" itemscope itemtype="http://schema.org/WebPage">
 <nav id="navigation" class="no-js">
@@ -109,12 +109,6 @@
             <div class="grid-container ${page.style}">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <aspectran:profile expression="prod">
-                            <li><a href="https://public.aspectran.com">Aspectow Demo</a></li>
-                        </aspectran:profile>
-                        <aspectran:profile expression="!prod">
-                            <li><a href="/">Aspectow Demo</a></li>
-                        </aspectran:profile>
                         <li><a href="<aspectran:url value="/"/>">JPetStore Demo</a></li>
                     </ul>
                 </nav>
@@ -149,12 +143,6 @@
             <div class="cell">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <aspectran:profile expression="prod">
-                            <li><a href="https://public.aspectran.com">Aspectow Demo</a></li>
-                        </aspectran:profile>
-                        <aspectran:profile expression="!prod">
-                            <li><a href="/">Aspectow Demo</a></li>
-                        </aspectran:profile>
                         <li><a href="<aspectran:url value="/"/>">JPetStore Demo</a></li>
                     </ul>
                 </nav>

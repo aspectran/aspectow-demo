@@ -13,7 +13,8 @@
     <link rel="stylesheet" type="text/css" href="https://aspectran.com/assets/css/aspectran.css" />
     <link href="https://fonts.googleapis.com/css?family=Raleway:500,500i,700" rel="stylesheet">
     <script src="https://aspectran.com/assets/js/modernizr-custom.js"></script>
-    <script src="https://aspectran.com/assets/js/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment-with-locales.min.js"></script>
     <link rel="mask-icon" href="https://aspectran.com/assets/img/aspectran-logo.svg" color="#4B555A" />
     <link rel="apple-touch-icon" sizes="57x57" href="https://aspectran.com/assets/img/apple-icon-57x57.png" />
     <link rel="apple-touch-icon" sizes="60x60" href="https://aspectran.com/assets/img/apple-icon-60x60.png" />
@@ -30,15 +31,15 @@
     <link rel="icon" type="image/png" sizes="96x96" href="https://aspectran.com/assets/img/favicon-96x96.png" />
     <meta name="msapplication-TileImage" content="https://aspectran.com/assets/img/ms-icon-144x144.png" />
     <meta name="msapplication-TileColor" content="#4B555A" />
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', 'UA-66807210-2', 'auto');
-        ga('set', 'anonymizeIp', true);
-        ga('send', 'pageview');
-    </script>
+<%--    <script>--%>
+<%--        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){--%>
+<%--            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),--%>
+<%--            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)--%>
+<%--        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');--%>
+<%--        ga('create', 'UA-66807210-2', 'auto');--%>
+<%--        ga('set', 'anonymizeIp', true);--%>
+<%--        ga('send', 'pageview');--%>
+<%--    </script>--%>
 </head>
 <body id="top-of-page" class="${page.style}" itemscope itemtype="http://schema.org/WebPage">
 <nav id="navigation" class="no-js">

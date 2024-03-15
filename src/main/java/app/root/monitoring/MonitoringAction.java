@@ -25,6 +25,7 @@ import com.aspectran.core.component.bean.annotation.Request;
 import com.aspectran.core.component.bean.annotation.RequestToGet;
 import com.aspectran.core.component.bean.annotation.Required;
 import com.aspectran.utils.ResourceUtils;
+import com.aspectran.utils.StringUtils;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 import com.aspectran.utils.security.InvalidPBTokenException;
@@ -51,15 +52,13 @@ public class MonitoringAction {
     @Dispatch("templates/default")
     @Action("page")
     public Map<String, String> viewer(String endpoint) {
-        Map<String, String> map = new HashMap<>();
-        map.put("headinclude", "monitoring/_endpoints");
-        map.put("include", "monitoring/viewer");
-        map.put("style", "fluid compact");
-        map.put("token", TimeLimitedPBTokenIssuer.getToken());
-        if (endpoint != null) {
-            map.put("endpoint", endpoint);
-        }
-        return map;
+        return Map.of(
+                "headinclude", "monitoring/_endpoints",
+                "include", "monitoring/monitor",
+                "style", "fluid compact",
+                "token", TimeLimitedPBTokenIssuer.getToken(),
+                "endpoint", StringUtils.nullToEmpty(endpoint)
+        );
     }
 
     @RequestToGet("/monitoring/endpoints/${token}")

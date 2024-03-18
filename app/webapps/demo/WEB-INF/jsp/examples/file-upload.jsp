@@ -99,9 +99,9 @@
       <ul>
         <c:forEach items="${files}" var="file">
           <li>
-            <a href="${file.url}" target="_blank"><img src="${file.url}"/></a>
+            <a href="<aspectran:url value="files/${file.key}"/>" target="_blank"><img src="<aspectran:url value="files/${file.key}"/>"></a>
             <div class="info">
-              <p><a href="${file.url}" download="${file.fileName}" target="_blank">${file.fileName}</a></p>
+              <p><a href="<aspectran:url value="files/${file.key}"/>" download="${file.fileName}" target="_blank">${file.fileName}</a></p>
               <p>${file.humanFileSize}</p>
             </div>
           </li>
@@ -251,14 +251,14 @@
       );
     }).on('fileuploaddone', function (e, data) {
       $.each(data.result.files, function (index, file) {
-        if (file.url) {
+        if (file.fileName) {
           $(data.context[index]).find("canvas")
                   .addClass("link")
                   .click(function () {
-                    window.open(file.url);
+                    window.open("files/" + file.key);
                   });
           let link = $('<a>')
-                  .attr('href', file.url)
+                  .attr('href', "files/" + file.key)
                   .attr('target', '_blank')
                   .attr('download', '');
           $(data.context[index]).find("p.filename").wrap(link);

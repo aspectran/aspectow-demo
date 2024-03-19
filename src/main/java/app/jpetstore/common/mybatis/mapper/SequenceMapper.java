@@ -16,6 +16,7 @@
 package app.jpetstore.common.mybatis.mapper;
 
 import app.jpetstore.order.domain.Sequence;
+import com.aspectran.utils.annotation.jsr305.NonNull;
 import org.apache.ibatis.session.SqlSession;
 
 /**
@@ -25,11 +26,12 @@ import org.apache.ibatis.session.SqlSession;
  */
 public interface SequenceMapper {
 
-    static SequenceMapper getMapper(SqlSession sqlSession) {
+    static SequenceMapper getMapper(@NonNull SqlSession sqlSession) {
         return sqlSession.getMapper(SequenceMapper.class);
     }
 
     Sequence getSequence(Sequence sequence);
 
     void updateSequence(Sequence sequence);
+
 }

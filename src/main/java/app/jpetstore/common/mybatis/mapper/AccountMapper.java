@@ -16,6 +16,7 @@
 package app.jpetstore.common.mybatis.mapper;
 
 import app.jpetstore.account.domain.Account;
+import com.aspectran.utils.annotation.jsr305.NonNull;
 import org.apache.ibatis.session.SqlSession;
 
 /**
@@ -25,7 +26,7 @@ import org.apache.ibatis.session.SqlSession;
  */
 public interface AccountMapper {
 
-    static AccountMapper getMapper(SqlSession sqlSession) {
+    static AccountMapper getMapper(@NonNull SqlSession sqlSession) {
         return sqlSession.getMapper(AccountMapper.class);
     }
 

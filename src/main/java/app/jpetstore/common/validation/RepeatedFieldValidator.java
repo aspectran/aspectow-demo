@@ -16,6 +16,7 @@
 package app.jpetstore.common.validation;
 
 import com.aspectran.utils.BeanUtils;
+import com.aspectran.utils.annotation.jsr305.NonNull;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
@@ -30,7 +31,8 @@ public class RepeatedFieldValidator implements ConstraintValidator<RepeatedField
 
 	private String message;
 
-	public void initialize(RepeatedField constraintAnnotation) {
+	@Override
+	public void initialize(@NonNull RepeatedField constraintAnnotation) {
 		this.field = constraintAnnotation.field();
 		this.dependField = constraintAnnotation.dependField();
 		this.message = constraintAnnotation.message();

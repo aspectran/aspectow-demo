@@ -16,6 +16,7 @@
 package app.jpetstore.common.mybatis.mapper;
 
 import app.jpetstore.order.domain.Order;
+import com.aspectran.utils.annotation.jsr305.NonNull;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
  */
 public interface OrderMapper {
 
-    static OrderMapper getMapper(SqlSession sqlSession) {
+    static OrderMapper getMapper(@NonNull SqlSession sqlSession) {
         return sqlSession.getMapper(OrderMapper.class);
     }
 

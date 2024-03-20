@@ -114,6 +114,7 @@
             <div class="grid-container ${page.style}">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
+                        <li><a href="<aspectran:url value="https://public.aspectran.com/"/>">Sample Apps</a></li>
                         <li><a href="<aspectran:url value="/"/>">JPetStore Demo</a></li>
                     </ul>
                 </nav>
@@ -128,10 +129,10 @@
                 <div class="small-12 cell">
                     <header>
                         <p class="subheadline" itemprop="alternativeHeadline">
-                            Recommended best practices developed with Aspectran</p>
+                            A full-stack sample web application built on top of Aspectran 8 and MyBatis 3</p>
                         <h1 itemprop="headline">JPetStore Demo</h1>
                         <p class="teaser" itemprop="description">
-                            JPetStore is a full web application built on top of MyBatis 3, Aspectran 8.
+                            The goal of the JPetStore Demo App is to provide a fully functional web application that leverages Aspectran and MyBatis.
                         </p>
                     </header>
                     <div class="hexagons">
@@ -148,6 +149,7 @@
             <div class="cell">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
+                        <li><a href="<aspectran:url value="https://public.aspectran.com/"/>">Sample Apps</a></li>
                         <li><a href="<aspectran:url value="/"/>">JPetStore Demo</a></li>
                     </ul>
                 </nav>

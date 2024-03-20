@@ -127,6 +127,7 @@
             <div class="grid-container ${page.style}">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
+                        <li><a href="<aspectran:url value="https://public.aspectran.com/"/>">Sample Apps</a></li>
                         <li><a href="<aspectran:url value="/"/>">Aspectran Demo</a></li>
                     </ul>
                 </nav>
@@ -169,6 +170,7 @@
             <div class="cell">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
+                        <li><a href="<aspectran:url value="https://public.aspectran.com/"/>">Sample Apps</a></li>
                         <li><a href="<aspectran:url value="/"/>">Aspectran Demo</a></li>
                     </ul>
                 </nav>

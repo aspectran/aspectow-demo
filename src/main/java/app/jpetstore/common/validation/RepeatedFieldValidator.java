@@ -31,7 +31,6 @@ public class RepeatedFieldValidator implements ConstraintValidator<RepeatedField
 
 	private String message;
 
-	@Override
 	public void initialize(@NonNull RepeatedField constraintAnnotation) {
 		this.field = constraintAnnotation.field();
 		this.dependField = constraintAnnotation.dependField();

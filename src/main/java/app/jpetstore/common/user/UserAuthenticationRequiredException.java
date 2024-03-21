@@ -20,7 +20,7 @@ import java.io.Serial;
 public class UserAuthenticationRequiredException extends RuntimeException {
 
     @Serial
-    private static final long serialVersionUID = 4127457300925152851L;
+    private static final long serialVersionUID = -6255555873407196205L;
 
     /**
      * Constructs a UserAuthenticationRequiredException.

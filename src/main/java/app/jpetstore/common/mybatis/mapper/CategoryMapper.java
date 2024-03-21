@@ -16,8 +16,10 @@
 package app.jpetstore.common.mybatis.mapper;
 
 import app.jpetstore.catalog.domain.Category;
-import com.aspectran.utils.annotation.jsr305.NonNull;
-import org.apache.ibatis.session.SqlSession;
+import app.jpetstore.common.mybatis.SqlMapper;
+import com.aspectran.core.component.bean.annotation.Autowired;
+import com.aspectran.core.component.bean.annotation.Component;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -26,14 +28,33 @@ import java.util.List;
  *
  * @author Juho Jeong
  */
+@Mapper
 public interface CategoryMapper {
-
-    static CategoryMapper getMapper(@NonNull SqlSession sqlSession) {
-        return sqlSession.getMapper(CategoryMapper.class);
-    }
 
     List<Category> getCategoryList();
 
     Category getCategory(String categoryId);
+
+    @Component
+    class Dao implements CategoryMapper {
+
+        private final SqlMapper sqlMapper;
+
+        @Autowired
+        public Dao(SqlMapper sqlMapper) {
+            this.sqlMapper = sqlMapper;
+        }
+
+        @Override
+        public List<Category> getCategoryList() {
+            return sqlMapper.simple(CategoryMapper.class).getCategoryList();
+        }
+
+        @Override
+        public Category getCategory(String categoryId) {
+            return sqlMapper.simple(CategoryMapper.class).getCategory(categoryId);
+        }
+
+    }
 
 }

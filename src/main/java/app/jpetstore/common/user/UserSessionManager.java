@@ -52,7 +52,7 @@ public class UserSessionManager implements ActivityContextAware {
         if (userSession == null || !userSession.isAuthenticated()) {
             //throw new UserAuthenticationRequiredException();
             translet.redirect("/account/signonForm", new HashMap<>() {{
-                put("referer", translet.getRelativeName());
+                put("referer", translet.getRequestName());
             }});
         }
     }

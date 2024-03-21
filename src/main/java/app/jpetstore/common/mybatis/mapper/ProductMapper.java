@@ -16,8 +16,10 @@
 package app.jpetstore.common.mybatis.mapper;
 
 import app.jpetstore.catalog.domain.Product;
-import com.aspectran.utils.annotation.jsr305.NonNull;
-import org.apache.ibatis.session.SqlSession;
+import app.jpetstore.common.mybatis.SqlMapper;
+import com.aspectran.core.component.bean.annotation.Autowired;
+import com.aspectran.core.component.bean.annotation.Component;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -26,16 +28,40 @@ import java.util.List;
  *
  * @author Juho Jeong
  */
+@Mapper
 public interface ProductMapper {
-
-    static ProductMapper getMapper(@NonNull SqlSession sqlSession) {
-        return sqlSession.getMapper(ProductMapper.class);
-    }
 
     List<Product> getProductListByCategory(String categoryId);
 
     Product getProduct(String productId);
 
     List<Product> searchProductList(String keywords);
+
+    @Component
+    class Dao implements ProductMapper {
+
+        private final SqlMapper sqlMapper;
+
+        @Autowired
+        public Dao(SqlMapper sqlMapper) {
+            this.sqlMapper = sqlMapper;
+        }
+
+        @Override
+        public List<Product> getProductListByCategory(String categoryId) {
+            return sqlMapper.simple(ProductMapper.class).getProductListByCategory(categoryId);
+        }
+
+        @Override
+        public Product getProduct(String productId) {
+            return sqlMapper.simple(ProductMapper.class).getProduct(productId);
+        }
+
+        @Override
+        public List<Product> searchProductList(String keywords) {
+            return sqlMapper.simple(ProductMapper.class).searchProductList(keywords);
+        }
+
+    }
 
 }

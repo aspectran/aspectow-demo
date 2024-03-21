@@ -16,7 +16,7 @@
 package app.jpetstore.common.mybatis.mapper;
 
 import app.jpetstore.catalog.domain.Product;
-import app.jpetstore.common.mybatis.SqlMapper;
+import app.jpetstore.common.mybatis.SqlMapperAgent;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
 import org.apache.ibatis.annotations.Mapper;
@@ -40,26 +40,26 @@ public interface ProductMapper {
     @Component
     class Dao implements ProductMapper {
 
-        private final SqlMapper sqlMapper;
+        private final SqlMapperAgent mapperAgent;
 
         @Autowired
-        public Dao(SqlMapper sqlMapper) {
-            this.sqlMapper = sqlMapper;
+        public Dao(SqlMapperAgent mapperAgent) {
+            this.mapperAgent = mapperAgent;
         }
 
         @Override
         public List<Product> getProductListByCategory(String categoryId) {
-            return sqlMapper.simple(ProductMapper.class).getProductListByCategory(categoryId);
+            return mapperAgent.simple(ProductMapper.class).getProductListByCategory(categoryId);
         }
 
         @Override
         public Product getProduct(String productId) {
-            return sqlMapper.simple(ProductMapper.class).getProduct(productId);
+            return mapperAgent.simple(ProductMapper.class).getProduct(productId);
         }
 
         @Override
         public List<Product> searchProductList(String keywords) {
-            return sqlMapper.simple(ProductMapper.class).searchProductList(keywords);
+            return mapperAgent.simple(ProductMapper.class).searchProductList(keywords);
         }
 
     }

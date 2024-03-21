@@ -35,7 +35,6 @@ import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.json.JsonWriter;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
-import org.checkerframework.checker.units.qual.N;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -15,7 +15,7 @@
  */
 package app.jpetstore.common.mybatis.mapper;
 
-import app.jpetstore.common.mybatis.SqlMapper;
+import app.jpetstore.common.mybatis.SqlMapperAgent;
 import app.jpetstore.order.domain.Item;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
@@ -43,31 +43,31 @@ public interface ItemMapper {
     @Component
     class Dao implements ItemMapper {
 
-        private final SqlMapper sqlMapper;
+        private final SqlMapperAgent mapperAgent;
 
         @Autowired
-        public Dao(SqlMapper sqlMapper) {
-            this.sqlMapper = sqlMapper;
+        public Dao(SqlMapperAgent mapperAgent) {
+            this.mapperAgent = mapperAgent;
         }
 
         @Override
         public void updateInventoryQuantity(Map<String, Object> params) {
-            sqlMapper.simple(ItemMapper.class).updateInventoryQuantity(params);
+            mapperAgent.simple(ItemMapper.class).updateInventoryQuantity(params);
         }
 
         @Override
         public int getInventoryQuantity(String itemId) {
-            return sqlMapper.simple(ItemMapper.class).getInventoryQuantity(itemId);
+            return mapperAgent.simple(ItemMapper.class).getInventoryQuantity(itemId);
         }
 
         @Override
         public List<Item> getItemListByProduct(String productId) {
-            return sqlMapper.simple(ItemMapper.class).getItemListByProduct(productId);
+            return mapperAgent.simple(ItemMapper.class).getItemListByProduct(productId);
         }
 
         @Override
         public Item getItem(String itemId) {
-            return sqlMapper.simple(ItemMapper.class).getItem(itemId);
+            return mapperAgent.simple(ItemMapper.class).getItem(itemId);
         }
 
     }

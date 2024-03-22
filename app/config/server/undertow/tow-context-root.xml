@@ -98,7 +98,8 @@
         </properties>
     </bean>
 
-    <bean id="tow.context.root.sessionManager" class="com.aspectran.undertow.server.session.TowSessionManager"
+    <bean id="tow.context.root.sessionManager"
+          class="com.aspectran.undertow.server.session.TowSessionManager"
           scope="prototype">
         <properties>
             <item name="sessionManagerConfig">

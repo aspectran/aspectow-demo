@@ -31,6 +31,7 @@ import com.aspectran.core.component.bean.annotation.Dispatch;
 import com.aspectran.core.component.bean.annotation.ParamItem;
 import com.aspectran.core.component.bean.annotation.Redirect;
 import com.aspectran.core.component.bean.annotation.Request;
+import com.aspectran.core.component.bean.annotation.RequestToPost;
 import com.aspectran.core.component.bean.annotation.Required;
 
 import java.util.List;
@@ -92,7 +93,7 @@ public class OrderActivity {
     /**
      * New order.
      */
-    @Request("/order/newOrder")
+    @RequestToPost("/order/newOrder")
     public void newOrder(Translet translet,
                          Order order,
                          boolean paymentForm,
@@ -142,7 +143,7 @@ public class OrderActivity {
     /**
      * Submit order.
      */
-    @Request("/order/submitOrder")
+    @RequestToPost("/order/submitOrder")
     @Redirect(
             path = "/order/viewOrder",
             parameters = {

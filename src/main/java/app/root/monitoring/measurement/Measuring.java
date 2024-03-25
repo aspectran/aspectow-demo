@@ -63,7 +63,7 @@ public class Measuring extends AbstractLifeCycle {
     @Override
     protected synchronized void doStart() throws Exception {
         if (timer == null) {
-            timer = new Timer();
+            timer = new Timer("MeasuringTimer[interval=" + sampleInterval + "]");
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {

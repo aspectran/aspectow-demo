@@ -41,7 +41,6 @@ import jakarta.websocket.Session;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Collections;

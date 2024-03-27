@@ -17,7 +17,6 @@ package app.root.monitoring;
 
 import app.root.monitoring.endpoint.EndpointConfig;
 import app.root.monitoring.endpoint.EndpointInfo;
-import com.aspectran.core.activity.Translet;
 import com.aspectran.core.component.bean.annotation.Action;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.core.component.bean.annotation.Dispatch;
@@ -34,7 +33,6 @@ import com.aspectran.web.activity.response.DefaultRestResponse;
 import com.aspectran.web.activity.response.RestResponse;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

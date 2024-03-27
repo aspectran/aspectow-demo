@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.common.mybatis.mapper;
+package app.jpetstore.mybatis.mapper;
 
-import app.jpetstore.common.mybatis.SqlMapperAgent;
 import app.jpetstore.order.domain.Order;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
+import com.aspectran.mybatis.SqlMapperAgent;
+import com.aspectran.mybatis.SqlMapperDao;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -44,43 +45,41 @@ public interface OrderMapper {
     void deleteOrderStatus(int orderId);
 
     @Component
-    class Dao implements OrderMapper {
-
-        private final SqlMapperAgent mapperAgent;
+    class Dao extends SqlMapperDao<OrderMapper> implements OrderMapper {
 
         @Autowired
         public Dao(SqlMapperAgent mapperAgent) {
-            this.mapperAgent = mapperAgent;
+            super(mapperAgent, OrderMapper.class);
         }
 
         @Override
         public List<Order> getOrdersByUsername(String username) {
-            return mapperAgent.simple(OrderMapper.class).getOrdersByUsername(username);
+            return simple().getOrdersByUsername(username);
         }
 
         @Override
         public Order getOrder(int orderId) {
-            return mapperAgent.simple(OrderMapper.class).getOrder(orderId);
+            return simple().getOrder(orderId);
         }
 
         @Override
         public void insertOrder(Order order) {
-            mapperAgent.simple(OrderMapper.class).insertOrder(order);
+            simple().insertOrder(order);
         }
 
         @Override
         public void insertOrderStatus(Order order) {
-            mapperAgent.simple(OrderMapper.class).insertOrderStatus(order);
+            simple().insertOrderStatus(order);
         }
 
         @Override
         public void deleteOrder(int orderId) {
-            mapperAgent.simple(OrderMapper.class).deleteOrder(orderId);
+            simple().deleteOrder(orderId);
         }
 
         @Override
         public void deleteOrderStatus(int orderId) {
-            mapperAgent.simple(OrderMapper.class).deleteOrderStatus(orderId);
+            simple().deleteOrderStatus(orderId);
         }
 
     }

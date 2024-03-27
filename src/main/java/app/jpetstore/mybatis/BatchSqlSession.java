@@ -13,18 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.common.mybatis;
+package app.jpetstore.mybatis;
 
 import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.mybatis.SqlSessionAgent;
 
+/**
+ * Advice to handle database transactions in reuse mode.
+ * <ul>
+ * <li>PreparedStatements will be reused.
+ * </ul>
+ */
 @Component
-@Bean("reuseSqlSession")
-public class ReuseSqlSession extends SqlSessionAgent {
+@Bean("batchSqlSession")
+public class BatchSqlSession extends SqlSessionAgent {
 
-    public ReuseSqlSession() {
-        super("reuseTxAspect");
+    public BatchSqlSession() {
+        super("batchTxAspect");
     }
 
 }

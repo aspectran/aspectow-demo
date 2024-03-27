@@ -1,6 +1,6 @@
 logtail: {
     name: root
-    title: Root
+    title: Root App
     file: /logs/root.log
     lastLines: 100
     sampleInterval: 300
@@ -11,7 +11,7 @@ logtail: {
 }
 logtail: {
     name: demo
-    title: Demo
+    title: Demo App
     file: /logs/demo.log
     lastLines: 100
     sampleInterval: 300
@@ -22,7 +22,7 @@ logtail: {
 }
 logtail: {
     name: jpetstore
-    title: JPetStore
+    title: JPetStore App
     file: /logs/jpetstore.log
     lastLines: 100
     sampleInterval: 300
@@ -30,4 +30,25 @@ logtail: {
     measurement: {
        sampleInterval: 5000
    }
+}
+logtail: {
+    name: root-access
+    title: Root Access
+    file: /logs/root-access.log
+    lastLines: 100
+    sampleInterval: 300
+}
+logtail: {
+    name: demo-access
+    title: Demo Access
+    file: /logs/demo-access.log
+    lastLines: 100
+    sampleInterval: 300
+}
+logtail: {
+    name: jpetstore-access
+    title: JPetStore Access
+    file: /logs/jpetstore-access.log
+    lastLines: 100
+    sampleInterval: 300
 }

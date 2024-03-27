@@ -13,53 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.common.mybatis.mapper;
+package app.jpetstore.mybatis.mapper;
 
-import app.jpetstore.catalog.domain.Product;
-import app.jpetstore.common.mybatis.SqlMapperAgent;
+import app.jpetstore.order.domain.LineItem;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
+import com.aspectran.mybatis.SqlMapperAgent;
+import com.aspectran.mybatis.SqlMapperDao;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
- * The Interface ProductMapper.
+ * The Interface LineItemMapper.
  *
  * @author Juho Jeong
  */
 @Mapper
-public interface ProductMapper {
+public interface LineItemMapper {
 
-    List<Product> getProductListByCategory(String categoryId);
+    List<LineItem> getLineItemsByOrderId(int orderId);
 
-    Product getProduct(String productId);
-
-    List<Product> searchProductList(String keywords);
+    void insertLineItem(LineItem lineItem);
 
     @Component
-    class Dao implements ProductMapper {
-
-        private final SqlMapperAgent mapperAgent;
+    class Dao extends SqlMapperDao<LineItemMapper> implements LineItemMapper {
 
         @Autowired
         public Dao(SqlMapperAgent mapperAgent) {
-            this.mapperAgent = mapperAgent;
+            super(mapperAgent, LineItemMapper.class);
         }
 
         @Override
-        public List<Product> getProductListByCategory(String categoryId) {
-            return mapperAgent.simple(ProductMapper.class).getProductListByCategory(categoryId);
+        public List<LineItem> getLineItemsByOrderId(int orderId) {
+            return simple().getLineItemsByOrderId(orderId);
         }
 
         @Override
-        public Product getProduct(String productId) {
-            return mapperAgent.simple(ProductMapper.class).getProduct(productId);
-        }
-
-        @Override
-        public List<Product> searchProductList(String keywords) {
-            return mapperAgent.simple(ProductMapper.class).searchProductList(keywords);
+        public void insertLineItem(LineItem lineItem) {
+            simple().insertLineItem(lineItem);
         }
 
     }

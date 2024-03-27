@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.common.mybatis.mapper;
+package app.jpetstore.mybatis.mapper;
 
 import app.jpetstore.account.domain.Account;
-import app.jpetstore.common.mybatis.SqlMapperAgent;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
+import com.aspectran.mybatis.SqlMapperAgent;
+import com.aspectran.mybatis.SqlMapperDao;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -46,53 +47,51 @@ public interface AccountMapper {
     void updateSignon(Account account);
 
     @Component
-    class Dao implements AccountMapper {
-
-        private final SqlMapperAgent mapperAgent;
+    class Dao extends SqlMapperDao<AccountMapper> implements AccountMapper {
 
         @Autowired
         public Dao(SqlMapperAgent mapperAgent) {
-            this.mapperAgent = mapperAgent;
+            super(mapperAgent, AccountMapper.class);
         }
 
         @Override
         public Account getAccountByUsername(String username) {
-            return mapperAgent.simple(AccountMapper.class).getAccountByUsername(username);
+            return simple().getAccountByUsername(username);
         }
 
         @Override
         public Account getAccountByUsernameAndPassword(String username, String password) {
-            return mapperAgent.simple(AccountMapper.class).getAccountByUsernameAndPassword(username, password);
+            return simple().getAccountByUsernameAndPassword(username, password);
         }
 
         @Override
         public void insertAccount(Account account) {
-            mapperAgent.simple(AccountMapper.class).insertAccount(account);
+            simple().insertAccount(account);
         }
 
         @Override
         public void insertProfile(Account account) {
-            mapperAgent.simple(AccountMapper.class).insertProfile(account);
+            simple().insertProfile(account);
         }
 
         @Override
         public void insertSignon(Account account) {
-            mapperAgent.simple(AccountMapper.class).insertSignon(account);
+            simple().insertSignon(account);
         }
 
         @Override
         public void updateAccount(Account account) {
-            mapperAgent.simple(AccountMapper.class).updateAccount(account);
+            simple().updateAccount(account);
         }
 
         @Override
         public void updateProfile(Account account) {
-            mapperAgent.simple(AccountMapper.class).updateProfile(account);
+            simple().updateProfile(account);
         }
 
         @Override
         public void updateSignon(Account account) {
-            mapperAgent.simple(AccountMapper.class).updateSignon(account);
+            simple().updateSignon(account);
         }
 
     }

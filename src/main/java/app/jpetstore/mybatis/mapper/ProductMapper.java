@@ -13,44 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.common.mybatis.mapper;
+package app.jpetstore.mybatis.mapper;
 
-import app.jpetstore.common.mybatis.SqlMapperAgent;
-import app.jpetstore.order.domain.Sequence;
+import app.jpetstore.catalog.domain.Product;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
+import com.aspectran.mybatis.SqlMapperAgent;
+import com.aspectran.mybatis.SqlMapperDao;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
- * The Interface SequenceMapper.
+ * The Interface ProductMapper.
  *
  * @author Juho Jeong
  */
 @Mapper
-public interface SequenceMapper {
+public interface ProductMapper {
 
-    Sequence getSequence(Sequence sequence);
+    List<Product> getProductListByCategory(String categoryId);
 
-    void updateSequence(Sequence sequence);
+    Product getProduct(String productId);
+
+    List<Product> searchProductList(String keywords);
 
     @Component
-    class Dao implements SequenceMapper {
-
-        private final SqlMapperAgent mapperAgent;
+    class Dao extends SqlMapperDao<ProductMapper> implements ProductMapper {
 
         @Autowired
         public Dao(SqlMapperAgent mapperAgent) {
-            this.mapperAgent = mapperAgent;
+            super(mapperAgent, ProductMapper.class);
+        }
+        @Override
+        public List<Product> getProductListByCategory(String categoryId) {
+            return simple().getProductListByCategory(categoryId);
         }
 
         @Override
-        public Sequence getSequence(Sequence sequence) {
-            return mapperAgent.simple(SequenceMapper.class).getSequence(sequence);
+        public Product getProduct(String productId) {
+            return simple().getProduct(productId);
         }
 
         @Override
-        public void updateSequence(Sequence sequence) {
-            mapperAgent.simple(SequenceMapper.class).updateSequence(sequence);
+        public List<Product> searchProductList(String keywords) {
+            return simple().searchProductList(keywords);
         }
 
     }

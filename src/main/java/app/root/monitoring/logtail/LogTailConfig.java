@@ -70,8 +70,10 @@ public class LogTailConfig extends AbstractParameters {
         List<MeasurementInfo> measurementInfoList = new ArrayList<>(logTailInfoList.size());
         for (LogTailInfo logTailInfo : logTailInfoList) {
             MeasurementInfo measurementInfo = logTailInfo.getMeasurementInfo();
-            measurementInfo.setName(logTailInfo.getName());
-            measurementInfoList.add(measurementInfo);
+            if (measurementInfo != null) {
+                measurementInfo.setName(logTailInfo.getName());
+                measurementInfoList.add(measurementInfo);
+            }
         }
         return measurementInfoList;
     }

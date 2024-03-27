@@ -29,13 +29,13 @@
     </environments>
 
     <mappers>
-        <mapper resource="app/jpetstore/mybatis/mappers/AccountMapper.xml"/>
-        <mapper resource="app/jpetstore/mybatis/mappers/CategoryMapper.xml"/>
-        <mapper resource="app/jpetstore/mybatis/mappers/ItemMapper.xml"/>
-        <mapper resource="app/jpetstore/mybatis/mappers/LineItemMapper.xml"/>
-        <mapper resource="app/jpetstore/mybatis/mappers/OrderMapper.xml"/>
-        <mapper resource="app/jpetstore/mybatis/mappers/ProductMapper.xml"/>
-        <mapper resource="app/jpetstore/mybatis/mappers/SequenceMapper.xml"/>
+        <mapper resource="app/jpetstore/mybatis/mapper/AccountMapper.xml"/>
+        <mapper resource="app/jpetstore/mybatis/mapper/CategoryMapper.xml"/>
+        <mapper resource="app/jpetstore/mybatis/mapper/ItemMapper.xml"/>
+        <mapper resource="app/jpetstore/mybatis/mapper/LineItemMapper.xml"/>
+        <mapper resource="app/jpetstore/mybatis/mapper/OrderMapper.xml"/>
+        <mapper resource="app/jpetstore/mybatis/mapper/ProductMapper.xml"/>
+        <mapper resource="app/jpetstore/mybatis/mapper/SequenceMapper.xml"/>
     </mappers>
 
 </configuration>

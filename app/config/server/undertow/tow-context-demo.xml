@@ -47,33 +47,6 @@
             <item name="initParams" type="map">
                 <entry name="aspectran:config" value="classpath:app/demo/demo-config.apon"/>
             </item>
-            <item name="filters" type="array">
-                <bean class="com.aspectran.undertow.server.servlet.TowFilter">
-                    <arguments>
-                        <item>towFilter</item>
-                        <item>com.aspectran.web.servlet.filter.WebActivityFilter</item>
-                    </arguments>
-                    <properties>
-                        <item name="initParams" type="map">
-                            <entry name="bypasses">
-                                /examples/gs-rest-service/customers/1
-                                /assets/**
-                                /favicon.ico
-                                /robots.txt
-                                /ads.txt
-                            </entry>
-                        </item>
-                    </properties>
-                </bean>
-            </item>
-            <item name="filterServletMappings" type="array">
-                <bean class="com.aspectran.undertow.server.servlet.TowFilterServletMapping">
-                    <arguments>
-                        <item>towFilter</item>
-                        <item>web-activity-servlet</item>
-                    </arguments>
-                </bean>
-            </item>
             <item name="servlets" type="array">
                 <bean class="com.aspectran.undertow.server.servlet.TowServlet">
                     <arguments>

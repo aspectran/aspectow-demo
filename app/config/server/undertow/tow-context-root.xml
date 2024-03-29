@@ -95,6 +95,9 @@
                     </properties>
                 </bean>
             </item>
+            <item name="initialHandlerChainWrappers" type="array">
+                <value>#{tow.server.handler.accessLogHandlerWrapper}</value>
+            </item>
         </properties>
     </bean>
 

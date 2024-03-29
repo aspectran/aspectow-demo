@@ -67,40 +67,27 @@
           scope="prototype">
         <properties>
             <item name="servletContainer">#{tow.server^servletContainer}</item>
-        </properties>
-        <properties profile="prod">
             <item name="handlerChainWrappers" type="array">
-                <value>#{tow.server.handler.encodingHandlerWrapper}</value>
-                <value>#{tow.server.handler.accessLogHandlerWrapper}</value>
-            </item>
-        </properties>
-        <properties profile="!prod">
-            <item name="handlerChainWrappers" type="array">
-                <value>#{tow.server.handler.encodingHandlerWrapper}</value>
-                <value>#{tow.server.handler.accessLogHandlerWrapper}</value>
-            </item>
-        </properties>
-    </bean>
-
-    <bean id="tow.server.handler.encodingHandlerWrapper"
-          class="com.aspectran.undertow.server.handler.encoding.EncodingHandlerWrapper"
-          scope="prototype">
-        <properties>
-            <item name="contentEncodingProviders" type="array">
-                <value>gzip</value>
-                <value>deflate</value>
-            </item>
-            <item name="maxContentSize" valueType="long">32</item>
-            <item name="mediaTypes" type="array">
-                <value>text/html</value>
-                <value>text/xml</value>
-                <value>text/plain</value>
-                <value>text/css</value>
-                <value>text/javascript</value>
-                <value>application/javascript</value>
-                <value>application/json</value>
-                <value>application/xml</value>
-                <value>application/apon</value>
+                <bean class="com.aspectran.undertow.server.handler.encoding.EncodingHandlerWrapper">
+                    <properties>
+                        <item name="contentEncodingProviders" type="array">
+                            <value>gzip</value>
+                            <value>deflate</value>
+                        </item>
+                        <item name="maxContentSize" valueType="long">32</item>
+                        <item name="mediaTypes" type="array">
+                            <value>text/html</value>
+                            <value>text/xml</value>
+                            <value>text/plain</value>
+                            <value>text/css</value>
+                            <value>text/javascript</value>
+                            <value>application/javascript</value>
+                            <value>application/json</value>
+                            <value>application/xml</value>
+                            <value>application/apon</value>
+                        </item>
+                    </properties>
+                </bean>
             </item>
         </properties>
     </bean>

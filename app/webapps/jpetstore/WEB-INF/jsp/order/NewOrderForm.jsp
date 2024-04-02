@@ -126,7 +126,7 @@
 <c:if test="${empty order}">
 <script>
 	alert("An order could not be created because a cart could not be found.");
-	location.href = "<aspectran:url value="/catalog/"/>";
+	location.href = "<aspectran:url value="/"/>";
 </script>
 </c:if>
 

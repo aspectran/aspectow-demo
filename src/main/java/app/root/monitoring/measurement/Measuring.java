@@ -19,6 +19,8 @@ public class Measuring extends AbstractLifeCycle {
 
     private final MeasuringManager manager;
 
+    private final String group;
+
     private final String name;
 
     private final int sampleInterval;
@@ -29,9 +31,14 @@ public class Measuring extends AbstractLifeCycle {
 
     public Measuring(@NonNull MeasuringManager manager, @NonNull MeasurementInfo info) {
         this.manager = manager;
+        this.group = info.getGroup();
         this.name = info.getName();
         this.sampleInterval = (info.getSampleInterval() > 0 ? info.getSampleInterval() : DEFAULT_SAMPLE_INTERVAL);
         this.towSessionStats = new TowSessionStats(manager.getActivityContext().getBeanRegistry().getBean("tow.server"), info.getName());
+    }
+
+    public String getGroup() {
+        return group;
     }
 
     public String getName() {

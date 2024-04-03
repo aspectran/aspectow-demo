@@ -15,15 +15,12 @@
  */
 package app.root.monitoring.measurement;
 
-import app.root.monitoring.endpoint.MonitorEndpoint;
+import app.root.monitoring.endpoint.MonitorManager;
 import com.aspectran.core.context.ActivityContext;
-import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
-import jakarta.websocket.Session;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,22 +29,16 @@ public class MeasuringManager {
 
     private static final Logger logger = LoggerFactory.getLogger(MeasuringManager.class);
 
-    private static final String MEASUREMENTS_PROPERTY = "measurements";
-
     private final Map<String, Measuring> measurings = new LinkedHashMap<>();
 
-    private final MonitorEndpoint endpoint;
+    private final MonitorManager monitorManager;
 
-    public MeasuringManager(MonitorEndpoint endpoint, List<MeasurementInfo> measurementInfoList) {
-        this.endpoint = endpoint;
-        addMeasuring(measurementInfoList);
+    public MeasuringManager(MonitorManager monitorManager) {
+        this.monitorManager = monitorManager;
     }
 
-    private void addMeasuring(@NonNull List<MeasurementInfo> measurementInfoList) {
-        for (MeasurementInfo measurementInfo : measurementInfoList) {
-            Measuring measuring = new Measuring(this, measurementInfo);
-            this.measurings.put(measuring.getName(), measuring);
-        }
+    public void addMeasuring(String name, Measuring measuring) {
+        measurings.put(name, measuring);
     }
 
     public List<MeasurementInfo> getMeasurementInfoList(boolean detail) {
@@ -63,92 +54,68 @@ public class MeasuringManager {
         return infoList;
     }
 
-    public synchronized void join(Session session, String[] names) {
+    public void join(String[] joinGroups) {
         if (!measurings.isEmpty()) {
-            if (names != null && names.length > 0) {
-                List<String> list = new ArrayList<>();
-                String[] existingNames = (String[])session.getUserProperties().get(MEASUREMENTS_PROPERTY);
-                if (existingNames != null) {
-                    Collections.addAll(list, existingNames);
-                }
-                for (String name : names) {
-                    Measuring measuring = measurings.get(name);
-                    if (measuring != null) {
-                        list.add(name);
-                        if (!measuring.isRunning()) {
-                            try {
-                                measuring.start();
-                            } catch (Exception e) {
-                                logger.warn(e);
-                            }
+            if (joinGroups != null && joinGroups.length > 0) {
+                for (Measuring measuring : measurings.values()) {
+                    for (String group : joinGroups) {
+                        if (measuring.getGroup().equals(group)) {
+                            start(measuring);
                         }
-                        measuring.join();
                     }
                 }
-                session.getUserProperties().put(MEASUREMENTS_PROPERTY, list.toArray(new String[0]));
             } else {
                 for (Measuring measuring : measurings.values()) {
-                    if (!measuring.isRunning()) {
-                        try {
-                            measuring.start();
-                        } catch (Exception e) {
-                            logger.warn(e);
-                        }
-                    }
-                    measuring.join();
+                    start(measuring);
                 }
             }
         }
     }
 
-    public synchronized void release(Session session) {
+    private void start(Measuring measuring) {
+        try {
+            measuring.start();
+        } catch (Exception e) {
+            logger.warn(e);
+        }
+    }
+
+    public void release(String[] tailerGroups) {
         if (!measurings.isEmpty()) {
-            String[] names = (String[])session.getUserProperties().get(MEASUREMENTS_PROPERTY);
-            if (names != null) {
-                for (String name : names) {
-                    Measuring measuring = measurings.get(name);
-                    if (measuring != null && measuring.isRunning() && !isUsingMeasuring(name)) {
-                        try {
-                            measuring.stop();
-                        } catch (Exception e) {
-                            logger.warn(e);
+            if (tailerGroups != null) {
+                for (Measuring measuring : measurings.values()) {
+                    for (String group : tailerGroups) {
+                        if (measuring.getGroup().equals(group) &&
+                                measuring.isRunning() &&
+                                !monitorManager.isUsingGroup(group)) {
+                            stop(measuring);
                         }
                     }
                 }
             } else {
                 for (Measuring measuring : measurings.values()) {
                     if (!measuring.isRunning()) {
-                        try {
-                            measuring.stop();
-                        } catch (Exception e) {
-                            logger.warn(e);
-                        }
+                        stop(measuring);
                     }
                 }
             }
         }
     }
 
-    private boolean isUsingMeasuring(String name) {
-        for (Session session : endpoint.getSessions()) {
-            String[] names = (String[])session.getUserProperties().get(MEASUREMENTS_PROPERTY);
-            if (names != null) {
-                for (String name2 : names) {
-                    if (name.equals(name2)) {
-                        return true;
-                    }
-                }
-            }
+    private void stop(Measuring measuring) {
+        try {
+            measuring.start();
+        } catch (Exception e) {
+            logger.warn(e);
         }
-        return false;
     }
 
     ActivityContext getActivityContext() {
-        return endpoint.getActivityContext();
+        return monitorManager.getActivityContext();
     }
 
     void broadcast(String name, String msg) {
-        endpoint.broadcast(name+ ":" + msg);
+        monitorManager.broadcast(name + ":" + msg);
     }
 
 }

@@ -24,16 +24,19 @@ import com.aspectran.utils.apon.ValueType;
  */
 public class MeasurementInfo extends AbstractParameters {
 
+    private static final ParameterKey group;
     private static final ParameterKey name;
     private static final ParameterKey sampleInterval;
 
     private static final ParameterKey[] parameterKeys;
 
     static {
+        group = new ParameterKey("group", ValueType.STRING);
         name = new ParameterKey("name", ValueType.STRING);
         sampleInterval = new ParameterKey("sampleInterval", ValueType.INT);
 
         parameterKeys = new ParameterKey[] {
+                group,
                 name,
                 sampleInterval
         };
@@ -41,6 +44,14 @@ public class MeasurementInfo extends AbstractParameters {
 
     public MeasurementInfo() {
         super(parameterKeys);
+    }
+
+    public String getGroup() {
+        return getString(group);
+    }
+
+    public void setGroup(String group) {
+        putValue(MeasurementInfo.group, group);
     }
 
     public String getName() {

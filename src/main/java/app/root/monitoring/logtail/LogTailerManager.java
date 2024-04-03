@@ -15,15 +15,11 @@
  */
 package app.root.monitoring.logtail;
 
-import app.root.monitoring.endpoint.MonitorEndpoint;
+import app.root.monitoring.endpoint.MonitorManager;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
-import jakarta.websocket.Session;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,35 +28,16 @@ public class LogTailerManager {
 
     private static final Logger logger = LoggerFactory.getLogger(LogTailerManager.class);
 
-    private static final String TAILERS_PROPERTY = "tailers";
-
     private final Map<String, LogTailer> tailers = new LinkedHashMap<>();
 
-    private final MonitorEndpoint endpoint;
+    private final MonitorManager monitorManager;
 
-    public LogTailerManager(MonitorEndpoint endpoint, LogTailConfig logTailConfig) {
-        this.endpoint = endpoint;
-        addLogTailer(logTailConfig);
+    public LogTailerManager(MonitorManager monitorManager) {
+        this.monitorManager = monitorManager;
     }
 
-    private void addLogTailer(LogTailConfig logTailConfig) {
-        if (logTailConfig == null) {
-            throw new IllegalArgumentException("logTailConfig must not be null");
-        }
-        List<LogTailInfo> tailerInfoList = logTailConfig.getLogTailInfoList();
-        for (LogTailInfo logTailInfo : tailerInfoList) {
-            File logFile = null;
-            try {
-                String file = endpoint.getActivityContext().getApplicationAdapter().toRealPath(logTailInfo.getFile());
-                logFile = new File(file).getCanonicalFile();
-            } catch (IOException e) {
-                logger.error("Failed to resolve absolute path to log file " + logTailInfo.getFile(), e);
-            }
-            if (logFile != null) {
-                LogTailer tailer = new LogTailer(this, logTailInfo, logFile);
-                this.tailers.put(logTailInfo.getName(), tailer);
-            }
-        }
+    public void addLogTailer(String name, LogTailer tailer) {
+        tailers.put(name, tailer);
     }
 
     public List<LogTailInfo> getLogTailInfoList() {
@@ -71,88 +48,67 @@ public class LogTailerManager {
         return tailerInfoList;
     }
 
-    public synchronized void join(Session session, String[] names) {
+    public void join(String[] joinGroups) {
         if (!tailers.isEmpty()) {
-            if (names != null && names.length > 0) {
-                List<String> list = new ArrayList<>();
-                String[] existingNames = (String[])session.getUserProperties().get(TAILERS_PROPERTY);
-                if (existingNames != null) {
-                    Collections.addAll(list, existingNames);
-                }
-                for (String name : names) {
-                    LogTailer tailer = tailers.get(name);
-                    if (tailer != null) {
-                        list.add(name);
-                        tailer.readLastLines();
-                        if (!tailer.isRunning()) {
-                            try {
-                                tailer.start();
-                            } catch (Exception e) {
-                                logger.warn(e);
-                            }
+            if (joinGroups != null && joinGroups.length > 0) {
+                for (LogTailer tailer : tailers.values()) {
+                    for (String group : joinGroups) {
+                        if (tailer.getInfo().getGroup().equals(group)) {
+                            start(tailer);
                         }
                     }
                 }
-                session.getUserProperties().put(TAILERS_PROPERTY, list.toArray(new String[0]));
             } else {
                 for (LogTailer tailer : tailers.values()) {
-                    tailer.readLastLines();
-                    if (!tailer.isRunning()) {
-                        try {
-                            tailer.start();
-                        } catch (Exception e) {
-                            logger.warn(e);
-                        }
-                    }
+                    start(tailer);
                 }
             }
         }
     }
 
-    public synchronized void release(Session session) {
+    private void start(LogTailer tailer) {
+        tailer.readLastLines();
+        if (!tailer.isRunning()) {
+            try {
+                tailer.start();
+            } catch (Exception e) {
+                logger.warn(e);
+            }
+        }
+    }
+
+    public void release(String[] tailerGroups) {
         if (!tailers.isEmpty()) {
-            String[] names = (String[])session.getUserProperties().get(TAILERS_PROPERTY);
-            if (names != null) {
-                for (String name : names) {
-                    LogTailer tailer = tailers.get(name);
-                    if (tailer != null && tailer.isRunning() && !isUsingTailer(name)) {
-                        try {
-                            tailer.stop();
-                        } catch (Exception e) {
-                            logger.warn(e);
+            if (tailerGroups != null) {
+                for (LogTailer tailer : tailers.values()) {
+                    for (String group : tailerGroups) {
+                        if (tailer.getInfo().getGroup().equals(group) &&
+                                tailer.isRunning() &&
+                                !monitorManager.isUsingGroup(group)) {
+                            stop(tailer);
                         }
                     }
                 }
             } else {
                 for (LogTailer tailer : tailers.values()) {
                     if (!tailer.isRunning()) {
-                        try {
-                            tailer.stop();
-                        } catch (Exception e) {
-                            logger.warn(e);
-                        }
+                        stop(tailer);
                     }
                 }
             }
         }
     }
 
-    private boolean isUsingTailer(String name) {
-        for (Session session : endpoint.getSessions()) {
-            String[] names = (String[])session.getUserProperties().get(TAILERS_PROPERTY);
-            if (names != null) {
-                for (String name2 : names) {
-                    if (name.equals(name2)) {
-                        return true;
-                    }
-                }
-            }
+    private void stop(LogTailer tailer) {
+        try {
+            tailer.stop();
+        } catch (Exception e) {
+            logger.warn(e);
         }
-        return false;
     }
 
     void broadcast(String name, String msg) {
-        endpoint.broadcast(name+ ":" + msg);
+        monitorManager.broadcast(name + ":" + msg);
     }
 
 }

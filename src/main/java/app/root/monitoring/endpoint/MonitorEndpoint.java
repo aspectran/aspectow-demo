@@ -15,15 +15,11 @@
  */
 package app.root.monitoring.endpoint;
 
-import app.root.monitoring.logtail.LogTailConfig;
-import app.root.monitoring.logtail.LogTailerManager;
-import app.root.monitoring.measurement.MeasuringManager;
 import com.aspectran.core.activity.InstantActivitySupport;
 import com.aspectran.core.component.bean.ablility.InitializableBean;
 import com.aspectran.core.component.bean.annotation.AvoidAdvice;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.core.context.ActivityContext;
-import com.aspectran.utils.ResourceUtils;
 import com.aspectran.utils.StringUtils;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.json.JsonWriter;
@@ -57,8 +53,6 @@ public class MonitorEndpoint extends InstantActivitySupport implements Initializ
 
     private static final Logger logger = LoggerFactory.getLogger(MonitorEndpoint.class);
 
-    private static final String LOGTAIL_CONFIG_FILE = "app/root/logtail-config.apon";
-
     private static final String HEARTBEAT_PING_MSG = "--ping--";
 
     private static final String HEARTBEAT_PONG_MSG = "--pong--";
@@ -71,15 +65,11 @@ public class MonitorEndpoint extends InstantActivitySupport implements Initializ
 
     private static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<>());
 
-    private LogTailerManager logTailerManager;
-
-    private MeasuringManager measuringManager;
+    private MonitorManager monitorGroupManager;
 
     @Override
     public void initialize() throws Exception {
-        LogTailConfig logTailConfig = new LogTailConfig(ResourceUtils.getResourceAsReader(LOGTAIL_CONFIG_FILE));
-        this.logTailerManager = new LogTailerManager(this, logTailConfig);
-        this.measuringManager = new MeasuringManager(this, logTailConfig.getMeasurementInfoList());
+        this.monitorGroupManager = new MonitorManager(this);
     }
 
     @OnOpen
@@ -142,22 +132,20 @@ public class MonitorEndpoint extends InstantActivitySupport implements Initializ
     private void addSession(Session session, String message) throws IOException {
         if (sessions.add(session)) {
             sendJoined(session);
-            String[] names = StringUtils.splitCommaDelimitedString(message);
-            logTailerManager.join(session, names);
-            measuringManager.join(session, names);
+            String[] groups = StringUtils.splitCommaDelimitedString(message);
+            monitorGroupManager.join(session, groups);
         }
     }
 
     private void sendJoined(@NonNull Session session) throws IOException {
         JsonWriter jsonWriter = new JsonWriter().nullWritable(false);
-        jsonWriter.write(logTailerManager.getLogTailInfoList());
+        jsonWriter.write(monitorGroupManager.getLogTailInfoList());
         session.getAsyncRemote().sendText(COMMAND_JOINED + jsonWriter);
     }
 
     private void removeSession(Session session) {
         if (sessions.remove(session)) {
-            logTailerManager.release(session);
-            measuringManager.release(session);
+            monitorGroupManager.release(session);
         }
     }
 

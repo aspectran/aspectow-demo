@@ -25,6 +25,7 @@ import com.aspectran.utils.apon.ValueType;
  */
 public class LogTailInfo extends AbstractParameters {
 
+    private static final ParameterKey group;
     private static final ParameterKey name;
     private static final ParameterKey title;
     private static final ParameterKey file;
@@ -38,6 +39,7 @@ public class LogTailInfo extends AbstractParameters {
     private static final ParameterKey[] parameterKeys;
 
     static {
+        group = new ParameterKey("group", ValueType.STRING);
         name = new ParameterKey("name", ValueType.STRING);
         file = new ParameterKey("file", ValueType.STRING);
         title = new ParameterKey("title", ValueType.STRING);
@@ -49,6 +51,7 @@ public class LogTailInfo extends AbstractParameters {
         measurement = new ParameterKey("measurement", MeasurementInfo.class);
 
         parameterKeys = new ParameterKey[] {
+                group,
                 name,
                 title,
                 file,
@@ -63,6 +66,14 @@ public class LogTailInfo extends AbstractParameters {
 
     public LogTailInfo() {
         super(parameterKeys);
+    }
+
+    public String getGroup() {
+        return getString(group);
+    }
+
+    public void setGroup(String group) {
+        putValue(LogTailInfo.group, group);
     }
 
     public String getName() {

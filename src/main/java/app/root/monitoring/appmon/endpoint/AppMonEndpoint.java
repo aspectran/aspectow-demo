@@ -13,8 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.endpoint;
+package app.root.monitoring.appmon.endpoint;
 
+import app.root.monitoring.appmon.group.GroupInfo;
+import app.root.monitoring.appmon.logtail.LogtailInfo;
+import app.root.monitoring.appmon.measurement.MeasurementInfo;
 import com.aspectran.core.activity.InstantActivitySupport;
 import com.aspectran.core.component.bean.ablility.InitializableBean;
 import com.aspectran.core.component.bean.annotation.AvoidAdvice;
@@ -41,35 +44,38 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Component
 @ServerEndpoint(
-        value = "/logtail/{token}",
+        value = "/appmon/endpoint/{token}",
         configurator = AspectranConfigurator.class
 )
 @AvoidAdvice
-public class MonitorEndpoint extends InstantActivitySupport implements InitializableBean {
+public class AppMonEndpoint extends InstantActivitySupport implements InitializableBean {
 
-    private static final Logger logger = LoggerFactory.getLogger(MonitorEndpoint.class);
+    private static final Logger logger = LoggerFactory.getLogger(AppMonEndpoint.class);
 
     private static final String HEARTBEAT_PING_MSG = "--ping--";
 
     private static final String HEARTBEAT_PONG_MSG = "--pong--";
 
-    private static final String COMMAND_JOIN = "join:";
+    private static final String MESSAGE_JOIN = "join:";
 
-    private static final String COMMAND_LEAVE = "leave";
+    private static final String MESSAGE_LEAVE = "leave";
 
-    private static final String COMMAND_JOINED = "joined:";
+    private static final String MESSAGE_JOINED = "joined:";
+
+    private static final String MESSAGE_ESTABLISHED = "established:";
 
     private static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<>());
 
-    private MonitorManager monitorGroupManager;
+    private AppMonManager appMonManager;
 
     @Override
     public void initialize() throws Exception {
-        this.monitorGroupManager = new MonitorManager(this);
+        this.appMonManager = new AppMonManager(this);
     }
 
     @OnOpen
@@ -93,9 +99,11 @@ public class MonitorEndpoint extends InstantActivitySupport implements Initializ
             session.getAsyncRemote().sendText(HEARTBEAT_PONG_MSG);
             return;
         }
-        if (message != null && message.startsWith(COMMAND_JOIN)) {
-            addSession(session, message.substring(COMMAND_JOIN.length()));
-        } else if (COMMAND_LEAVE.equals(message)) {
+        if (message != null && message.startsWith(MESSAGE_JOIN)) {
+            addSession(session, message.substring(MESSAGE_JOIN.length()));
+        } else if (MESSAGE_ESTABLISHED.equals(message)) {
+            establishComplete(session);
+        } else if (MESSAGE_LEAVE.equals(message)) {
             removeSession(session);
         }
     }
@@ -131,21 +139,31 @@ public class MonitorEndpoint extends InstantActivitySupport implements Initializ
 
     private void addSession(Session session, String message) throws IOException {
         if (sessions.add(session)) {
-            sendJoined(session);
-            String[] groups = StringUtils.splitCommaDelimitedString(message);
-            monitorGroupManager.join(session, groups);
+            String[] joinGroups = StringUtils.splitCommaDelimitedString(message);
+            sendJoined(session, joinGroups);
         }
     }
 
-    private void sendJoined(@NonNull Session session) throws IOException {
+    private void sendJoined(@NonNull Session session, String[] joinGroups) throws IOException {
+        List<GroupInfo> groups = appMonManager.getGroupInfoList(joinGroups);
+        List<LogtailInfo> logtails = appMonManager.getLogTailInfoList(joinGroups);
+        List<MeasurementInfo> measurements = appMonManager.getMeasurementInfoList(joinGroups);
         JsonWriter jsonWriter = new JsonWriter().nullWritable(false);
-        jsonWriter.write(monitorGroupManager.getLogTailInfoList());
-        session.getAsyncRemote().sendText(COMMAND_JOINED + jsonWriter);
+        jsonWriter.beginObject();
+        jsonWriter.writeName("groups").write(groups);
+        jsonWriter.writeName("logtails").write(logtails);
+        jsonWriter.writeName("measurements").write(measurements);
+        jsonWriter.endObject();
+        session.getAsyncRemote().sendText(MESSAGE_JOINED + jsonWriter);
+    }
+
+    private void establishComplete(@NonNull Session session) {
+        appMonManager.join(session);
     }
 
     private void removeSession(Session session) {
         if (sessions.remove(session)) {
-            monitorGroupManager.release(session);
+            appMonManager.release(session);
         }
     }
 

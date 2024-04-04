@@ -1,5 +1,5 @@
 endpoint: {
     name: endpoint-1
     title: Server-1
-    url: /logtail
+    url: /appmon/endpoint
 }

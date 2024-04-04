@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.measurement;
+package app.root.monitoring.appmon.measurement;
 
-import app.root.monitoring.endpoint.MonitorManager;
+import app.root.monitoring.appmon.endpoint.AppMonManager;
 import com.aspectran.core.context.ActivityContext;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
@@ -25,31 +25,36 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MeasuringManager {
+public class MeasurementManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(MeasuringManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(MeasurementManager.class);
 
     private final Map<String, Measuring> measurings = new LinkedHashMap<>();
 
-    private final MonitorManager monitorManager;
+    private final AppMonManager appMonManager;
 
-    public MeasuringManager(MonitorManager monitorManager) {
-        this.monitorManager = monitorManager;
+    public MeasurementManager(AppMonManager appMonManager) {
+        this.appMonManager = appMonManager;
     }
 
     public void addMeasuring(String name, Measuring measuring) {
         measurings.put(name, measuring);
     }
 
-    public List<MeasurementInfo> getMeasurementInfoList(boolean detail) {
-        List<MeasurementInfo> infoList = new ArrayList<>();
-        for (Measuring measuring : measurings.values()) {
-            MeasurementInfo info = new MeasurementInfo();
-            info.setName(measuring.getName());
-            if (detail) {
-                info.setSampleInterval(measuring.getSampleInterval());
+    public List<MeasurementInfo> getMeasurementInfoList(String[] joinGroups) {
+        List<MeasurementInfo> infoList = new ArrayList<>(measurings.size());
+        if (joinGroups != null && joinGroups.length > 0) {
+            for (String name : joinGroups) {
+                for (Measuring measuring : measurings.values()) {
+                    if (measuring.getInfo().getGroup().equals(name)) {
+                        infoList.add(measuring.getInfo());
+                    }
+                }
             }
-            infoList.add(info);
+        } else {
+            for (Measuring measuring : measurings.values()) {
+                infoList.add(measuring.getInfo());
+            }
         }
         return infoList;
     }
@@ -85,9 +90,7 @@ public class MeasuringManager {
             if (tailerGroups != null) {
                 for (Measuring measuring : measurings.values()) {
                     for (String group : tailerGroups) {
-                        if (measuring.getGroup().equals(group) &&
-                                measuring.isRunning() &&
-                                !monitorManager.isUsingGroup(group)) {
+                        if (measuring.getGroup().equals(group) && measuring.isRunning()) {
                             stop(measuring);
                         }
                     }
@@ -111,11 +114,11 @@ public class MeasuringManager {
     }
 
     ActivityContext getActivityContext() {
-        return monitorManager.getActivityContext();
+        return appMonManager.getActivityContext();
     }
 
     void broadcast(String name, String msg) {
-        monitorManager.broadcast(name + ":" + msg);
+        appMonManager.broadcast(name + ":" + msg);
     }
 
 }

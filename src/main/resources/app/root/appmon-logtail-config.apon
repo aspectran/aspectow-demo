@@ -6,9 +6,6 @@ logtail: {
     lastLines: 200
     sampleInterval: 300
     visualizing: true
-    measurement: {
-       sampleInterval: 5000
-   }
 }
 logtail: {
     group: root
@@ -26,9 +23,6 @@ logtail: {
     lastLines: 200
     sampleInterval: 300
     visualizing: true
-    measurement: {
-       sampleInterval: 5000
-   }
 }
 logtail: {
     group: demo
@@ -46,9 +40,6 @@ logtail: {
     lastLines: 200
     sampleInterval: 300
     visualizing: true
-    measurement: {
-       sampleInterval: 5000
-   }
 }
 logtail: {
     group: jpetstore

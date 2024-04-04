@@ -13,61 +13,59 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.endpoint;
+package app.root.monitoring.appmon.endpoint;
 
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
-import com.aspectran.utils.apon.ValueType;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.List;
 
 /**
  * <p>Created: 2020/02/12</p>
  */
-public class EndpointInfo extends AbstractParameters {
+public class EndpointConfig extends AbstractParameters {
 
-    private static final ParameterKey name;
-    private static final ParameterKey title;
-    private static final ParameterKey url;
+    private static final ParameterKey endpoint;
 
     private static final ParameterKey[] parameterKeys;
 
     static {
-        name = new ParameterKey("name", ValueType.STRING);
-        title = new ParameterKey("title", ValueType.STRING);
-        url = new ParameterKey("url", ValueType.STRING);
+        endpoint = new ParameterKey("endpoint", EndpointInfo.class, true, true);
 
         parameterKeys = new ParameterKey[] {
-                name,
-                title,
-                url
+                endpoint
         };
     }
 
-    public EndpointInfo() {
+    public EndpointConfig() {
         super(parameterKeys);
     }
 
-    public String getName() {
-        return getString(name);
+    public EndpointConfig(String text) throws IOException {
+        this();
+        readFrom(text);
     }
 
-    public void setName(String name) {
-        putValue(EndpointInfo.name, name);
+    public EndpointConfig(File file) throws IOException {
+        this();
+        readFrom(file);
     }
 
-    public String getTitle() {
-        return getString(title);
+    public EndpointConfig(Reader reader) throws IOException {
+        this();
+        readFrom(reader);
     }
 
-    public void setTitle(String title) {
-        putValue(EndpointInfo.title, title);
+    public List<EndpointInfo> getEndpointInfoList() {
+        return getParametersList(endpoint);
     }
 
-    public String getUrl() {
-        return getString(url);
-    }
-
-    public void setUrl(String url) {
-        putValue(EndpointInfo.url, url);
+    public EndpointConfig addEndpointInfo(EndpointInfo endpointInfo) {
+        putValue(endpoint, endpointInfo);
+        return this;
     }
 
 }

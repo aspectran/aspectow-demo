@@ -1,0 +1,12 @@
+group: {
+    name: root
+    title: Root
+}
+group: {
+    name: demo
+    title: Demo
+}
+group: {
+    name: jpetstore
+    title: JPetStore
+}

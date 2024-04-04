@@ -1,4 +1,4 @@
-function LogtailViewer(endpoint, onEndpointEstablished, onEstablishCompleted) {
+function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
     let socket = null;
     let heartbeatTimer = null;
     let pendingMessages = [];
@@ -48,11 +48,14 @@ function LogtailViewer(endpoint, onEndpointEstablished, onEstablishCompleted) {
                             printMessage(name, text, true);
                         }
                     } else {
+                        console.log(msg);
                         let command = msg.substring(0, idx);
                         if (command === "joined") {
                             console.log(msg);
                             let payload = JSON.parse(msg.substring(idx + 1));
                             establish(self, payload);
+                        } else if (command === "established") {
+                            establishComplete();
                         }
                     }
                 }
@@ -114,11 +117,15 @@ function LogtailViewer(endpoint, onEndpointEstablished, onEstablishCompleted) {
         return logtails;
     };
 
-    const establish = function(viewer, tailers) {
-        endpoint['viewer'] = viewer;
-        if (onEndpointEstablished) {
-            onEndpointEstablished(endpoint, tailers);
+    const establish = function(client, payload) {
+        endpoint['client'] = client;
+        if (onEndpointJoined) {
+            onEndpointJoined(endpoint, payload);
+            socket.send("established:");
         }
+    };
+
+    const establishComplete = function() {
         if (onEstablishCompleted) {
             onEstablishCompleted();
             if (pendingMessages && pendingMessages.length > 0) {
@@ -129,7 +136,7 @@ function LogtailViewer(endpoint, onEndpointEstablished, onEstablishCompleted) {
             }
         }
         established = true;
-    };
+    }
 
     const heartbeatPing = function() {
         if (heartbeatTimer) {

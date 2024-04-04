@@ -1,7 +1,7 @@
-package app.root.monitoring.measurement;
+package app.root.monitoring.appmon.measurement;
 
-import app.root.monitoring.measurement.session.SessionStatsPayload;
-import app.root.monitoring.measurement.session.TowSessionStats;
+import app.root.monitoring.appmon.measurement.session.SessionStatsPayload;
+import app.root.monitoring.appmon.measurement.session.TowSessionStats;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.lifecycle.AbstractLifeCycle;
 import com.aspectran.utils.logging.Logger;
@@ -17,7 +17,9 @@ public class Measuring extends AbstractLifeCycle {
 
     private static final int DEFAULT_SAMPLE_INTERVAL = 5000;
 
-    private final MeasuringManager manager;
+    private final MeasurementManager manager;
+
+    private final MeasurementInfo info;
 
     private final String group;
 
@@ -29,12 +31,17 @@ public class Measuring extends AbstractLifeCycle {
 
     private Timer timer;
 
-    public Measuring(@NonNull MeasuringManager manager, @NonNull MeasurementInfo info) {
+    public Measuring(@NonNull MeasurementManager manager, @NonNull MeasurementInfo info) {
         this.manager = manager;
+        this.info = info;
         this.group = info.getGroup();
         this.name = info.getName();
         this.sampleInterval = (info.getSampleInterval() > 0 ? info.getSampleInterval() : DEFAULT_SAMPLE_INTERVAL);
         this.towSessionStats = new TowSessionStats(manager.getActivityContext().getBeanRegistry().getBean("tow.server"), info.getName());
+    }
+
+    public MeasurementInfo getInfo() {
+        return info;
     }
 
     public String getGroup() {

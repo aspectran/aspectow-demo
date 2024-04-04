@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.endpoint;
+package app.root.monitoring.appmon.group;
 
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
@@ -26,46 +26,41 @@ import java.util.List;
 /**
  * <p>Created: 2020/02/12</p>
  */
-public class EndpointConfig extends AbstractParameters {
+public class GroupConfig extends AbstractParameters {
 
-    private static final ParameterKey endpoint;
+    private static final ParameterKey group;
 
     private static final ParameterKey[] parameterKeys;
 
     static {
-        endpoint = new ParameterKey("endpoint", EndpointInfo.class, true, true);
+        group = new ParameterKey("group", GroupInfo.class, true, true);
 
         parameterKeys = new ParameterKey[] {
-                endpoint
+                group
         };
     }
 
-    public EndpointConfig() {
+    public GroupConfig() {
         super(parameterKeys);
     }
 
-    public EndpointConfig(String text) throws IOException {
+    public GroupConfig(String text) throws IOException {
         this();
         readFrom(text);
     }
 
-    public EndpointConfig(File file) throws IOException {
+    public GroupConfig(File file) throws IOException {
         this();
         readFrom(file);
     }
 
-    public EndpointConfig(Reader reader) throws IOException {
+    public GroupConfig(Reader reader) throws IOException {
         this();
         readFrom(reader);
     }
 
-    public List<EndpointInfo> getEndpointInfoList() {
-        return getParametersList(endpoint);
-    }
-
-    public EndpointConfig addEndpointInfo(EndpointInfo endpointInfo) {
-        putValue(endpoint, endpointInfo);
-        return this;
+    public List<GroupInfo> getGroupInfoList() {
+        return getParametersList(group);
     }
 
 }

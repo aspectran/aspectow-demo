@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.logtail;
+package app.root.monitoring.appmon.logtail;
 
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListener;
 
 public class LogTailerListener implements TailerListener {
 
-    private final LogTailerManager manager;
+    private final LogtailManager manager;
 
     private final String name;
 
-    public LogTailerListener(LogTailerManager manager, String name) {
+    public LogTailerListener(LogtailManager manager, String name) {
         this.manager = manager;
         this.name = name;
     }

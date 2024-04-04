@@ -15,8 +15,8 @@
  */
 package app.root.monitoring;
 
-import app.root.monitoring.endpoint.EndpointConfig;
-import app.root.monitoring.endpoint.EndpointInfo;
+import app.root.monitoring.appmon.endpoint.EndpointConfig;
+import app.root.monitoring.appmon.endpoint.EndpointInfo;
 import com.aspectran.core.component.bean.annotation.Action;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.core.component.bean.annotation.Dispatch;
@@ -44,7 +44,7 @@ public class MonitoringAction {
 
     private static final Logger logger = LoggerFactory.getLogger(MonitoringAction.class);
 
-    private static final String ENDPOINT_CONFIG_FILE = "app/root/endpoint-config.apon";
+    private static final String ENDPOINT_CONFIG_FILE = "app/root/appmon-endpoint-config.apon";
 
     @Request("/monitoring/${endpoint}")
     @Dispatch("templates/default")
@@ -52,7 +52,7 @@ public class MonitoringAction {
     public Map<String, String> viewer(String endpoint) {
         return Map.of(
                 "headinclude", "monitoring/_endpoints",
-                "include", "monitoring/monitor",
+                "include", "monitoring/monitoring",
                 "style", "fluid compact",
                 "token", TimeLimitedPBTokenIssuer.getToken(),
                 "endpoint", StringUtils.nullToEmpty(endpoint)

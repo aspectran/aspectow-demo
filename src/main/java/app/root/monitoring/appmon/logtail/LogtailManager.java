@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.logtail;
+package app.root.monitoring.appmon.logtail;
 
-import app.root.monitoring.endpoint.MonitorManager;
+import app.root.monitoring.appmon.endpoint.AppMonManager;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
@@ -24,28 +24,38 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LogTailerManager {
+public class LogtailManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(LogTailerManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(LogtailManager.class);
 
     private final Map<String, LogTailer> tailers = new LinkedHashMap<>();
 
-    private final MonitorManager monitorManager;
+    private final AppMonManager appMonManager;
 
-    public LogTailerManager(MonitorManager monitorManager) {
-        this.monitorManager = monitorManager;
+    public LogtailManager(AppMonManager appMonManager) {
+        this.appMonManager = appMonManager;
     }
 
     public void addLogTailer(String name, LogTailer tailer) {
         tailers.put(name, tailer);
     }
 
-    public List<LogTailInfo> getLogTailInfoList() {
-        List<LogTailInfo> tailerInfoList = new ArrayList<>();
-        for (LogTailer logTailer : tailers.values()) {
-            tailerInfoList.add(logTailer.getInfo());
+    public List<LogtailInfo> getLogTailInfoList(String[] joinGroups) {
+        List<LogtailInfo> infoList = new ArrayList<>(tailers.size());
+        if (joinGroups != null && joinGroups.length > 0) {
+            for (String name : joinGroups) {
+                for (LogTailer logTailer : tailers.values()) {
+                    if (logTailer.getInfo().getGroup().equals(name)) {
+                        infoList.add(logTailer.getInfo());
+                    }
+                }
+            }
+        } else {
+            for (LogTailer logTailer : tailers.values()) {
+                infoList.add(logTailer.getInfo());
+            }
         }
-        return tailerInfoList;
+        return infoList;
     }
 
     public void join(String[] joinGroups) {
@@ -77,14 +87,12 @@ public class LogTailerManager {
         }
     }
 
-    public void release(String[] tailerGroups) {
+    public void release(String[] unusedGroups) {
         if (!tailers.isEmpty()) {
-            if (tailerGroups != null) {
+            if (unusedGroups != null) {
                 for (LogTailer tailer : tailers.values()) {
-                    for (String group : tailerGroups) {
-                        if (tailer.getInfo().getGroup().equals(group) &&
-                                tailer.isRunning() &&
-                                !monitorManager.isUsingGroup(group)) {
+                    for (String group : unusedGroups) {
+                        if (tailer.getInfo().getGroup().equals(group) && tailer.isRunning()) {
                             stop(tailer);
                         }
                     }
@@ -108,7 +116,7 @@ public class LogTailerManager {
     }
 
     void broadcast(String name, String msg) {
-        monitorManager.broadcast(name + ":" + msg);
+        appMonManager.broadcast(name + ":" + msg);
     }
 
 }

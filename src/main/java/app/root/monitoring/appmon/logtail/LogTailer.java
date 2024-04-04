@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.logtail;
+package app.root.monitoring.appmon.logtail;
 
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.lifecycle.AbstractLifeCycle;
@@ -38,9 +38,9 @@ public class LogTailer extends AbstractLifeCycle {
 
     private static final int DEFAULT_SAMPLE_INTERVAL = 1000;
 
-    private final LogTailerManager manager;
+    private final LogtailManager manager;
 
-    private final LogTailInfo info;
+    private final LogtailInfo info;
 
     private final String name;
 
@@ -57,7 +57,7 @@ public class LogTailer extends AbstractLifeCycle {
 
     private Tailer tailer;
 
-    public LogTailer(LogTailerManager manager, @NonNull LogTailInfo info, File logFile) {
+    public LogTailer(LogtailManager manager, @NonNull LogtailInfo info, File logFile) {
         this.manager = manager;
         this.info = info;
         this.name = info.getName();
@@ -67,7 +67,7 @@ public class LogTailer extends AbstractLifeCycle {
         this.logFile = logFile;
     }
 
-    public LogTailInfo getInfo() {
+    public LogtailInfo getInfo() {
         return info;
     }
 

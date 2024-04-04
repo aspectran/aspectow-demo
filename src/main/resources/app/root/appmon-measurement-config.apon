@@ -1,0 +1,18 @@
+measurement: {
+    group: root
+    name: root-ss
+    title: Root App Session Statistics
+    sampleInterval: 5000
+}
+measurement: {
+    group: demo
+    name: demo-ss
+    title: Demo App Session Statistics
+    sampleInterval: 5000
+}
+measurement: {
+    group: jpetstore
+    name: jpetstore-ss
+    title: JPetStore App Session Statistics
+    sampleInterval: 5000
+}

@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.logtail;
+package app.root.monitoring.appmon.logtail;
 
-import app.root.monitoring.measurement.MeasurementInfo;
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
 import com.aspectran.utils.apon.ValueType;
@@ -23,7 +22,7 @@ import com.aspectran.utils.apon.ValueType;
 /**
  * <p>Created: 2020/02/12</p>
  */
-public class LogTailInfo extends AbstractParameters {
+public class LogtailInfo extends AbstractParameters {
 
     private static final ParameterKey group;
     private static final ParameterKey name;
@@ -33,8 +32,6 @@ public class LogTailInfo extends AbstractParameters {
     private static final ParameterKey sampleInterval;
     private static final ParameterKey lastLines;
     private static final ParameterKey visualizing;
-    private static final ParameterKey measuring;
-    private static final ParameterKey measurement;
 
     private static final ParameterKey[] parameterKeys;
 
@@ -47,8 +44,6 @@ public class LogTailInfo extends AbstractParameters {
         sampleInterval = new ParameterKey("sampleInterval", ValueType.INT);
         lastLines = new ParameterKey("lastLines", ValueType.INT);
         visualizing = new ParameterKey("visualizing", ValueType.BOOLEAN);
-        measuring = new ParameterKey("measuring", ValueType.BOOLEAN);
-        measurement = new ParameterKey("measurement", MeasurementInfo.class);
 
         parameterKeys = new ParameterKey[] {
                 group,
@@ -58,13 +53,11 @@ public class LogTailInfo extends AbstractParameters {
                 charset,
                 sampleInterval,
                 lastLines,
-                visualizing,
-                measuring,
-                measurement
+                visualizing
         };
     }
 
-    public LogTailInfo() {
+    public LogtailInfo() {
         super(parameterKeys);
     }
 
@@ -73,7 +66,7 @@ public class LogTailInfo extends AbstractParameters {
     }
 
     public void setGroup(String group) {
-        putValue(LogTailInfo.group, group);
+        putValue(LogtailInfo.group, group);
     }
 
     public String getName() {
@@ -81,7 +74,7 @@ public class LogTailInfo extends AbstractParameters {
     }
 
     public void setName(String name) {
-        putValue(LogTailInfo.name, name);
+        putValue(LogtailInfo.name, name);
     }
 
     public String getTitle() {
@@ -89,7 +82,7 @@ public class LogTailInfo extends AbstractParameters {
     }
 
     public void setTitle(String title) {
-        putValue(LogTailInfo.title, title);
+        putValue(LogtailInfo.title, title);
     }
 
     public String getFile() {
@@ -97,7 +90,7 @@ public class LogTailInfo extends AbstractParameters {
     }
 
     public void setFile(String file) {
-        putValue(LogTailInfo.file, file);
+        putValue(LogtailInfo.file, file);
     }
 
     public String getCharset() {
@@ -105,7 +98,7 @@ public class LogTailInfo extends AbstractParameters {
     }
 
     public void setCharset(String charset) {
-        putValue(LogTailInfo.charset, charset);
+        putValue(LogtailInfo.charset, charset);
     }
 
     public int getSampleInterval() {
@@ -113,7 +106,7 @@ public class LogTailInfo extends AbstractParameters {
     }
 
     public void setSampleInterval(int sampleInterval) {
-        putValue(LogTailInfo.sampleInterval, sampleInterval);
+        putValue(LogtailInfo.sampleInterval, sampleInterval);
     }
 
     public int getLastLines() {
@@ -121,7 +114,7 @@ public class LogTailInfo extends AbstractParameters {
     }
 
     public void setLastLines(int lastLines) {
-        putValue(LogTailInfo.lastLines, lastLines);
+        putValue(LogtailInfo.lastLines, lastLines);
     }
 
     public boolean isVisualizing() {
@@ -129,26 +122,7 @@ public class LogTailInfo extends AbstractParameters {
     }
 
     public void setVisualizing(boolean visualizing) {
-        putValue(LogTailInfo.visualizing, visualizing);
-    }
-
-    public boolean isMeasuring() {
-        return hasValue(measurement) && getBoolean(measuring, true);
-    }
-
-    public void setMeasuring(boolean measuring) {
-        putValue(LogTailInfo.measuring, measuring);
-    }
-
-    public MeasurementInfo getMeasurementInfo() {
-        return getParameters(measurement);
-    }
-
-    public void setMeasurementInfo(MeasurementInfo measurementInfo) {
-        putValue(measurement, measurementInfo);
-        if (measurementInfo != null && !hasValue(measuring)) {
-            putValue(measuring, true);
-        }
+        putValue(LogtailInfo.visualizing, visualizing);
     }
 
 }

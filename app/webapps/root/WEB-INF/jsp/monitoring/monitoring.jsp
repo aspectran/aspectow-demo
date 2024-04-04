@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<link rel="stylesheet" href="/assets/css/monitoring/monitor.css?20240315">
-<script src="/assets/js/monitoring/logtail-viewer.js?20240315"></script>
-<script src="/assets/js/monitoring/monitor.js?20240315"></script>
+<link rel="stylesheet" href="/assets/css/monitoring/monitoring.css?20240404">
+<script src="/assets/js/monitoring/appmon-builder.js?20240404"></script>
+<script src="/assets/js/monitoring/appmon-client.js?20240404"></script>
 <div class="grid-x endpoint-box">
     <div class="cell options t10 b5">
         <ul class="layout-options">
@@ -12,7 +12,7 @@
             <li class="fi-layout stacked show-for-small-only" data-columns="1"><a> Stacked layout</a></li>
         </ul>
     </div>
-    <dl class="cell logtails tabs b0">
+    <dl class="cell group tabs b0">
         <dd class="tabs-title"><a><span class="bullet fi-list-bullet"></span>
             <span class="title"> </span> <span class="indicator fi-loop"></span></a></dd>
     </dl>
@@ -33,7 +33,9 @@
             <div class="stack"></div>
         </div>
         <pre class="logtail"></pre>
-        <div class="grid-x measurement-box" style="display: none">
+    </div>
+    <div class="cell measurement-box" style="display: none">
+        <div class="grid-x">
             <div class="cell small-12 large-4 stats-cell">
                 <div class="panel stats-box">
                     <dl class="stats">
@@ -77,7 +79,7 @@
                             endpoints.push(data[key]);
                         }
                     }
-                    new Monitor(endpoints).establish();
+                    new AppMonBuilder(endpoints).establish();
                 }
             }
         });

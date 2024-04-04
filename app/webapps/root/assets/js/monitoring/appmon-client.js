@@ -48,14 +48,11 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
                             printMessage(name, text, true);
                         }
                     } else {
-                        console.log(msg);
                         let command = msg.substring(0, idx);
                         if (command === "joined") {
                             console.log(msg);
                             let payload = JSON.parse(msg.substring(idx + 1));
                             establish(self, payload);
-                        } else if (command === "established") {
-                            establishComplete();
                         }
                     }
                 }
@@ -121,22 +118,19 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         endpoint['client'] = client;
         if (onEndpointJoined) {
             onEndpointJoined(endpoint, payload);
-            socket.send("established:");
         }
-    };
-
-    const establishComplete = function() {
         if (onEstablishCompleted) {
             onEstablishCompleted();
-            if (pendingMessages && pendingMessages.length > 0) {
-                for (let key in pendingMessages) {
-                    printEventMessage(pendingMessages[key]);
-                }
-                pendingMessages = null;
+        }
+        if (pendingMessages && pendingMessages.length > 0) {
+            for (let key in pendingMessages) {
+                printEventMessage(pendingMessages[key]);
             }
+            pendingMessages = null;
         }
         established = true;
-    }
+        socket.send("established:");
+    };
 
     const heartbeatPing = function() {
         if (heartbeatTimer) {

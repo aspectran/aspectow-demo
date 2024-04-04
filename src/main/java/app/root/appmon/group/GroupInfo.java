@@ -13,54 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.appmon.group;
+package app.root.appmon.group;
 
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.List;
+import com.aspectran.utils.apon.ValueType;
 
 /**
  * <p>Created: 2020/02/12</p>
  */
-public class GroupConfig extends AbstractParameters {
+public class GroupInfo extends AbstractParameters {
 
-    private static final ParameterKey group;
+    private static final ParameterKey name;
+    private static final ParameterKey title;
 
     private static final ParameterKey[] parameterKeys;
 
     static {
-        group = new ParameterKey("group", GroupInfo.class, true, true);
+        name = new ParameterKey("name", ValueType.STRING);
+        title = new ParameterKey("title", ValueType.STRING);
 
         parameterKeys = new ParameterKey[] {
-                group
+                name,
+                title
         };
     }
 
-    public GroupConfig() {
+    public GroupInfo() {
         super(parameterKeys);
     }
 
-    public GroupConfig(String text) throws IOException {
-        this();
-        readFrom(text);
+    public String getName() {
+        return getString(name);
     }
 
-    public GroupConfig(File file) throws IOException {
-        this();
-        readFrom(file);
+    public void setName(String name) {
+        putValue(GroupInfo.name, name);
     }
 
-    public GroupConfig(Reader reader) throws IOException {
-        this();
-        readFrom(reader);
+    public String getTitle() {
+        return getString(title);
     }
 
-    public List<GroupInfo> getGroupInfoList() {
-        return getParametersList(group);
+    public void setTitle(String name) {
+        putValue(GroupInfo.title, name);
     }
 
 }

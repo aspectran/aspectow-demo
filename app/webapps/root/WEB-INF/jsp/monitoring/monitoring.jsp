@@ -34,7 +34,7 @@
         </div>
         <pre class="logtail"></pre>
     </div>
-    <div class="cell measurement-box" style="display: none">
+    <div class="cell measurement-box">
         <div class="grid-x">
             <div class="cell small-12 large-4 stats-cell">
                 <div class="panel stats-box">

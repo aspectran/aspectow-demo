@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.appmon.endpoint;
+package app.root.appmon.measurement;
 
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
@@ -22,28 +22,39 @@ import com.aspectran.utils.apon.ValueType;
 /**
  * <p>Created: 2020/02/12</p>
  */
-public class EndpointInfo extends AbstractParameters {
+public class MeasurementInfo extends AbstractParameters {
 
+    private static final ParameterKey group;
     private static final ParameterKey name;
     private static final ParameterKey title;
-    private static final ParameterKey url;
+    private static final ParameterKey sampleInterval;
 
     private static final ParameterKey[] parameterKeys;
 
     static {
+        group = new ParameterKey("group", ValueType.STRING);
         name = new ParameterKey("name", ValueType.STRING);
         title = new ParameterKey("title", ValueType.STRING);
-        url = new ParameterKey("url", ValueType.STRING);
+        sampleInterval = new ParameterKey("sampleInterval", ValueType.INT);
 
         parameterKeys = new ParameterKey[] {
+                group,
                 name,
                 title,
-                url
+                sampleInterval
         };
     }
 
-    public EndpointInfo() {
+    public MeasurementInfo() {
         super(parameterKeys);
+    }
+
+    public String getGroup() {
+        return getString(group);
+    }
+
+    public void setGroup(String group) {
+        putValue(MeasurementInfo.group, group);
     }
 
     public String getName() {
@@ -51,7 +62,7 @@ public class EndpointInfo extends AbstractParameters {
     }
 
     public void setName(String name) {
-        putValue(EndpointInfo.name, name);
+        putValue(MeasurementInfo.name, name);
     }
 
     public String getTitle() {
@@ -59,15 +70,15 @@ public class EndpointInfo extends AbstractParameters {
     }
 
     public void setTitle(String title) {
-        putValue(EndpointInfo.title, title);
+        putValue(MeasurementInfo.title, title);
     }
 
-    public String getUrl() {
-        return getString(url);
+    public int getSampleInterval() {
+        return getInt(sampleInterval, 0);
     }
 
-    public void setUrl(String url) {
-        putValue(EndpointInfo.url, url);
+    public void setSampleInterval(int sampleInterval) {
+        putValue(MeasurementInfo.sampleInterval, sampleInterval);
     }
 
 }

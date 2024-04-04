@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.appmon.endpoint;
+package app.root.appmon.endpoint;
 
-import app.root.monitoring.appmon.group.GroupInfo;
-import app.root.monitoring.appmon.logtail.LogtailInfo;
-import app.root.monitoring.appmon.measurement.MeasurementInfo;
+import app.root.appmon.group.GroupInfo;
+import app.root.appmon.logtail.LogtailInfo;
+import app.root.appmon.measurement.MeasurementInfo;
 import com.aspectran.core.activity.InstantActivitySupport;
 import com.aspectran.core.component.bean.ablility.InitializableBean;
 import com.aspectran.core.component.bean.annotation.AvoidAdvice;

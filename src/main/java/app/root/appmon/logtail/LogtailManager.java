@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.appmon.logtail;
+package app.root.appmon.logtail;
 
-import app.root.monitoring.appmon.endpoint.AppMonManager;
+import app.root.appmon.endpoint.AppMonManager;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
@@ -99,7 +99,7 @@ public class LogtailManager {
                 }
             } else {
                 for (LogTailer tailer : tailers.values()) {
-                    if (!tailer.isRunning()) {
+                    if (tailer.isRunning()) {
                         stop(tailer);
                     }
                 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.appmon.logtail;
+package app.root.appmon.measurement;
 
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
@@ -26,41 +26,41 @@ import java.util.List;
 /**
  * <p>Created: 2020/02/12</p>
  */
-public class LogtailConfig extends AbstractParameters {
+public class MeasurementConfig extends AbstractParameters {
 
-    private static final ParameterKey logtail;
+    private static final ParameterKey measurement;
 
     private static final ParameterKey[] parameterKeys;
 
     static {
-        logtail = new ParameterKey("logtail", LogtailInfo.class, true, true);
+        measurement = new ParameterKey("measurement", MeasurementInfo.class, true, true);
 
         parameterKeys = new ParameterKey[] {
-                logtail
+                measurement
         };
     }
 
-    public LogtailConfig() {
+    public MeasurementConfig() {
         super(parameterKeys);
     }
 
-    public LogtailConfig(String text) throws IOException {
+    public MeasurementConfig(String text) throws IOException {
         this();
         readFrom(text);
     }
 
-    public LogtailConfig(File file) throws IOException {
+    public MeasurementConfig(File file) throws IOException {
         this();
         readFrom(file);
     }
 
-    public LogtailConfig(Reader reader) throws IOException {
+    public MeasurementConfig(Reader reader) throws IOException {
         this();
         readFrom(reader);
     }
 
-    public List<LogtailInfo> getLogTailInfoList() {
-        return getParametersList(logtail);
+    public List<MeasurementInfo> getMeasurementInfoList() {
+        return getParametersList(measurement);
     }
 
 }

@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.appmon.measurement;
+package app.root.appmon.measurement;
 
-import app.root.monitoring.appmon.endpoint.AppMonManager;
+import app.root.appmon.endpoint.AppMonManager;
 import com.aspectran.core.context.ActivityContext;
+import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
@@ -85,11 +86,11 @@ public class MeasurementManager {
         }
     }
 
-    public void release(String[] tailerGroups) {
+    public void release(String[] unusedGroups) {
         if (!measurings.isEmpty()) {
-            if (tailerGroups != null) {
+            if (unusedGroups != null) {
                 for (Measuring measuring : measurings.values()) {
-                    for (String group : tailerGroups) {
+                    for (String group : unusedGroups) {
                         if (measuring.getGroup().equals(group) && measuring.isRunning()) {
                             stop(measuring);
                         }
@@ -97,7 +98,7 @@ public class MeasurementManager {
                 }
             } else {
                 for (Measuring measuring : measurings.values()) {
-                    if (!measuring.isRunning()) {
+                    if (measuring.isRunning()) {
                         stop(measuring);
                     }
                 }
@@ -107,7 +108,7 @@ public class MeasurementManager {
 
     private void stop(Measuring measuring) {
         try {
-            measuring.start();
+            measuring.stop();
         } catch (Exception e) {
             logger.warn(e);
         }
@@ -115,6 +116,10 @@ public class MeasurementManager {
 
     ActivityContext getActivityContext() {
         return appMonManager.getActivityContext();
+    }
+
+    <V> V getBean(@NonNull String id) {
+        return getActivityContext().getBeanRegistry().getBean(id);
     }
 
     void broadcast(String name, String msg) {

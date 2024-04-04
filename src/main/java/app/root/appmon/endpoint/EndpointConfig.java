@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.appmon.measurement;
+package app.root.appmon.endpoint;
 
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
@@ -26,41 +26,46 @@ import java.util.List;
 /**
  * <p>Created: 2020/02/12</p>
  */
-public class MeasurementConfig extends AbstractParameters {
+public class EndpointConfig extends AbstractParameters {
 
-    private static final ParameterKey measurement;
+    private static final ParameterKey endpoint;
 
     private static final ParameterKey[] parameterKeys;
 
     static {
-        measurement = new ParameterKey("measurement", MeasurementInfo.class, true, true);
+        endpoint = new ParameterKey("endpoint", EndpointInfo.class, true, true);
 
         parameterKeys = new ParameterKey[] {
-                measurement
+                endpoint
         };
     }
 
-    public MeasurementConfig() {
+    public EndpointConfig() {
         super(parameterKeys);
     }
 
-    public MeasurementConfig(String text) throws IOException {
+    public EndpointConfig(String text) throws IOException {
         this();
         readFrom(text);
     }
 
-    public MeasurementConfig(File file) throws IOException {
+    public EndpointConfig(File file) throws IOException {
         this();
         readFrom(file);
     }
 
-    public MeasurementConfig(Reader reader) throws IOException {
+    public EndpointConfig(Reader reader) throws IOException {
         this();
         readFrom(reader);
     }
 
-    public List<MeasurementInfo> getMeasurementInfoList() {
-        return getParametersList(measurement);
+    public List<EndpointInfo> getEndpointInfoList() {
+        return getParametersList(endpoint);
+    }
+
+    public EndpointConfig addEndpointInfo(EndpointInfo endpointInfo) {
+        putValue(endpoint, endpointInfo);
+        return this;
     }
 
 }

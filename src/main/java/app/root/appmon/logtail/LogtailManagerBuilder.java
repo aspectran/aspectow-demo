@@ -1,6 +1,6 @@
-package app.root.monitoring.appmon.logtail;
+package app.root.appmon.logtail;
 
-import app.root.monitoring.appmon.endpoint.AppMonManager;
+import app.root.appmon.endpoint.AppMonManager;
 import com.aspectran.utils.ResourceUtils;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
@@ -12,7 +12,7 @@ public class LogtailManagerBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(LogtailManagerBuilder.class);
 
-    private static final String LOGTAIL_CONFIG_FILE = "app/root/appmon-logtail-config.apon";
+    private static final String LOGTAIL_CONFIG_FILE = "app/root/appmon/logtail-config.apon";
 
     public static LogtailManager build(AppMonManager appMonManager) throws IOException {
         LogtailConfig logTailConfig = new LogtailConfig(ResourceUtils.getResourceAsReader(LOGTAIL_CONFIG_FILE));

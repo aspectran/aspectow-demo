@@ -1,6 +1,6 @@
-package app.root.monitoring.appmon.group;
+package app.root.appmon.group;
 
-import app.root.monitoring.appmon.endpoint.AppMonManager;
+import app.root.appmon.endpoint.AppMonManager;
 import com.aspectran.utils.Assert;
 import com.aspectran.utils.StringUtils;
 import com.aspectran.utils.logging.Logger;

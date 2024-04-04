@@ -1,14 +1,14 @@
-package app.root.monitoring.appmon.endpoint;
+package app.root.appmon.endpoint;
 
-import app.root.monitoring.appmon.group.GroupInfo;
-import app.root.monitoring.appmon.group.GroupManager;
-import app.root.monitoring.appmon.group.GroupManagerBuilder;
-import app.root.monitoring.appmon.logtail.LogtailInfo;
-import app.root.monitoring.appmon.logtail.LogtailManager;
-import app.root.monitoring.appmon.logtail.LogtailManagerBuilder;
-import app.root.monitoring.appmon.measurement.MeasurementInfo;
-import app.root.monitoring.appmon.measurement.MeasurementManager;
-import app.root.monitoring.appmon.measurement.MeasurementManagerBuilder;
+import app.root.appmon.group.GroupInfo;
+import app.root.appmon.group.GroupManager;
+import app.root.appmon.group.GroupManagerBuilder;
+import app.root.appmon.logtail.LogtailInfo;
+import app.root.appmon.logtail.LogtailManager;
+import app.root.appmon.measurement.MeasurementInfo;
+import app.root.appmon.measurement.MeasurementManager;
+import app.root.appmon.measurement.MeasurementManagerBuilder;
+import app.root.appmon.logtail.LogtailManagerBuilder;
 import com.aspectran.core.adapter.ApplicationAdapter;
 import com.aspectran.core.context.ActivityContext;
 import jakarta.websocket.Session;

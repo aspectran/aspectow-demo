@@ -1,4 +1,4 @@
-package app.root.monitoring.appmon.measurement.session;
+package app.root.appmon.measurement.session;
 
 import app.jpetstore.common.user.UserSession;
 import com.aspectran.core.component.session.DefaultSession;

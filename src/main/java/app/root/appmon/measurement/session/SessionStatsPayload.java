@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring.appmon.measurement.session;
+package app.root.appmon.measurement.session;
 
 import com.aspectran.utils.json.JsonWriter;
 

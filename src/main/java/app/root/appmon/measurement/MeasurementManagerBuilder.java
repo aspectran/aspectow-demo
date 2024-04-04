@@ -1,6 +1,6 @@
-package app.root.monitoring.appmon.measurement;
+package app.root.appmon.measurement;
 
-import app.root.monitoring.appmon.endpoint.AppMonManager;
+import app.root.appmon.endpoint.AppMonManager;
 import com.aspectran.utils.ResourceUtils;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class MeasurementManagerBuilder {
 
-    private static final String MEASUREMENT_CONFIG_FILE = "app/root/appmon-measurement-config.apon";
+    private static final String MEASUREMENT_CONFIG_FILE = "app/root/appmon/measurement-config.apon";
 
     private static final Logger logger = LoggerFactory.getLogger(MeasurementManagerBuilder.class);
 

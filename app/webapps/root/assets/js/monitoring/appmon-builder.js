@@ -18,11 +18,13 @@ function AppMonBuilder(endpoints) {
             }
             for (let key in payload.logtails) {
                 let logtail = payload.logtails[key];
-                addLogtail(endpointBox, logtail);
+                let logtailBox = addLogtail(endpointBox, logtail);
+                endpoint.client.setLogtail(logtail.name, logtailBox.find(".logtail"));
             }
             for (let key in payload.measurements) {
                 let measurement = payload.measurements[key];
-                addMeasurement(endpointBox, measurement);
+                let measurementBox = addMeasurement(endpointBox, measurement);
+                endpoint.client.setMeasurement(measurement.name, measurementBox);
             }
             endpointBox.find(".logtail-box.available").each(function() {
                 let logtail = $(this).find(".logtail");
@@ -30,7 +32,7 @@ function AppMonBuilder(endpoints) {
                 let logtailName = logtail.data("logtail-name");
                 let logtailBox = logtail.closest(".logtail-box");
 
-                endpoint.client.setLogtail(logtailName, logtail);
+                // endpoint.client.setLogtail(logtailName, logtail);
 
                 let missileTrack = logtailBox.find(".missile-track.available");
                 if (missileTrack.length > 0) {
@@ -42,16 +44,14 @@ function AppMonBuilder(endpoints) {
                 let indicator3 = logtailBox.find(".status-bar");
                 endpoint.client.setIndicators(logtailName, [indicator1, indicator2, indicator3]);
 
-                let measurement = $(this).find(".measurement-box");
-                endpoint.client.setMeasurement(logtailName, measurement);
+                // let measurement = $(this).find(".measurement-box");
+                // endpoint.client.setMeasurement(logtailName, measurement);
 
                 logtail.data("tailing", true);
                 logtailBox.find(".tailing-status").addClass("on");
             });
         }
         function onEstablishCompleted() {
-            alert(1);
-
             if (endpointIndex < endpoints.length - 1) {
                 establishEndpoint(++endpointIndex);
             } else if (endpointIndex === endpoints.length - 1) {
@@ -83,8 +83,9 @@ function AppMonBuilder(endpoints) {
         $(".endpoint.tabs .tabs-title.available").each(function() {
             let endpointIndex = $(this).data("index");
             let endpointBox = $(".endpoint-box.available").eq(endpointIndex);
-            endpointBox.find(".group.tabs .tabs-title.available").removeClass("is-active").eq(0).addClass("is-active");
-            endpointBox.find(".logtail-box.available").hide().eq(0).show();
+            let groupTab = endpointBox.find(".group.tabs .tabs-title.available").eq(0);
+            let groupName = groupTab.addClass("is-active").data("name");
+            changeGroup(endpointBox, groupName);
         }).eq(0).addClass("is-active");
         $(".endpoint.tabs .tabs-title.available a").click(function() {
             $(".endpoint.tabs .tabs-title").removeClass("is-active");
@@ -102,28 +103,13 @@ function AppMonBuilder(endpoints) {
         });
         $(".group.tabs .tabs-title.available a").click(function() {
             let endpointBox = $(this).closest(".endpoint-box");
-            let endpointIndex = endpointBox.data("index");
-            alert(endpointIndex);
             let groupTab = $(this).closest(".tabs-title");
-            let groupIndex = groupTab.data("index");
             let groupName = groupTab.data("name");
-            console.log('groupName', groupName);
             if (!groupTab.hasClass("is-active")) {
                 endpointBox.find(".group.tabs .tabs-title").removeClass("is-active");
                 groupTab.addClass("is-active");
-                endpointBox.find(".logtail-box.available").each(function (index) {
-                    if ($(this).data("group") === groupName) {
-                        $(this).show();
-                    }
-                    let logtail = $(this).find(".logtail");
-                    if (!logtail.data("pause")) {
-                        endpoints[endpointIndex].client.refresh(logtail);
-                    }
-                });
+                changeGroup(endpointBox, groupName);
             }
-        }).dblclick(function (event) {
-            $(this).click();
-            event.preventDefault();
         });
         $(".logtail-box .tailing-switch").click(function() {
             let logtail = $(this).closest(".logtail-box").find(".logtail");
@@ -195,6 +181,20 @@ function AppMonBuilder(endpoints) {
         });
     }
 
+    const changeGroup = function (endpointBox, groupName) {
+        console.log('groupName', groupName);
+        let endpointIndex = endpointBox.data("index");
+        endpointBox.find(".logtail-box.available,.measurement-box.available").hide().each(function () {
+            if ($(this).data("group") === groupName) {
+                $(this).show();
+            }
+            let logtail = $(this).find(".logtail");
+            if (!logtail.data("pause")) {
+                endpoints[endpointIndex].client.refresh(logtail);
+            }
+        });
+    }
+
     const addEndpointTab = function (endpoint) {
         let tabs = $(".endpoint.tabs");
         let tab0 = tabs.find(".tabs-title").eq(0);
@@ -250,10 +250,15 @@ function AppMonBuilder(endpoints) {
                 .attr("data-visualizing", logtail.visualizing)
                 .show();
         }
-        // logtailBox.show();
+        return logtailBox;
     }
 
     const addMeasurement = function (endpointBox, measurement) {
-        //endpointBox.find(".measurement-box").show();
+        let measurementBox = endpointBox.find(".measurement-box").eq(0).hide().clone();
+        measurementBox.addClass("available")
+            .attr("data-group", measurement.group)
+            .attr("data-name", measurement.name)
+            .insertAfter($(".measurement-box").last());
+        return measurementBox;
     }
 }

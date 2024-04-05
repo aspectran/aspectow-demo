@@ -37,7 +37,8 @@ import java.io.IOException;
         pointcut = {
                 "+: /cart/**",
                 "+: /order/viewOrder",
-                "+: /order/deleteOrder/*"
+                "+: /order/deleteOrder/*",
+                "+: /account/editAccountForm"
         }
 )
 public class RefererCheckAspect {

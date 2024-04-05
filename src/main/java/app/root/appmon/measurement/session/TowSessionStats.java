@@ -1,6 +1,6 @@
 package app.root.appmon.measurement.session;
 
-import app.jpetstore.common.user.UserSession;
+import app.jpetstore.user.UserSession;
 import com.aspectran.core.component.session.DefaultSession;
 import com.aspectran.core.component.session.SessionHandler;
 import com.aspectran.core.component.session.SessionStatistics;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static app.jpetstore.common.user.UserSessionManager.USER_SESSION_KEY;
+import static app.jpetstore.user.UserSessionManager.USER_SESSION_KEY;
 
 public class TowSessionStats {
 

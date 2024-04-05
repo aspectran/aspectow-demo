@@ -73,7 +73,7 @@
     $(function() {
         const endpoint = "${page.endpoint}";
         $.ajax({
-            url: "/monitoring/endpoints/${page.token}",
+            url: "<aspectran:url value="/monitoring/endpoints/${page.token}"/>",
             type: 'get',
             dataType: "json",
             success: function(data) {

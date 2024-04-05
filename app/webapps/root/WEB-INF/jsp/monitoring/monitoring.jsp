@@ -1,8 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<link rel="stylesheet" href="/assets/css/monitoring/monitoring.css?20240405">
-<script src="/assets/js/monitoring/appmon-builder.js?20240405"></script>
-<script src="/assets/js/monitoring/appmon-client.js?20240405"></script>
+<%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
+<link rel="stylesheet" href="<aspectran:url value="/assets/css/monitoring/monitoring.css?20240405"/>">
+<script src="<aspectran:url value="/assets/js/monitoring/appmon-builder.js?20240405"/>"></script>
+<script src="<aspectran:url value="/assets/js/monitoring/appmon-client.js?20240405"/>"></script>
 <div class="grid-x endpoint-box compact vertical">
     <div class="cell options t10 b5">
         <ul class="layout-options">

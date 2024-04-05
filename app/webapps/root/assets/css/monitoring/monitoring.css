@@ -122,17 +122,17 @@ ul.layout-options li.on a {
     color: yellow;
 }
 
-.tiled .tabs {
+.stacked .tabs {
     display: none;
 }
-.tiled .logtail-box.available {
+.stacked .group-box.available {
     display: block !important;
     padding: 1px;
 }
-.tiled .logtail-box .logtail {
+.stacked .logtail-box .logtail {
     height: 580px;
 }
-.tiled .logtail-box.with-track .logtail {
+.stacked .logtail-box.with-track .logtail {
     height: 460px;
 }
 

@@ -30,7 +30,7 @@ public class TowSessionStats {
         this.deploymentName = deploymentName;
     }
 
-    public void join() {
+    public void clear() {
         oldStats = null;
     }
 

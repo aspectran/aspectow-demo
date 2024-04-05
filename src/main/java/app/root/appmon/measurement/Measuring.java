@@ -56,11 +56,6 @@ public class Measuring extends AbstractLifeCycle {
         return sampleInterval;
     }
 
-    public void join() {
-        towSessionStats.join();
-        broadcastStats();
-    }
-
     private void broadcastStats() {
         SessionStatsPayload stats = towSessionStats.getSessionStatsPayload();
         if (stats != null) {
@@ -82,6 +77,8 @@ public class Measuring extends AbstractLifeCycle {
                     broadcastStats();
                 }
             }, 0, sampleInterval);
+            towSessionStats.clear();
+            broadcastStats();
         }
     }
 

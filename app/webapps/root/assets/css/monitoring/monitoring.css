@@ -136,7 +136,7 @@ ul.layout-options li.on a {
     height: 460px;
 }
 .endpoint-box.compact.vertical .logtail-box.available.no-track .logtail {
-    height: 250px !important;
+    height: 250px;
 }
 
 @keyframes missileAnimation {

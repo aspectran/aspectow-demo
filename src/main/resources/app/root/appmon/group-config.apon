@@ -1,12 +1,12 @@
 group: {
-    name: root
-    title: Root
+    name: jpetstore
+    title: JPetStore
 }
 group: {
     name: demo
     title: Demo
 }
 group: {
-    name: jpetstore
-    title: JPetStore
+    name: root
+    title: Root
 }

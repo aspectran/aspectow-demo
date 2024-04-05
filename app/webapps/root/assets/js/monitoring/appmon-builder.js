@@ -160,13 +160,20 @@ function AppMonBuilder(endpoints) {
                     liStacked.addClass("on");
                     endpointBox.addClass("stacked");
                 } else if (li.hasClass("compact")) {
-                    li.addClass("on");
-                    logtailBox.addClass("large-6");
+                    li.addClass("on vertical");
+                    endpointBox.addClass("compact vertical");
                 }
             } else {
                 if (li.hasClass("compact")) {
-                    li.removeClass("on");
-                    logtailBox.removeClass("large-6");
+                    if (li.hasClass("vertical")) {
+                        li.removeClass("vertical").addClass("horizontal");
+                        endpointBox.removeClass("vertical").addClass("horizontal");
+                        logtailBox.addClass("large-6");
+                    } else if (li.hasClass("horizontal")) {
+                        li.removeClass("on horizontal");
+                        endpointBox.removeClass("compact horizontal");
+                        logtailBox.removeClass("large-6");
+                    }
                 }
             }
             let endpointIndex = endpointBox.data("index");
@@ -237,6 +244,8 @@ function AppMonBuilder(endpoints) {
                 .addClass("available")
                 .attr("data-visualizing", logtail.visualizing)
                 .show();
+        } else {
+            logtailBox.addClass("no-track");
         }
         return logtailBox.appendTo(groupBox.find(".logtail-box-wrap")).show();
     }

@@ -3,12 +3,12 @@
 <link rel="stylesheet" href="/assets/css/monitoring/monitoring.css?20240404">
 <script src="/assets/js/monitoring/appmon-builder.js?20240404"></script>
 <script src="/assets/js/monitoring/appmon-client.js?20240404"></script>
-<div class="grid-x endpoint-box">
+<div class="grid-x endpoint-box compact vertical">
     <div class="cell options t10 b5">
         <ul class="layout-options">
             <li class="fi-layout tabbed on" data-columns="0"><a> Tabbed</a></li>
             <li class="fi-layout stacked" data-columns="0"><a> Stacked</a></li>
-            <li class="fi-layout compact hide-for-small-only"><a> Compact</a></li>
+            <li class="fi-layout compact on vertical hide-for-small-only"><a> Compact</a></li>
         </ul>
     </div>
     <dl class="cell group tabs b0">

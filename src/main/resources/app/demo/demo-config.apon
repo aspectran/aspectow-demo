@@ -30,6 +30,7 @@ scheduler: {
 web: {
     defaultServletName: none
     trailingSlashRedirect: true
+    legacyHeadHandling: true
     exposals: {
         +: /**
     }

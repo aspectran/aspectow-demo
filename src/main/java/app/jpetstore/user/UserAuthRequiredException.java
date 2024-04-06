@@ -17,7 +17,7 @@ package app.jpetstore.user;
 
 import java.io.Serial;
 
-public class UserAuthenticationRequiredException extends RuntimeException {
+public class UserAuthRequiredException extends RuntimeException {
 
     @Serial
     private static final long serialVersionUID = -6255555873407196205L;
@@ -25,7 +25,7 @@ public class UserAuthenticationRequiredException extends RuntimeException {
     /**
      * Constructs a UserAuthenticationRequiredException.
      */
-    public UserAuthenticationRequiredException() {
+    public UserAuthRequiredException() {
         super();
     }
 

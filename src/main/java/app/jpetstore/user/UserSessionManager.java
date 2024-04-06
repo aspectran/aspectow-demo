@@ -49,7 +49,7 @@ public class UserSessionManager implements ActivityContextAware {
         UserSession userSession = getUserSession(false);
         if (userSession == null || !userSession.isAuthenticated()) {
 //            translet.redirect("/account/signonForm", Map.of("referer", translet.getRequestName()));
-            throw new UserAuthenticationRequiredException();
+            throw new UserAuthRequiredException();
         }
     }
 

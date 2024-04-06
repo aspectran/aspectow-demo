@@ -54,7 +54,7 @@ public class UserAuthAspect {
         userSessionManager.checkUserAuthentication(translet);
     }
 
-    @ExceptionThrown(UserAuthenticationRequiredException.class)
+    @ExceptionThrown(UserAuthRequiredException.class)
     @Action("msg")
     public String exceptionThrown(@NonNull Translet translet) {
         translet.redirect("/account/signonForm", Map.of("referer", translet.getRequestName()));

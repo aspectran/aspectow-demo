@@ -15,7 +15,7 @@
         <properties>
             <item name="basenames" type="array">
                 <value>app.jpetstore.web.i18n.messages</value>
-                <value>web.i18n.ValidationMessages</value>
+                <value>app.jpetstore.web.i18n.ValidationMessages</value>
             </item>
         </properties>
     </bean>

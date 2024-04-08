@@ -67,7 +67,7 @@ public class MonitoringAction {
     }
 
     @RequestToGet("/monitoring/endpoints/${token}")
-    public RestResponse getEndpoints(@Required String token) throws IOException {
+    public RestResponse getEndpoints(@Required String token) {
         try {
             appMonManager.validateToken(token);
         } catch (InvalidPBTokenException e) {
@@ -77,14 +77,6 @@ public class MonitoringAction {
             return new DefaultRestResponse().forbidden();
         }
         List<EndpointInfo> endpointInfoList = appMonManager.getEndpointInfoList(token);
-//        for (EndpointInfo endpointInfo : endpointInfoList) {
-//            String url = endpointInfo.getUrl();
-//            if (!url.endsWith("/")) {
-//                url += "/";
-//            }
-//            url += TimeLimitedPBTokenIssuer.getToken();
-//            endpointInfo.setUrl(url);
-//        }
         return new DefaultRestResponse(endpointInfoList).ok();
     }
 

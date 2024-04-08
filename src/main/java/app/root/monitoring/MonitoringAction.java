@@ -15,9 +15,11 @@
  */
 package app.root.monitoring;
 
+import app.root.appmon.endpoint.AppMonManager;
 import app.root.appmon.endpoint.EndpointConfig;
 import app.root.appmon.endpoint.EndpointInfo;
 import com.aspectran.core.component.bean.annotation.Action;
+import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.core.component.bean.annotation.Dispatch;
 import com.aspectran.core.component.bean.annotation.Request;
@@ -44,7 +46,12 @@ public class MonitoringAction {
 
     private static final Logger logger = LoggerFactory.getLogger(MonitoringAction.class);
 
-    private static final String ENDPOINT_CONFIG_FILE = "app/root/appmon/endpoint-config.apon";
+    private final AppMonManager appMonManager;
+
+    @Autowired
+    public MonitoringAction(AppMonManager appMonManager) {
+        this.appMonManager = appMonManager;
+    }
 
     @Request("/monitoring/${endpoint}")
     @Dispatch("templates/default")
@@ -54,7 +61,7 @@ public class MonitoringAction {
                 "headinclude", "monitoring/_endpoints",
                 "include", "monitoring/monitoring",
                 "style", "fluid compact",
-                "token", TimeLimitedPBTokenIssuer.getToken(),
+                "token", appMonManager.issueToken(),
                 "endpoint", StringUtils.nullToEmpty(endpoint)
         );
     }
@@ -62,23 +69,22 @@ public class MonitoringAction {
     @RequestToGet("/monitoring/endpoints/${token}")
     public RestResponse getEndpoints(@Required String token) throws IOException {
         try {
-            TimeLimitedPBTokenIssuer.validate(token);
+            appMonManager.validateToken(token);
         } catch (InvalidPBTokenException e) {
             if (logger.isDebugEnabled()) {
                 logger.debug(e);
             }
             return new DefaultRestResponse().forbidden();
         }
-        EndpointConfig endpointConfig = new EndpointConfig(ResourceUtils.getResourceAsReader(ENDPOINT_CONFIG_FILE));
-        List<EndpointInfo> endpointInfoList = endpointConfig.getEndpointInfoList();
-        for (EndpointInfo endpointInfo : endpointInfoList) {
-            String url = endpointInfo.getUrl();
-            if (!url.endsWith("/")) {
-                url += "/";
-            }
-            url += TimeLimitedPBTokenIssuer.getToken();
-            endpointInfo.setUrl(url);
-        }
+        List<EndpointInfo> endpointInfoList = appMonManager.getEndpointInfoList(token);
+//        for (EndpointInfo endpointInfo : endpointInfoList) {
+//            String url = endpointInfo.getUrl();
+//            if (!url.endsWith("/")) {
+//                url += "/";
+//            }
+//            url += TimeLimitedPBTokenIssuer.getToken();
+//            endpointInfo.setUrl(url);
+//        }
         return new DefaultRestResponse(endpointInfoList).ok();
     }
 

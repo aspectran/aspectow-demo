@@ -123,7 +123,7 @@ public class MeasurementManager {
     }
 
     void broadcast(String name, String msg) {
-        appMonManager.broadcast(name + ":" + msg);
+        appMonManager.getEndpoint().broadcast(name + ":" + msg);
     }
 
 }

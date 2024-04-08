@@ -2,19 +2,21 @@ package app.root.appmon.logtail;
 
 import app.root.appmon.endpoint.AppMonManager;
 import com.aspectran.utils.ResourceUtils;
+import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 
-public class LogtailManagerBuilder {
+public abstract class LogtailManagerBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(LogtailManagerBuilder.class);
 
     private static final String LOGTAIL_CONFIG_FILE = "app/root/appmon/logtail-config.apon";
 
-    public static LogtailManager build(AppMonManager appMonManager) throws IOException {
+    @NonNull
+    public static LogtailManager build(@NonNull AppMonManager appMonManager) throws IOException {
         LogtailConfig logTailConfig = new LogtailConfig(ResourceUtils.getResourceAsReader(LOGTAIL_CONFIG_FILE));
         LogtailManager logtailManager = new LogtailManager(appMonManager);
         for (LogtailInfo logTailInfo : logTailConfig.getLogTailInfoList()) {

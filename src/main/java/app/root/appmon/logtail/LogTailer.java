@@ -15,6 +15,7 @@
  */
 package app.root.appmon.logtail;
 
+import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.lifecycle.AbstractLifeCycle;
 import com.aspectran.utils.logging.Logger;
@@ -121,6 +122,15 @@ public class LogTailer extends AbstractLifeCycle {
         if (tailer != null) {
             tailer.close();
             tailer = null;
+        }
+    }
+
+    @Override
+    public String toString() {
+        if (isStopped()) {
+            return new ToStringBuilder(super.toString(), info).toString();
+        } else {
+            return super.toString();
         }
     }
 

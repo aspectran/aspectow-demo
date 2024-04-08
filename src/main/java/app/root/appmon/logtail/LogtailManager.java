@@ -16,6 +16,7 @@
 package app.root.appmon.logtail;
 
 import app.root.appmon.endpoint.AppMonManager;
+import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
@@ -76,7 +77,7 @@ public class LogtailManager {
         }
     }
 
-    private void start(LogTailer tailer) {
+    private void start(@NonNull LogTailer tailer) {
         tailer.readLastLines();
         if (!tailer.isRunning()) {
             try {
@@ -116,7 +117,7 @@ public class LogtailManager {
     }
 
     void broadcast(String name, String msg) {
-        appMonManager.broadcast(name + ":" + msg);
+        appMonManager.getEndpoint().broadcast(name + ":" + msg);
     }
 
 }

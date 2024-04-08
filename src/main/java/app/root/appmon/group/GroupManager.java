@@ -3,8 +3,7 @@ package app.root.appmon.group;
 import app.root.appmon.endpoint.AppMonManager;
 import com.aspectran.utils.Assert;
 import com.aspectran.utils.StringUtils;
-import com.aspectran.utils.logging.Logger;
-import com.aspectran.utils.logging.LoggerFactory;
+import com.aspectran.utils.annotation.jsr305.NonNull;
 import jakarta.websocket.Session;
 
 import java.util.ArrayList;
@@ -16,15 +15,13 @@ import java.util.Set;
 
 public class GroupManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(AppMonManager.class);
-
-    private static final String JOINED_GROUPS_PROPERTY = "appmonJoinedGroups";
+    private static final String JOINED_GROUPS_PROPERTY = "appmon/JoinedGroups";
 
     private final AppMonManager appMonManager;
 
     private final Map<String, GroupInfo> groups = new LinkedHashMap<>();
 
-    public GroupManager(AppMonManager appMonManager, List<GroupInfo> groupInfoList) {
+    public GroupManager(AppMonManager appMonManager, @NonNull List<GroupInfo> groupInfoList) {
         this.appMonManager = appMonManager;
         for (GroupInfo info : groupInfoList) {
             groups.put(info.getName(), info);
@@ -47,7 +44,7 @@ public class GroupManager {
         return infoList;
     }
 
-    public String[] getJoinedGroups(Session session) {
+    public String[] getJoinedGroups(@NonNull Session session) {
         String[] savedGroups = (String[])session.getUserProperties().get(JOINED_GROUPS_PROPERTY);
         if (savedGroups == null) {
             return null;
@@ -83,12 +80,12 @@ public class GroupManager {
         }
     }
 
-    public void saveJoinedGroups(Session session, String[] joinGroups) {
+    public void saveJoinedGroups(@NonNull Session session, String[] joinGroups) {
         Assert.notEmpty(joinGroups, "joinGroups must not be null or empty");
         session.getUserProperties().put(JOINED_GROUPS_PROPERTY, joinGroups);
     }
 
-    public void removeJoinedGroups(Session session) {
+    public void removeJoinedGroups(@NonNull Session session) {
         session.getUserProperties().remove(JOINED_GROUPS_PROPERTY);
     }
 

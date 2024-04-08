@@ -2,6 +2,7 @@ package app.root.appmon.measurement;
 
 import app.root.appmon.measurement.session.SessionStatsPayload;
 import app.root.appmon.measurement.session.TowSessionStats;
+import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.lifecycle.AbstractLifeCycle;
 import com.aspectran.utils.logging.Logger;
@@ -87,6 +88,15 @@ public class Measuring extends AbstractLifeCycle {
         if (timer != null) {
             timer.cancel();
             timer = null;
+        }
+    }
+
+    @Override
+    public String toString() {
+        if (isStopped()) {
+            return new ToStringBuilder(super.toString(), info).toString();
+        } else {
+            return super.toString();
         }
     }
 

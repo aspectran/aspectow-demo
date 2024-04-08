@@ -18,11 +18,9 @@ package app.root.appmon.endpoint;
 import app.root.appmon.group.GroupInfo;
 import app.root.appmon.logtail.LogtailInfo;
 import app.root.appmon.measurement.MeasurementInfo;
-import com.aspectran.core.activity.InstantActivitySupport;
-import com.aspectran.core.component.bean.ablility.InitializableBean;
+import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.AvoidAdvice;
 import com.aspectran.core.component.bean.annotation.Component;
-import com.aspectran.core.context.ActivityContext;
 import com.aspectran.utils.StringUtils;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.json.JsonWriter;
@@ -53,7 +51,7 @@ import java.util.Set;
         configurator = AspectranConfigurator.class
 )
 @AvoidAdvice
-public class AppMonEndpoint extends InstantActivitySupport implements InitializableBean {
+public class AppMonEndpoint {
 
     private static final Logger logger = LoggerFactory.getLogger(AppMonEndpoint.class);
 
@@ -73,9 +71,9 @@ public class AppMonEndpoint extends InstantActivitySupport implements Initializa
 
     private AppMonManager appMonManager;
 
-    @Override
-    public void initialize() throws Exception {
-        this.appMonManager = new AppMonManager(this);
+    @Autowired
+    public void setAppMonManager(AppMonManager appMonManager) {
+        this.appMonManager = appMonManager;
     }
 
     @OnOpen
@@ -169,12 +167,6 @@ public class AppMonEndpoint extends InstantActivitySupport implements Initializa
 
     public Set<Session> getSessions() {
         return sessions;
-    }
-
-    @Override
-    @NonNull
-    public ActivityContext getActivityContext() {
-        return super.getActivityContext();
     }
 
 }

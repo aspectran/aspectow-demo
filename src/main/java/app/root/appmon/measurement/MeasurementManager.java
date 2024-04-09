@@ -114,15 +114,15 @@ public class MeasurementManager {
         }
     }
 
-    ActivityContext getActivityContext() {
+    public ActivityContext getActivityContext() {
         return appMonManager.getActivityContext();
     }
 
-    <V> V getBean(@NonNull String id) {
+    public <V> V getBean(@NonNull String id) {
         return getActivityContext().getBeanRegistry().getBean(id);
     }
 
-    void broadcast(String name, String msg) {
+    public void broadcast(String name, String msg) {
         appMonManager.getEndpoint().broadcast(name + ":" + msg);
     }
 

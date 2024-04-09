@@ -1,8 +1,12 @@
 package app.root.appmon.logtail;
 
 import app.root.appmon.endpoint.AppMonManager;
+import com.aspectran.utils.Assert;
 import com.aspectran.utils.ResourceUtils;
+import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
+import com.aspectran.utils.apon.ParameterKey;
+import com.aspectran.utils.apon.Parameters;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
@@ -20,6 +24,13 @@ public abstract class LogtailManagerBuilder {
         LogtailConfig logTailConfig = new LogtailConfig(ResourceUtils.getResourceAsReader(LOGTAIL_CONFIG_FILE));
         LogtailManager logtailManager = new LogtailManager(appMonManager);
         for (LogtailInfo logTailInfo : logTailConfig.getLogTailInfoList()) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Creating LogTailer " + ToStringBuilder.toString(logTailInfo));
+            }
+            validateRequiredParameter(logTailInfo, LogtailInfo.group);
+            validateRequiredParameter(logTailInfo, LogtailInfo.name);
+            validateRequiredParameter(logTailInfo, LogtailInfo.file);
+
             File logFile = null;
             try {
                 String file = appMonManager.getApplicationAdapter().toRealPath(logTailInfo.getFile());
@@ -33,6 +44,11 @@ public abstract class LogtailManagerBuilder {
             }
         }
         return logtailManager;
+    }
+
+    private static void validateRequiredParameter(@NonNull Parameters parameters, ParameterKey key) {
+        Assert.hasLength(parameters.getString(key),
+                "Missing value of required parameter: " + parameters.getQualifiedName(key));
     }
 
 }

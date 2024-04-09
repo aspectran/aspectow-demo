@@ -24,10 +24,10 @@ import com.aspectran.utils.apon.ValueType;
  */
 public class LogtailInfo extends AbstractParameters {
 
-    private static final ParameterKey group;
-    private static final ParameterKey name;
+    static final ParameterKey group;
+    static final ParameterKey name;
     private static final ParameterKey title;
-    private static final ParameterKey file;
+    static final ParameterKey file;
     private static final ParameterKey charset;
     private static final ParameterKey sampleInterval;
     private static final ParameterKey lastLines;

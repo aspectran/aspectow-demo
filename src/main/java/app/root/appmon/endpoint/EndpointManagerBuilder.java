@@ -32,5 +32,4 @@ public abstract class EndpointManagerBuilder {
         return new EndpointManager(endpointInfoList);
     }
 
-
 }

@@ -2,17 +2,23 @@ measurement: {
     group: root
     name: root
     title: Root App Session Statistics
+    source: tow.server
+    collector: app.root.appmon.measurement.session.SessionStatisticsCollector
     sampleInterval: 5000
 }
 measurement: {
     group: demo
     name: demo
     title: Demo App Session Statistics
+    source: tow.server
+    collector: app.root.appmon.measurement.session.SessionStatisticsCollector
     sampleInterval: 5000
 }
 measurement: {
     group: jpetstore
     name: jpetstore
     title: JPetStore App Session Statistics
+    source: tow.server
+    collector: app.root.appmon.measurement.session.SessionStatisticsCollector
     sampleInterval: 5000
 }

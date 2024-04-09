@@ -1,20 +1,13 @@
 package app.root.appmon.measurement;
 
-import app.root.appmon.measurement.session.SessionStatsPayload;
-import app.root.appmon.measurement.session.TowSessionStats;
 import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.lifecycle.AbstractLifeCycle;
-import com.aspectran.utils.logging.Logger;
-import com.aspectran.utils.logging.LoggerFactory;
 
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Measuring extends AbstractLifeCycle {
-
-    private static final Logger logger = LoggerFactory.getLogger(Measuring.class);
 
     private static final int DEFAULT_SAMPLE_INTERVAL = 5000;
 
@@ -28,17 +21,19 @@ public class Measuring extends AbstractLifeCycle {
 
     private final int sampleInterval;
 
-    private final TowSessionStats towSessionStats;
+    private final MeasureCollector dataCollector;
 
     private Timer timer;
 
-    public Measuring(@NonNull MeasurementManager manager, @NonNull MeasurementInfo info) {
+    public Measuring(@NonNull MeasurementManager manager,
+                     @NonNull MeasurementInfo info,
+                     MeasureCollector dataCollector) {
         this.manager = manager;
         this.info = info;
         this.group = info.getGroup();
         this.name = info.getName();
         this.sampleInterval = (info.getSampleInterval() > 0 ? info.getSampleInterval() : DEFAULT_SAMPLE_INTERVAL);
-        this.towSessionStats = new TowSessionStats(manager.getBean("tow.server"), info.getName());
+        this.dataCollector = dataCollector;
     }
 
     public MeasurementInfo getInfo() {
@@ -57,14 +52,10 @@ public class Measuring extends AbstractLifeCycle {
         return sampleInterval;
     }
 
-    private void broadcastStats() {
-        SessionStatsPayload stats = towSessionStats.getSessionStatsPayload();
-        if (stats != null) {
-            try {
-                manager.broadcast(name, "stats:" + stats.toJson());
-            } catch (IOException e) {
-                logger.warn(e);
-            }
+    private void broadcast() {
+        String data = dataCollector.collect();
+        if (data != null) {
+            manager.broadcast(name, "stats:" + data);
         }
     }
 
@@ -75,11 +66,11 @@ public class Measuring extends AbstractLifeCycle {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    broadcastStats();
+                    broadcast();
                 }
             }, 0, sampleInterval);
-            towSessionStats.clear();
-            broadcastStats();
+            dataCollector.init();
+            broadcast();
         }
     }
 

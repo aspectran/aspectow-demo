@@ -22,18 +22,18 @@ import java.util.Set;
 
 import static app.jpetstore.user.UserSessionManager.USER_SESSION_KEY;
 
-public class SessionStatisticsCollector implements MeasureCollector {
+public class SessionStatsCollector implements MeasureCollector {
 
-    private static final Logger logger = LoggerFactory.getLogger(SessionStatisticsCollector.class);
+    private static final Logger logger = LoggerFactory.getLogger(SessionStatsCollector.class);
 
     private final SessionHandler sessionHandler;
 
     private SessionStatsPayload oldStats;
 
-    public SessionStatisticsCollector(@NonNull MeasurementManager manager,
-                                      @NonNull MeasurementInfo measurementInfo) {
-        TowServer towServer = manager.getBean(measurementInfo.getSource());
-        this.sessionHandler = towServer.getSessionHandler(measurementInfo.getName());
+    public SessionStatsCollector(@NonNull MeasurementManager manager,
+                                 @NonNull MeasurementInfo info) {
+        TowServer towServer = manager.getBean(info.getSource());
+        this.sessionHandler = towServer.getSessionHandler(info.getName());
     }
 
     @Override

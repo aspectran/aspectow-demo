@@ -90,8 +90,8 @@ public class AppMonManager extends InstantActivitySupport {
         return groupManager.getGroupInfoList(joinGroups);
     }
 
-    List<LogtailInfo> getLogTailInfoList(String[] joinGroups) {
-        return logtailManager.getLogTailInfoList(joinGroups);
+    List<LogtailInfo> getLogtailInfoList(String[] joinGroups) {
+        return logtailManager.getLogtailInfoList(joinGroups);
     }
 
     List<MeasurementInfo> getMeasurementInfoList(String[] joinGroups) {

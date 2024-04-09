@@ -29,7 +29,7 @@ public class LogtailManager {
 
     private static final Logger logger = LoggerFactory.getLogger(LogtailManager.class);
 
-    private final Map<String, LogTailer> tailers = new LinkedHashMap<>();
+    private final Map<String, LogtailService> logtailServices = new LinkedHashMap<>();
 
     private final AppMonManager appMonManager;
 
@@ -37,51 +37,51 @@ public class LogtailManager {
         this.appMonManager = appMonManager;
     }
 
-    public void addLogTailer(String name, LogTailer tailer) {
-        tailers.put(name, tailer);
+    public void addLogtailService(String name, LogtailService service) {
+        logtailServices.put(name, service);
     }
 
-    public List<LogtailInfo> getLogTailInfoList(String[] joinGroups) {
-        List<LogtailInfo> infoList = new ArrayList<>(tailers.size());
+    public List<LogtailInfo> getLogtailInfoList(String[] joinGroups) {
+        List<LogtailInfo> infoList = new ArrayList<>(logtailServices.size());
         if (joinGroups != null && joinGroups.length > 0) {
             for (String name : joinGroups) {
-                for (LogTailer logTailer : tailers.values()) {
-                    if (logTailer.getInfo().getGroup().equals(name)) {
-                        infoList.add(logTailer.getInfo());
+                for (LogtailService logtailService : logtailServices.values()) {
+                    if (logtailService.getInfo().getGroup().equals(name)) {
+                        infoList.add(logtailService.getInfo());
                     }
                 }
             }
         } else {
-            for (LogTailer logTailer : tailers.values()) {
-                infoList.add(logTailer.getInfo());
+            for (LogtailService logtailService : logtailServices.values()) {
+                infoList.add(logtailService.getInfo());
             }
         }
         return infoList;
     }
 
     public void join(String[] joinGroups) {
-        if (!tailers.isEmpty()) {
+        if (!logtailServices.isEmpty()) {
             if (joinGroups != null && joinGroups.length > 0) {
-                for (LogTailer tailer : tailers.values()) {
+                for (LogtailService service : logtailServices.values()) {
                     for (String group : joinGroups) {
-                        if (tailer.getInfo().getGroup().equals(group)) {
-                            start(tailer);
+                        if (service.getInfo().getGroup().equals(group)) {
+                            start(service);
                         }
                     }
                 }
             } else {
-                for (LogTailer tailer : tailers.values()) {
-                    start(tailer);
+                for (LogtailService service : logtailServices.values()) {
+                    start(service);
                 }
             }
         }
     }
 
-    private void start(@NonNull LogTailer tailer) {
-        tailer.readLastLines();
-        if (!tailer.isRunning()) {
+    private void start(@NonNull LogtailService service) {
+        service.readLastLines();
+        if (!service.isRunning()) {
             try {
-                tailer.start();
+                service.start();
             } catch (Exception e) {
                 logger.warn(e);
             }
@@ -89,28 +89,28 @@ public class LogtailManager {
     }
 
     public void release(String[] unusedGroups) {
-        if (!tailers.isEmpty()) {
+        if (!logtailServices.isEmpty()) {
             if (unusedGroups != null) {
-                for (LogTailer tailer : tailers.values()) {
+                for (LogtailService service : logtailServices.values()) {
                     for (String group : unusedGroups) {
-                        if (tailer.getInfo().getGroup().equals(group) && tailer.isRunning()) {
-                            stop(tailer);
+                        if (service.getInfo().getGroup().equals(group) && service.isRunning()) {
+                            stop(service);
                         }
                     }
                 }
             } else {
-                for (LogTailer tailer : tailers.values()) {
-                    if (tailer.isRunning()) {
-                        stop(tailer);
+                for (LogtailService service : logtailServices.values()) {
+                    if (service.isRunning()) {
+                        stop(service);
                     }
                 }
             }
         }
     }
 
-    private void stop(LogTailer tailer) {
+    private void stop(LogtailService service) {
         try {
-            tailer.stop();
+            service.stop();
         } catch (Exception e) {
             logger.warn(e);
         }

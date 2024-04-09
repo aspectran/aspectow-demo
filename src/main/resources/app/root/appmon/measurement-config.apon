@@ -3,7 +3,7 @@ measurement: {
     name: root
     title: Root App Session Statistics
     source: tow.server
-    collector: app.root.appmon.measurement.session.SessionStatisticsCollector
+    collector: app.root.appmon.measurement.session.SessionStatsCollector
     sampleInterval: 5000
 }
 measurement: {
@@ -11,7 +11,7 @@ measurement: {
     name: demo
     title: Demo App Session Statistics
     source: tow.server
-    collector: app.root.appmon.measurement.session.SessionStatisticsCollector
+    collector: app.root.appmon.measurement.session.SessionStatsCollector
     sampleInterval: 5000
 }
 measurement: {
@@ -19,6 +19,6 @@ measurement: {
     name: jpetstore
     title: JPetStore App Session Statistics
     source: tow.server
-    collector: app.root.appmon.measurement.session.SessionStatisticsCollector
+    collector: app.root.appmon.measurement.session.SessionStatsCollector
     sampleInterval: 5000
 }

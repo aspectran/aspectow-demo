@@ -30,7 +30,7 @@ public class MeasurementManager {
 
     private static final Logger logger = LoggerFactory.getLogger(MeasurementManager.class);
 
-    private final Map<String, Measuring> measurings = new LinkedHashMap<>();
+    private final Map<String, MeasureService> measureServices = new LinkedHashMap<>();
 
     private final AppMonManager appMonManager;
 
@@ -38,77 +38,77 @@ public class MeasurementManager {
         this.appMonManager = appMonManager;
     }
 
-    public void addMeasuring(String name, Measuring measuring) {
-        measurings.put(name, measuring);
+    void addMeasureService(String name, MeasureService measureService) {
+        measureServices.put(name, measureService);
     }
 
     public List<MeasurementInfo> getMeasurementInfoList(String[] joinGroups) {
-        List<MeasurementInfo> infoList = new ArrayList<>(measurings.size());
+        List<MeasurementInfo> infoList = new ArrayList<>(measureServices.size());
         if (joinGroups != null && joinGroups.length > 0) {
             for (String name : joinGroups) {
-                for (Measuring measuring : measurings.values()) {
-                    if (measuring.getInfo().getGroup().equals(name)) {
-                        infoList.add(measuring.getInfo());
+                for (MeasureService service : measureServices.values()) {
+                    if (service.getInfo().getGroup().equals(name)) {
+                        infoList.add(service.getInfo());
                     }
                 }
             }
         } else {
-            for (Measuring measuring : measurings.values()) {
-                infoList.add(measuring.getInfo());
+            for (MeasureService service : measureServices.values()) {
+                infoList.add(service.getInfo());
             }
         }
         return infoList;
     }
 
     public void join(String[] joinGroups) {
-        if (!measurings.isEmpty()) {
+        if (!measureServices.isEmpty()) {
             if (joinGroups != null && joinGroups.length > 0) {
-                for (Measuring measuring : measurings.values()) {
+                for (MeasureService service : measureServices.values()) {
                     for (String group : joinGroups) {
-                        if (measuring.getGroup().equals(group)) {
-                            start(measuring);
+                        if (service.getGroup().equals(group)) {
+                            start(service);
                         }
                     }
                 }
             } else {
-                for (Measuring measuring : measurings.values()) {
-                    start(measuring);
+                for (MeasureService service : measureServices.values()) {
+                    start(service);
                 }
             }
         }
     }
 
-    private void start(Measuring measuring) {
+    private void start(MeasureService service) {
         try {
-            measuring.start();
+            service.start();
         } catch (Exception e) {
             logger.warn(e);
         }
     }
 
     public void release(String[] unusedGroups) {
-        if (!measurings.isEmpty()) {
+        if (!measureServices.isEmpty()) {
             if (unusedGroups != null) {
-                for (Measuring measuring : measurings.values()) {
+                for (MeasureService service : measureServices.values()) {
                     for (String group : unusedGroups) {
-                        if (measuring.getGroup().equals(group) && measuring.isRunning()) {
-                            stop(measuring);
+                        if (service.getGroup().equals(group) && service.isRunning()) {
+                            stop(service);
                         }
                     }
                 }
             } else {
-                for (Measuring measuring : measurings.values()) {
-                    if (measuring.isRunning()) {
-                        stop(measuring);
+                for (MeasureService service : measureServices.values()) {
+                    if (service.isRunning()) {
+                        stop(service);
                     }
                 }
             }
         }
     }
 
-    private void stop(Measuring measuring) {
+    private void stop(MeasureService service) {
         try {
-            measuring.stop();
+            service.stop();
         } catch (Exception e) {
             logger.warn(e);
         }

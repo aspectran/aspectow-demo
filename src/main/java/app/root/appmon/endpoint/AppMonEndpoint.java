@@ -144,7 +144,7 @@ public class AppMonEndpoint {
 
     private void sendJoined(@NonNull Session session, String[] joinGroups) throws IOException {
         List<GroupInfo> groups = appMonManager.getGroupInfoList(joinGroups);
-        List<LogtailInfo> logtails = appMonManager.getLogTailInfoList(joinGroups);
+        List<LogtailInfo> logtails = appMonManager.getLogtailInfoList(joinGroups);
         List<MeasurementInfo> measurements = appMonManager.getMeasurementInfoList(joinGroups);
         JsonWriter jsonWriter = new JsonWriter().nullWritable(false);
         jsonWriter.beginObject();

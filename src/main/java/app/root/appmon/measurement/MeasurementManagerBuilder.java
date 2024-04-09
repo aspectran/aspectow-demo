@@ -23,7 +23,7 @@ public abstract class MeasurementManagerBuilder {
         MeasurementManager measurementManager = new MeasurementManager(appMonManager);
         for (MeasurementInfo measurementInfo : logTailConfig.getMeasurementInfoList()) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Creating Measuring " + ToStringBuilder.toString(measurementInfo));
+                logger.debug("Create MeasureService " + ToStringBuilder.toString(measurementInfo));
             }
             validateRequiredParameter(measurementInfo, MeasurementInfo.group);
             validateRequiredParameter(measurementInfo, MeasurementInfo.name);
@@ -31,8 +31,8 @@ public abstract class MeasurementManagerBuilder {
             validateRequiredParameter(measurementInfo, MeasurementInfo.collector);
 
             MeasureCollector dataCollector = createMeasureDataCollector(measurementManager, measurementInfo);
-            Measuring measuring = new Measuring(measurementManager, measurementInfo, dataCollector);
-            measurementManager.addMeasuring(measurementInfo.getName(), measuring);
+            MeasureService service = new MeasureService(measurementManager, measurementInfo, dataCollector);
+            measurementManager.addMeasureService(measurementInfo.getName(), service);
         }
         return measurementManager;
     }
@@ -43,16 +43,16 @@ public abstract class MeasurementManagerBuilder {
     }
 
     @NonNull
-    private static MeasureCollector createMeasureDataCollector(@NonNull MeasurementManager measurementManager,
-                                                               @NonNull MeasurementInfo measurementInfo)
+    private static MeasureCollector createMeasureDataCollector(@NonNull MeasurementManager manager,
+                                                               @NonNull MeasurementInfo info)
             throws Exception {
         try {
-            Class<MeasureCollector> collectorType = ClassUtils.classForName(measurementInfo.getCollector());
-            Object[] args = {measurementManager, measurementInfo};
-            Class<?>[] argTypes = {MeasurementManager.class, MeasurementInfo.class};
+            Class<MeasureCollector> collectorType = ClassUtils.classForName(info.getCollector());
+            Object[] args = { manager, info };
+            Class<?>[] argTypes = { MeasurementManager.class, MeasurementInfo.class };
             return ClassUtils.createInstance(collectorType, args, argTypes);
         } catch (Exception e) {
-            throw new Exception("Failed to create measure data collector: " + measurementInfo.getCollector(), e);
+            throw new Exception("Failed to create measure collector: " + info.getCollector(), e);
         }
     }
 

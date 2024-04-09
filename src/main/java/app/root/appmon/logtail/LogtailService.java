@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class LogTailer extends AbstractLifeCycle {
+public class LogtailService extends AbstractLifeCycle {
 
-    private static final Logger logger = LoggerFactory.getLogger(LogTailer.class);
+    private static final Logger logger = LoggerFactory.getLogger(LogtailService.class);
 
     private static final Charset DEFAULT_CHARSET = Charset.defaultCharset();
 
@@ -58,7 +58,7 @@ public class LogTailer extends AbstractLifeCycle {
 
     private Tailer tailer;
 
-    public LogTailer(LogtailManager manager, @NonNull LogtailInfo info, File logFile) {
+    public LogtailService(LogtailManager manager, @NonNull LogtailInfo info, File logFile) {
         this.manager = manager;
         this.info = info;
         this.name = info.getName();

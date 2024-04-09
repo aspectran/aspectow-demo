@@ -7,7 +7,7 @@ import com.aspectran.utils.lifecycle.AbstractLifeCycle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Measuring extends AbstractLifeCycle {
+public class MeasureService extends AbstractLifeCycle {
 
     private static final int DEFAULT_SAMPLE_INTERVAL = 5000;
 
@@ -25,9 +25,9 @@ public class Measuring extends AbstractLifeCycle {
 
     private Timer timer;
 
-    public Measuring(@NonNull MeasurementManager manager,
-                     @NonNull MeasurementInfo info,
-                     MeasureCollector dataCollector) {
+    public MeasureService(@NonNull MeasurementManager manager,
+                          @NonNull MeasurementInfo info,
+                          MeasureCollector dataCollector) {
         this.manager = manager;
         this.info = info;
         this.group = info.getGroup();

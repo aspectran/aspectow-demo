@@ -25,7 +25,7 @@ public abstract class LogtailManagerBuilder {
         LogtailManager logtailManager = new LogtailManager(appMonManager);
         for (LogtailInfo logTailInfo : logTailConfig.getLogTailInfoList()) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Creating LogTailer " + ToStringBuilder.toString(logTailInfo));
+                logger.debug("Create LogtailService " + ToStringBuilder.toString(logTailInfo));
             }
             validateRequiredParameter(logTailInfo, LogtailInfo.group);
             validateRequiredParameter(logTailInfo, LogtailInfo.name);
@@ -39,8 +39,8 @@ public abstract class LogtailManagerBuilder {
                 logger.error("Failed to resolve absolute path to log file " + logTailInfo.getFile(), e);
             }
             if (logFile != null) {
-                LogTailer tailer = new LogTailer(logtailManager, logTailInfo, logFile);
-                logtailManager.addLogTailer(logTailInfo.getName(), tailer);
+                LogtailService tailer = new LogtailService(logtailManager, logTailInfo, logFile);
+                logtailManager.addLogtailService(logTailInfo.getName(), tailer);
             }
         }
         return logtailManager;

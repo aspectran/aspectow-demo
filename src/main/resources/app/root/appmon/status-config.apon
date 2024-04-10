@@ -1,24 +1,27 @@
-measurement: {
+status: {
     group: root
     name: root
     title: Root App Session Statistics
+    collector: app.root.appmon.status.session.SessionStatusCollector
     source: tow.server
-    collector: app.root.appmon.measurement.session.SessionStatsCollector
+    label: session
     sampleInterval: 5000
 }
-measurement: {
+status: {
     group: demo
     name: demo
     title: Demo App Session Statistics
+    collector: app.root.appmon.status.session.SessionStatusCollector
     source: tow.server
-    collector: app.root.appmon.measurement.session.SessionStatsCollector
+    label: session
     sampleInterval: 5000
 }
-measurement: {
+status: {
     group: jpetstore
     name: jpetstore
     title: JPetStore App Session Statistics
+    collector: app.root.appmon.status.session.SessionStatusCollector
     source: tow.server
-    collector: app.root.appmon.measurement.session.SessionStatsCollector
+    label: session
     sampleInterval: 5000
 }

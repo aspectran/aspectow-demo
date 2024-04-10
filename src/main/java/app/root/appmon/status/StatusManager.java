@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.appmon.measurement;
+package app.root.appmon.status;
 
 import app.root.appmon.endpoint.AppMonManager;
 import com.aspectran.core.context.ActivityContext;
@@ -26,34 +26,34 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MeasurementManager {
+public class StatusManager {
 
-    private static final Logger logger = LoggerFactory.getLogger(MeasurementManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(StatusManager.class);
 
-    private final Map<String, MeasureService> measureServices = new LinkedHashMap<>();
+    private final Map<String, StatusService> statusServices = new LinkedHashMap<>();
 
     private final AppMonManager appMonManager;
 
-    public MeasurementManager(AppMonManager appMonManager) {
+    public StatusManager(AppMonManager appMonManager) {
         this.appMonManager = appMonManager;
     }
 
-    void addMeasureService(String name, MeasureService measureService) {
-        measureServices.put(name, measureService);
+    void addStatusService(String name, StatusService statusService) {
+        statusServices.put(name, statusService);
     }
 
-    public List<MeasurementInfo> getMeasurementInfoList(String[] joinGroups) {
-        List<MeasurementInfo> infoList = new ArrayList<>(measureServices.size());
+    public List<StatusInfo> getStatusInfoList(String[] joinGroups) {
+        List<StatusInfo> infoList = new ArrayList<>(statusServices.size());
         if (joinGroups != null && joinGroups.length > 0) {
             for (String name : joinGroups) {
-                for (MeasureService service : measureServices.values()) {
+                for (StatusService service : statusServices.values()) {
                     if (service.getInfo().getGroup().equals(name)) {
                         infoList.add(service.getInfo());
                     }
                 }
             }
         } else {
-            for (MeasureService service : measureServices.values()) {
+            for (StatusService service : statusServices.values()) {
                 infoList.add(service.getInfo());
             }
         }
@@ -61,9 +61,9 @@ public class MeasurementManager {
     }
 
     public void join(String[] joinGroups) {
-        if (!measureServices.isEmpty()) {
+        if (!statusServices.isEmpty()) {
             if (joinGroups != null && joinGroups.length > 0) {
-                for (MeasureService service : measureServices.values()) {
+                for (StatusService service : statusServices.values()) {
                     for (String group : joinGroups) {
                         if (service.getGroup().equals(group)) {
                             start(service);
@@ -71,14 +71,14 @@ public class MeasurementManager {
                     }
                 }
             } else {
-                for (MeasureService service : measureServices.values()) {
+                for (StatusService service : statusServices.values()) {
                     start(service);
                 }
             }
         }
     }
 
-    private void start(MeasureService service) {
+    private void start(StatusService service) {
         try {
             service.start();
         } catch (Exception e) {
@@ -87,9 +87,9 @@ public class MeasurementManager {
     }
 
     public void release(String[] unusedGroups) {
-        if (!measureServices.isEmpty()) {
+        if (!statusServices.isEmpty()) {
             if (unusedGroups != null) {
-                for (MeasureService service : measureServices.values()) {
+                for (StatusService service : statusServices.values()) {
                     for (String group : unusedGroups) {
                         if (service.getGroup().equals(group) && service.isRunning()) {
                             stop(service);
@@ -97,7 +97,7 @@ public class MeasurementManager {
                     }
                 }
             } else {
-                for (MeasureService service : measureServices.values()) {
+                for (StatusService service : statusServices.values()) {
                     if (service.isRunning()) {
                         stop(service);
                     }
@@ -106,7 +106,7 @@ public class MeasurementManager {
         }
     }
 
-    private void stop(MeasureService service) {
+    private void stop(StatusService service) {
         try {
             service.stop();
         } catch (Exception e) {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.appmon.measurement;
+package app.root.appmon.status;
 
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
@@ -22,13 +22,14 @@ import com.aspectran.utils.apon.ValueType;
 /**
  * <p>Created: 2020/02/12</p>
  */
-public class MeasurementInfo extends AbstractParameters {
+public class StatusInfo extends AbstractParameters {
 
     static final ParameterKey group;
     static final ParameterKey name;
     private static final ParameterKey title;
-    static final ParameterKey source;
     static final ParameterKey collector;
+    static final ParameterKey source;
+    static final ParameterKey label;
     private static final ParameterKey sampleInterval;
 
     private static final ParameterKey[] parameterKeys;
@@ -37,21 +38,23 @@ public class MeasurementInfo extends AbstractParameters {
         group = new ParameterKey("group", ValueType.STRING);
         name = new ParameterKey("name", ValueType.STRING);
         title = new ParameterKey("title", ValueType.STRING);
-        source = new ParameterKey("source", ValueType.STRING);
         collector = new ParameterKey("collector", ValueType.STRING);
+        source = new ParameterKey("source", ValueType.STRING);
+        label = new ParameterKey("label", ValueType.STRING);
         sampleInterval = new ParameterKey("sampleInterval", ValueType.INT);
 
         parameterKeys = new ParameterKey[] {
                 group,
                 name,
                 title,
-                source,
                 collector,
+                source,
+                label,
                 sampleInterval
         };
     }
 
-    public MeasurementInfo() {
+    public StatusInfo() {
         super(parameterKeys);
     }
 
@@ -60,7 +63,7 @@ public class MeasurementInfo extends AbstractParameters {
     }
 
     public void setGroup(String group) {
-        putValue(MeasurementInfo.group, group);
+        putValue(StatusInfo.group, group);
     }
 
     public String getName() {
@@ -68,7 +71,7 @@ public class MeasurementInfo extends AbstractParameters {
     }
 
     public void setName(String name) {
-        putValue(MeasurementInfo.name, name);
+        putValue(StatusInfo.name, name);
     }
 
     public String getTitle() {
@@ -76,15 +79,7 @@ public class MeasurementInfo extends AbstractParameters {
     }
 
     public void setTitle(String title) {
-        putValue(MeasurementInfo.title, title);
-    }
-
-    public String getSource() {
-        return getString(source);
-    }
-
-    public void setSource(String source) {
-        putValue(MeasurementInfo.source, source);
+        putValue(StatusInfo.title, title);
     }
 
     public String getCollector() {
@@ -92,7 +87,23 @@ public class MeasurementInfo extends AbstractParameters {
     }
 
     public void setCollector(String collector) {
-        putValue(MeasurementInfo.collector, collector);
+        putValue(StatusInfo.collector, collector);
+    }
+
+    public String getSource() {
+        return getString(source);
+    }
+
+    public void setSource(String source) {
+        putValue(StatusInfo.source, source);
+    }
+
+    public String getLabel() {
+        return getString(label);
+    }
+
+    public void setLabel(String label) {
+        putValue(StatusInfo.label, label);
     }
 
     public int getSampleInterval() {
@@ -100,7 +111,7 @@ public class MeasurementInfo extends AbstractParameters {
     }
 
     public void setSampleInterval(int sampleInterval) {
-        putValue(MeasurementInfo.sampleInterval, sampleInterval);
+        putValue(StatusInfo.sampleInterval, sampleInterval);
     }
 
 }

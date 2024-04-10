@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.appmon.measurement.session;
+package app.root.appmon.status.session;
 
 import com.aspectran.utils.json.JsonWriter;
 
@@ -23,7 +23,7 @@ import java.util.Arrays;
 /**
  * <p>Created: 2020/01/11</p>
  */
-public class SessionStatsPayload {
+public class SessionStatusPayload {
 
     private long createdSessionCount;
 
@@ -110,7 +110,7 @@ public class SessionStatsPayload {
         if (this == other) {
             return true;
         }
-        if (!(other instanceof SessionStatsPayload stats)) {
+        if (!(other instanceof SessionStatusPayload stats)) {
             return false;
         }
         if (stats.createdSessionCount != createdSessionCount ||

@@ -20,13 +20,10 @@ import org.apache.commons.io.input.TailerListener;
 
 public class LogTailerListener implements TailerListener {
 
-    private final LogtailManager manager;
+    private final LogtailService service;
 
-    private final String name;
-
-    public LogTailerListener(LogtailManager manager, String name) {
-        this.manager = manager;
-        this.name = name;
+    public LogTailerListener(LogtailService service) {
+        this.service = service;
     }
 
     @Override
@@ -43,7 +40,7 @@ public class LogTailerListener implements TailerListener {
 
     @Override
     public void handle(String line) {
-        manager.broadcast(name, line);
+        service.broadcast(line);
     }
 
     @Override

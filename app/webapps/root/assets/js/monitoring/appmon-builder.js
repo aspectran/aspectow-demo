@@ -10,7 +10,6 @@ function AppMonBuilder(endpoints) {
         console.log('endpointIndex', endpointIndex);
         function onEndpointJoined(endpoint, payload) {
             console.log('endpoint', endpoint);
-            console.log('payload', payload);
             let endpointBox = addEndpoint(endpoint);
             for (let key in payload.groups) {
                 let group = payload.groups[key];
@@ -21,10 +20,10 @@ function AppMonBuilder(endpoints) {
                 let logtailBox = addLogtail(endpointBox, logtail);
                 endpoint.client.setLogtail(logtail.name, logtailBox.find(".logtail"));
             }
-            for (let key in payload.measurements) {
-                let measurement = payload.measurements[key];
-                let measurementBox = addMeasurement(endpointBox, measurement);
-                endpoint.client.setMeasurement(measurement.name, measurementBox);
+            for (let key in payload.statuses) {
+                let status = payload.statuses[key];
+                let statusBox = addStatus(endpointBox, status);
+                endpoint.client.setStatus(status.name, statusBox);
             }
             endpointBox.find(".logtail-box.available").each(function() {
                 let logtail = $(this).find(".logtail");
@@ -198,13 +197,13 @@ function AppMonBuilder(endpoints) {
         let a = tab.find("a");
         a.find(".title").text(" " + endpoint.title + " ");
         tab.show().appendTo(tabs);
-        let endpointBox = $(".endpoint-box").eq(0).hide().clone();
-        endpointBox.addClass("available")
+        let endpointBox = $(".endpoint-box");
+        return endpointBox.eq(0).hide().clone()
+            .addClass("available")
             .attr("data-index", index)
             .attr("data-name", endpoint.name)
             .attr("data-title", endpoint.title)
-            .insertAfter($(".endpoint-box").last());
-        return endpointBox.show();
+            .insertAfter(endpointBox.last()).show();
     }
 
     const addGroup = function (endpointBox, group) {
@@ -250,12 +249,12 @@ function AppMonBuilder(endpoints) {
         return logtailBox.appendTo(groupBox.find(".logtail-box-wrap")).show();
     }
 
-    const addMeasurement = function (endpointBox, measurement) {
-        let groupBox = endpointBox.find(".group-box[data-name=" + measurement.group + "]");
-        let measurementBox = groupBox.find(".measurement-box").eq(0).hide().clone();
-        measurementBox.addClass("available")
-            .attr("data-group", measurement.group)
-            .attr("data-name", measurement.name);
-        return measurementBox.appendTo(groupBox).show();
+    const addStatus = function (endpointBox, status) {
+        let groupBox = endpointBox.find(".group-box[data-name=" + status.group + "]");
+        let statusBox = groupBox.find(".status-box").eq(0).hide().clone();
+        statusBox.addClass("available")
+            .attr("data-group", status.group)
+            .attr("data-name", status.name);
+        return statusBox.appendTo(groupBox).show();
     }
 }

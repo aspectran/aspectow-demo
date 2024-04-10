@@ -6,9 +6,9 @@ import app.root.appmon.group.GroupManagerBuilder;
 import app.root.appmon.logtail.LogtailInfo;
 import app.root.appmon.logtail.LogtailManager;
 import app.root.appmon.logtail.LogtailManagerBuilder;
-import app.root.appmon.measurement.MeasurementInfo;
-import app.root.appmon.measurement.MeasurementManager;
-import app.root.appmon.measurement.MeasurementManagerBuilder;
+import app.root.appmon.status.StatusInfo;
+import app.root.appmon.status.StatusManager;
+import app.root.appmon.status.StatusManagerBuilder;
 import com.aspectran.core.activity.InstantActivitySupport;
 import com.aspectran.core.adapter.ApplicationAdapter;
 import com.aspectran.core.component.bean.annotation.Bean;
@@ -40,7 +40,7 @@ public class AppMonManager extends InstantActivitySupport {
 
     private LogtailManager logtailManager;
 
-    private MeasurementManager measurementManager;
+    private StatusManager statusManager;
 
     public AppMonManager() {
     }
@@ -52,7 +52,7 @@ public class AppMonManager extends InstantActivitySupport {
         this.endpointManager = EndpointManagerBuilder.build();
         this.groupManager = GroupManagerBuilder.build(this);
         this.logtailManager = LogtailManagerBuilder.build(this);
-        this.measurementManager = MeasurementManagerBuilder.build(this);
+        this.statusManager = StatusManagerBuilder.build(this);
     }
 
     @Override
@@ -94,14 +94,14 @@ public class AppMonManager extends InstantActivitySupport {
         return logtailManager.getLogtailInfoList(joinGroups);
     }
 
-    List<MeasurementInfo> getMeasurementInfoList(String[] joinGroups) {
-        return measurementManager.getMeasurementInfoList(joinGroups);
+    List<StatusInfo> getStatusInfoList(String[] joinGroups) {
+        return statusManager.getStatusInfoList(joinGroups);
     }
 
     synchronized void join(Session session) {
         String[] joinGroups = groupManager.getJoinedGroups(session);
         logtailManager.join(joinGroups);
-        measurementManager.join(joinGroups);
+        statusManager.join(joinGroups);
         if (joinGroups != null) {
             groupManager.saveJoinedGroups(session, joinGroups);
         } else {
@@ -112,7 +112,7 @@ public class AppMonManager extends InstantActivitySupport {
     synchronized void release(Session session) {
         String[] unusedGroups = groupManager.getUnusedGroups(session);
         logtailManager.release(unusedGroups);
-        measurementManager.release(unusedGroups);
+        statusManager.release(unusedGroups);
         groupManager.removeJoinedGroups(session);
     }
 

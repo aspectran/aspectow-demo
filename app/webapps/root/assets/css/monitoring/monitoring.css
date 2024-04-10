@@ -192,13 +192,13 @@ ul.layout-options li.on a {
     animation-duration: 1.3s;
 }
 
-.measurement-box .panel {
+.status-box .panel {
     border: 1px solid #ccc;
     border-bottom: 2px solid #ccc;
     border-radius: 0;
     height: 260px;
 }
-.measurement-box dl.stats dt {
+.status-box dl.sessions dt {
     float: left;
     clear: left;
     padding: 0;
@@ -206,7 +206,7 @@ ul.layout-options li.on a {
     height: 30px;
     font-size: 1em;
 }
-.measurement-box dl.stats dd {
+.status-box dl.sessions dd {
     text-align: right;
     font-weight: bold;
     font-size: 1em;
@@ -225,7 +225,7 @@ ul.layout-options li.on a {
     list-style-type: none;
     white-space: nowrap;
 }
-.sessions-box ul.sessions .status {
+.sessions-box ul.sessions li .indicator {
     background-color: #13CF13;
     width: 12px;
     height: 12px;
@@ -233,6 +233,6 @@ ul.layout-options li.on a {
     display: inline-block;
     margin-right: 10px;
 }
-.sessions-box ul.sessions .status.logged-out {
+.sessions-box ul.sessions li .indicator.logged-out {
     background-color: #ccc;
 }

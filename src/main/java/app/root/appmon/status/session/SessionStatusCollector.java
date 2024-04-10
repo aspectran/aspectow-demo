@@ -1,9 +1,9 @@
-package app.root.appmon.measurement.session;
+package app.root.appmon.status.session;
 
 import app.jpetstore.user.UserSession;
-import app.root.appmon.measurement.MeasureCollector;
-import app.root.appmon.measurement.MeasurementInfo;
-import app.root.appmon.measurement.MeasurementManager;
+import app.root.appmon.status.StatusCollector;
+import app.root.appmon.status.StatusInfo;
+import app.root.appmon.status.StatusManager;
 import com.aspectran.core.component.session.DefaultSession;
 import com.aspectran.core.component.session.SessionHandler;
 import com.aspectran.core.component.session.SessionStatistics;
@@ -22,23 +22,23 @@ import java.util.Set;
 
 import static app.jpetstore.user.UserSessionManager.USER_SESSION_KEY;
 
-public class SessionStatsCollector implements MeasureCollector {
+public class SessionStatusCollector implements StatusCollector {
 
-    private static final Logger logger = LoggerFactory.getLogger(SessionStatsCollector.class);
+    private static final Logger logger = LoggerFactory.getLogger(SessionStatusCollector.class);
 
     private final SessionHandler sessionHandler;
 
-    private SessionStatsPayload oldStats;
+    private SessionStatusPayload oldPayload;
 
-    public SessionStatsCollector(@NonNull MeasurementManager manager,
-                                 @NonNull MeasurementInfo info) {
+    public SessionStatusCollector(@NonNull StatusManager manager,
+                                  @NonNull StatusInfo info) {
         TowServer towServer = manager.getBean(info.getSource());
         this.sessionHandler = towServer.getSessionHandler(info.getName());
     }
 
     @Override
     public void init() {
-        oldStats = null;
+        oldPayload = null;
     }
 
     @Override
@@ -46,19 +46,19 @@ public class SessionStatsCollector implements MeasureCollector {
         try {
             SessionStatistics statistics = sessionHandler.getStatistics();
 
-            SessionStatsPayload stats = new SessionStatsPayload();
-            stats.setCreatedSessionCount(statistics.getCreatedSessions());
-            stats.setExpiredSessionCount(statistics.getExpiredSessions());
-            stats.setActiveSessionCount(statistics.getActiveSessions());
-            stats.setHighestActiveSessionCount(statistics.getHighestActiveSessions());
-            stats.setEvictedSessionCount(statistics.getEvictedSessions());
-            stats.setRejectedSessionCount(statistics.getRejectedSessions());
-            stats.setElapsedTime(formatDuration(statistics.getStartTime()));
-            stats.setCurrentSessions(getCurrentSessions());
+            SessionStatusPayload payload = new SessionStatusPayload();
+            payload.setCreatedSessionCount(statistics.getCreatedSessions());
+            payload.setExpiredSessionCount(statistics.getExpiredSessions());
+            payload.setActiveSessionCount(statistics.getActiveSessions());
+            payload.setHighestActiveSessionCount(statistics.getHighestActiveSessions());
+            payload.setEvictedSessionCount(statistics.getEvictedSessions());
+            payload.setRejectedSessionCount(statistics.getRejectedSessions());
+            payload.setElapsedTime(formatDuration(statistics.getStartTime()));
+            payload.setCurrentSessions(getCurrentSessions());
 
-            if (!stats.equals(oldStats)) {
-                oldStats = stats;
-                return stats.toJson();
+            if (!payload.equals(oldPayload)) {
+                oldPayload = payload;
+                return payload.toJson();
             } else {
                 return null;
             }

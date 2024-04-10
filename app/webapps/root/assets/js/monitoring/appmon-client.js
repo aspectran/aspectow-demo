@@ -5,7 +5,7 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
     let logtails = {};
     let missileTracks = {};
     let indicators = {};
-    let measurements = {};
+    let statuses = {};
     let established = false;
     let prevLogTime = null;
     let prevSentTime = new Date().getTime();
@@ -40,10 +40,15 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
                         if (text.startsWith("last:")) {
                             text = text.substring(5);
                             printMessage(name, text, false);
-                        } else if (text.startsWith("stats:")) {
-                            let stats = JSON.parse(text.substring(6));
-                            console.log(stats);
-                            printStats(name, stats);
+                        } else if (text.startsWith("status:")) {
+                            text = text.substring(7);
+                            idx = text.indexOf(":");
+                            if (idx !== -1) {
+                                let label = text.substring(0, idx);
+                                let data = JSON.parse(text.substring(idx + 1));
+                                console.log(name, label, data);
+                                printStatus(name, label, data);
+                            }
                         } else {
                             printMessage(name, text, true);
                         }
@@ -94,20 +99,20 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         }
     };
 
-    this.setLogtail = function(logtailName, logtail) {
-        logtails[logtailName] = logtail;
+    this.setLogtail = function(name, logtail) {
+        logtails[name] = logtail;
     };
 
-    this.setMissileTrack = function(logtailName, missileTrack) {
-        missileTracks[logtailName] = (missileTrack.length > 0 ? missileTrack : null);
+    this.setMissileTrack = function(name, missileTrack) {
+        missileTracks[name] = (missileTrack.length > 0 ? missileTrack : null);
     };
 
-    this.setIndicators = function(logtailName, indicatorArr) {
-        indicators[logtailName] = indicatorArr;
+    this.setIndicators = function(name, indicatorArr) {
+        indicators[name] = indicatorArr;
     };
 
-    this.setMeasurement = function(logtailName, measurement) {
-        measurements[logtailName] = measurement;
+    this.setStatus = function(name, status) {
+        statuses[name] = status;
     };
 
     this.getLogtails = function() {
@@ -154,11 +159,11 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         }
     };
 
-    const getMeasurement = function(name) {
-        if (measurements && name) {
-            return measurements[name];
+    const getStatus = function(name) {
+        if (statuses && name) {
+            return statuses[name];
         } else {
-            return $(".measurement-box");
+            return $(".status-box");
         }
     };
 
@@ -345,26 +350,33 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    const printStats = function(name, stats) {
-        let meas = getMeasurement(name);
-        meas.find(".activeSessionCount").text(stats.activeSessionCount);
-        meas.find(".highestActiveSessionCount").text(stats.highestActiveSessionCount);
-        meas.find(".evictedSessionCount").text(stats.evictedSessionCount);
-        meas.find(".createdSessionCount").text(stats.createdSessionCount);
-        meas.find(".expiredSessionCount").text(stats.expiredSessionCount);
-        meas.find(".rejectedSessionCount").text(stats.rejectedSessionCount);
-        meas.find(".elapsed").text(stats.elapsedTime);
-        if (stats.currentSessions) {
-            meas.find(".sessions").empty();
-            stats.currentSessions.forEach(function(username) {
-                let status = $("<div/>").addClass("status");
+    const printStatus = function(name, label, data) {
+        switch (label) {
+            case "session":
+                printSessionStatus(name, data);
+        }
+    }
+
+    const printSessionStatus = function(name, data) {
+        let status = getStatus(name);
+        status.find(".activeSessionCount").text(data.activeSessionCount);
+        status.find(".highestActiveSessionCount").text(data.highestActiveSessionCount);
+        status.find(".evictedSessionCount").text(data.evictedSessionCount);
+        status.find(".createdSessionCount").text(data.createdSessionCount);
+        status.find(".expiredSessionCount").text(data.expiredSessionCount);
+        status.find(".rejectedSessionCount").text(data.rejectedSessionCount);
+        status.find(".elapsed").text(data.elapsedTime);
+        if (data.currentSessions) {
+            status.find("ul.sessions").empty();
+            data.currentSessions.forEach(function(username) {
+                let indicator = $("<div/>").addClass("indicator");
                 if (username.indexOf("0:") === 0) {
-                    status.addClass("logged-out")
+                    indicator.addClass("logged-out")
                 }
                 username = username.substring(2);
                 let name = $("<span/>").addClass("name").text(username);
-                let li = $("<li/>").append(status).append(name);
-                meas.find(".sessions").append(li);
+                let li = $("<li/>").append(indicator).append(name);
+                status.find("ul.sessions").append(li);
             });
         }
     };

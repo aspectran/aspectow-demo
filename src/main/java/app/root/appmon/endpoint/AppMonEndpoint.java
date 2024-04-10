@@ -17,7 +17,7 @@ package app.root.appmon.endpoint;
 
 import app.root.appmon.group.GroupInfo;
 import app.root.appmon.logtail.LogtailInfo;
-import app.root.appmon.measurement.MeasurementInfo;
+import app.root.appmon.status.StatusInfo;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.AvoidAdvice;
 import com.aspectran.core.component.bean.annotation.Component;
@@ -145,12 +145,12 @@ public class AppMonEndpoint {
     private void sendJoined(@NonNull Session session, String[] joinGroups) throws IOException {
         List<GroupInfo> groups = appMonManager.getGroupInfoList(joinGroups);
         List<LogtailInfo> logtails = appMonManager.getLogtailInfoList(joinGroups);
-        List<MeasurementInfo> measurements = appMonManager.getMeasurementInfoList(joinGroups);
+        List<StatusInfo> statuses = appMonManager.getStatusInfoList(joinGroups);
         JsonWriter jsonWriter = new JsonWriter().nullWritable(false);
         jsonWriter.beginObject();
         jsonWriter.writeName("groups").write(groups);
         jsonWriter.writeName("logtails").write(logtails);
-        jsonWriter.writeName("measurements").write(measurements);
+        jsonWriter.writeName("statuses").write(statuses);
         jsonWriter.endObject();
         session.getAsyncRemote().sendText(MESSAGE_JOINED + jsonWriter);
     }

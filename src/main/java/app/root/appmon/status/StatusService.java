@@ -1,4 +1,4 @@
-package app.root.appmon.measurement;
+package app.root.appmon.status;
 
 import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
@@ -7,36 +7,41 @@ import com.aspectran.utils.lifecycle.AbstractLifeCycle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MeasureService extends AbstractLifeCycle {
+public class StatusService extends AbstractLifeCycle {
 
     private static final int DEFAULT_SAMPLE_INTERVAL = 5000;
 
-    private final MeasurementManager manager;
+    private static final String LABEL_STATUS = "status";
 
-    private final MeasurementInfo info;
+    private final StatusManager manager;
+
+    private final StatusInfo info;
 
     private final String group;
 
     private final String name;
 
-    private final int sampleInterval;
+    private final StatusCollector collector;
 
-    private final MeasureCollector dataCollector;
+    private final String label;
+
+    private final int sampleInterval;
 
     private Timer timer;
 
-    public MeasureService(@NonNull MeasurementManager manager,
-                          @NonNull MeasurementInfo info,
-                          MeasureCollector dataCollector) {
+    public StatusService(@NonNull StatusManager manager,
+                         @NonNull StatusInfo info,
+                         StatusCollector collector) {
         this.manager = manager;
         this.info = info;
         this.group = info.getGroup();
         this.name = info.getName();
+        this.collector = collector;
+        this.label = this.name + ":" + LABEL_STATUS + ":" + info.getLabel();
         this.sampleInterval = (info.getSampleInterval() > 0 ? info.getSampleInterval() : DEFAULT_SAMPLE_INTERVAL);
-        this.dataCollector = dataCollector;
     }
 
-    public MeasurementInfo getInfo() {
+    public StatusInfo getInfo() {
         return info;
     }
 
@@ -48,28 +53,28 @@ public class MeasureService extends AbstractLifeCycle {
         return name;
     }
 
-    public int getSampleInterval() {
-        return sampleInterval;
-    }
-
     private void broadcast() {
-        String data = dataCollector.collect();
+        String data = collector.collect();
         if (data != null) {
-            manager.broadcast(name, "stats:" + data);
+            manager.broadcast(label, data);
         }
     }
 
     @Override
     protected synchronized void doStart() throws Exception {
         if (timer == null) {
-            timer = new Timer("MeasuringTimer[interval=" + sampleInterval + "]");
+            String name = new ToStringBuilder("StatusCollectingTimer")
+                    .append("collector", collector)
+                    .append("sampleInterval", sampleInterval)
+                    .toString();
+            timer = new Timer(name);
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     broadcast();
                 }
             }, 0, sampleInterval);
-            dataCollector.init();
+            collector.init();
             broadcast();
         }
     }
@@ -85,7 +90,7 @@ public class MeasureService extends AbstractLifeCycle {
     @Override
     public String toString() {
         if (isStopped()) {
-            return new ToStringBuilder(super.toString(), info).toString();
+            return ToStringBuilder.toString(super.toString(), info);
         } else {
             return super.toString();
         }

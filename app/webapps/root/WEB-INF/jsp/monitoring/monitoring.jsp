@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
-<link rel="stylesheet" href="<aspectran:url value="/assets/css/monitoring/monitoring.css?20240405"/>">
-<script src="<aspectran:url value="/assets/js/monitoring/appmon-builder.js?20240405"/>"></script>
-<script src="<aspectran:url value="/assets/js/monitoring/appmon-client.js?20240405"/>"></script>
+<link rel="stylesheet" href="<aspectran:url value="/assets/css/monitoring/monitoring.css?20240410"/>">
+<script src="<aspectran:url value="/assets/js/monitoring/appmon-builder.js?20240410"/>"></script>
+<script src="<aspectran:url value="/assets/js/monitoring/appmon-client.js?20240410"/>"></script>
 <div class="grid-x endpoint-box compact vertical">
     <div class="cell options t10 b5">
         <ul class="layout-options">
@@ -37,11 +37,11 @@
                 </div>
                 <pre class="logtail"></pre>
             </div>
-            <div class="cell measurement-box">
+            <div class="cell status-box">
                 <div class="grid-x">
-                    <div class="cell small-12 large-4 stats-cell">
-                        <div class="panel stats-box">
-                            <dl class="stats">
+                    <div class="cell small-12 large-4">
+                        <div class="panel">
+                            <dl class="sessions">
                                 <dt>Current Active Sessions</dt>
                                 <dd><span class="number activeSessionCount">0</span></dd>
                                 <dt>Current Inactive Sessions</dt>
@@ -58,7 +58,7 @@
                             <p class="text-right"><i>Elapsed <span class="elapsed"></span></i></p>
                         </div>
                     </div>
-                    <div class="cell small-12 large-8 sessions-cell">
+                    <div class="cell small-12 large-8">
                         <div class="panel sessions-box">
                             <ul class="sessions">
                             </ul>

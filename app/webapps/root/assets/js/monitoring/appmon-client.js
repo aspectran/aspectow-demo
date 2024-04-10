@@ -37,9 +37,14 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
                     if (established) {
                         let name = msg.substring(0, idx);
                         let text = msg.substring(idx + 1);
-                        if (text.startsWith("last:")) {
-                            text = text.substring(5);
-                            printMessage(name, text, false);
+                        if (text.startsWith("logtail:")) {
+                            text = text.substring(8);
+                            if (text.startsWith("last:")) {
+                                text = text.substring(5);
+                                printMessage(name, text, false);
+                            } else {
+                                printMessage(name, text, true);
+                            }
                         } else if (text.startsWith("status:")) {
                             text = text.substring(7);
                             idx = text.indexOf(":");
@@ -49,8 +54,6 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
                                 console.log(name, label, data);
                                 printStatus(name, label, data);
                             }
-                        } else {
-                            printMessage(name, text, true);
                         }
                     } else {
                         let command = msg.substring(0, idx);

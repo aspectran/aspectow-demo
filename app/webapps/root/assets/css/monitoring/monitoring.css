@@ -90,14 +90,14 @@ ul.layout-options li.on a {
     margin: 0;
     padding: 10px;
     overflow: auto;
-    height: 640px;
+    height: 600px;
     color: #f1f1f1;
     background-color: #222;
     border: none;
     border-radius: 0;
 }
 .logtail-box.with-track .logtail {
-    height: 520px;
+    height: 480px;
 }
 .logtail-box .logtail p {
     font-size: 12px;

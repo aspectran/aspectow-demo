@@ -1,0 +1,51 @@
+logtail: {
+    group: root
+    name: root
+    title: Root App
+    file: /logs/root.log
+    lastLines: 200
+    sampleInterval: 300
+    visualizing: true
+}
+logtail: {
+    group: root
+    name: root-access
+    title: Root Access
+    file: /logs/root-access.log
+    lastLines: 200
+    sampleInterval: 300
+}
+logtail: {
+    group: demo
+    name: demo
+    title: Demo App
+    file: /logs/demo.log
+    lastLines: 200
+    sampleInterval: 300
+    visualizing: true
+}
+logtail: {
+    group: demo
+    name: demo-access
+    title: Demo Access
+    file: /logs/demo-access.log
+    lastLines: 200
+    sampleInterval: 300
+}
+logtail: {
+    group: jpetstore
+    name: jpetstore
+    title: JPetStore App
+    file: /logs/jpetstore.log
+    lastLines: 200
+    sampleInterval: 300
+    visualizing: true
+}
+logtail: {
+    group: jpetstore
+    name: jpetstore-access
+    title: JPetStore Access
+    file: /logs/jpetstore-access.log
+    lastLines: 200
+    sampleInterval: 300
+}

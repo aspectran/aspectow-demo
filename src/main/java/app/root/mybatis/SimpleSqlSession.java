@@ -1,4 +1,4 @@
-package app.root.common.dao;
+package app.root.mybatis;
 
 import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;

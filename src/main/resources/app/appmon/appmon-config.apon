@@ -1,0 +1,37 @@
+system: {
+    properties: {
+        aspectran.encryption.password: demo!
+    }
+}
+context: {
+    name: demo
+    rules: classpath:app/appmon/appmon-context.xml
+    resources: [
+    ]
+    scan: [
+        app.appmon
+    ]
+    profiles: {
+        default: [
+            h2
+        ]
+    }
+    autoReload: {
+        scanIntervalSeconds: 5
+        enabled: false
+    }
+    singleton: false
+}
+scheduler: {
+    startDelaySeconds: 3
+    waitOnShutdown: true
+    enabled: false
+}
+web: {
+    defaultServletName: none
+    trailingSlashRedirect: true
+    legacyHeadHandling: true
+    exposals: {
+        +: /**
+    }
+}

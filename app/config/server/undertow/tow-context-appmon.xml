@@ -9,28 +9,28 @@
 
     <environment>
         <properties>
-            <item name="tow.context.jpetstore.name">jpetstore</item>
-            <item name="tow.context.jpetstore.path">/jpetstore</item>
-            <item name="tow.context.jpetstore.baseDir">/webapps/jpetstore</item>
-            <item name="tow.context.jpetstore.scratchDir">/work/_webapps/jpetstore</item>
+            <item name="tow.context.appmon.name">appmon</item>
+            <item name="tow.context.appmon.path">/appmon</item>
+            <item name="tow.context.appmon.baseDir">/webapps/appmon</item>
+            <item name="tow.context.appmon.scratchDir">/work/_webapps/appmon</item>
         </properties>
     </environment>
 
-    <bean id="tow.context.jpetstore.servletContext"
+    <bean id="tow.context.appmon.servletContext"
           class="com.aspectran.undertow.server.servlet.TowServletContext"
           scope="prototype">
         <properties>
-            <item name="deploymentName">%{tow.context.jpetstore.name}</item>
-            <item name="contextPath">%{tow.context.jpetstore.path}</item>
+            <item name="deploymentName">%{tow.context.appmon.name}</item>
+            <item name="contextPath">%{tow.context.appmon.path}</item>
             <item name="resourceManager">
                 <bean class="com.aspectran.undertow.server.handler.resource.TowResourceManager">
                     <properties>
-                        <item name="base">%{tow.context.jpetstore.baseDir}</item>
+                        <item name="base">%{tow.context.appmon.baseDir}</item>
                     </properties>
                 </bean>
             </item>
-            <item name="scratchDir">%{tow.context.jpetstore.scratchDir}</item>
-            <item name="sessionManager">#{tow.context.jpetstore.sessionManager}</item>
+            <item name="scratchDir">%{tow.context.appmon.scratchDir}</item>
+            <item name="sessionManager">#{tow.context.appmon.sessionManager}</item>
             <item name="servletSessionConfig">
                 <bean class="io.undertow.servlet.api.ServletSessionConfig">
                     <properties>
@@ -39,13 +39,13 @@
                         </item>
                     </properties>
                     <properties profile="prod">
-                        <item name="domain" value="jpetstore.aspectran.com"/>
+                        <item name="domain" value="public.aspectran.com"/>
                         <item name="path" value="/"/>
                     </properties>
                 </bean>
             </item>
             <item name="initParams" type="map">
-                <entry name="aspectran:config" value="classpath:app/jpetstore/jpetstore-config.apon"/>
+                <entry name="aspectran:config" value="classpath:app/appmon/appmon-config.apon"/>
             </item>
             <item name="servlets" type="array">
                 <bean class="com.aspectran.undertow.server.servlet.TowServlet">
@@ -84,7 +84,7 @@
                 <bean class="com.aspectran.undertow.server.servlet.TowJasperInitializer">
                     <properties>
                         <item name="tldResources" type="array">
-                            <value>/webapps/%{tow.context.jpetstore.name}/WEB-INF/taglibs</value>
+                            <value>/webapps/%{tow.context.appmon.name}/WEB-INF/taglibs/</value>
                             <value>classpath:com/aspectran/web/support/tags/aspectran.tld</value>
                         </item>
                     </properties>
@@ -104,7 +104,7 @@
         </properties>
     </bean>
 
-    <bean id="tow.context.jpetstore.sessionManager"
+    <bean id="tow.context.appmon.sessionManager"
           class="com.aspectran.undertow.server.session.TowSessionManager"
           scope="prototype">
         <properties>
@@ -112,8 +112,8 @@
                 <bean class="com.aspectran.core.context.config.SessionManagerConfig">
                     <arguments>
                         <item>
-                            workerName: jn0
-                            maxActiveSessions: 99999
+                            workerName: an0
+                            maxActiveSessions: 999
                             maxIdleSeconds: 489
                             evictionIdleSeconds: 258
                             scavengingIntervalSeconds: 180
@@ -125,7 +125,7 @@
             <item name="sessionStore">
                 <bean class="com.aspectran.core.component.session.FileSessionStoreFactory">
                     <properties>
-                        <item name="storeDir">/work/_sessions/%{tow.context.jpetstore.name}</item>
+                        <item name="storeDir">/work/_sessions/%{tow.context.appmon.name}</item>
                         <item name="nonPersistentAttributes" type="array">
                             <value>io.undertow.websocket.current-connections</value>
                         </item>

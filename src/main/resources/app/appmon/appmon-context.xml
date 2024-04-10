@@ -5,7 +5,7 @@
 
     <description style="apon">
         |
-        |This is a site to demonstrate examples developed using Aspectran.
+        |Application Monitoring
         |
     </description>
 
@@ -38,7 +38,5 @@
             <setting name="format.nullWritable" value="true"/>
         </settings>
     </aspect>
-
-    <append resource="app/demo/web/demo-web.xml"/>
 
 </aspectran>

@@ -37,15 +37,15 @@ import java.util.Map;
 /**
  * <p>Created: 2020/02/23</p>
  */
-@Component()
-public class AppmonActivity {
+@Component
+public class AppMonActivity {
 
-    private static final Logger logger = LoggerFactory.getLogger(AppmonActivity.class);
+    private static final Logger logger = LoggerFactory.getLogger(AppMonActivity.class);
 
     private final AppMonManager appMonManager;
 
     @Autowired
-    public AppmonActivity(AppMonManager appMonManager) {
+    public AppMonActivity(AppMonManager appMonManager) {
         this.appMonManager = appMonManager;
     }
 

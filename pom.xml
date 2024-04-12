@@ -33,7 +33,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <aspectran.version>8.0.5-SNAPSHOT</aspectran.version>
+        <aspectran.version>8.0.6-SNAPSHOT</aspectran.version>
     </properties>
     <repositories>
         <repository>
@@ -210,6 +210,11 @@
             <version>2.5.3.1</version>
             <scope>compile</scope>
             <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+            <version>5.3.1</version>
         </dependency>
     </dependencies>
     <profiles>

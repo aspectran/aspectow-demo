@@ -3,14 +3,14 @@
 
     <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
         <discriminator class="com.aspectran.core.context.ContextBasedLoggerDiscriminator">
-            <key>LOGGER_NAME</key>
+            <key>LOGGING_GROUP</key>
             <defaultValue>app</defaultValue>
         </discriminator>
         <sift>
-            <appender name="FILE-${LOGGER_NAME}" class="ch.qos.logback.core.rolling.RollingFileAppender">
-                <file>${aspectran.basePath:-app}/logs/${LOGGER_NAME}.log</file>
+            <appender name="FILE-${LOGGING_GROUP}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>${aspectran.basePath:-app}/logs/${LOGGING_GROUP}.log</file>
                 <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                    <fileNamePattern>${aspectran.basePath:-app}/logs/archived/${LOGGER_NAME}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                    <fileNamePattern>${aspectran.basePath:-app}/logs/archived/${LOGGING_GROUP}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                     <maxFileSize>10MB</maxFileSize>
                     <maxHistory>30</maxHistory>
                     <totalSizeCap>1GB</totalSizeCap>

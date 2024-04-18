@@ -2,7 +2,7 @@
 <included>
 
     <appender name="SIFT-SCHEDULER" class="ch.qos.logback.classic.sift.SiftingAppender">
-        <discriminator class="com.aspectran.core.context.ContextBasedLoggerDiscriminator">
+        <discriminator class="com.aspectran.core.context.ContextBasedLoggingGroupDiscriminator">
             <key>LOGGING_GROUP</key>
             <defaultValue>app</defaultValue>
         </discriminator>

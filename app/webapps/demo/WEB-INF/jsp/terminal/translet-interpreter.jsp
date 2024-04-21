@@ -81,7 +81,7 @@
                 term.echo('');
             }
         }, {
-            greetings: 'Translet Interpreter\n====================\nType "hello"',
+            greetings: 'Translet Interpreter\n====================\nType "hello" or "login"',
             name: 'transletInterpreter',
             height: 500,
             width: "100%",

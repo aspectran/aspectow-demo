@@ -24,7 +24,7 @@
         </description>
         <joinpoint>
             pointcut: {
-            +: /**
+                +: /**
             }
         </joinpoint>
         <settings>

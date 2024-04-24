@@ -23,6 +23,7 @@ scheduler: {
     enabled: false
 }
 web: {
+    uriDecoding: utf-8
     defaultServletName: none
     trailingSlashRedirect: true
     legacyHeadHandling: true

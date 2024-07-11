@@ -1,92 +1,19 @@
-function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
-    let socket = null;
-    let heartbeatTimer = null;
-    let pendingMessages = [];
+function AppmonViewer(endpoint) {
+    // let pendingMessages = [];
     let logtails = {};
     let missileTracks = {};
     let indicators = {};
     let statuses = {};
-    let established = false;
+    // let established = false;
     let prevLogTime = null;
     let prevSentTime = new Date().getTime();
     let prevPosition = 0;
 
-    this.openSocket = function() {
-        if (socket) {
-            socket.close();
-        }
-        let url = new URL(endpoint.url, location.href);
-        url.protocol = url.protocol.replace('https:', 'wss:');
-        url.protocol = url.protocol.replace('http:', 'ws:');
-        socket = new WebSocket(url.href);
-        let self = this;
-        socket.onopen = function(event) {
-            pendingMessages.push("Socket connection successful");
-            socket.send("join:");
-            heartbeatPing();
-        };
-        socket.onmessage = function(event) {
-            if (typeof event.data === "string") {
-                if (event.data === "--pong--") {
-                    heartbeatPing();
-                    return;
-                }
-                let msg = event.data;
-                let idx = msg.indexOf(":");
-                if (idx !== -1) {
-                    if (established) {
-                        let name = msg.substring(0, idx);
-                        let text = msg.substring(idx + 1);
-                        if (text.startsWith("logtail:")) {
-                            text = text.substring(8);
-                            if (text.startsWith("last:")) {
-                                text = text.substring(5);
-                                printMessage(name, text, false);
-                            } else {
-                                printMessage(name, text, true);
-                            }
-                        } else if (text.startsWith("status:")) {
-                            text = text.substring(7);
-                            idx = text.indexOf(":");
-                            if (idx !== -1) {
-                                let label = text.substring(0, idx);
-                                let data = JSON.parse(text.substring(idx + 1));
-                                console.log(name, label, data);
-                                printStatus(name, label, data);
-                            }
-                        }
-                    } else {
-                        let command = msg.substring(0, idx);
-                        if (command === "joined") {
-                            console.log(msg);
-                            let payload = JSON.parse(msg.substring(idx + 1));
-                            establish(self, payload);
-                        }
-                    }
-                }
-            }
-        };
-        socket.onclose = function(event) {
-            printEventMessage('Socket connection closed. Please refresh this page to try again!');
-            self.closeSocket();
-        };
-        socket.onerror = function(event) {
-            console.error("WebSocket error observed:", event);
-            printErrorMessage('Could not connect to WebSocket server');
-            setTimeout(function() {
-                self.openSocket();
-            }, 60000);
-        };
+    this.setLogtail = function (name, logtail) {
+        logtails[name] = logtail;
     };
 
-    this.closeSocket = function() {
-        if (socket) {
-            socket.close();
-            socket = null;
-        }
-    };
-
-    this.refresh = function(logtail) {
+    this.refresh = function (logtail) {
         if (logtail) {
             scrollToBottom(logtail);
         } else {
@@ -96,65 +23,29 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         }
     };
 
-    this.clear = function(logtail) {
+    this.clear = function (logtail) {
         if (logtail) {
             logtail.empty();
         }
     };
 
-    this.setLogtail = function(name, logtail) {
-        logtails[name] = logtail;
-    };
-
-    this.setMissileTrack = function(name, missileTrack) {
+    this.setMissileTrack = function (name, missileTrack) {
         missileTracks[name] = (missileTrack.length > 0 ? missileTrack : null);
     };
 
-    this.setIndicators = function(name, indicatorArr) {
+    this.setIndicators = function (name, indicatorArr) {
         indicators[name] = indicatorArr;
     };
 
-    this.setStatus = function(name, status) {
+    this.setStatus = function (name, status) {
         statuses[name] = status;
     };
 
-    this.getLogtails = function() {
+    this.getLogtails = function () {
         return logtails;
     };
 
-    const establish = function(client, payload) {
-        endpoint['client'] = client;
-        if (onEndpointJoined) {
-            onEndpointJoined(endpoint, payload);
-        }
-        if (onEstablishCompleted) {
-            onEstablishCompleted();
-        }
-        if (pendingMessages && pendingMessages.length > 0) {
-            for (let key in pendingMessages) {
-                printEventMessage(pendingMessages[key]);
-            }
-            pendingMessages = null;
-        }
-        established = true;
-        socket.send("established:");
-    };
-
-    const heartbeatPing = function() {
-        if (heartbeatTimer) {
-            clearTimeout(heartbeatTimer);
-        }
-        let self = this;
-        heartbeatTimer = setTimeout(function() {
-            if (socket) {
-                socket.send("--ping--");
-                heartbeatTimer = null;
-                heartbeatPing();
-            }
-        }, 57000);
-    };
-
-    const getLogtail = function(name) {
+    const getLogtail = function (name) {
         if (logtails && name) {
             return logtails[name];
         } else {
@@ -162,7 +53,7 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         }
     };
 
-    const getStatus = function(name) {
+    const getStatus = function (name) {
         if (statuses && name) {
             return statuses[name];
         } else {
@@ -170,13 +61,13 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         }
     };
 
-    const scrollToBottom = function(logtail) {
+    const scrollToBottom = function (logtail) {
         if (logtail.data("tailing")) {
             let timer = logtail.data("timer");
             if (timer) {
                 clearTimeout(timer);
             }
-            timer = setTimeout(function() {
+            timer = setTimeout(function () {
                 logtail.scrollTop(logtail.prop("scrollHeight"));
                 if (logtail.find("p").length > 11000) {
                     logtail.find("p:gt(10000)").remove();
@@ -186,7 +77,31 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         }
     };
 
-    const printMessage = function(name, text, visualizing) {
+    this.printMessage = function (msg) {
+        let idx = msg.indexOf(":");
+        let name = msg.substring(0, idx);
+        let text = msg.substring(idx + 1);
+        if (text.startsWith("logtail:")) {
+            text = text.substring(8);
+            if (text.startsWith("last:")) {
+                text = text.substring(5);
+                printLog(name, text, false);
+            } else {
+                printLog(name, text, true);
+            }
+        } else if (text.startsWith("status:")) {
+            text = text.substring(7);
+            idx = text.indexOf(":");
+            if (idx !== -1) {
+                let label = text.substring(0, idx);
+                let data = JSON.parse(text.substring(idx + 1));
+                console.log(name, label, data);
+                printStatus(name, label, data);
+            }
+        }
+    };
+
+    const printLog = function (name, text, visualizing) {
         indicate(name);
         let logtail = getLogtail(name);
         if (!logtail.data("pause")) {
@@ -198,38 +113,38 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         }
     };
 
-    const printEventMessage = function(text, name) {
+    this.printEventMessage = function (text, name) {
         if (name) {
             let logtail = getLogtail(name);
             $("<p/>").addClass("event ellipses").html(text).appendTo(logtail);
             scrollToBottom(logtail);
         } else {
             for (let key in logtails) {
-                printEventMessage(text, key);
+                this.printEventMessage(text, key);
             }
         }
     };
 
-    const printErrorMessage = function(text, name) {
-        if (name) {
+    this.printErrorMessage = function (text, name) {
+        if (name || !Object.keys(logtails).length) {
             let logtail = getLogtail(name);
             $("<p/>").addClass("event error").html(text).appendTo(logtail);
             scrollToBottom(logtail);
         } else {
             for (let key in logtails) {
-                printErrorMessage(text, key);
+                this.printErrorMessage(text, key);
             }
         }
     };
 
-    const indicate = function(name) {
+    const indicate = function (name) {
         let indicatorArr = indicators[name];
         if (indicatorArr) {
             for (let key in indicatorArr) {
                 let indicator = indicatorArr[key];
                 if (!indicator.hasClass("on")) {
                     indicator.addClass("blink on");
-                    setTimeout(function() {
+                    setTimeout(function () {
                         indicator.removeClass("blink on");
                     }, 500);
                 }
@@ -237,10 +152,10 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         }
     };
 
-    const visualize = function(name, text) {
+    const visualize = function (name, text) {
         let missileTrack = missileTracks[name];
         if (missileTrack) {
-            setTimeout(function() {
+            setTimeout(function () {
                 let visualizing = missileTrack.data("visualizing");
                 if (visualizing) {
                     launchMissile(missileTrack, text);
@@ -255,7 +170,7 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
     const pattern4 = /^DEBUG (.+) \[(.+)] Invalidate session id=([^\s;]+)/;
     const pattern5 = /^DEBUG (.+) \[(.+)] Reject session id=([^\s;]+)/;
 
-    const launchMissile = function(missileTrack, text) {
+    const launchMissile = function (missileTrack, text) {
         let matches1 = pattern1.exec(text);
         let matches2 = pattern2.exec(text);
         let matches3 = pattern3.exec(text);
@@ -349,18 +264,18 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         }
     };
 
-    const generateRandom = function(min, max) {
+    const generateRandom = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    const printStatus = function(name, label, data) {
+    const printStatus = function (name, label, data) {
         switch (label) {
             case "session":
                 printSessionStatus(name, data);
         }
     }
 
-    const printSessionStatus = function(name, data) {
+    const printSessionStatus = function (name, data) {
         let status = getStatus(name);
         status.find(".activeSessionCount").text(data.activeSessionCount);
         status.find(".highestActiveSessionCount").text(data.highestActiveSessionCount);
@@ -371,7 +286,7 @@ function AppmonClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         status.find(".elapsed").text(data.elapsedTime);
         if (data.currentSessions) {
             status.find("ul.sessions").empty();
-            data.currentSessions.forEach(function(username) {
+            data.currentSessions.forEach(function (username) {
                 let indicator = $("<div/>").addClass("indicator");
                 if (username.indexOf("0:") === 0) {
                     indicator.addClass("logged-out")

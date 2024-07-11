@@ -1,9 +1,27 @@
-function AppMonBuilder(endpoints) {
+function AppMonBuilder() {
 
-    this.establish = function () {
-        for (let index = 0; index < endpoints.length; index++) {
-            establishEndpoint(index);
-        }
+    const endpoints = [];
+
+    this.build = function (basePath, token, currentEndpoint) {
+        $.ajax({
+            url: basePath + "monitoring/endpoints/" + token,
+            type: 'get',
+            dataType: "json",
+            success: function (data) {
+                if (data) {
+                    for (let key in data) {
+                        let endpoint = data[key];
+                        endpoint['basePath'] = basePath;
+                        if (!currentEndpoint || currentEndpoint === endpoint.name) {
+                            endpoints.push(endpoint);
+                        }
+                    }
+                    for (let index = 0; index < endpoints.length; index++) {
+                        establishEndpoint(index);
+                    }
+                }
+            }
+        });
     }
 
     const establishEndpoint = function (endpointIndex) {
@@ -18,26 +36,26 @@ function AppMonBuilder(endpoints) {
             for (let key in payload.logtails) {
                 let logtail = payload.logtails[key];
                 let logtailBox = addLogtail(endpointBox, logtail);
-                endpoint.client.setLogtail(logtail.name, logtailBox.find(".logtail"));
+                endpoint.viewer.setLogtail(logtail.name, logtailBox.find(".logtail"));
             }
             for (let key in payload.statuses) {
                 let status = payload.statuses[key];
                 let statusBox = addStatus(endpointBox, status);
-                endpoint.client.setStatus(status.name, statusBox);
+                endpoint.viewer.setStatus(status.name, statusBox);
             }
             endpointBox.find(".logtail-box.available").each(function() {
                 let logtail = $(this).find(".logtail");
-                let logtailIndex = logtail.data("logtail-index");
+                let groupName = $(this).data("group");
                 let logtailName = logtail.data("logtail-name");
                 let logtailBox = logtail.closest(".logtail-box");
                 let missileTrack = logtailBox.find(".missile-track.available");
                 if (missileTrack.length > 0) {
-                    endpoint.client.setMissileTrack(logtailName, missileTrack);
+                    endpoint.viewer.setMissileTrack(logtailName, missileTrack);
                 }
                 let indicator1 = $(".endpoint.tabs .tabs-title.available .indicator").eq(endpointIndex);
-                let indicator2 = $(".group.tabs .tabs-title.available .indicator").eq(logtailIndex);
+                let indicator2 = endpointBox.find(".group.tabs .tabs-title.available[data-name=" + groupName + "]").find(".indicator");
                 let indicator3 = logtailBox.find(".status-bar");
-                endpoint.client.setIndicators(logtailName, [indicator1, indicator2, indicator3]);
+                endpoint.viewer.setIndicators(logtailName, [indicator1, indicator2, indicator3]);
                 logtail.data("tailing", true);
                 logtailBox.find(".tailing-status").addClass("on");
             });
@@ -61,12 +79,19 @@ function AppMonBuilder(endpoints) {
                 }
             }
         }
-        let client = new AppmonClient(endpoints[endpointIndex], onEndpointJoined, onEstablishCompleted);
-        try {
-            client.openSocket();
-        } catch (e) {
-            client.printErrorMessage("Socket connection failed");
+        function onErrorObserved() {
+            // endpoint.viewer.printErrorMessage("Socket connection failed");
+            let client = new AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted);
+            endpoint['client'] = client;
+            client.join();
         }
+
+        let endpoint = endpoints[endpointIndex];
+        endpoint['viewer'] = new AppmonViewer(endpoint);
+        endpoint.url = '';
+        let client = new AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted, onErrorObserved);
+        endpoint['client'] = client;
+        client.openSocket();
     }
 
     const changeGroup = function (endpointBox, groupName) {
@@ -76,7 +101,7 @@ function AppMonBuilder(endpoints) {
         groupBox.find(".logtail-box.available .logtail").each(function () {
             let logtail = $(this);
             if (!logtail.data("pause")) {
-                endpoints[endpointIndex].client.refresh(logtail);
+                endpoints[endpointIndex].viewer.refresh(logtail);
             }
         });
     }
@@ -96,11 +121,11 @@ function AppMonBuilder(endpoints) {
             let endpointIndex = tab.data("index");
             tab.addClass("is-active");
             $(".endpoint-box.available").hide().eq(endpointIndex).show();
-            let logtails = endpoints[endpointIndex].client.getLogtails();
+            let logtails = endpoints[endpointIndex].viewer.getLogtails();
             for (let key in logtails) {
                 let logtail = logtails[key];
                 if (!logtail.data("pause")) {
-                    endpoints[endpointIndex].client.refresh(logtail);
+                    endpoints[endpointIndex].viewer.refresh(logtail);
                 }
             }
         });
@@ -124,7 +149,7 @@ function AppMonBuilder(endpoints) {
             } else {
                 logtail.data("tailing", true);
                 $(this).find(".tailing-status").addClass("on");
-                endpoint.client.refresh(logtail);
+                endpoint.viewer.refresh(logtail);
             }
         });
         $(".logtail-box .pause-switch").click(function() {
@@ -141,7 +166,7 @@ function AppMonBuilder(endpoints) {
             let logtail = $(this).closest(".logtail-box").find(".logtail");
             let endpointIndex = logtail.data("endpoint-index");
             let endpoint = endpoints[endpointIndex];
-            endpoint.client.clear(logtail);
+            endpoint.viewer.clear(logtail);
         });
         $(".layout-options li a").click(function() {
             let endpointBox = $(this).closest(".endpoint-box");
@@ -178,7 +203,7 @@ function AppMonBuilder(endpoints) {
             let endpointIndex = endpointBox.data("index");
             endpointBox.find(".logtail-box.available").each(function () {
                 if ($(this).find(".tailing-status").hasClass("on")) {
-                    endpoints[endpointIndex].client.refresh();
+                    endpoints[endpointIndex].viewer.refresh();
                 }
             });
         });

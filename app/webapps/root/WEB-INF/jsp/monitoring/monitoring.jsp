@@ -3,7 +3,9 @@
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
 <link rel="stylesheet" href="<aspectran:url value="/assets/css/monitoring/monitoring.css?20240410"/>">
 <script src="<aspectran:url value="/assets/js/monitoring/appmon-builder.js?20240711"/>"></script>
+<script src="<aspectran:url value="/assets/js/monitoring/appmon-viewer.js?20240711"/>"></script>
 <script src="<aspectran:url value="/assets/js/monitoring/appmon-websocket-client.js?20240711"/>"></script>
+<script src="<aspectran:url value="/assets/js/monitoring/appmon-polling-client.js?20240711"/>"></script>
 <div class="grid-x endpoint-box compact vertical">
     <div class="cell options t10 b5">
         <ul class="layout-options">
@@ -70,23 +72,9 @@
     </div>
 </div>
 <script>
-    $(function() {
+    $(function () {
+        const token = "${page.token}";
         const endpoint = "${page.endpoint}";
-        $.ajax({
-            url: "<aspectran:url value="/monitoring/endpoints/${page.token}"/>",
-            type: 'get',
-            dataType: "json",
-            success: function(data) {
-                if (data) {
-                    const endpoints = [];
-                    for (let key in data) {
-                        if (!endpoint || endpoint === data[key].name) {
-                            endpoints.push(data[key]);
-                        }
-                    }
-                    new AppMonBuilder(endpoints).establish();
-                }
-            }
-        });
+        new AppMonBuilder().build("<aspectran:url value="/"/>", token, endpoint);
     });
 </script>

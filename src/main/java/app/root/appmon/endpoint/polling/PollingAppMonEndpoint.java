@@ -65,7 +65,7 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
     }
 
     @RequestToGet("/appmon/endpoint/pull")
-    @Transform(FormatType.TEXT)
+    @Transform(FormatType.JSON)
     public String[] pull(@NonNull Translet translet) throws IOException {
         String sessionId = translet.getSessionAdapter().getId();
         PollingAppMonSession session = pollingAppMonSessionManager.getSession(sessionId);

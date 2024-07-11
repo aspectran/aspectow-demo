@@ -1,6 +1,6 @@
 package app.root.appmon.logtail;
 
-import app.root.appmon.endpoint.AppMonManager;
+import app.root.appmon.AppMonManager;
 import com.aspectran.utils.Assert;
 import com.aspectran.utils.ResourceUtils;
 import com.aspectran.utils.ToStringBuilder;
@@ -39,8 +39,8 @@ public abstract class LogtailManagerBuilder {
                 logger.error("Failed to resolve absolute path to log file " + logTailInfo.getFile(), e);
             }
             if (logFile != null) {
-                LogtailService tailer = new LogtailService(logtailManager, logTailInfo, logFile);
-                logtailManager.addLogtailService(logTailInfo.getName(), tailer);
+                LogtailService logtailService = new LogtailService(logtailManager, logTailInfo, logFile);
+                logtailManager.addLogtailService(logTailInfo.getName(), logtailService);
             }
         }
         return logtailManager;

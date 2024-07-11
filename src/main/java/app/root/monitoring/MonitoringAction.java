@@ -15,7 +15,7 @@
  */
 package app.root.monitoring;
 
-import app.root.appmon.endpoint.AppMonManager;
+import app.root.appmon.AppMonManager;
 import app.root.appmon.endpoint.EndpointInfo;
 import com.aspectran.core.component.bean.annotation.Action;
 import com.aspectran.core.component.bean.annotation.Autowired;
@@ -72,7 +72,7 @@ public class MonitoringAction {
             }
             return new DefaultRestResponse().forbidden();
         }
-        List<EndpointInfo> endpointInfoList = appMonManager.getEndpointInfoList(token);
+        List<EndpointInfo> endpointInfoList = appMonManager.getAvailableEndpointInfoList(token);
         return new DefaultRestResponse(endpointInfoList).ok();
     }
 

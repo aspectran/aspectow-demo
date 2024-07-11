@@ -36,4 +36,13 @@ public class EndpointManager {
         return new ArrayList<>(endpoints.values());
     }
 
+    public EndpointInfo getResidentEndpointInfo() {
+        for (EndpointInfo info : endpoints.values()) {
+            if (info.isResident()) {
+                return info;
+            }
+        }
+        return null;
+    }
+
 }

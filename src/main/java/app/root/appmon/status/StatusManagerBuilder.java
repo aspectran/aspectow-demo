@@ -1,6 +1,6 @@
 package app.root.appmon.status;
 
-import app.root.appmon.endpoint.AppMonManager;
+import app.root.appmon.AppMonManager;
 import com.aspectran.utils.Assert;
 import com.aspectran.utils.ClassUtils;
 import com.aspectran.utils.ResourceUtils;

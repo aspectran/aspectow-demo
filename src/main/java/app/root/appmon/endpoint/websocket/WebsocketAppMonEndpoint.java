@@ -13,14 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.appmon.endpoint;
+package app.root.appmon.endpoint.websocket;
 
+import app.root.appmon.AppMonEndpoint;
+import app.root.appmon.AppMonManager;
 import app.root.appmon.group.GroupInfo;
+import app.root.appmon.group.GroupManager;
 import app.root.appmon.logtail.LogtailInfo;
 import app.root.appmon.status.StatusInfo;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.AvoidAdvice;
 import com.aspectran.core.component.bean.annotation.Component;
+import com.aspectran.core.component.bean.annotation.Initialize;
 import com.aspectran.utils.StringUtils;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.json.JsonWriter;
@@ -51,9 +55,9 @@ import java.util.Set;
         configurator = AspectranConfigurator.class
 )
 @AvoidAdvice
-public class AppMonEndpoint {
+public class WebsocketAppMonEndpoint implements AppMonEndpoint {
 
-    private static final Logger logger = LoggerFactory.getLogger(AppMonEndpoint.class);
+    private static final Logger logger = LoggerFactory.getLogger(WebsocketAppMonEndpoint.class);
 
     private static final String HEARTBEAT_PING_MSG = "--ping--";
 
@@ -67,13 +71,18 @@ public class AppMonEndpoint {
 
     private static final String MESSAGE_ESTABLISHED = "established:";
 
-    private static final Set<Session> sessions = Collections.synchronizedSet(new HashSet<>());
+    private static final Set<WebsocketAppMonSession> sessions = Collections.synchronizedSet(new HashSet<>());
 
-    private AppMonManager appMonManager;
+    private final AppMonManager appMonManager;
 
     @Autowired
-    public void setAppMonManager(AppMonManager appMonManager) {
+    public WebsocketAppMonEndpoint(AppMonManager appMonManager) {
         this.appMonManager = appMonManager;
+    }
+
+    @Initialize
+    public void registerEndpoint() {
+        appMonManager.putEndpoint(this);
     }
 
     @OnOpen
@@ -125,24 +134,19 @@ public class AppMonEndpoint {
         }
     }
 
-    public void broadcast(String message) {
-        synchronized (sessions) {
-            for (Session session : sessions) {
-                if (session.isOpen()) {
-                    session.getAsyncRemote().sendText(message);
-                }
+    private void addSession(Session session, String message) throws IOException {
+        WebsocketAppMonSession appMonSession = new WebsocketAppMonSession(session);
+        if (sessions.add(appMonSession)) {
+            String[] joinGroups = StringUtils.splitCommaDelimitedString(message);
+            List<GroupInfo> groupInfoList = sendJoined(session, joinGroups);
+            if (!groupInfoList.isEmpty()) {
+                String[] groupNames = GroupManager.extractGroupNames(groupInfoList);
+                appMonSession.saveJoinedGroups(groupNames);
             }
         }
     }
 
-    private void addSession(Session session, String message) throws IOException {
-        if (sessions.add(session)) {
-            String[] joinGroups = StringUtils.splitCommaDelimitedString(message);
-            sendJoined(session, joinGroups);
-        }
-    }
-
-    private void sendJoined(@NonNull Session session, String[] joinGroups) throws IOException {
+    private List<GroupInfo> sendJoined(@NonNull Session session, String[] joinGroups) throws IOException {
         List<GroupInfo> groups = appMonManager.getGroupInfoList(joinGroups);
         List<LogtailInfo> logtails = appMonManager.getLogtailInfoList(joinGroups);
         List<StatusInfo> statuses = appMonManager.getStatusInfoList(joinGroups);
@@ -153,20 +157,46 @@ public class AppMonEndpoint {
         jsonWriter.writeName("statuses").write(statuses);
         jsonWriter.endObject();
         session.getAsyncRemote().sendText(MESSAGE_JOINED + jsonWriter);
+        return groups;
     }
 
     private void establishComplete(@NonNull Session session) {
-        appMonManager.join(session);
+        appMonManager.join(new WebsocketAppMonSession(session));
     }
 
     private void removeSession(Session session) {
-        if (sessions.remove(session)) {
-            appMonManager.release(session);
+        WebsocketAppMonSession appMonSession = new WebsocketAppMonSession(session);
+        if (sessions.remove(appMonSession)) {
+            appMonManager.release(appMonSession);
         }
     }
 
-    public Set<Session> getSessions() {
-        return sessions;
+    @Override
+    public void broadcast(String message) {
+        synchronized (sessions) {
+            for (WebsocketAppMonSession appMonSession : sessions) {
+                if (appMonSession.getSession().isOpen()) {
+                    appMonSession.getSession().getAsyncRemote().sendText(message);
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean isUsingGroup(String group) {
+        if (StringUtils.hasLength(group)) {
+            for (WebsocketAppMonSession appMonSession : sessions) {
+                String[] savedGroups = appMonSession.getJoinedGroups();
+                if (savedGroups != null) {
+                    for (String saved : savedGroups) {
+                        if (group.equals(saved)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 }

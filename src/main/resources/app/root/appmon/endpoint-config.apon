@@ -2,4 +2,6 @@ endpoint: {
     name: endpoint-1
     title: Server-1
     url: /appmon/endpoint
+    pollingInterval: 3000
+    resident: true
 }

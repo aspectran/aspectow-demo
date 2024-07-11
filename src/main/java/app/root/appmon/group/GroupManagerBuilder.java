@@ -1,6 +1,5 @@
 package app.root.appmon.group;
 
-import app.root.appmon.endpoint.AppMonManager;
 import com.aspectran.utils.ResourceUtils;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 
@@ -11,9 +10,9 @@ public abstract class GroupManagerBuilder {
     private static final String MEASUREMENT_CONFIG_FILE = "app/root/appmon/group-config.apon";
 
     @NonNull
-    public static GroupManager build(@NonNull AppMonManager appMonManager) throws IOException {
+    public static GroupManager build() throws IOException {
         GroupConfig groupConfig = new GroupConfig(ResourceUtils.getResourceAsReader(MEASUREMENT_CONFIG_FILE));
-        return new GroupManager(appMonManager, groupConfig.getGroupInfoList());
+        return new GroupManager(groupConfig.getGroupInfoList());
     }
 
 }

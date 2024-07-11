@@ -15,7 +15,7 @@
  */
 package app.root.appmon.status;
 
-import app.root.appmon.endpoint.AppMonManager;
+import app.root.appmon.AppMonManager;
 import com.aspectran.core.context.ActivityContext;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.logging.Logger;
@@ -123,7 +123,7 @@ public class StatusManager {
     }
 
     public void broadcast(String name, String msg) {
-        appMonManager.getEndpoint().broadcast(name + ":" + msg);
+        appMonManager.broadcast(name + ":" + msg);
     }
 
 }

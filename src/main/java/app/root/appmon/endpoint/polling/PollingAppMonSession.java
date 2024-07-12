@@ -14,7 +14,7 @@ public class PollingAppMonSession implements AppMonSession {
 
     private final SessionExpiryTimer expiryTimer;
 
-    private int pollingInterval;
+    private volatile long pollingInterval;
 
     private int lastLineIndex = -1;
 
@@ -24,19 +24,19 @@ public class PollingAppMonSession implements AppMonSession {
 
     private String[] joinedGroups;
 
-    public PollingAppMonSession(PollingAppMonSessionManager manager, int pollingInterval) {
+    public PollingAppMonSession(PollingAppMonSessionManager manager, long pollingInterval) {
         this.manager = manager;
         this.pollingInterval = pollingInterval;
         this.expiryTimer = new SessionExpiryTimer();
     }
 
-    public int getPollingInterval() {
+    public long getPollingInterval() {
         return pollingInterval;
     }
 
-    public void setPollingInterval(int pollingInterval) {
+    public void setPollingInterval(long pollingInterval) {
         try (AutoLock ignored = autoLock.lock()) {
-            this.pollingInterval = Math.max(pollingInterval, 500);
+            this.pollingInterval = Math.max(pollingInterval, 500L);
         }
     }
 
@@ -63,11 +63,13 @@ public class PollingAppMonSession implements AppMonSession {
         this.lastLineIndex = lastLineIndex;
     }
 
-    protected void access() {
+    protected void access(boolean create) {
         try (AutoLock ignored = autoLock.lock()) {
             if (isValid()) {
                 lastAccessed = System.currentTimeMillis();
-                expiryTimer.cancel();
+                if (!create) {
+                    expiryTimer.cancel();
+                }
                 expiryTimer.schedule(pollingInterval);
             }
         }
@@ -96,7 +98,7 @@ public class PollingAppMonSession implements AppMonSession {
 
     private boolean checkExpired() {
         long now = System.currentTimeMillis();
-        expired = (lastAccessed + pollingInterval + 3000L <= now);
+        expired = (lastAccessed + pollingInterval <= now);
         if (expired) {
             manager.scavenge();
         }
@@ -105,7 +107,7 @@ public class PollingAppMonSession implements AppMonSession {
 
     public class SessionExpiryTimer {
 
-        protected final CyclicTimeout timer;
+        private final CyclicTimeout timer;
 
         SessionExpiryTimer() {
             timer = new CyclicTimeout(manager.getScheduler()) {
@@ -113,16 +115,16 @@ public class PollingAppMonSession implements AppMonSession {
                 public void onTimeoutExpired() {
                     try (AutoLock ignored = lock()) {
                         if (!checkExpired()) {
-                            SessionExpiryTimer.this.schedule(pollingInterval + 3000L);
+                            SessionExpiryTimer.this.schedule(pollingInterval);
                         }
                     }
                 }
             };
         }
 
-        public void schedule(long time) {
-            if (time >= 0) {
-                timer.schedule(time, TimeUnit.MILLISECONDS);
+        public void schedule(long delay) {
+            if (delay >= 0) {
+                timer.schedule(delay, TimeUnit.MILLISECONDS);
             }
         }
 

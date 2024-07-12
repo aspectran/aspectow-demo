@@ -30,7 +30,7 @@ function AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
                     for (let key in data) {
                         endpoint.viewer.printMessage(data[key]);
                     }
-                    setTimeout(polling, endpoint.pollingInterval);
+                    //setTimeout(polling, endpoint.pollingInterval);
                 }
             }
         });

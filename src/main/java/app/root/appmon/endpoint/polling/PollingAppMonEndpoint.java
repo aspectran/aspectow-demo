@@ -9,6 +9,7 @@ import app.root.appmon.status.StatusInfo;
 import com.aspectran.core.activity.Translet;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
+import com.aspectran.core.component.bean.annotation.Destroy;
 import com.aspectran.core.component.bean.annotation.Initialize;
 import com.aspectran.core.component.bean.annotation.RequestToGet;
 import com.aspectran.core.component.bean.annotation.RequestToPost;
@@ -37,8 +38,14 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
     }
 
     @Initialize
-    public void registerEndpoint() {
+    public void initialize() throws Exception {
         appMonManager.putEndpoint(this);
+        pollingAppMonSessionManager.initialize();
+    }
+
+    @Destroy
+    public void destroy() throws Exception {
+        pollingAppMonSessionManager.destroy();
     }
 
     @RequestToPost("/appmon/endpoint/join")
@@ -80,12 +87,14 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
             buffer.remove(minLineIndex);
         }
 
+//        session.destroy();
+
         return lines;
     }
 
     @RequestToPost("/appmon/endpoint/pollingInterval")
     @Transform(FormatType.TEXT)
-    public int pollingInterval(@NonNull Translet translet, int pollingInterval) {
+    public long pollingInterval(@NonNull Translet translet, long pollingInterval) {
         String sessionId = translet.getSessionAdapter().getId();
         PollingAppMonSession session = pollingAppMonSessionManager.getSession(sessionId);
         if (session == null) {

@@ -14,7 +14,9 @@ public class PollingAppMonSession implements AppMonSession {
 
     private final SessionExpiryTimer expiryTimer;
 
-    private volatile long pollingInterval;
+    private volatile int sessionTimeout;
+
+    private volatile int pollingInterval;
 
     private int lastLineIndex = -1;
 
@@ -24,20 +26,27 @@ public class PollingAppMonSession implements AppMonSession {
 
     private String[] joinedGroups;
 
-    public PollingAppMonSession(PollingAppMonSessionManager manager, long pollingInterval) {
+    public PollingAppMonSession(PollingAppMonSessionManager manager, int sessionTimeout, int pollingInterval) {
         this.manager = manager;
+        this.sessionTimeout = sessionTimeout;
         this.pollingInterval = pollingInterval;
         this.expiryTimer = new SessionExpiryTimer();
     }
 
-    public long getPollingInterval() {
+    public int getSessionTimeout() {
+        return sessionTimeout;
+    }
+
+    public void setSessionTimeout(int sessionTimeout) {
+        this.sessionTimeout = Math.max(sessionTimeout, 500);
+    }
+
+    public int getPollingInterval() {
         return pollingInterval;
     }
 
-    public void setPollingInterval(long pollingInterval) {
-        try (AutoLock ignored = autoLock.lock()) {
-            this.pollingInterval = Math.max(pollingInterval, 500L);
-        }
+    public void setPollingInterval(int pollingInterval) {
+        this.pollingInterval = Math.max(pollingInterval, 500);
     }
 
     @Override
@@ -70,7 +79,7 @@ public class PollingAppMonSession implements AppMonSession {
                 if (!create) {
                     expiryTimer.cancel();
                 }
-                expiryTimer.schedule(pollingInterval);
+                expiryTimer.schedule(sessionTimeout);
             }
         }
     }
@@ -96,13 +105,14 @@ public class PollingAppMonSession implements AppMonSession {
         return autoLock.lock();
     }
 
-    private boolean checkExpired() {
+    private void checkExpired() {
         long now = System.currentTimeMillis();
-        expired = (lastAccessed + pollingInterval <= now);
-        if (expired) {
-            manager.scavenge();
+        try (AutoLock ignored = lock()) {
+            if (lastAccessed + sessionTimeout <= now) {
+                expired = true;
+                manager.scavenge();
+            }
         }
-        return expired;
     }
 
     public class SessionExpiryTimer {
@@ -113,11 +123,7 @@ public class PollingAppMonSession implements AppMonSession {
             timer = new CyclicTimeout(manager.getScheduler()) {
                 @Override
                 public void onTimeoutExpired() {
-                    try (AutoLock ignored = lock()) {
-                        if (!checkExpired()) {
-                            SessionExpiryTimer.this.schedule(pollingInterval);
-                        }
-                    }
+                    checkExpired();
                 }
             };
         }

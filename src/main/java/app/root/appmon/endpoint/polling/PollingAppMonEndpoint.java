@@ -3,6 +3,7 @@ package app.root.appmon.endpoint.polling;
 import app.root.appmon.AppMonEndpoint;
 import app.root.appmon.AppMonManager;
 import app.root.appmon.endpoint.EndpointInfo;
+import app.root.appmon.endpoint.EndpointPollingConfig;
 import app.root.appmon.group.GroupInfo;
 import app.root.appmon.logtail.LogtailInfo;
 import app.root.appmon.status.StatusInfo;
@@ -54,8 +55,9 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
         String sessionId = translet.getSessionAdapter().getId();
 
         EndpointInfo endpointInfo = appMonManager.getResidentEndpointInfo();
-        int pollingInterval = endpointInfo.getPollingInterval();
-        PollingAppMonSession session = pollingAppMonSessionManager.createSession(sessionId, pollingInterval);
+        EndpointPollingConfig pollingConfig = endpointInfo.getPollingConfig();
+
+        PollingAppMonSession session = pollingAppMonSessionManager.createSession(sessionId, pollingConfig);
         if (!appMonManager.join(session)) {
             return null;
         }
@@ -67,7 +69,8 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
         return Map.of(
                 "groups", groups,
                 "logtails", logtails,
-                "statuses", statuses
+                "statuses", statuses,
+                "pollingInterval", session.getPollingInterval()
         );
     }
 
@@ -87,14 +90,12 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
             buffer.remove(minLineIndex);
         }
 
-//        session.destroy();
-
         return lines;
     }
 
     @RequestToPost("/appmon/endpoint/pollingInterval")
     @Transform(FormatType.TEXT)
-    public long pollingInterval(@NonNull Translet translet, long pollingInterval) {
+    public int pollingInterval(@NonNull Translet translet, int pollingInterval) {
         String sessionId = translet.getSessionAdapter().getId();
         PollingAppMonSession session = pollingAppMonSessionManager.getSession(sessionId);
         if (session == null) {

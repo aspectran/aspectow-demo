@@ -1,8 +1,10 @@
 package app.root.appmon.endpoint.polling;
 
 import app.root.appmon.AppMonManager;
+import app.root.appmon.endpoint.EndpointPollingConfig;
 import com.aspectran.core.component.AbstractComponent;
 import com.aspectran.utils.StringUtils;
+import com.aspectran.utils.annotation.jsr305.Nullable;
 import com.aspectran.utils.thread.ScheduledExecutorScheduler;
 import com.aspectran.utils.thread.Scheduler;
 
@@ -23,13 +25,22 @@ public class PollingAppMonSessionManager extends AbstractComponent {
         this.appMonManager = appMonManager;
     }
 
-    public PollingAppMonSession createSession(String id, int pollingInterval) {
+    public PollingAppMonSession createSession(String id, @Nullable EndpointPollingConfig pollingConfig) {
         PollingAppMonSession existingSession = sessions.get(id);
         if (existingSession != null) {
             existingSession.access(false);
             return existingSession;
         } else {
-            PollingAppMonSession session = new PollingAppMonSession(this, pollingInterval);
+            int pollingInterval = 0;
+            int sessionTimeout = 0;
+            if (pollingConfig != null) {
+                pollingInterval = pollingConfig.getPollingInterval();
+                sessionTimeout = pollingConfig.getSessionTimeout();
+            }
+            if (pollingInterval > 0 && sessionTimeout <= 0) {
+                sessionTimeout = pollingInterval * 2;
+            }
+            PollingAppMonSession session = new PollingAppMonSession(this, sessionTimeout, pollingInterval);
             sessions.put(id, session);
             session.access(true);
             return session;

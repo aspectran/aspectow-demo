@@ -13,11 +13,11 @@ function AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
                     if (onEstablishCompleted) {
                         onEstablishCompleted();
                     }
+                    endpoint['pollingInterval'] = data.pollingInterval;
                     polling();
                 }
             }
         });
-
     }
 
     const polling = function () {
@@ -30,8 +30,8 @@ function AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
                     for (let key in data) {
                         endpoint.viewer.printMessage(data[key]);
                     }
-                    //setTimeout(polling, endpoint.pollingInterval);
                 }
+                setTimeout(polling, endpoint.pollingInterval);
             }
         });
     }

@@ -27,8 +27,8 @@ public class EndpointInfo extends AbstractParameters {
     private static final ParameterKey name;
     private static final ParameterKey title;
     private static final ParameterKey url;
-    private static final ParameterKey pollingInterval;
     private static final ParameterKey resident;
+    private static final ParameterKey pollingConfig;
 
     private static final ParameterKey[] parameterKeys;
 
@@ -36,15 +36,15 @@ public class EndpointInfo extends AbstractParameters {
         name = new ParameterKey("name", ValueType.STRING);
         title = new ParameterKey("title", ValueType.STRING);
         url = new ParameterKey("url", ValueType.STRING);
-        pollingInterval = new ParameterKey("pollingInterval", ValueType.INT);
         resident = new ParameterKey("resident", ValueType.BOOLEAN);
+        pollingConfig = new ParameterKey("polling", EndpointPollingConfig.class);
 
         parameterKeys = new ParameterKey[] {
                 name,
                 title,
                 url,
-                pollingInterval,
-                resident
+                resident,
+                pollingConfig
         };
     }
 
@@ -76,20 +76,20 @@ public class EndpointInfo extends AbstractParameters {
         putValue(EndpointInfo.url, url);
     }
 
-    public int getPollingInterval() {
-        return getInt(pollingInterval, 0);
-    }
-
-    public void setPollingInterval(int pollingInterval) {
-        putValue(EndpointInfo.pollingInterval, pollingInterval);
-    }
-
     public boolean isResident() {
         return getBoolean(resident, false);
     }
 
     public void setResident(boolean resident) {
         putValue(EndpointInfo.resident, resident);
+    }
+
+    public EndpointPollingConfig getPollingConfig() {
+        return getParameters(pollingConfig);
+    }
+
+    public void setPolling(EndpointPollingConfig pollingConfig) {
+        putValue(EndpointInfo.pollingConfig, pollingConfig);
     }
 
 }

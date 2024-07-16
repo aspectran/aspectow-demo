@@ -59,6 +59,9 @@ function AppMonBuilder() {
                 logtail.data("tailing", true);
                 logtailBox.find(".tailing-status").addClass("on");
             });
+            if (endpoint.mode === "polling") {
+                $("ul.speed-options").show();
+            }
         }
         function onEstablishCompleted() {
             if (endpointIndex < endpoints.length - 1) {
@@ -80,10 +83,9 @@ function AppMonBuilder() {
             }
         }
         function onErrorObserved() {
-            // endpoint.viewer.printErrorMessage("Socket connection failed");
             let client = new AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted);
             endpoint['client'] = client;
-            client.join();
+            client.start();
         }
 
         let endpoint = endpoints[endpointIndex];
@@ -91,7 +93,7 @@ function AppMonBuilder() {
         endpoint.url = '';
         let client = new AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted, onErrorObserved);
         endpoint['client'] = client;
-        client.openSocket();
+        client.start();
     }
 
     const changeGroup = function (endpointBox, groupName) {
@@ -207,6 +209,18 @@ function AppMonBuilder() {
                 }
             });
         });
+        $(".speed-options li").click(function() {
+            let endpointBox = $(this).closest(".endpoint-box");
+            let endpointIndex = endpointBox.data("index");
+            let liFast = $(".speed-options li.fast");
+            if (liFast.hasClass("on")) {
+                liFast.removeClass("on");
+                endpoints[endpointIndex].client.speed(0);
+            } else {
+                liFast.addClass("on");
+                endpoints[endpointIndex].client.speed(1);
+            }
+        });
     }
 
     const addEndpoint = function (endpoint) {
@@ -255,7 +269,7 @@ function AppMonBuilder() {
         let endpointTitle = endpointBox.data("title");
         let groupBox = endpointBox.find(".group-box[data-name=" + logtail.group + "]");
         let logtailBox = groupBox.find(".logtail-box").eq(0).hide().clone();
-        logtailBox.addClass("available");
+        logtailBox.addClass("large-6 available");
         logtailBox.attr("data-group", logtail.group);
         logtailBox.attr("data-name", logtail.name);
         logtailBox.find(".status-bar h4").text(endpointTitle + " ›› " + logtail.file);

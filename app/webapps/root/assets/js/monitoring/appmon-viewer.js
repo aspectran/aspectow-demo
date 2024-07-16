@@ -1,10 +1,8 @@
 function AppmonViewer(endpoint) {
-    // let pendingMessages = [];
     let logtails = {};
     let missileTracks = {};
     let indicators = {};
     let statuses = {};
-    // let established = false;
     let prevLogTime = null;
     let prevSentTime = new Date().getTime();
     let prevPosition = 0;

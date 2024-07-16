@@ -4,7 +4,15 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
     let pendingMessages = [];
     let established = false;
 
-    this.openSocket = function () {
+    this.start = function () {
+        openSocket();
+    }
+
+    this.stop = function () {
+        closeSocket();
+    }
+
+    const openSocket = function () {
         if (socket) {
             socket.close();
         }
@@ -61,7 +69,7 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
         };
         socket.onclose = function (event) {
             endpoint.viewer.printEventMessage('Socket connection closed. Please refresh this page to try again!');
-            self.closeSocket();
+            closeSocket();
         };
         socket.onerror = function (event) {
             console.error("WebSocket error observed:", event);
@@ -76,7 +84,7 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
         };
     };
 
-    this.closeSocket = function () {
+    const closeSocket = function () {
         if (socket) {
             socket.close();
             socket = null;
@@ -85,6 +93,7 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
 
     const establish = function (payload) {
         if (onEndpointJoined) {
+            endpoint['mode'] = "websocket";
             onEndpointJoined(endpoint, payload);
         }
         if (onEstablishCompleted) {

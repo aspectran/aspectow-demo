@@ -108,7 +108,7 @@ public class PollingAppMonSession implements AppMonSession {
     private void checkExpired() {
         long now = System.currentTimeMillis();
         try (AutoLock ignored = lock()) {
-            if (lastAccessed + sessionTimeout <= now) {
+            if (lastAccessed + sessionTimeout > now) {
                 expired = true;
                 manager.scavenge();
             }

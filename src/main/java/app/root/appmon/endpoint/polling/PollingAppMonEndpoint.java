@@ -90,19 +90,26 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
             buffer.remove(minLineIndex);
         }
 
-        return lines;
+        return (lines != null ? lines : new String[0]);
     }
 
     @RequestToPost("/appmon/endpoint/pollingInterval")
     @Transform(FormatType.TEXT)
-    public int pollingInterval(@NonNull Translet translet, int pollingInterval) {
+    public int pollingInterval(@NonNull Translet translet, int speed) {
         String sessionId = translet.getSessionAdapter().getId();
         PollingAppMonSession session = pollingAppMonSessionManager.getSession(sessionId);
         if (session == null) {
             return -1;
         }
 
-        session.setPollingInterval(pollingInterval);
+        if (speed == 1) {
+            session.setPollingInterval(1000);
+        } else {
+            EndpointInfo endpointInfo = appMonManager.getResidentEndpointInfo();
+            EndpointPollingConfig pollingConfig = endpointInfo.getPollingConfig();
+            session.setPollingInterval(pollingConfig.getPollingInterval());
+        }
+
         return session.getPollingInterval();
     }
 

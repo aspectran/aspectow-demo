@@ -23,8 +23,8 @@ public class PollingAppMonBuffer {
     @Nullable
     public String[] pop(@NonNull PollingAppMonSession session) {
         synchronized (buffer) {
-            int lastLineIndex = session.getLastLineIndex();
-            if (lastLineIndex < 0) {
+            int lineIndex = session.getLastLineIndex();
+            if (lineIndex < 0) {
                 if (buffer.isEmpty()) {
                     return null;
                 } else {
@@ -32,18 +32,18 @@ public class PollingAppMonBuffer {
                     return buffer.toArray(new String[0]);
                 }
             }
-            int lastIndex = lineCounter.get() - 1;
-            if (lastLineIndex < lastIndex) {
-                session.setLastLineIndex(lastIndex);
-                int offset = lastIndex - lastLineIndex;
+            int maxLineIndex = lineCounter.get() - 1;
+            if (lineIndex < maxLineIndex) {
+                session.setLastLineIndex(maxLineIndex);
+                int offset = maxLineIndex - lineIndex;
                 if (offset < buffer.size()) {
                     int start = buffer.size() - offset;
                     return buffer.subList(start, buffer.size()).toArray(new String[0]);
                 } else {
                     return buffer.toArray(new String[0]);
                 }
-            } else if (lastLineIndex > lastIndex) {
-                session.setLastLineIndex(lastIndex);
+            } else if (lineIndex > maxLineIndex) {
+                session.setLastLineIndex(maxLineIndex);
                 return null;
             } else {
                 return null;
@@ -54,10 +54,12 @@ public class PollingAppMonBuffer {
     public void remove(int minLineIndex) {
         synchronized (buffer) {
             int toIndex = lineCounter.get() - minLineIndex;
-            if (toIndex > 0) {
-                buffer.subList(0, toIndex + 1).clear();
-            } else if (toIndex == 0) {
-                buffer.remove(toIndex);
+            if (toIndex < buffer.size()) {
+                if (toIndex > 0) {
+                    buffer.subList(0, toIndex + 1).clear();
+                } else if (toIndex == 0) {
+                    buffer.remove(toIndex);
+                }
             }
         }
     }

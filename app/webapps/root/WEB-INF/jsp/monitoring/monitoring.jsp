@@ -6,12 +6,15 @@
 <script src="<aspectran:url value="/assets/js/monitoring/appmon-viewer.js?20240711"/>"></script>
 <script src="<aspectran:url value="/assets/js/monitoring/appmon-websocket-client.js?20240711"/>"></script>
 <script src="<aspectran:url value="/assets/js/monitoring/appmon-polling-client.js?20240711"/>"></script>
-<div class="grid-x endpoint-box compact vertical">
+<div class="grid-x endpoint-box compact horizontal">
     <div class="cell options t10 b5">
+        <ul class="speed-options">
+            <li class="fi-fast-forward fast" title="Set to poll every second. Turn this option on only when absolutely necessary."></li>
+        </ul>
         <ul class="layout-options">
             <li class="fi-layout tabbed on" data-columns="0"><a> Tabbed</a></li>
             <li class="fi-layout stacked" data-columns="0"><a> Stacked</a></li>
-            <li class="fi-layout compact on vertical hide-for-small-only"><a> Compact</a></li>
+            <li class="fi-layout compact on horizontal hide-for-small-only"><a> Compact</a></li>
         </ul>
     </div>
     <dl class="cell group tabs b0">

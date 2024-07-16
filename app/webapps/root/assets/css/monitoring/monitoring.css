@@ -25,6 +25,25 @@ ul.layout-options li.on {
 ul.layout-options li.on a {
     color: #fff;
 }
+ul.speed-options {
+    float: right;
+    list-style-type: none;
+    margin: 0;
+    display: none;
+}
+ul.speed-options li {
+    float: left;
+    margin-left: .3em;
+    border: 1px solid #ccc;
+    padding: 0 .5em;
+    border-radius: 5px;
+    color: #777;
+    cursor: pointer;
+}
+ul.speed-options li.on {
+    background-color: #748fa0;
+    color: #fff;
+}
 
 .logtail-box .status-bar {
     background-color: #677278;

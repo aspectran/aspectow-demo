@@ -64,4 +64,8 @@ public class PollingAppMonBuffer {
         }
     }
 
+    public void clear() {
+        buffer.clear();
+    }
+
 }

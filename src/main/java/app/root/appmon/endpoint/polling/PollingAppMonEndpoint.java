@@ -28,25 +28,26 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
 
     private final AppMonManager appMonManager;
 
-    private final PollingAppMonSessionManager pollingAppMonSessionManager;
+    private final PollingAppMonSessionManager sessionManager;
 
     private final PollingAppMonBuffer buffer = new PollingAppMonBuffer();
 
     @Autowired
     public PollingAppMonEndpoint(AppMonManager appMonManager) {
         this.appMonManager = appMonManager;
-        this.pollingAppMonSessionManager = new PollingAppMonSessionManager(appMonManager);
+        this.sessionManager = new PollingAppMonSessionManager(appMonManager);
     }
 
     @Initialize
     public void initialize() throws Exception {
         appMonManager.putEndpoint(this);
-        pollingAppMonSessionManager.initialize();
+        sessionManager.initialize();
     }
 
     @Destroy
     public void destroy() throws Exception {
-        pollingAppMonSessionManager.destroy();
+        sessionManager.destroy();
+        buffer.clear();
     }
 
     @RequestToPost("/appmon/endpoint/join")
@@ -57,7 +58,7 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
         EndpointInfo endpointInfo = appMonManager.getResidentEndpointInfo();
         EndpointPollingConfig pollingConfig = endpointInfo.getPollingConfig();
 
-        PollingAppMonSession session = pollingAppMonSessionManager.createSession(sessionId, pollingConfig);
+        PollingAppMonSession session = sessionManager.createSession(sessionId, pollingConfig);
         if (!appMonManager.join(session)) {
             return null;
         }
@@ -78,14 +79,14 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
     @Transform(FormatType.JSON)
     public String[] pull(@NonNull Translet translet) throws IOException {
         String sessionId = translet.getSessionAdapter().getId();
-        PollingAppMonSession session = pollingAppMonSessionManager.getSession(sessionId);
+        PollingAppMonSession session = sessionManager.getSession(sessionId);
         if (session == null || !session.isValid()) {
             return null;
         }
 
         String[] lines = buffer.pop(session);
 
-        int minLineIndex = pollingAppMonSessionManager.getMinLineIndex();
+        int minLineIndex = sessionManager.getMinLineIndex();
         if (minLineIndex > -1) {
             buffer.remove(minLineIndex);
         }
@@ -97,7 +98,7 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
     @Transform(FormatType.TEXT)
     public int pollingInterval(@NonNull Translet translet, int speed) {
         String sessionId = translet.getSessionAdapter().getId();
-        PollingAppMonSession session = pollingAppMonSessionManager.getSession(sessionId);
+        PollingAppMonSession session = sessionManager.getSession(sessionId);
         if (session == null) {
             return -1;
         }
@@ -120,7 +121,7 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
 
     @Override
     public boolean isUsingGroup(String group) {
-        return pollingAppMonSessionManager.isUsingGroup(group);
+        return sessionManager.isUsingGroup(group);
     }
 
 }

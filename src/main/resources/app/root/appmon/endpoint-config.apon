@@ -6,5 +6,6 @@ endpoint: {
     polling: {
         pollingInterval: 3000
         sessionTimeout: 10000
+        enabled: true
     }
 }

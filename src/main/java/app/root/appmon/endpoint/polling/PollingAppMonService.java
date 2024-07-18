@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class PollingAppMonSessionManager extends AbstractComponent {
+public class PollingAppMonService extends AbstractComponent {
 
     private final Map<String, PollingAppMonSession> sessions = new ConcurrentHashMap<>();
 
@@ -21,7 +21,9 @@ public class PollingAppMonSessionManager extends AbstractComponent {
 
     private final AppMonManager appMonManager;
 
-    public PollingAppMonSessionManager(AppMonManager appMonManager) {
+    private final PollingAppMonBuffer buffer = new PollingAppMonBuffer();
+
+    public PollingAppMonService(AppMonManager appMonManager) {
         this.appMonManager = appMonManager;
     }
 
@@ -57,20 +59,33 @@ public class PollingAppMonSessionManager extends AbstractComponent {
         }
     }
 
-    protected void scavenge() {
-        List<String> expiredSessions = new ArrayList<>();
-        for (Map.Entry<String, PollingAppMonSession> entry : sessions.entrySet()) {
-            String id = entry.getKey();
-            PollingAppMonSession session = entry.getValue();
-            if (session.isExpired()) {
-                appMonManager.release(session);
-                session.destroy();
-                expiredSessions.add(id);
+    public void push(String line) {
+        buffer.push(line);
+    }
+
+    public String[] pull(PollingAppMonSession session) {
+        String[] lines = buffer.pop(session);
+
+        int minLineIndex = getMinLineIndex();
+        if (minLineIndex > -1) {
+            buffer.remove(minLineIndex);
+        }
+
+        return lines;
+    }
+
+    private int getMinLineIndex() {
+        int minLineIndex = -1;
+        for (PollingAppMonSession session : sessions.values()) {
+            if (session.isValid()) {
+                if (minLineIndex == -1) {
+                    minLineIndex = session.getLastLineIndex();
+                } else if (session.getLastLineIndex() < minLineIndex) {
+                    minLineIndex = session.getLastLineIndex();
+                }
             }
         }
-        for (String id : expiredSessions) {
-            sessions.remove(id);
-        }
+        return minLineIndex;
     }
 
     protected boolean isUsingGroup(String group) {
@@ -91,18 +106,20 @@ public class PollingAppMonSessionManager extends AbstractComponent {
         return false;
     }
 
-    protected int getMinLineIndex() {
-        int minLineIndex = -1;
-        for (PollingAppMonSession session : sessions.values()) {
-            if (session.isValid()) {
-                if (minLineIndex == -1) {
-                    minLineIndex = session.getLastLineIndex();
-                } else if (session.getLastLineIndex() < minLineIndex) {
-                    minLineIndex = session.getLastLineIndex();
-                }
+    protected void scavenge() {
+        List<String> expiredSessions = new ArrayList<>();
+        for (Map.Entry<String, PollingAppMonSession> entry : sessions.entrySet()) {
+            String id = entry.getKey();
+            PollingAppMonSession session = entry.getValue();
+            if (session.isExpired()) {
+                appMonManager.release(session);
+                session.destroy();
+                expiredSessions.add(id);
             }
         }
-        return minLineIndex;
+        for (String id : expiredSessions) {
+            sessions.remove(id);
+        }
     }
 
     protected Scheduler getScheduler() {
@@ -117,6 +134,7 @@ public class PollingAppMonSessionManager extends AbstractComponent {
     @Override
     protected void doDestroy() throws Exception {
         scheduler.stop();
+        buffer.clear();
     }
 
 }

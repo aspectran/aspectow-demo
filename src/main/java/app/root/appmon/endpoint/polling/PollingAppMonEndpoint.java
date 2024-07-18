@@ -11,7 +11,6 @@ import com.aspectran.core.activity.Translet;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.core.component.bean.annotation.Destroy;
-import com.aspectran.core.component.bean.annotation.Initialize;
 import com.aspectran.core.component.bean.annotation.RequestToGet;
 import com.aspectran.core.component.bean.annotation.RequestToPost;
 import com.aspectran.core.component.bean.annotation.Transform;
@@ -28,37 +27,43 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
 
     private final AppMonManager appMonManager;
 
-    private final PollingAppMonSessionManager sessionManager;
-
-    private final PollingAppMonBuffer buffer = new PollingAppMonBuffer();
+    private final PollingAppMonService appMonService;
 
     @Autowired
-    public PollingAppMonEndpoint(AppMonManager appMonManager) {
+    public PollingAppMonEndpoint(@NonNull AppMonManager appMonManager) throws Exception {
         this.appMonManager = appMonManager;
-        this.sessionManager = new PollingAppMonSessionManager(appMonManager);
-    }
 
-    @Initialize
-    public void initialize() throws Exception {
-        appMonManager.putEndpoint(this);
-        sessionManager.initialize();
+        EndpointInfo endpointInfo = appMonManager.getResidentEndpointInfo();
+        EndpointPollingConfig pollingConfig = endpointInfo.getPollingConfig();
+        if (pollingConfig != null && pollingConfig.isEnabled()) {
+            this.appMonService = new PollingAppMonService(appMonManager);
+            this.appMonService.initialize();
+            appMonManager.putEndpoint(this);
+        } else {
+            this.appMonService = null;
+        }
     }
 
     @Destroy
     public void destroy() throws Exception {
-        sessionManager.destroy();
-        buffer.clear();
+        if (appMonService != null) {
+            appMonService.destroy();
+        }
     }
 
     @RequestToPost("/appmon/endpoint/join")
     @Transform(FormatType.JSON)
     public Map<String, Object> join(@NonNull Translet translet, String message) throws IOException {
+        if (appMonService == null) {
+            return null;
+        }
+
         String sessionId = translet.getSessionAdapter().getId();
 
         EndpointInfo endpointInfo = appMonManager.getResidentEndpointInfo();
         EndpointPollingConfig pollingConfig = endpointInfo.getPollingConfig();
 
-        PollingAppMonSession session = sessionManager.createSession(sessionId, pollingConfig);
+        PollingAppMonSession session = appMonService.createSession(sessionId, pollingConfig);
         if (!appMonManager.join(session)) {
             return null;
         }
@@ -78,27 +83,29 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
     @RequestToGet("/appmon/endpoint/pull")
     @Transform(FormatType.JSON)
     public String[] pull(@NonNull Translet translet) throws IOException {
+        if (appMonService == null) {
+            return null;
+        }
+
         String sessionId = translet.getSessionAdapter().getId();
-        PollingAppMonSession session = sessionManager.getSession(sessionId);
+        PollingAppMonSession session = appMonService.getSession(sessionId);
         if (session == null || !session.isValid()) {
             return null;
         }
 
-        String[] lines = buffer.pop(session);
-
-        int minLineIndex = sessionManager.getMinLineIndex();
-        if (minLineIndex > -1) {
-            buffer.remove(minLineIndex);
-        }
-
+        String[] lines = appMonService.pull(session);
         return (lines != null ? lines : new String[0]);
     }
 
     @RequestToPost("/appmon/endpoint/pollingInterval")
     @Transform(FormatType.TEXT)
     public int pollingInterval(@NonNull Translet translet, int speed) {
+        if (appMonService == null) {
+            return -1;
+        }
+
         String sessionId = translet.getSessionAdapter().getId();
-        PollingAppMonSession session = sessionManager.getSession(sessionId);
+        PollingAppMonSession session = appMonService.getSession(sessionId);
         if (session == null) {
             return -1;
         }
@@ -116,12 +123,18 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
 
     @Override
     public void broadcast(String line) {
-        buffer.push(line);
+        if (appMonService != null) {
+            appMonService.push(line);
+        }
     }
 
     @Override
     public boolean isUsingGroup(String group) {
-        return sessionManager.isUsingGroup(group);
+        if (appMonService != null) {
+            return appMonService.isUsingGroup(group);
+        } else {
+            return false;
+        }
     }
 
 }

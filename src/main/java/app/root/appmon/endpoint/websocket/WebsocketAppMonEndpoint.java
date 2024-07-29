@@ -51,7 +51,7 @@ import java.util.Set;
 
 @Component
 @ServerEndpoint(
-        value = "/appmon/endpoint/{token}",
+        value = "/appmon/server/endpoint/{token}",
         configurator = AspectranConfigurator.class
 )
 @AvoidAdvice

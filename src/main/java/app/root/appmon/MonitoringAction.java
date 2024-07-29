@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.monitoring;
+package app.root.appmon;
 
-import app.root.appmon.AppMonManager;
 import app.root.appmon.endpoint.EndpointInfo;
 import com.aspectran.core.component.bean.annotation.Action;
 import com.aspectran.core.component.bean.annotation.Autowired;
@@ -37,7 +36,7 @@ import java.util.Map;
 /**
  * <p>Created: 2020/02/23</p>
  */
-@Component
+@Component("/appmon/monitoring")
 public class MonitoringAction {
 
     private static final Logger logger = LoggerFactory.getLogger(MonitoringAction.class);
@@ -49,20 +48,20 @@ public class MonitoringAction {
         this.appMonManager = appMonManager;
     }
 
-    @Request("/monitoring/${endpoint}")
+    @Request("/${endpoint}")
     @Dispatch("templates/default")
     @Action("page")
     public Map<String, String> viewer(String endpoint) {
         return Map.of(
-                "headinclude", "monitoring/_endpoints",
-                "include", "monitoring/monitoring",
+                "headinclude", "appmon/_endpoints",
+                "include", "appmon/appmon",
                 "style", "fluid compact",
                 "token", appMonManager.issueToken(),
                 "endpoint", StringUtils.nullToEmpty(endpoint)
         );
     }
 
-    @RequestToGet("/monitoring/endpoints/${token}")
+    @RequestToGet("/endpoints/${token}")
     public RestResponse getEndpoints(@Required String token) {
         try {
             appMonManager.validateToken(token);

@@ -85,7 +85,7 @@
                         <li><a href="https://public.aspectran.com/monitoring/#jpetstore">Monitoring</a></li>
                     </aspectran:profile>
                     <aspectran:profile expression="!prod">
-                        <li><a href="/monitoring/#jpetstore">Monitoring</a></li>
+                        <li><a href="/appmon/monitoring/#jpetstore">Monitoring</a></li>
                     </aspectran:profile>
                     <li>
                         <a title="Sample applications built on Aspectran">More Sample Apps</a>

@@ -9,12 +9,9 @@ import java.util.Map;
 
 public class GroupManager {
 
-//    private final AppMonManager appMonManager;
-
     private final Map<String, GroupInfo> groups = new LinkedHashMap<>();
 
     public GroupManager(@NonNull List<GroupInfo> groupInfoList) {
-//        this.appMonManager = appMonManager;
         for (GroupInfo info : groupInfoList) {
             groups.put(info.getName(), info);
         }
@@ -48,45 +45,5 @@ public class GroupManager {
         }
         return groupNames.toArray(new String[0]);
     }
-
-//    public String[] getJoinedGroups(@NonNull AppMonSession session) {
-//        String[] savedGroups = session.getJoinedGroups();
-//        if (savedGroups == null) {
-//            return null;
-//        }
-//        Set<String> joinedGroups = new HashSet<>();
-//        for (String name : savedGroups) {
-//            if (groups.containsKey(name)) {
-//                joinedGroups.add(name);
-//            }
-//        }
-//        if (!joinedGroups.isEmpty()) {
-//            return joinedGroups.toArray(new String[0]);
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    public String[] getUnusedGroups(AppMonSession session) {
-//        String[] joinedGroups = getJoinedGroups(session);
-//        if (joinedGroups == null || joinedGroups.length == 0) {
-//            return null;
-//        }
-//        List<String> unusedGroups = new ArrayList<>(joinedGroups.length);
-//        for (String name : joinedGroups) {
-//            if (!isUsingGroup(name)) {
-//                unusedGroups.add(name);
-//            }
-//        }
-//        if (!unusedGroups.isEmpty()) {
-//            return unusedGroups.toArray(new String[0]);
-//        } else {
-//            return null;
-//        }
-//    }
-
-//    public boolean isUsingGroup(String group) {
-//        return appMonManager.getEndpoint().isUsingGroup(group);
-//    }
 
 }

@@ -90,7 +90,6 @@ function AppMonBuilder() {
 
         let endpoint = endpoints[endpointIndex];
         endpoint['viewer'] = new AppmonViewer(endpoint);
-        endpoint.url = '';
         let client = new AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted, onErrorObserved);
         endpoint['client'] = client;
         client.start();

@@ -33,37 +33,12 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
                     return;
                 }
                 let msg = event.data;
-                let idx = msg.indexOf(":");
-                if (idx !== -1) {
-                    if (established) {
-                        let name = msg.substring(0, idx);
-                        let text = msg.substring(idx + 1);
-                        if (text.startsWith("logtail:")) {
-                            text = text.substring(8);
-                            if (text.startsWith("last:")) {
-                                text = text.substring(5);
-                                endpoint.viewer.printMessage(name, text, false);
-                            } else {
-                                endpoint.viewer.printMessage(name, text, true);
-                            }
-                        } else if (text.startsWith("status:")) {
-                            text = text.substring(7);
-                            idx = text.indexOf(":");
-                            if (idx !== -1) {
-                                let label = text.substring(0, idx);
-                                let data = JSON.parse(text.substring(idx + 1));
-                                console.log(name, label, data);
-                                endpoint.viewer.printStatus(name, label, data);
-                            }
-                        }
-                    } else {
-                        let command = msg.substring(0, idx);
-                        if (command === "joined") {
-                            console.log(msg);
-                            let payload = JSON.parse(msg.substring(idx + 1));
-                            establish(payload);
-                        }
-                    }
+                if (established) {
+                    endpoint.viewer.printMessage(msg);
+                } else if (msg.startsWith("joined:")) {
+                    console.log(msg);
+                    let payload = JSON.parse(msg.substring(7));
+                    establish(payload);
                 }
             }
         };

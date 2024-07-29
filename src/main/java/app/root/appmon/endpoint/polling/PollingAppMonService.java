@@ -21,10 +21,11 @@ public class PollingAppMonService extends AbstractComponent {
 
     private final AppMonManager appMonManager;
 
-    private final PollingAppMonBuffer buffer = new PollingAppMonBuffer();
+    private final PollingAppMonBuffer buffer;
 
-    public PollingAppMonService(AppMonManager appMonManager) {
+    public PollingAppMonService(AppMonManager appMonManager, int initialBufferSize) {
         this.appMonManager = appMonManager;
+        this.buffer = new PollingAppMonBuffer(initialBufferSize);
     }
 
     public PollingAppMonSession createSession(String id, @Nullable EndpointPollingConfig pollingConfig) {
@@ -66,23 +67,27 @@ public class PollingAppMonService extends AbstractComponent {
     public String[] pull(PollingAppMonSession session) {
         String[] lines = buffer.pop(session);
 
-        int minLineIndex = getMinLineIndex();
-        if (minLineIndex > -1) {
-            buffer.remove(minLineIndex);
+        if (lines != null && lines.length > 0) {
+            shrinkBuffer();
         }
 
         return lines;
     }
 
+    private void shrinkBuffer() {
+        int minLineIndex = getMinLineIndex();
+        if (minLineIndex > -1) {
+            buffer.shrink(minLineIndex);
+        }
+    }
+
     private int getMinLineIndex() {
         int minLineIndex = -1;
         for (PollingAppMonSession session : sessions.values()) {
-            if (session.isValid()) {
-                if (minLineIndex == -1) {
-                    minLineIndex = session.getLastLineIndex();
-                } else if (session.getLastLineIndex() < minLineIndex) {
-                    minLineIndex = session.getLastLineIndex();
-                }
+            if (minLineIndex == -1) {
+                minLineIndex = session.getLastLineIndex();
+            } else if (session.getLastLineIndex() < minLineIndex) {
+                minLineIndex = session.getLastLineIndex();
             }
         }
         return minLineIndex;
@@ -119,6 +124,12 @@ public class PollingAppMonService extends AbstractComponent {
         }
         for (String id : expiredSessions) {
             sessions.remove(id);
+        }
+
+        if (sessions.isEmpty()) {
+            buffer.clear();
+        } else {
+            shrinkBuffer();
         }
     }
 

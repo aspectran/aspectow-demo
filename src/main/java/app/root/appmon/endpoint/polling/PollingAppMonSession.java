@@ -8,9 +8,13 @@ import java.util.concurrent.TimeUnit;
 
 public class PollingAppMonSession implements AppMonSession {
 
+    private static final int MIN_POLLING_INTERVAL = 500;
+
+    private static final int MIN_SESSION_TIMEOUT = 500;
+
     private final AutoLock autoLock = new AutoLock();
 
-    private final PollingAppMonService manager;
+    private final PollingAppMonService service;
 
     private final SessionExpiryTimer expiryTimer;
 
@@ -24,8 +28,8 @@ public class PollingAppMonSession implements AppMonSession {
 
     private String[] joinedGroups;
 
-    public PollingAppMonSession(PollingAppMonService manager, int sessionTimeout, int pollingInterval) {
-        this.manager = manager;
+    public PollingAppMonSession(PollingAppMonService service, int sessionTimeout, int pollingInterval) {
+        this.service = service;
         this.sessionTimeout = sessionTimeout;
         this.pollingInterval = pollingInterval;
         this.expiryTimer = new SessionExpiryTimer();
@@ -36,7 +40,7 @@ public class PollingAppMonSession implements AppMonSession {
     }
 
     public void setSessionTimeout(int sessionTimeout) {
-        this.sessionTimeout = Math.max(sessionTimeout, 500);
+        this.sessionTimeout = Math.max(sessionTimeout, MIN_SESSION_TIMEOUT);
     }
 
     public int getPollingInterval() {
@@ -44,7 +48,7 @@ public class PollingAppMonSession implements AppMonSession {
     }
 
     public void setPollingInterval(int pollingInterval) {
-        this.pollingInterval = Math.max(pollingInterval, 500);
+        this.pollingInterval = Math.max(pollingInterval, MIN_POLLING_INTERVAL);
     }
 
     @Override
@@ -106,7 +110,7 @@ public class PollingAppMonSession implements AppMonSession {
         try (AutoLock ignored = lock()) {
             if (!expired) {
                 expired = true;
-                manager.scavenge();
+                service.scavenge();
             }
         }
     }
@@ -116,7 +120,7 @@ public class PollingAppMonSession implements AppMonSession {
         private final CyclicTimeout timer;
 
         SessionExpiryTimer() {
-            timer = new CyclicTimeout(manager.getScheduler()) {
+            timer = new CyclicTimeout(service.getScheduler()) {
                 @Override
                 public void onTimeoutExpired() {
                     doExpiry();

@@ -36,7 +36,7 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
         EndpointInfo endpointInfo = appMonManager.getResidentEndpointInfo();
         EndpointPollingConfig pollingConfig = endpointInfo.getPollingConfig();
         if (pollingConfig != null && pollingConfig.isEnabled()) {
-            this.appMonService = new PollingAppMonService(appMonManager);
+            this.appMonService = new PollingAppMonService(appMonManager, pollingConfig.getInitialBufferSize());
             this.appMonService.initialize();
             appMonManager.putEndpoint(this);
         } else {

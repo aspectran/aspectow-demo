@@ -8,6 +8,7 @@ public class EndpointPollingConfig extends AbstractParameters {
 
     private static final ParameterKey pollingInterval;
     private static final ParameterKey sessionTimeout;
+    private static final ParameterKey initialBufferSize;
     private static final ParameterKey enabled;
 
     private static final ParameterKey[] parameterKeys;
@@ -15,11 +16,13 @@ public class EndpointPollingConfig extends AbstractParameters {
     static {
         pollingInterval = new ParameterKey("pollingInterval", ValueType.INT);
         sessionTimeout = new ParameterKey("sessionTimeout", ValueType.INT);
+        initialBufferSize = new ParameterKey("initialBufferSize", ValueType.INT);
         enabled = new ParameterKey("enabled", ValueType.BOOLEAN);
 
         parameterKeys = new ParameterKey[] {
                 pollingInterval,
                 sessionTimeout,
+                initialBufferSize,
                 enabled
         };
     }
@@ -42,6 +45,14 @@ public class EndpointPollingConfig extends AbstractParameters {
 
     public void setSessionTimeout(int sessionTimeout) {
         putValue(EndpointPollingConfig.sessionTimeout, sessionTimeout);
+    }
+
+    public int getInitialBufferSize() {
+        return getInt(initialBufferSize, 0);
+    }
+
+    public void setInitialBufferSize(int initialBufferSize) {
+        putValue(EndpointPollingConfig.initialBufferSize, initialBufferSize);
     }
 
     public boolean isEnabled() {

@@ -109,7 +109,7 @@ function AppMonBuilder() {
 
     const build = function () {
         $(".endpoint-box.available").hide().eq(0).show();
-        $(".endpoint.tabs .tabs-title.available").each(function() {
+        $(".endpoint-box.available .tabs .tabs-title.available").each(function() {
             let endpointIndex = $(this).data("index");
             let endpointBox = $(".endpoint-box.available").eq(endpointIndex);
             let groupTab = endpointBox.find(".group.tabs .tabs-title.available").eq(0);

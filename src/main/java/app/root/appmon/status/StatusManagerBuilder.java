@@ -30,8 +30,8 @@ public abstract class StatusManagerBuilder {
             validateRequiredParameter(statusInfo, StatusInfo.source);
             validateRequiredParameter(statusInfo, StatusInfo.collector);
 
-            StatusCollector statusCollector = createStatusCollector(statusManager, statusInfo);
-            StatusService service = new StatusService(statusManager, statusInfo, statusCollector);
+            StatusReader statusReader = createStatusCollector(statusManager, statusInfo);
+            StatusService service = new StatusService(statusManager, statusInfo, statusReader);
             statusManager.addStatusService(statusInfo.getName(), service);
         }
         return statusManager;
@@ -43,11 +43,11 @@ public abstract class StatusManagerBuilder {
     }
 
     @NonNull
-    private static StatusCollector createStatusCollector(@NonNull StatusManager manager,
-                                                         @NonNull StatusInfo info)
+    private static StatusReader createStatusCollector(@NonNull StatusManager manager,
+                                                      @NonNull StatusInfo info)
             throws Exception {
         try {
-            Class<StatusCollector> collectorType = ClassUtils.classForName(info.getCollector());
+            Class<StatusReader> collectorType = ClassUtils.classForName(info.getCollector());
             Object[] args = { manager, info };
             Class<?>[] argTypes = { StatusManager.class, StatusInfo.class };
             return ClassUtils.createInstance(collectorType, args, argTypes);

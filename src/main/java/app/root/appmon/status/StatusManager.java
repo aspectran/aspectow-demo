@@ -16,6 +16,7 @@
 package app.root.appmon.status;
 
 import app.root.appmon.AppMonManager;
+import app.root.appmon.AppMonSession;
 import com.aspectran.core.context.ActivityContext;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.logging.Logger;
@@ -60,8 +61,9 @@ public class StatusManager {
         return infoList;
     }
 
-    public void join(String[] joinGroups) {
+    public void join(AppMonSession session) {
         if (!statusServices.isEmpty()) {
+            String[] joinGroups = session.getJoinedGroups();
             if (joinGroups != null && joinGroups.length > 0) {
                 for (StatusService service : statusServices.values()) {
                     for (String group : joinGroups) {
@@ -73,6 +75,25 @@ public class StatusManager {
             } else {
                 for (StatusService service : statusServices.values()) {
                     start(service);
+                }
+            }
+        }
+    }
+
+    public void collectCurrentStatuses(AppMonSession session, List<String> messages) {
+        if (!statusServices.isEmpty()) {
+            String[] joinGroups = session.getJoinedGroups();
+            if (joinGroups != null && joinGroups.length > 0) {
+                for (StatusService service : statusServices.values()) {
+                    for (String group : joinGroups) {
+                        if (service.getGroup().equals(group)) {
+                            service.readStatus(messages);
+                        }
+                    }
+                }
+            } else {
+                for (StatusService service : statusServices.values()) {
+                    service.readStatus(messages);
                 }
             }
         }
@@ -91,15 +112,9 @@ public class StatusManager {
             if (unusedGroups != null) {
                 for (StatusService service : statusServices.values()) {
                     for (String group : unusedGroups) {
-                        if (service.getGroup().equals(group) && service.isRunning()) {
+                        if (service.getGroup().equals(group)) {
                             stop(service);
                         }
-                    }
-                }
-            } else {
-                for (StatusService service : statusServices.values()) {
-                    if (service.isRunning()) {
-                        stop(service);
                     }
                 }
             }
@@ -122,8 +137,8 @@ public class StatusManager {
         return getActivityContext().getBeanRegistry().getBean(id);
     }
 
-    public void broadcast(String name, String msg) {
-        appMonManager.broadcast(name + ":" + msg);
+    public void broadcast(String message) {
+        appMonManager.broadcast(message);
     }
 
 }

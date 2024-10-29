@@ -2,7 +2,7 @@ status: {
     group: root
     name: root
     title: Root App Session Statistics
-    collector: app.root.appmon.status.session.SessionStatusCollector
+    collector: app.root.appmon.status.session.LocalSessionStatusReader
     source: tow.server
     label: session
     sampleInterval: 5000
@@ -11,7 +11,7 @@ status: {
     group: demo
     name: demo
     title: Demo App Session Statistics
-    collector: app.root.appmon.status.session.SessionStatusCollector
+    collector: app.root.appmon.status.session.LocalSessionStatusReader
     source: tow.server
     label: session
     sampleInterval: 5000
@@ -20,7 +20,7 @@ status: {
     group: jpetstore
     name: jpetstore
     title: JPetStore App Session Statistics
-    collector: app.root.appmon.status.session.SessionStatusCollector
+    collector: app.root.appmon.status.session.LocalSessionStatusReader
     source: tow.server
     label: session
     sampleInterval: 5000

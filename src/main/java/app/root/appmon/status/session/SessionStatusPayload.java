@@ -110,18 +110,18 @@ public class SessionStatusPayload {
         if (this == other) {
             return true;
         }
-        if (!(other instanceof SessionStatusPayload stats)) {
+        if (!(other instanceof SessionStatusPayload that)) {
             return false;
         }
-        if (stats.createdSessionCount != createdSessionCount ||
-                stats.expiredSessionCount != expiredSessionCount ||
-                stats.evictedSessionCount != evictedSessionCount ||
-                stats.activeSessionCount != activeSessionCount ||
-                stats.highestActiveSessionCount != highestActiveSessionCount ||
-                stats.rejectedSessionCount != rejectedSessionCount) {
+        if (that.createdSessionCount != createdSessionCount ||
+                that.expiredSessionCount != expiredSessionCount ||
+                that.evictedSessionCount != evictedSessionCount ||
+                that.activeSessionCount != activeSessionCount ||
+                that.highestActiveSessionCount != highestActiveSessionCount ||
+                that.rejectedSessionCount != rejectedSessionCount) {
             return false;
         }
-        return Arrays.equals(stats.currentSessions, currentSessions);
+        return Arrays.equals(that.currentSessions, currentSessions);
     }
 
     public String toJson() throws IOException {

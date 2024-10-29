@@ -101,6 +101,15 @@ public class AppMonManager extends InstantActivitySupport {
         return endpointInfoList;
     }
 
+    public String[] getVerifiedGroupNames(String[] joinGroups) {
+        List<GroupInfo> groups = getGroupInfoList(joinGroups);
+        if (!groups.isEmpty()) {
+            return GroupManager.extractGroupNames(groups);
+        } else {
+            return new String[0];
+        }
+    }
+
     public List<GroupInfo> getGroupInfoList(String[] joinGroups) {
         return groupManager.getGroupInfoList(joinGroups);
     }
@@ -115,13 +124,19 @@ public class AppMonManager extends InstantActivitySupport {
 
     public synchronized boolean join(@NonNull AppMonSession session) {
         if (session.isValid()) {
-            String[] joinGroups = session.getJoinedGroups();
-            logtailManager.join(joinGroups);
-            statusManager.join(joinGroups);
+            logtailManager.join(session);
+            statusManager.join(session);
             return true;
         } else {
             return false;
         }
+    }
+
+    public List<String> getLastMessages(@NonNull AppMonSession session) {
+        List<String> messages = new ArrayList<>();
+        logtailManager.collectLastLogs(session, messages);
+        statusManager.collectCurrentStatuses(session, messages);
+        return messages;
     }
 
     public synchronized void release(AppMonSession session) {
@@ -137,6 +152,12 @@ public class AppMonManager extends InstantActivitySupport {
         }
     }
 
+    public void broadcast(AppMonSession session, String message) {
+        for (AppMonEndpoint endpoint : endpoints) {
+            endpoint.broadcast(session, message);
+        }
+    }
+
     @Nullable
     private String[] getUnusedGroups(AppMonSession session) {
         String[] joinedGroups = getJoinedGroups(session);
@@ -145,10 +166,15 @@ public class AppMonManager extends InstantActivitySupport {
         }
         List<String> unusedGroups = new ArrayList<>(joinedGroups.length);
         for (String name : joinedGroups) {
+            boolean using = false;
             for (AppMonEndpoint endpoint : endpoints) {
-                if (!endpoint.isUsingGroup(name)) {
-                    unusedGroups.add(name);
+                if (endpoint.isUsingGroup(name)) {
+                    using = true;
+                    break;
                 }
+            }
+            if (!using) {
+                unusedGroups.add(name);
             }
         }
         if (!unusedGroups.isEmpty()) {

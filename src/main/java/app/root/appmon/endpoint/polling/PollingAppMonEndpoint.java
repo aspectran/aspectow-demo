@@ -2,6 +2,7 @@ package app.root.appmon.endpoint.polling;
 
 import app.root.appmon.AppMonEndpoint;
 import app.root.appmon.AppMonManager;
+import app.root.appmon.AppMonSession;
 import app.root.appmon.endpoint.EndpointInfo;
 import app.root.appmon.endpoint.EndpointPollingConfig;
 import app.root.appmon.group.GroupInfo;
@@ -62,21 +63,23 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
 
         EndpointInfo endpointInfo = appMonManager.getResidentEndpointInfo();
         EndpointPollingConfig pollingConfig = endpointInfo.getPollingConfig();
+        String[] joinGroups = StringUtils.splitCommaDelimitedString(message);
 
-        PollingAppMonSession session = appMonService.createSession(sessionId, pollingConfig);
-        if (!appMonManager.join(session)) {
+        PollingAppMonSession appMonSession = appMonService.createSession(sessionId, pollingConfig, joinGroups);
+        if (!appMonManager.join(appMonSession)) {
             return null;
         }
 
-        String[] joinGroups = StringUtils.splitCommaDelimitedString(message);
-        List<GroupInfo> groups = appMonManager.getGroupInfoList(joinGroups);
-        List<LogtailInfo> logtails = appMonManager.getLogtailInfoList(joinGroups);
-        List<StatusInfo> statuses = appMonManager.getStatusInfoList(joinGroups);
+        List<GroupInfo> groups = appMonManager.getGroupInfoList(appMonSession.getJoinedGroups());
+        List<LogtailInfo> logtails = appMonManager.getLogtailInfoList(appMonSession.getJoinedGroups());
+        List<StatusInfo> statuses = appMonManager.getStatusInfoList(appMonSession.getJoinedGroups());
+        List<String> messages = appMonManager.getLastMessages(appMonSession);
         return Map.of(
                 "groups", groups,
                 "logtails", logtails,
                 "statuses", statuses,
-                "pollingInterval", session.getPollingInterval()
+                "pollingInterval", appMonSession.getPollingInterval(),
+                "messages", messages
         );
     }
 
@@ -126,6 +129,10 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
         if (appMonService != null) {
             appMonService.push(line);
         }
+    }
+
+    @Override
+    public void broadcast(AppMonSession session, String message) {
     }
 
     @Override

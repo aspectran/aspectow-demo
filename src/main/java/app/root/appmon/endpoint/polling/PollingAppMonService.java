@@ -28,7 +28,7 @@ public class PollingAppMonService extends AbstractComponent {
         this.buffer = new PollingAppMonBuffer(initialBufferSize);
     }
 
-    public PollingAppMonSession createSession(String id, @Nullable EndpointPollingConfig pollingConfig) {
+    public PollingAppMonSession createSession(String id, @Nullable EndpointPollingConfig pollingConfig, String[] joinGroups) {
         PollingAppMonSession existingSession = sessions.get(id);
         if (existingSession != null) {
             existingSession.access(false);
@@ -44,6 +44,7 @@ public class PollingAppMonService extends AbstractComponent {
                 sessionTimeout = pollingInterval * 2;
             }
             PollingAppMonSession session = new PollingAppMonSession(this, sessionTimeout, pollingInterval);
+            session.saveJoinedGroups(appMonManager.getVerifiedGroupNames(joinGroups));
             sessions.put(id, session);
             session.access(true);
             return session;
@@ -61,16 +62,16 @@ public class PollingAppMonService extends AbstractComponent {
     }
 
     public void push(String line) {
-        buffer.push(line);
+        if (!sessions.isEmpty()) {
+            buffer.push(line);
+        }
     }
 
     public String[] pull(PollingAppMonSession session) {
         String[] lines = buffer.pop(session);
-
         if (lines != null && lines.length > 0) {
             shrinkBuffer();
         }
-
         return lines;
     }
 

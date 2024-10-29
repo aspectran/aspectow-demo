@@ -1,9 +1,9 @@
 package app.root.appmon.status.session;
 
 import app.jpetstore.user.UserSession;
-import app.root.appmon.status.StatusCollector;
 import app.root.appmon.status.StatusInfo;
 import app.root.appmon.status.StatusManager;
+import app.root.appmon.status.StatusReader;
 import com.aspectran.core.component.session.DefaultSession;
 import com.aspectran.core.component.session.SessionHandler;
 import com.aspectran.core.component.session.SessionStatistics;
@@ -22,16 +22,16 @@ import java.util.Set;
 
 import static app.jpetstore.user.UserSessionManager.USER_SESSION_KEY;
 
-public class SessionStatusCollector implements StatusCollector {
+public class LocalSessionStatusReader implements StatusReader {
 
-    private static final Logger logger = LoggerFactory.getLogger(SessionStatusCollector.class);
+    private static final Logger logger = LoggerFactory.getLogger(LocalSessionStatusReader.class);
 
     private final SessionHandler sessionHandler;
 
     private SessionStatusPayload oldPayload;
 
-    public SessionStatusCollector(@NonNull StatusManager manager,
-                                  @NonNull StatusInfo info) {
+    public LocalSessionStatusReader(@NonNull StatusManager manager,
+                                    @NonNull StatusInfo info) {
         TowServer towServer = manager.getBean(info.getSource());
         this.sessionHandler = towServer.getSessionHandler(info.getName());
     }
@@ -42,22 +42,21 @@ public class SessionStatusCollector implements StatusCollector {
     }
 
     @Override
-    public String collect() {
+    public String read() {
         try {
-            SessionStatistics statistics = sessionHandler.getStatistics();
+            SessionStatusPayload payload = load();
+            return payload.toJson();
+        } catch (Exception e) {
+            logger.error(e);
+            return null;
+        }
+    }
 
-            SessionStatusPayload payload = new SessionStatusPayload();
-            payload.setCreatedSessionCount(statistics.getCreatedSessions());
-            payload.setExpiredSessionCount(statistics.getExpiredSessions());
-            payload.setActiveSessionCount(statistics.getActiveSessions());
-            payload.setHighestActiveSessionCount(statistics.getHighestActiveSessions());
-            payload.setEvictedSessionCount(statistics.getEvictedSessions());
-            payload.setRejectedSessionCount(statistics.getRejectedSessions());
-            payload.setElapsedTime(formatDuration(statistics.getStartTime()));
-            payload.setCurrentSessions(getCurrentSessions());
-
+    @Override
+    public String readIfChanged() {
+        try {
+            SessionStatusPayload payload = load();
             if (!payload.equals(oldPayload)) {
-                oldPayload = payload;
                 return payload.toJson();
             } else {
                 return null;
@@ -66,6 +65,22 @@ public class SessionStatusCollector implements StatusCollector {
             logger.error(e);
             return null;
         }
+    }
+
+    @NonNull
+    private SessionStatusPayload load() {
+        SessionStatistics statistics = sessionHandler.getStatistics();
+
+        SessionStatusPayload payload = new SessionStatusPayload();
+        payload.setCreatedSessionCount(statistics.getCreatedSessions());
+        payload.setExpiredSessionCount(statistics.getExpiredSessions());
+        payload.setActiveSessionCount(statistics.getActiveSessions());
+        payload.setHighestActiveSessionCount(statistics.getHighestActiveSessions());
+        payload.setEvictedSessionCount(statistics.getEvictedSessions());
+        payload.setRejectedSessionCount(statistics.getRejectedSessions());
+        payload.setElapsedTime(formatDuration(statistics.getStartTime()));
+        payload.setCurrentSessions(getCurrentSessions());
+        return payload;
     }
 
     @NonNull
@@ -92,6 +107,7 @@ public class SessionStatusCollector implements StatusCollector {
         return date.toString();
     }
 
+    @NonNull
     private String formatDuration(long startTime) {
         Instant start = Instant.ofEpochMilli(startTime);
         Instant end = Instant.now();

@@ -16,6 +16,7 @@
 package app.root.appmon.logtail;
 
 import app.root.appmon.AppMonManager;
+import app.root.appmon.AppMonSession;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
@@ -59,8 +60,9 @@ public class LogtailManager {
         return infoList;
     }
 
-    public void join(String[] joinGroups) {
+    public void join(AppMonSession session) {
         if (!logtailServices.isEmpty()) {
+            String[] joinGroups = session.getJoinedGroups();
             if (joinGroups != null && joinGroups.length > 0) {
                 for (LogtailService service : logtailServices.values()) {
                     for (String group : joinGroups) {
@@ -77,14 +79,30 @@ public class LogtailManager {
         }
     }
 
-    private void start(@NonNull LogtailService service) {
-        service.readLastLines();
-        if (!service.isRunning()) {
-            try {
-                service.start();
-            } catch (Exception e) {
-                logger.warn(e);
+    public void collectLastLogs(AppMonSession session, List<String> messages) {
+        if (!logtailServices.isEmpty()) {
+            String[] joinGroups = session.getJoinedGroups();
+            if (joinGroups != null && joinGroups.length > 0) {
+                for (LogtailService service : logtailServices.values()) {
+                    for (String group : joinGroups) {
+                        if (service.getInfo().getGroup().equals(group)) {
+                            service.readLastLines(messages);
+                        }
+                    }
+                }
+            } else {
+                for (LogtailService service : logtailServices.values()) {
+                    service.readLastLines(messages);
+                }
             }
+        }
+    }
+
+    private void start(@NonNull LogtailService service) {
+        try {
+            service.start();
+        } catch (Exception e) {
+            logger.warn(e);
         }
     }
 
@@ -96,12 +114,6 @@ public class LogtailManager {
                         if (service.getInfo().getGroup().equals(group) && service.isRunning()) {
                             stop(service);
                         }
-                    }
-                }
-            } else {
-                for (LogtailService service : logtailServices.values()) {
-                    if (service.isRunning()) {
-                        stop(service);
                     }
                 }
             }
@@ -116,8 +128,12 @@ public class LogtailManager {
         }
     }
 
-    void broadcast(String name, String msg) {
-        appMonManager.broadcast(name + ":" + msg);
+    void broadcast(String message) {
+        appMonManager.broadcast(message);
+    }
+
+    void broadcast(AppMonSession session, String message) {
+        appMonManager.broadcast(session, message);
     }
 
 }

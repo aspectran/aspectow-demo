@@ -57,6 +57,7 @@ public class LocalSessionStatusReader implements StatusReader {
         try {
             SessionStatusPayload payload = load();
             if (!payload.equals(oldPayload)) {
+                oldPayload = payload;
                 return payload.toJson();
             } else {
                 return null;

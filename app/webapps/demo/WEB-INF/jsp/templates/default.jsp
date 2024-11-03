@@ -30,15 +30,6 @@
     <link rel="icon" type="image/png" sizes="96x96" href="https://aspectran.com/assets/img/favicon-96x96.png" />
     <meta name="msapplication-TileImage" content="https://aspectran.com/assets/img/ms-icon-144x144.png" />
     <meta name="msapplication-TileColor" content="#4B555A" />
-<%--    <script>--%>
-<%--        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){--%>
-<%--            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),--%>
-<%--            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)--%>
-<%--        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');--%>
-<%--        ga('create', 'UA-66807210-2', 'auto');--%>
-<%--        ga('set', 'anonymizeIp', true);--%>
-<%--        ga('send', 'pageview');--%>
-<%--    </script>--%>
 </head>
 <body id="top-of-page" class="${page.style}" itemscope itemtype="http://schema.org/WebPage">
 <nav id="navigation" class="no-js">
@@ -94,7 +85,7 @@
             <div class="top-bar-right">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <aspectran:profile expression="prod">
-                        <li><a href="https://public.aspectran.com/monitoring/#demo">Monitoring</a></li>
+                        <li><a href="https://public.aspectran.com/appmon/monitoring/#demo">Monitoring</a></li>
                     </aspectran:profile>
                     <aspectran:profile expression="!prod">
                         <li><a href="/appmon/monitoring/#demo">Monitoring</a></li>

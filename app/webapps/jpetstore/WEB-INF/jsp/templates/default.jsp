@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:500,500i,700" rel="stylesheet">
     <script src="https://aspectran.com/assets/js/modernizr-custom.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://unpkg.com/htmx.org@2.0.1"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
     <link rel="mask-icon" href="https://aspectran.com/assets/img/aspectran-logo.svg" color="#4B555A"/>
     <link rel="apple-touch-icon" sizes="57x57" href="https://aspectran.com/assets/img/apple-icon-57x57.png"/>
     <link rel="apple-touch-icon" sizes="60x60" href="https://aspectran.com/assets/img/apple-icon-60x60.png"/>
@@ -75,7 +75,7 @@
             <div class="top-bar-right">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <aspectran:profile expression="prod">
-                        <li><a href="https://public.aspectran.com/monitoring/#jpetstore">Monitoring</a></li>
+                        <li><a href="https://public.aspectran.com/appmon/monitoring/#jpetstore">Monitoring</a></li>
                     </aspectran:profile>
                     <aspectran:profile expression="!prod">
                         <li><a href="/appmon/monitoring/#jpetstore">Monitoring</a></li>

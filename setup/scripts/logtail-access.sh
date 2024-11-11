@@ -2,4 +2,4 @@
 
 . ./app.conf
 
-tail -f "$DEPLOY_DIR/logs/undertow-access.log"
+tail -f "$DEPLOY_DIR/logs/app-access.log"

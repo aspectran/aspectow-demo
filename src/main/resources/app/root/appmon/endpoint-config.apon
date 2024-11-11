@@ -1,7 +1,7 @@
 endpoint: {
     name: endpoint-1
     title: Server-1
-    url: /appmon/server/endpoint
+    url: /appmon/server1/endpoint
     resident: true
     polling: {
         pollingInterval: 3000
@@ -13,7 +13,7 @@ endpoint: {
 endpoint: {
     name: endpoint-2
     title: Server-2
-    url: /appmon/server/endpoint
+    url: /appmon/server2/endpoint
     resident: false
     polling: {
         pollingInterval: 3000

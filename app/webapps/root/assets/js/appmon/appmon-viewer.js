@@ -1,4 +1,4 @@
-function AppmonViewer(endpoint) {
+function AppmonViewer() {
     let logtails = {};
     let missileTracks = {};
     let indicators = {};

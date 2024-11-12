@@ -47,7 +47,7 @@ function AppmonViewer() {
                 missileTracks[key].empty();
             }
         }
-    }
+    };
 
     this.getLogtails = function () {
         return logtails;

@@ -49,10 +49,19 @@ public class AppMonManager extends InstantActivitySupport {
     public AppMonManager() {
     }
 
-    @Initialize
+    @Initialize(profile = "!prod")
     public void init() throws Exception {
         Assert.state(this.endpointManager == null, "AppMonManager is already initialized");
-        this.endpointManager = EndpointManagerBuilder.build();
+        this.endpointManager = EndpointManagerBuilder.build(false);
+        this.groupManager = GroupManagerBuilder.build();
+        this.logtailManager = LogtailManagerBuilder.build(this);
+        this.statusManager = StatusManagerBuilder.build(this);
+    }
+
+    @Initialize(profile = "prod")
+    public void initForProd() throws Exception {
+        Assert.state(this.endpointManager == null, "AppMonManager is already initialized");
+        this.endpointManager = EndpointManagerBuilder.build(true);
         this.groupManager = GroupManagerBuilder.build();
         this.logtailManager = LogtailManagerBuilder.build(this);
         this.statusManager = StatusManagerBuilder.build(this);

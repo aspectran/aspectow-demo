@@ -2,10 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
 <link rel="stylesheet" href="<aspectran:url value="/assets/css/appmon/appmon.css?20241111"/>">
-<script src="<aspectran:url value="/assets/js/appmon/appmon-builder.js?20241111-2"/>"></script>
-<script src="<aspectran:url value="/assets/js/appmon/appmon-viewer.js?20241111-2"/>"></script>
-<script src="<aspectran:url value="/assets/js/appmon/appmon-websocket-client.js?20241111-2"/>"></script>
-<script src="<aspectran:url value="/assets/js/appmon/appmon-polling-client.js?20241111-2"/>"></script>
+<script src="<aspectran:url value="/assets/js/appmon/appmon-builder.js?20241112"/>"></script>
+<script src="<aspectran:url value="/assets/js/appmon/appmon-viewer.js?20241112"/>"></script>
+<script src="<aspectran:url value="/assets/js/appmon/appmon-websocket-client.js?20241112"/>"></script>
+<script src="<aspectran:url value="/assets/js/appmon/appmon-polling-client.js?20241112"/>"></script>
 <div class="grid-x endpoint-box compact horizontal">
     <div class="cell options t10 b5">
         <ul class="speed-options">

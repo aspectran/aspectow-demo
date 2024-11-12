@@ -19,15 +19,24 @@ import com.aspectran.utils.ResourceUtils;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.util.List;
 
 public abstract class EndpointManagerBuilder {
 
     private static final String ENDPOINT_CONFIG_FILE = "app/root/appmon/endpoint-config.apon";
 
+    private static final String ENDPOINT_CONFIG_FILE_PROD = "app/root/appmon/endpoint-config-prod.apon";
+
     @NonNull
-    public static EndpointManager build() throws IOException {
-        EndpointConfig endpointConfig = new EndpointConfig(ResourceUtils.getResourceAsReader(ENDPOINT_CONFIG_FILE));
+    public static EndpointManager build(boolean forProd) throws IOException {
+        Reader reader;
+        if (forProd) {
+            reader = ResourceUtils.getResourceAsReader(ENDPOINT_CONFIG_FILE_PROD);
+        } else {
+            reader = ResourceUtils.getResourceAsReader(ENDPOINT_CONFIG_FILE);
+        }
+        EndpointConfig endpointConfig = new EndpointConfig(reader);
         List<EndpointInfo> endpointInfoList = endpointConfig.getEndpointInfoList();
         return new EndpointManager(endpointInfoList);
     }

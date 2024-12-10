@@ -2,9 +2,9 @@
 <included>
 
     <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
-        <discriminator class="com.aspectran.core.support.logging.ContextBasedLoggingGroupDiscriminator">
+        <discriminator class="ch.qos.logback.classic.sift.MDCBasedDiscriminator">
             <key>LOGGING_GROUP</key>
-            <defaultValue>app</defaultValue>
+            <defaultValue>root</defaultValue>
         </discriminator>
         <sift>
             <appender name="FILE-${LOGGING_GROUP}" class="ch.qos.logback.core.rolling.RollingFileAppender">

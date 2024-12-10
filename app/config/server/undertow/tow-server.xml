@@ -69,7 +69,8 @@
             <item name="servletContainer">#{tow.server^servletContainer}</item>
             <item name="handlerChainWrappers" type="array">
                 <value>#{tow.server.handler.encodingHandlerWrapper}</value>
-<!--                <value>#{tow.server.handler.accessLogHandlerWrapper}</value>-->
+                <value>#{tow.server.handler.loggingGroupHandlerWrapper}</value>
+                <value>#{tow.server.handler.accessLogHandlerWrapper}</value>
             </item>
         </properties>
     </bean>
@@ -104,6 +105,23 @@
                         </item>
                     </properties>
                 </bean>
+            </item>
+        </properties>
+    </bean>
+
+    <bean id="tow.server.handler.loggingGroupHandlerWrapper"
+          class="com.aspectran.undertow.server.handler.logging.LoggingGroupHandlerWrapper"
+          scope="prototype">
+        <properties>
+            <item name="pathPatternsByGroupName" type="map">
+                <entry name="jpetstore">
+                    /jpetstore
+                    /jpetstore/**
+                </entry>
+                <entry name="demo">
+                    /demo
+                    /demo/**
+                </entry>
             </item>
         </properties>
     </bean>

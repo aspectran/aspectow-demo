@@ -127,7 +127,7 @@
     </bean>
 
     <bean id="tow.server.handler.loggingGroupAssistHandlerWrapper"
-          class="com.aspectran.undertow.server.handler.logging.PathBasedLoggingGroupAssistHandlerWrapper"
+          class="com.aspectran.undertow.server.handler.logging.LoggingGroupAssistHandlerWrapper"
           scope="prototype">
     </bean>
 

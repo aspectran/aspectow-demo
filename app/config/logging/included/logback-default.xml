@@ -2,7 +2,7 @@
 <included>
 
     <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
-        <discriminator class="ch.qos.logback.classic.sift.MDCBasedDiscriminator">
+        <discriminator class="com.aspectran.core.support.logging.LoggingGroupDiscriminator">
             <key>LOGGING_GROUP</key>
             <defaultValue>root</defaultValue>
         </discriminator>

@@ -99,7 +99,7 @@
                 </bean>
             </item>
             <item name="outerHandlerChainWrappers" type="array">
-                <value>#{tow.server.handler.loggingGroupHandlerWrapper}</value>
+                <value>#{tow.server.handler.loggingGroupAssistHandlerWrapper}</value>
             </item>
         </properties>
     </bean>

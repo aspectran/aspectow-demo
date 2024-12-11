@@ -69,8 +69,8 @@
             <item name="servletContainer">#{tow.server^servletContainer}</item>
             <item name="handlerChainWrappers" type="array">
                 <value>#{tow.server.handler.encodingHandlerWrapper}</value>
-                <value>#{tow.server.handler.loggingGroupHandlerWrapper}</value>
                 <value>#{tow.server.handler.accessLogHandlerWrapper}</value>
+                <value>#{tow.server.handler.loggingGroupHandlerWrapper}</value>
             </item>
         </properties>
     </bean>
@@ -110,7 +110,7 @@
     </bean>
 
     <bean id="tow.server.handler.loggingGroupHandlerWrapper"
-          class="com.aspectran.undertow.server.handler.logging.LoggingGroupHandlerWrapper"
+          class="com.aspectran.undertow.server.handler.logging.PathBasedLoggingGroupHandlerWrapper"
           scope="prototype">
         <properties>
             <item name="pathPatternsByGroupName" type="map">
@@ -124,6 +124,11 @@
                 </entry>
             </item>
         </properties>
+    </bean>
+
+    <bean id="tow.server.handler.loggingGroupAssistHandlerWrapper"
+          class="com.aspectran.undertow.server.handler.logging.PathBasedLoggingGroupAssistHandlerWrapper"
+          scope="prototype">
     </bean>
 
     <bean id="tow.server.handler.accessLogHandlerWrapper"

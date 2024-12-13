@@ -7,5 +7,6 @@
     <append file="/config/server/undertow/tow-context-root.xml"/>
     <append file="/config/server/undertow/tow-context-demo.xml"/>
     <append file="/config/server/undertow/tow-context-jpetstore.xml"/>
+    <append file="/config/server/undertow/tow-support.xml"/>
 
 </aspectran>

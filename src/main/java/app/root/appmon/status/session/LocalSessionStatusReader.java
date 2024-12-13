@@ -9,9 +9,13 @@ import com.aspectran.core.component.session.SessionHandler;
 import com.aspectran.core.component.session.SessionStatistics;
 import com.aspectran.undertow.server.TowServer;
 import com.aspectran.utils.annotation.jsr305.NonNull;
+import com.aspectran.utils.apon.Parameters;
+import com.aspectran.utils.apon.VariableParameters;
+import com.aspectran.utils.json.JsonWriter;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -92,11 +96,26 @@ public class LocalSessionStatusReader implements StatusReader {
             DefaultSession session = sessionHandler.getSession(sessionId);
             if (session != null) {
                 UserSession userSession = session.getAttribute(USER_SESSION_KEY);
-                String loggedIn = (userSession != null && userSession.isAuthenticated() ? "1" : "0");
-                String username = (userSession != null && userSession.getAccount() != null ?
-                        "(" + userSession.getAccount().getUsername() + ") " : "");
-                currentSessions.add(loggedIn + ":" + username + "Session " + session.getId() + " created at " +
-                        formatTime(session.getCreationTime()));
+
+                Parameters parameters = new VariableParameters();
+                if (userSession != null) {
+                    if (userSession.getAccount() != null) {
+                        parameters.putValue("username", userSession.getAccount().getUsername());
+                    }
+                }
+                parameters.putValueIfNotNull("country", session.getAttribute("countryCode"));
+                parameters.putValue("createAt", formatTime(session.getCreationTime()));
+
+                try {
+                    String sessionInfo = new JsonWriter()
+                            .nullWritable(false)
+                            .prettyPrint(false)
+                            .write(parameters)
+                            .toString();
+                    currentSessions.add(sessionInfo);
+                } catch (IOException e) {
+                    // irgnore
+                }
             }
         }
         return currentSessions.toArray(new String[0]);

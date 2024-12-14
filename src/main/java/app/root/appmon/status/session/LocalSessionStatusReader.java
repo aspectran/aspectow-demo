@@ -98,6 +98,7 @@ public class LocalSessionStatusReader implements StatusReader {
                 UserSession userSession = session.getAttribute(USER_SESSION_KEY);
 
                 Parameters parameters = new VariableParameters();
+                parameters.putValue("sessionId", sessionId);
                 if (userSession != null) {
                     if (userSession.getAccount() != null) {
                         parameters.putValue("username", userSession.getAccount().getUsername());
@@ -114,7 +115,7 @@ public class LocalSessionStatusReader implements StatusReader {
                             .toString();
                     currentSessions.add(sessionInfo);
                 } catch (IOException e) {
-                    // irgnore
+                    logger.warn(e);
                 }
             }
         }

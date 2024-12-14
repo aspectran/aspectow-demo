@@ -15,9 +15,10 @@
  */
 package app.root.util;
 
+import com.aspectran.core.activity.Translet;
+import com.aspectran.utils.Assert;
 import com.aspectran.utils.ConcurrentReferenceHashMap;
-import com.aspectran.utils.PropertiesLoaderUtils;
-import com.aspectran.utils.StringUtils;
+import com.aspectran.utils.SystemUtils;
 import com.aspectran.utils.apon.JsonToParameters;
 import com.aspectran.utils.apon.Parameters;
 import com.aspectran.utils.logging.Logger;
@@ -32,8 +33,8 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * WHOIS OpenAPI
@@ -61,17 +62,7 @@ public class CountryCodeLookup {
     private final RequestConfig requestConfig;
 
     static {
-        Properties prop = null;
-        try {
-            prop = PropertiesLoaderUtils.loadProperties("app/root/openapi.properties");
-        } catch (IOException e) {
-            logger.warn(e);
-        }
-        if (prop != null) {
-            apiUrl = StringUtils.emptyToNull(prop.getProperty("ipascc.api.url"));
-        } else {
-            apiUrl = null;
-        }
+        apiUrl = SystemUtils.getProperty("ipascc.api.url");
 
         lookupAvoidedList = List.of(
                 "127.0.0.1",
@@ -91,20 +82,26 @@ public class CountryCodeLookup {
                 .build();
     }
 
-    public String getCountryCodeByIP(String ip) {
+    public String getCountryCode(Translet translet) {
+        String remoteAddr = TransletUtils.getRemoteAddr(translet);
+        return getCountryCode(remoteAddr, translet.getRequestAdapter().getLocale());
+    }
+
+    public String getCountryCode(String ipAddress, Locale locale) {
+        Assert.notNull(ipAddress, "ipAddress must not be null");
         if (apiUrl == null ||
-                lookupAvoidedList.contains(ip) ||
-                ip.startsWith("192.168.0.") ||
-                ip.startsWith("10.")) {
-            return null;
+                lookupAvoidedList.contains(ipAddress) ||
+                ipAddress.startsWith("192.168.0.") ||
+                ipAddress.startsWith("10.")) {
+            return getCountryCode(locale);
         }
 
-        String cachedCountryCode = cache.get(ip);
+        String cachedCountryCode = cache.get(ipAddress);
         if (cachedCountryCode != null) {
-            return (!"none".equals(cachedCountryCode) ? cachedCountryCode : null);
+            return cachedCountryCode;
         }
 
-        HttpGet request = new HttpGet(apiUrl + ip);
+        HttpGet request = new HttpGet(apiUrl + ipAddress);
         request.setConfig(requestConfig);
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             int statusCode = response.getStatusLine().getStatusCode();
@@ -117,17 +114,20 @@ public class CountryCodeLookup {
                 Parameters parameters = JsonToParameters.from(result);
                 Parameters whois = parameters.getParameters("whois");
                 String countryCode = whois.getString("countryCode");
-
-                cache.put(ip, countryCode);
-
-                if (!"none".equals(countryCode)) {
-                    return countryCode;
+                if ("none".equals(countryCode)) {
+                    countryCode = getCountryCode(locale);
                 }
+                cache.put(ipAddress, countryCode);
+                return countryCode;
             }
         } catch (IOException e) {
             logger.error("IP address lookup failed", e);
         }
         return null;
+    }
+
+    private String getCountryCode(Locale locale) {
+        return (locale != null ? locale.getCountry() : null);
     }
 
     public static CountryCodeLookup getInstance() {

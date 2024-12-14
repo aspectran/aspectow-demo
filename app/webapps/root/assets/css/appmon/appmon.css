@@ -252,8 +252,15 @@ ul.speed-options li.on {
     height: 12px;
     border-radius: 50%;
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 6px;
 }
 .sessions-box ul.sessions li .indicator.logged-out {
     background-color: #ccc;
+}
+.sessions-box ul.sessions li .flag {
+    max-width: 30px;
+    height: 18px;
+    border-radius: 0;
+    vertical-align: middle;
+    margin-right: 3px;
 }

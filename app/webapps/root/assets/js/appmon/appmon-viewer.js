@@ -299,16 +299,26 @@ function AppmonViewer() {
         status.find(".rejectedSessionCount").text(data.rejectedSessionCount);
         status.find(".elapsed").text(data.elapsedTime);
         if (data.currentSessions) {
-            status.find("ul.sessions").empty();
-            data.currentSessions.forEach(function (username) {
+            let ul = status.find("ul.sessions").empty();
+            data.currentSessions.forEach(function (json) {
+                console.log(json);
+                let info = JSON.parse(json);
                 let indicator = $("<div/>").addClass("indicator");
-                if (username.indexOf("0:") === 0) {
+                if (!info.username) {
                     indicator.addClass("logged-out")
                 }
-                username = username.substring(2);
-                let name = $("<span/>").addClass("name").text(username);
-                let li = $("<li/>").append(indicator).append(name);
-                status.find("ul.sessions").append(li);
+                let li = $("<li/>").append(indicator).appendTo(ul);
+                if (info.country) {
+                    $("<img class='flag'/>")
+                        .attr("src", "/assets/flags/" + info.country.toLowerCase() + ".svg")
+                        .attr("title", info.country)
+                        .appendTo(li);
+                }
+                let str = "Session <strong>" + info.sessionId + "</strong> created at <strong>" + info.createAt + "</strong>";
+                if (info.username) {
+                    str = "(<strong>" + info.username + "</strong>) " + str;
+                }
+                $("<span/>").html(str).appendTo(li);
             });
         }
     };

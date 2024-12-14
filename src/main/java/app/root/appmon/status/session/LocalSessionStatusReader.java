@@ -9,13 +9,10 @@ import com.aspectran.core.component.session.SessionHandler;
 import com.aspectran.core.component.session.SessionStatistics;
 import com.aspectran.undertow.server.TowServer;
 import com.aspectran.utils.annotation.jsr305.NonNull;
-import com.aspectran.utils.apon.Parameters;
-import com.aspectran.utils.apon.VariableParameters;
-import com.aspectran.utils.json.JsonWriter;
+import com.aspectran.utils.json.JsonBuilder;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -97,26 +94,20 @@ public class LocalSessionStatusReader implements StatusReader {
             if (session != null) {
                 UserSession userSession = session.getAttribute(USER_SESSION_KEY);
 
-                Parameters parameters = new VariableParameters();
-                parameters.putValue("sessionId", sessionId);
-                if (userSession != null) {
-                    if (userSession.getAccount() != null) {
-                        parameters.putValue("username", userSession.getAccount().getUsername());
-                    }
+                JsonBuilder jsonBuilder = new JsonBuilder()
+                        .nullWritable(false)
+                        .prettyPrint(false)
+                        .object()
+                        .put("sessionId", sessionId);
+                if (userSession != null && userSession.getAccount() != null) {
+                    jsonBuilder.put("username", userSession.getAccount().getUsername());
                 }
-                parameters.putValueIfNotNull("country", session.getAttribute("countryCode"));
-                parameters.putValue("createAt", formatTime(session.getCreationTime()));
+                jsonBuilder
+                        .put("country", session.getAttribute("countryCode"))
+                        .put("createAt", formatTime(session.getCreationTime()))
+                        .endObject();
 
-                try {
-                    String sessionInfo = new JsonWriter()
-                            .nullWritable(false)
-                            .prettyPrint(false)
-                            .write(parameters)
-                            .toString();
-                    currentSessions.add(sessionInfo);
-                } catch (IOException e) {
-                    logger.warn(e);
-                }
+                currentSessions.add(jsonBuilder.toString());
             }
         }
         return currentSessions.toArray(new String[0]);

@@ -33,7 +33,7 @@ import java.util.Set;
  * <p>Created: 4/3/24</p>
  */
 @Component
-@Bean("AppMonManager")
+@Bean("appMonManager")
 public class AppMonManager extends InstantActivitySupport {
 
     private EndpointManager endpointManager;

@@ -22,11 +22,9 @@ public class UserCountryCodeListener extends InstantActivitySupport implements S
     @Override
     public void sessionCreated(@NonNull Session session) {
         Activity activity = getCurrentActivity();
-        if (StringUtils.isEmpty(session.getAttribute("countryCode"))) {
-            String countryCode = CountryCodeLookup.getInstance().getCountryCode(activity.getTranslet());
-            if (StringUtils.hasLength(countryCode)) {
-                session.setAttribute("countryCode", countryCode);
-            }
+        String countryCode = CountryCodeLookup.getInstance().getCountryCode(activity.getTranslet());
+        if (StringUtils.hasLength(countryCode)) {
+            session.setAttribute("countryCode", countryCode);
         }
     }
 

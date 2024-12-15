@@ -316,11 +316,10 @@ function AppMonBuilder() {
             .attr("data-endpoint-index", endpointIndex).attr("data-endpoint-name", endpointTitle)
             .attr("data-logtail-name", logtail.name);
         if (logtail.visualizing) {
-            logtailBox.addClass("with-track");
-            logtailBox.find(".missile-track")
-                .addClass("available")
-                .attr("data-visualizing", logtail.visualizing)
-                .show();
+            logtailBox.addClass("with-track")
+                .find(".missile-track")
+                    .addClass("available")
+                    .attr("data-visualizing", logtail.visualizing);
         } else {
             logtailBox.addClass("no-track");
         }

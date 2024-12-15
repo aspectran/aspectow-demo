@@ -118,6 +118,9 @@ ul.speed-options li.on {
 .logtail-box.with-track .logtail {
     height: 480px;
 }
+.logtail-box.with-track .missile-track {
+    display: block;
+}
 .logtail-box .logtail p {
     font-size: 12px;
     line-height: 16px;
@@ -171,8 +174,9 @@ ul.speed-options li.on {
     height: 120px;
     background-color: #0d1939;
     overflow: hidden;
+    display: none;
 }
-.missile-track .stack {
+.missile-track .track-stack {
     position: absolute;
     top: 0;
     right: 0;

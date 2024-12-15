@@ -44,7 +44,7 @@ function AppmonViewer() {
         visible = !!flag;
         if (!visible) {
             for (let key in missileTracks) {
-                missileTracks[key].empty();
+                missileTracks[key].find(".missile").remove();
             }
         }
     };

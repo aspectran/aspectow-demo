@@ -93,7 +93,7 @@ public class LocalSessionStatusReader implements StatusReader {
     @Override
     public String readIfChanged() {
         try {
-            SessionStatusPayload payload = loadWithActiveSessions();
+            SessionStatusPayload payload = load();
             if (!payload.equals(oldPayload)) {
                 oldPayload = payload;
                 return payload.toJson();

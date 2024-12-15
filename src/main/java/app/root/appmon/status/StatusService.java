@@ -63,13 +63,6 @@ public class StatusService extends AbstractLifeCycle {
         statusManager.broadcast(label + message);
     }
 
-//    private void broadcast() {
-//        String data = statusReader.read();
-//        if (data != null) {
-//            broadcast(data);
-//        }
-//    }
-
     private void broadcastIfChanged() {
         String data = statusReader.readIfChanged();
         if (data != null) {

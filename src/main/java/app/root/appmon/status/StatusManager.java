@@ -17,7 +17,6 @@ package app.root.appmon.status;
 
 import app.root.appmon.AppMonManager;
 import app.root.appmon.AppMonSession;
-import com.aspectran.core.context.ActivityContext;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
@@ -43,19 +42,27 @@ public class StatusManager {
         statusServices.put(name, statusService);
     }
 
+    public StatusService getStatusService(String name) {
+        StatusService statusService = statusServices.get(name);
+        if (statusService == null) {
+            throw new IllegalArgumentException("No status service found for name " + name);
+        }
+        return statusService;
+    }
+
     public List<StatusInfo> getStatusInfoList(String[] joinGroups) {
         List<StatusInfo> infoList = new ArrayList<>(statusServices.size());
         if (joinGroups != null && joinGroups.length > 0) {
             for (String name : joinGroups) {
                 for (StatusService service : statusServices.values()) {
-                    if (service.getInfo().getGroup().equals(name)) {
-                        infoList.add(service.getInfo());
+                    if (service.getStatusInfo().getGroup().equals(name)) {
+                        infoList.add(service.getStatusInfo());
                     }
                 }
             }
         } else {
             for (StatusService service : statusServices.values()) {
-                infoList.add(service.getInfo());
+                infoList.add(service.getStatusInfo());
             }
         }
         return infoList;
@@ -129,12 +136,12 @@ public class StatusManager {
         }
     }
 
-    public ActivityContext getActivityContext() {
-        return appMonManager.getActivityContext();
+    public <V> V getBean(@NonNull String id) {
+        return appMonManager.getActivityContext().getBeanRegistry().getBean(id);
     }
 
-    public <V> V getBean(@NonNull String id) {
-        return getActivityContext().getBeanRegistry().getBean(id);
+    public <V> V getBean(Class<V> type) {
+        return appMonManager.getActivityContext().getBeanRegistry().getBean(type);
     }
 
     public void broadcast(String message) {

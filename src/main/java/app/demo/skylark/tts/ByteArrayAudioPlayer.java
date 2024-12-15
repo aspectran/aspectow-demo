@@ -15,6 +15,7 @@
  */
 package app.demo.skylark.tts;
 
+import com.aspectran.utils.ObjectUtils;
 import com.sun.speech.freetts.audio.AudioPlayer;
 
 import javax.sound.sampled.AudioFormat;
@@ -33,7 +34,7 @@ public class ByteArrayAudioPlayer implements AudioPlayer {
 
     private AudioFormat audioFormat;
 
-    private Vector<ByteArrayInputStream> outputList;
+    private final Vector<ByteArrayInputStream> outputList = new Vector<>();
 
     private byte[] outputData;
 
@@ -45,7 +46,6 @@ public class ByteArrayAudioPlayer implements AudioPlayer {
      * Constructs a ByteArrayAudioPlayer.
      */
     public ByteArrayAudioPlayer() {
-        outputList = new Vector<>();
     }
 
     /**
@@ -186,7 +186,7 @@ public class ByteArrayAudioPlayer implements AudioPlayer {
      * Writes the given bytes to the audio stream.
      * @param audioData array of audio data
      * @return <code>true</code> of the write completed successfully,
-     * <code> false </code>if the write was cancelled.
+     *      <code> false </code>if the write was cancelled.
      */
     @Override
     public boolean write(byte[] audioData) {
@@ -199,7 +199,7 @@ public class ByteArrayAudioPlayer implements AudioPlayer {
      * @param offset the offset into the buffer
      * @param size   the size into the buffer
      * @return <code>true</code> of the write completed successfully,
-     * <code> false </code>if the write was cancelled.
+     *      <code> false </code>if the write was cancelled.
      */
     @Override
     public boolean write(byte[] bytes, int offset, int size) {
@@ -232,7 +232,7 @@ public class ByteArrayAudioPlayer implements AudioPlayer {
      */
     @Override
     public String toString() {
-        return "ByteArrayAudioPlayer";
+        return ObjectUtils.simpleIdentityToString(this);
     }
 
 }

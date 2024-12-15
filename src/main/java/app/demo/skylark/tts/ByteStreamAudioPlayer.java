@@ -15,6 +15,8 @@
  */
 package app.demo.skylark.tts;
 
+import com.aspectran.utils.ObjectUtils;
+import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.sun.speech.freetts.audio.AudioPlayer;
 
 import javax.sound.sampled.AudioFileFormat;
@@ -33,7 +35,7 @@ import java.io.OutputStream;
  */
 public class ByteStreamAudioPlayer implements AudioPlayer {
 
-    private OutputStream output;
+    private final OutputStream output;
 
     private AudioFormat audioFormat;
 
@@ -228,6 +230,7 @@ public class ByteStreamAudioPlayer implements AudioPlayer {
      * Provide the audio data that has been written to this AudioPlayer since
      * the last call to begin() as a byte array.
      */
+    @NonNull
     private byte[] makeAudioData() throws IOException {
         AudioFormat af = getAudioFormat();
         if (af == null) {
@@ -250,13 +253,13 @@ public class ByteStreamAudioPlayer implements AudioPlayer {
      */
     @Override
     public String toString() {
-        return "ByteStreamAudioPlayer";
+        return ObjectUtils.simpleIdentityToString(this);
     }
 
     /**
      * A transformer that encodes bytes into different types of data.
      */
-    interface Transformer {
+    public interface Transformer {
 
         byte[] transform(byte[] bytes);
 

@@ -16,8 +16,7 @@
 package app.root.appmon.status.session;
 
 import com.aspectran.utils.json.JsonBuilder;
-
-import java.util.Arrays;
+import com.aspectran.utils.json.JsonString;
 
 /**
  * <p>Created: 2020/01/11</p>
@@ -38,7 +37,9 @@ public class SessionStatusPayload {
 
     private String elapsedTime;
 
-    private String[] currentSessions;
+    private JsonString[] createdSessions;
+
+    private String[] destroyedSessions;
 
     public long getCreatedSessionCount() {
         return createdSessionCount;
@@ -96,12 +97,20 @@ public class SessionStatusPayload {
         this.elapsedTime = elapsedTime;
     }
 
-    public String[] getCurrentSessions() {
-        return currentSessions;
+    public JsonString[] getCreatedSessions() {
+        return createdSessions;
     }
 
-    public void setCurrentSessions(String[] currentSessions) {
-        this.currentSessions = currentSessions;
+    public void setCreatedSessions(JsonString[] createdSessions) {
+        this.createdSessions = createdSessions;
+    }
+
+    public String[] getDestroyedSessions() {
+        return destroyedSessions;
+    }
+
+    public void setDestroyedSessions(String[] destroyedSessions) {
+        this.destroyedSessions = destroyedSessions;
     }
 
     @Override
@@ -112,15 +121,12 @@ public class SessionStatusPayload {
         if (!(other instanceof SessionStatusPayload that)) {
             return false;
         }
-        if (that.createdSessionCount != createdSessionCount ||
-                that.expiredSessionCount != expiredSessionCount ||
-                that.evictedSessionCount != evictedSessionCount ||
-                that.activeSessionCount != activeSessionCount ||
-                that.highestActiveSessionCount != highestActiveSessionCount ||
-                that.rejectedSessionCount != rejectedSessionCount) {
-            return false;
-        }
-        return Arrays.equals(that.currentSessions, currentSessions);
+        return that.createdSessionCount == createdSessionCount &&
+                that.expiredSessionCount == expiredSessionCount &&
+                that.evictedSessionCount == evictedSessionCount &&
+                that.activeSessionCount == activeSessionCount &&
+                that.highestActiveSessionCount == highestActiveSessionCount &&
+                that.rejectedSessionCount == rejectedSessionCount;
     }
 
     public String toJson() {

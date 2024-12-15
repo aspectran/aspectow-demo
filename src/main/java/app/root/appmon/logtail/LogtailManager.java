@@ -47,14 +47,14 @@ public class LogtailManager {
         if (joinGroups != null && joinGroups.length > 0) {
             for (String name : joinGroups) {
                 for (LogtailService logtailService : logtailServices.values()) {
-                    if (logtailService.getInfo().getGroup().equals(name)) {
-                        infoList.add(logtailService.getInfo());
+                    if (logtailService.getLogtailInfo().getGroup().equals(name)) {
+                        infoList.add(logtailService.getLogtailInfo());
                     }
                 }
             }
         } else {
             for (LogtailService logtailService : logtailServices.values()) {
-                infoList.add(logtailService.getInfo());
+                infoList.add(logtailService.getLogtailInfo());
             }
         }
         return infoList;
@@ -66,7 +66,7 @@ public class LogtailManager {
             if (joinGroups != null && joinGroups.length > 0) {
                 for (LogtailService service : logtailServices.values()) {
                     for (String group : joinGroups) {
-                        if (service.getInfo().getGroup().equals(group)) {
+                        if (service.getLogtailInfo().getGroup().equals(group)) {
                             start(service);
                         }
                     }
@@ -85,7 +85,7 @@ public class LogtailManager {
             if (joinGroups != null && joinGroups.length > 0) {
                 for (LogtailService service : logtailServices.values()) {
                     for (String group : joinGroups) {
-                        if (service.getInfo().getGroup().equals(group)) {
+                        if (service.getLogtailInfo().getGroup().equals(group)) {
                             service.readLastLines(messages);
                         }
                     }
@@ -111,7 +111,7 @@ public class LogtailManager {
             if (unusedGroups != null) {
                 for (LogtailService service : logtailServices.values()) {
                     for (String group : unusedGroups) {
-                        if (service.getInfo().getGroup().equals(group) && service.isRunning()) {
+                        if (service.getLogtailInfo().getGroup().equals(group) && service.isRunning()) {
                             stop(service);
                         }
                     }

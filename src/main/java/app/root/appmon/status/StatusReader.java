@@ -2,7 +2,9 @@ package app.root.appmon.status;
 
 public interface StatusReader {
 
-    void init();
+    void start();
+
+    void stop();
 
     String read();
 

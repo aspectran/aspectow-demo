@@ -15,7 +15,6 @@
  */
 package app.root.appmon.logtail;
 
-import app.root.appmon.AppMonSession;
 import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.lifecycle.AbstractLifeCycle;
@@ -44,9 +43,9 @@ public class LogtailService extends AbstractLifeCycle {
 
     private static final int DEFAULT_SAMPLE_INTERVAL = 1000;
 
-    private final LogtailManager manager;
+    private final LogtailManager logtailManager;
 
-    private final LogtailInfo info;
+    private final LogtailInfo logtailInfo;
 
     private final String label;
 
@@ -63,18 +62,18 @@ public class LogtailService extends AbstractLifeCycle {
 
     private Tailer tailer;
 
-    public LogtailService(LogtailManager manager, @NonNull LogtailInfo info, File logFile) {
-        this.manager = manager;
-        this.info = info;
-        this.label = info.getName() + LABEL_LOGTAIL;
-        this.charset = (info.getCharset() != null ? Charset.forName(info.getCharset()): DEFAULT_CHARSET);
-        this.sampleInterval = (info.getSampleInterval() > 0 ? info.getSampleInterval() : DEFAULT_SAMPLE_INTERVAL);
-        this.lastLines = info.getLastLines();
+    public LogtailService(LogtailManager logtailManager, @NonNull LogtailInfo logtailInfo, File logFile) {
+        this.logtailManager = logtailManager;
+        this.logtailInfo = logtailInfo;
+        this.label = logtailInfo.getName() + LABEL_LOGTAIL;
+        this.charset = (logtailInfo.getCharset() != null ? Charset.forName(logtailInfo.getCharset()): DEFAULT_CHARSET);
+        this.sampleInterval = (logtailInfo.getSampleInterval() > 0 ? logtailInfo.getSampleInterval() : DEFAULT_SAMPLE_INTERVAL);
+        this.lastLines = logtailInfo.getLastLines();
         this.logFile = logFile;
     }
 
-    public LogtailInfo getInfo() {
-        return info;
+    public LogtailInfo getLogtailInfo() {
+        return logtailInfo;
     }
 
     void readLastLines(@NonNull List<String> messages) {
@@ -133,18 +132,14 @@ public class LogtailService extends AbstractLifeCycle {
     @Override
     public String toString() {
         if (isStopped()) {
-            return ToStringBuilder.toString(super.toString(), info);
+            return ToStringBuilder.toString(super.toString(), logtailInfo);
         } else {
             return super.toString();
         }
     }
 
     void broadcast(String message) {
-        manager.broadcast(label + message);
-    }
-
-    void broadcast(AppMonSession session, String message) {
-        manager.broadcast(session, label + message);
+        logtailManager.broadcast(label + message);
     }
 
 }

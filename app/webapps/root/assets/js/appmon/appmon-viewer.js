@@ -298,16 +298,15 @@ function AppmonViewer() {
         status.find(".expiredSessionCount").text(data.expiredSessionCount);
         status.find(".rejectedSessionCount").text(data.rejectedSessionCount);
         status.find(".elapsed").text(data.elapsedTime);
-        if (data.currentSessions) {
-            let ul = status.find("ul.sessions").empty();
-            data.currentSessions.forEach(function (json) {
-                console.log(json);
-                let info = JSON.parse(json);
+        let ul = status.find("ul.sessions");
+        if (data.createdSessions) {
+            data.createdSessions.forEach(function (info) {
+                ul.find("li[data-sid='" + info.sessionId + "']").remove();
                 let indicator = $("<div/>").addClass("indicator");
                 if (!info.username) {
                     indicator.addClass("logged-out")
                 }
-                let li = $("<li/>").append(indicator).appendTo(ul);
+                let li = $("<li/>").attr("data-sid", info.sessionId).append(indicator).appendTo(ul);
                 if (info.country) {
                     $("<img class='flag'/>")
                         .attr("src", "/assets/flags/" + info.country.toLowerCase() + ".svg")
@@ -319,6 +318,11 @@ function AppmonViewer() {
                     str = "(<strong>" + info.username + "</strong>) " + str;
                 }
                 $("<span/>").html(str).appendTo(li);
+            });
+        }
+        if (data.destroyedSessions) {
+            data.destroyedSessions.forEach(function (sessionId) {
+                ul.find("li[data-sid='" + sessionId + "']").remove();
             });
         }
     };

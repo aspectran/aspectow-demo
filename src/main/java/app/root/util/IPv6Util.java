@@ -109,6 +109,7 @@ public class IPv6Util {
     }
 
     public static void main(String[] args) {
+        System.out.println(normalize("0:0:0:0:0:0:0:1"));
         System.out.println(normalize("1:2:3:4:5:6:7:8"));
         System.out.println(normalize("1111:4444:7777:aaaa:bbbb:cccc:dddd:ffff"));
         System.out.println(normalize("1:2:3::8"));

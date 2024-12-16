@@ -24,7 +24,7 @@ public class UserCountryCodeListener extends InstantActivitySupport implements S
         Activity activity = getCurrentActivity();
         String countryCode = CountryCodeLookup.getInstance().getCountryCode(activity.getTranslet());
         if (StringUtils.hasLength(countryCode)) {
-            session.setAttribute("countryCode", countryCode);
+            session.setAttribute("user.countryCode", countryCode);
         }
     }
 

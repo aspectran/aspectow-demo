@@ -309,8 +309,9 @@ function AppmonViewer() {
                 let li = $("<li/>").attr("data-sid", info.sessionId).append(indicator).appendTo(ul);
                 if (info.country) {
                     $("<img class='flag'/>")
-                        .attr("src", "/assets/flags/" + info.country.toLowerCase() + ".svg")
-                        .attr("title", info.country)
+                        .attr("src", "/assets/countries/flags/" + info.country.toLowerCase() + ".png")
+                        .attr("alt", info.country)
+                        .attr("title", countries[info.country].name)
                         .appendTo(li);
                 }
                 let str = "Session <strong>" + info.sessionId + "</strong> created at <strong>" + info.createAt + "</strong>";

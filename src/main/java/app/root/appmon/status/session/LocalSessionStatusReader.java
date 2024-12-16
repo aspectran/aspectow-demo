@@ -166,10 +166,10 @@ public class LocalSessionStatusReader implements StatusReader {
                 .nullWritable(false)
                 .prettyPrint(false)
                 .object()
-                .put("sessionId", session.getId())
-                .put("username", username)
-                .put("country", session.getAttribute("countryCode"))
-                .put("createAt", formatTime(session.getCreationTime()))
+                    .put("sessionId", session.getId())
+                    .put("username", username)
+                    .put("country", session.getAttribute("user.countryCode"))
+                    .put("createAt", formatTime(session.getCreationTime()))
                 .endObject()
                 .toJsonString();
     }

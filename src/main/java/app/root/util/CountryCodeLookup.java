@@ -89,6 +89,10 @@ public class CountryCodeLookup {
 
     public String getCountryCode(String ipAddress, Locale locale) {
         Assert.notNull(ipAddress, "ipAddress must not be null");
+        String ip6 = IPv6Util.normalize(ipAddress);
+        if (ip6 != null) {
+            ipAddress = ip6;
+        }
         if (apiUrl == null ||
                 lookupAvoidedList.contains(ipAddress) ||
                 ipAddress.startsWith("192.168.0.") ||

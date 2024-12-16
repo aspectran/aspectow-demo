@@ -17,12 +17,11 @@ package app.root.util;
 
 import com.aspectran.core.activity.Translet;
 import com.aspectran.utils.Assert;
-import com.aspectran.utils.ConcurrentReferenceHashMap;
-import com.aspectran.utils.StringUtils;
 import com.aspectran.utils.SystemUtils;
-import com.aspectran.utils.annotation.jsr305.Nullable;
 import com.aspectran.utils.apon.JsonToParameters;
 import com.aspectran.utils.apon.Parameters;
+import com.aspectran.utils.cache.Cache;
+import com.aspectran.utils.cache.ConcurrentLruCache;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 import org.apache.http.HttpEntity;
@@ -36,7 +35,6 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 /**
  * WHOIS OpenAPI
@@ -51,22 +49,27 @@ public class CountryCodeLookup {
 
     private static final int TIMEOUT = 3000;
 
-    private static final String NONE = "none";
+    private static final String NONE = "(none)";
 
-    private static final Map<String, String> cache = new ConcurrentReferenceHashMap<>();
+    private static final String FAILED = "(failed)";
 
-    private static final String apiUrl;
+    private static final Cache<String, String> cache =
+            new ConcurrentLruCache<>(64, CountryCodeLookup::getCountryCode);
+
+    private static final List<String> iso2CountryCodes;
 
     private static final List<String> lookupAvoidedList;
 
+    private static final String apiUrl;
+
+    private static final CloseableHttpClient httpClient;
+
+    private static final RequestConfig requestConfig;
+
     private static final CountryCodeLookup instance;
 
-    private final CloseableHttpClient httpClient;
-
-    private final RequestConfig requestConfig;
-
     static {
-        apiUrl = SystemUtils.getProperty("ipascc.api.url");
+        iso2CountryCodes = List.of(Locale.getISOCountries());
 
         lookupAvoidedList = List.of(
                 "127.0.0.1",
@@ -74,16 +77,19 @@ public class CountryCodeLookup {
                 "localhost"
         );
 
-        instance = new CountryCodeLookup();
-    }
+        apiUrl = SystemUtils.getProperty("ipascc.api.url");
 
-    private CountryCodeLookup() {
-        this.httpClient = HttpClients.createDefault();
-        this.requestConfig = RequestConfig.custom()
+        httpClient = HttpClients.createDefault();
+        requestConfig = RequestConfig.custom()
                 .setSocketTimeout(TIMEOUT)
                 .setConnectTimeout(TIMEOUT)
                 .setConnectionRequestTimeout(TIMEOUT)
                 .build();
+
+        instance = new CountryCodeLookup();
+    }
+
+    private CountryCodeLookup() {
     }
 
     public String getCountryCode(Translet translet) {
@@ -107,20 +113,13 @@ public class CountryCodeLookup {
         }
 
         String countryCode = cache.get(ipAddress);
-        if (countryCode == null) {
-            countryCode = getCountryCode(ipAddress);
-            if (countryCode != null) {
-                cache.put(ipAddress, countryCode);
-            }
-        }
-        if (countryCode == null || NONE.equals(countryCode)) {
+        if (countryCode == null || NONE.equals(countryCode) || FAILED.equals(countryCode)) {
             countryCode = getCountryCode(locale);
         }
         return countryCode;
     }
 
-    @Nullable
-    private String getCountryCode(String ipAddress) {
+    private static String getCountryCode(String ipAddress) {
         HttpGet request = new HttpGet(apiUrl + ipAddress);
         request.setConfig(requestConfig);
         try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -134,14 +133,16 @@ public class CountryCodeLookup {
                 Parameters parameters = JsonToParameters.from(result);
                 Parameters whois = parameters.getParameters("whois");
                 String countryCode = whois.getString("countryCode");
-                if (StringUtils.hasText(countryCode)) {
+                if (countryCode != null && iso2CountryCodes.contains(countryCode)) {
                     return countryCode;
+                } else {
+                    return NONE;
                 }
             }
         } catch (IOException e) {
-            logger.error("IP address lookup failed", e);
+            logger.error("IP address lookup failed: " + ipAddress, e);
         }
-        return null;
+        return FAILED;
     }
 
     private String getCountryCode(Locale locale) {
@@ -150,6 +151,12 @@ public class CountryCodeLookup {
 
     public static CountryCodeLookup getInstance() {
         return instance;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getInstance().getCountryCode("103.99.216.86", Locale.KOREA));
+        System.out.println(getInstance().getCountryCode("103.99.216.999", Locale.KOREA));
+        System.out.println(getInstance().getCountryCode("0:0:0:0:0:0:0:1", Locale.KOREA));
     }
 
 }

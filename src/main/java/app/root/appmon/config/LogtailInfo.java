@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.appmon.logtail;
+package app.root.appmon.config;
 
+import com.aspectran.utils.Assert;
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
 import com.aspectran.utils.apon.ValueType;
@@ -24,10 +25,10 @@ import com.aspectran.utils.apon.ValueType;
  */
 public class LogtailInfo extends AbstractParameters {
 
-    static final ParameterKey group;
-    static final ParameterKey name;
+    private static final ParameterKey group;
+    private static final ParameterKey name;
     private static final ParameterKey title;
-    static final ParameterKey file;
+    private static final ParameterKey file;
     private static final ParameterKey charset;
     private static final ParameterKey sampleInterval;
     private static final ParameterKey lastLines;
@@ -65,7 +66,7 @@ public class LogtailInfo extends AbstractParameters {
         return getString(group);
     }
 
-    public void setGroup(String group) {
+    void setGroup(String group) {
         putValue(LogtailInfo.group, group);
     }
 
@@ -123,6 +124,11 @@ public class LogtailInfo extends AbstractParameters {
 
     public void setVisualizing(boolean visualizing) {
         putValue(LogtailInfo.visualizing, visualizing);
+    }
+
+    public void validateRequiredParameters() {
+        Assert.hasLength(getString(name), "Missing value of required parameter: " + getQualifiedName(name));
+        Assert.hasLength(getString(file), "Missing value of required parameter: " + getQualifiedName(file));
     }
 
 }

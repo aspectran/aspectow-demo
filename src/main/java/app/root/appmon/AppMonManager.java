@@ -1,24 +1,18 @@
 package app.root.appmon;
 
-import app.root.appmon.endpoint.EndpointInfo;
+import app.root.appmon.config.EndpointInfo;
+import app.root.appmon.config.GroupInfo;
+import app.root.appmon.config.GroupManager;
+import app.root.appmon.config.LogtailInfo;
+import app.root.appmon.config.StatusInfo;
 import app.root.appmon.endpoint.EndpointManager;
-import app.root.appmon.endpoint.EndpointManagerBuilder;
-import app.root.appmon.group.GroupInfo;
-import app.root.appmon.group.GroupManager;
-import app.root.appmon.group.GroupManagerBuilder;
-import app.root.appmon.logtail.LogtailInfo;
 import app.root.appmon.logtail.LogtailManager;
-import app.root.appmon.logtail.LogtailManagerBuilder;
-import app.root.appmon.status.StatusInfo;
+import app.root.appmon.logtail.LogtailService;
 import app.root.appmon.status.StatusManager;
-import app.root.appmon.status.StatusManagerBuilder;
+import app.root.appmon.status.StatusService;
 import com.aspectran.core.activity.InstantActivitySupport;
 import com.aspectran.core.adapter.ApplicationAdapter;
-import com.aspectran.core.component.bean.annotation.Bean;
-import com.aspectran.core.component.bean.annotation.Component;
-import com.aspectran.core.component.bean.annotation.Initialize;
 import com.aspectran.core.context.ActivityContext;
-import com.aspectran.utils.Assert;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.annotation.jsr305.Nullable;
 import com.aspectran.utils.security.InvalidPBTokenException;
@@ -32,39 +26,22 @@ import java.util.Set;
 /**
  * <p>Created: 4/3/24</p>
  */
-@Component
-@Bean("appMonManager")
 public class AppMonManager extends InstantActivitySupport {
 
-    private EndpointManager endpointManager;
+    private final EndpointManager endpointManager;
 
-    private GroupManager groupManager;
+    private final GroupManager groupManager;
 
-    private LogtailManager logtailManager;
+    private final List<StatusManager> statusManagers = new ArrayList<>();
 
-    private StatusManager statusManager;
+    private final List<LogtailManager> logtailManagers = new ArrayList<>();
 
     private final List<AppMonEndpoint> endpoints = new ArrayList<>();
 
-    public AppMonManager() {
-    }
-
-    @Initialize(profile = "!prod")
-    public void init() throws Exception {
-        Assert.state(this.endpointManager == null, "AppMonManager is already initialized");
-        this.endpointManager = EndpointManagerBuilder.build(false);
-        this.groupManager = GroupManagerBuilder.build();
-        this.logtailManager = LogtailManagerBuilder.build(this);
-        this.statusManager = StatusManagerBuilder.build(this);
-    }
-
-    @Initialize(profile = "prod")
-    public void initForProd() throws Exception {
-        Assert.state(this.endpointManager == null, "AppMonManager is already initialized");
-        this.endpointManager = EndpointManagerBuilder.build(true);
-        this.groupManager = GroupManagerBuilder.build();
-        this.logtailManager = LogtailManagerBuilder.build(this);
-        this.statusManager = StatusManagerBuilder.build(this);
+    public AppMonManager(EndpointManager endpointManager,
+                         GroupManager groupManager) {
+        this.endpointManager = endpointManager;
+        this.groupManager = groupManager;
     }
 
     @Override
@@ -79,7 +56,23 @@ public class AppMonManager extends InstantActivitySupport {
         return super.getApplicationAdapter();
     }
 
-    public void putEndpoint(AppMonEndpoint endpoint) {
+    public void addStatusManager(StatusManager statusManager) {
+        synchronized (statusManagers) {
+            if (!statusManagers.contains(statusManager)) {
+                statusManagers.add(statusManager);
+            }
+        }
+    }
+
+    public void addLogtailManager(LogtailManager logtailManager) {
+        synchronized (logtailManagers) {
+            if (!logtailManagers.contains(logtailManager)) {
+                logtailManagers.add(logtailManager);
+            }
+        }
+    }
+
+    public void addEndpoint(AppMonEndpoint endpoint) {
         synchronized (endpoints) {
             if (!endpoints.contains(endpoint)) {
                 endpoints.add(endpoint);
@@ -123,36 +116,126 @@ public class AppMonManager extends InstantActivitySupport {
         return groupManager.getGroupInfoList(joinGroups);
     }
 
-    public List<LogtailInfo> getLogtailInfoList(String[] joinGroups) {
-        return logtailManager.getLogtailInfoList(joinGroups);
+    public List<StatusInfo> getStatusInfoList(String[] joinGroups) {
+        List<StatusInfo> statusInfoList = new ArrayList<>();
+        if (joinGroups != null && joinGroups.length > 0) {
+            for (String groupName : joinGroups) {
+                for (StatusManager statusManager : statusManagers) {
+                    if (statusManager.getGroupName().equals(groupName)) {
+                        for (StatusService statusService : statusManager.getStatusServices()) {
+                            statusInfoList.add(statusService.getStatusInfo());
+                        }
+                    }
+                }
+            }
+        } else {
+            for (StatusManager statusManager : statusManagers) {
+                for (StatusService statusService : statusManager.getStatusServices()) {
+                    statusInfoList.add(statusService.getStatusInfo());
+                }
+            }
+        }
+        return statusInfoList;
     }
 
-    public List<StatusInfo> getStatusInfoList(String[] joinGroups) {
-        return statusManager.getStatusInfoList(joinGroups);
+    public List<LogtailInfo> getLogtailInfoList(String[] joinGroups) {
+        List<LogtailInfo> logtailInfoList = new ArrayList<>();
+        if (joinGroups != null && joinGroups.length > 0) {
+            for (String groupName : joinGroups) {
+                for (LogtailManager logtailManager : logtailManagers) {
+                    if (logtailManager.getGroupName().equals(groupName)) {
+                        for (LogtailService logtailService : logtailManager.getLogtailServices()) {
+                            logtailInfoList.add(logtailService.getLogtailInfo());
+                        }
+                    }
+                }
+            }
+        } else {
+            for (LogtailManager logtailManager : logtailManagers) {
+                for (LogtailService logtailService : logtailManager.getLogtailServices()) {
+                    logtailInfoList.add(logtailService.getLogtailInfo());
+                }
+            }
+        }
+        return logtailInfoList;
     }
 
     public synchronized boolean join(@NonNull AppMonSession session) {
         if (session.isValid()) {
-            logtailManager.join(session);
-            statusManager.join(session);
+            String[] joinGroups = session.getJoinedGroups();
+            if (joinGroups != null && joinGroups.length > 0) {
+                for (String group : joinGroups) {
+                    for (StatusManager statusManager : statusManagers) {
+                        if (statusManager.getGroupName().equals(group)) {
+                            statusManager.start();
+                        }
+                    }
+                    for (LogtailManager logtailManager : logtailManagers) {
+                        if (logtailManager.getGroupName().equals(group)) {
+                            logtailManager.start();
+                        }
+                    }
+                }
+            } else {
+                for (StatusManager statusManager : statusManagers) {
+                    statusManager.start();
+                }
+                for (LogtailManager logtailManager : logtailManagers) {
+                    logtailManager.start();
+                }
+            }
             return true;
         } else {
             return false;
         }
     }
 
-    public List<String> getLastMessages(@NonNull AppMonSession session) {
-        List<String> messages = new ArrayList<>();
-        logtailManager.collectLastLogs(session, messages);
-        statusManager.collectCurrentStatuses(session, messages);
-        return messages;
-    }
-
     public synchronized void release(AppMonSession session) {
         String[] unusedGroups = getUnusedGroups(session);
-        logtailManager.release(unusedGroups);
-        statusManager.release(unusedGroups);
+        if (unusedGroups != null) {
+            for (String group : unusedGroups) {
+                for (StatusManager statusManager : statusManagers) {
+                    if (statusManager.getGroupName().equals(group)) {
+                        statusManager.stop();
+                    }
+                }
+                for (LogtailManager logtailManager : logtailManagers) {
+                    if (logtailManager.getGroupName().equals(group)) {
+                        logtailManager.stop();
+                    }
+                }
+            }
+        }
         session.removeJoinedGroups();
+    }
+
+    public List<String> getLastMessages(@NonNull AppMonSession session) {
+        List<String> messages = new ArrayList<>();
+        if (session.isValid()) {
+            String[] joinGroups = session.getJoinedGroups();
+            if (joinGroups != null && joinGroups.length > 0) {
+                for (String group : joinGroups) {
+                    for (StatusManager statusManager : statusManagers) {
+                        if (statusManager.getGroupName().equals(group)) {
+                            statusManager.collectStatuses(messages);
+                        }
+                    }
+                    for (LogtailManager logtailManager : logtailManagers) {
+                        if (logtailManager.getGroupName().equals(group)) {
+                            logtailManager.collectLastLogs(messages);
+                        }
+                    }
+                }
+            } else {
+                for (StatusManager statusManager : statusManagers) {
+                    statusManager.start();
+                }
+                for (LogtailManager logtailManager : logtailManagers) {
+                    logtailManager.start();
+                }
+            }
+        }
+        return messages;
     }
 
     public void broadcast(String message) {

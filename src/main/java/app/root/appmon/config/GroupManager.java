@@ -1,4 +1,4 @@
-package app.root.appmon.group;
+package app.root.appmon.config;
 
 import com.aspectran.utils.annotation.jsr305.NonNull;
 
@@ -14,6 +14,13 @@ public class GroupManager {
     public GroupManager(@NonNull List<GroupInfo> groupInfoList) {
         for (GroupInfo info : groupInfoList) {
             groups.put(info.getName(), info);
+
+            for (StatusInfo statusInfo : info.getStatusInfoList()) {
+                statusInfo.setGroup(info.getName());
+            }
+            for (LogtailInfo logtailInfo : info.getLogtailInfoList()) {
+                logtailInfo.setGroup(info.getName());
+            }
         }
     }
 

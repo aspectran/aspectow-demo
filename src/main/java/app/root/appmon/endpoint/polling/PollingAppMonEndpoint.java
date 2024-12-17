@@ -3,11 +3,11 @@ package app.root.appmon.endpoint.polling;
 import app.root.appmon.AppMonEndpoint;
 import app.root.appmon.AppMonManager;
 import app.root.appmon.AppMonSession;
-import app.root.appmon.endpoint.EndpointInfo;
+import app.root.appmon.config.EndpointInfo;
+import app.root.appmon.config.GroupInfo;
+import app.root.appmon.config.LogtailInfo;
+import app.root.appmon.config.StatusInfo;
 import app.root.appmon.endpoint.EndpointPollingConfig;
-import app.root.appmon.group.GroupInfo;
-import app.root.appmon.logtail.LogtailInfo;
-import app.root.appmon.status.StatusInfo;
 import com.aspectran.core.activity.Translet;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
@@ -39,7 +39,7 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
         if (pollingConfig != null && pollingConfig.isEnabled()) {
             this.appMonService = new PollingAppMonService(appMonManager, pollingConfig.getInitialBufferSize());
             this.appMonService.initialize();
-            appMonManager.putEndpoint(this);
+            appMonManager.addEndpoint(this);
         } else {
             this.appMonService = null;
         }
@@ -76,8 +76,8 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
         List<String> messages = appMonManager.getLastMessages(appMonSession);
         return Map.of(
                 "groups", groups,
-                "logtails", logtails,
                 "statuses", statuses,
+                "logtails", logtails,
                 "pollingInterval", appMonSession.getPollingInterval(),
                 "messages", messages
         );

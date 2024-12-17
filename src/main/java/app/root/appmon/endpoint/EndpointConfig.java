@@ -15,6 +15,7 @@
  */
 package app.root.appmon.endpoint;
 
+import app.root.appmon.config.EndpointInfo;
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
 

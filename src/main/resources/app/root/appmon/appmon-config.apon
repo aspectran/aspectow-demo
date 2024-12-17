@@ -1,0 +1,102 @@
+endpoint: {
+    name: endpoint-1
+    title: Server-1
+    url: /appmon/server/endpoint
+    resident: true
+    polling: {
+        pollingInterval: 3000
+        sessionTimeout: 10000
+        initialBufferSize: 9999
+        enabled: true
+    }
+}
+endpoint: {
+    name: endpoint-2
+    title: Server-2
+    url: /appmon/server/endpoint
+    resident: false
+    polling: {
+        pollingInterval: 3000
+        sessionTimeout: 10000
+        initialBufferSize: 9999
+        enabled: true
+    }
+}
+group: {
+    name: jpetstore
+    title: JPetStore
+    status: {
+        name: session
+        title: JPetStore App Session Statistics
+        collector: app.root.appmon.status.session.LocalSessionStatusReader
+        target: tow.server/jpetstore
+        sampleInterval: 5000
+    }
+    logtail: {
+        name: app
+        title: JPetStore App
+        file: /logs/jpetstore.log
+        lastLines: 200
+        sampleInterval: 300
+        visualizing: true
+    }
+    logtail: {
+        name: access
+        title: JPetStore Access
+        file: /logs/jpetstore-access.log
+        lastLines: 200
+        sampleInterval: 300
+    }
+}
+group: {
+    name: demo
+    title: Demo
+    status: {
+        name: session
+        title: Demo App Session Statistics
+        collector: app.root.appmon.status.session.LocalSessionStatusReader
+        target: tow.server/demo
+        sampleInterval: 5000
+    }
+    logtail: {
+        name: app
+        title: Demo App
+        file: /logs/demo.log
+        lastLines: 200
+        sampleInterval: 300
+        visualizing: true
+    }
+    logtail: {
+        name: access
+        title: Demo Access
+        file: /logs/demo-access.log
+        lastLines: 200
+        sampleInterval: 300
+    }
+}
+group: {
+    name: root
+    title: Root
+    status: {
+        name: session
+        title: Root App Session Statistics
+        collector: app.root.appmon.status.session.LocalSessionStatusReader
+        target: tow.server/root
+        sampleInterval: 5000
+    }
+    logtail: {
+        name: app
+        title: Root App
+        file: /logs/root.log
+        lastLines: 200
+        sampleInterval: 300
+        visualizing: true
+    }
+    logtail: {
+        name: access
+        title: Root Access
+        file: /logs/root-access.log
+        lastLines: 200
+        sampleInterval: 300
+    }
+}

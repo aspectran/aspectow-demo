@@ -15,6 +15,7 @@
  */
 package app.root.appmon.logtail;
 
+import app.root.appmon.config.LogtailInfo;
 import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.lifecycle.AbstractLifeCycle;
@@ -62,10 +63,12 @@ public class LogtailService extends AbstractLifeCycle {
 
     private Tailer tailer;
 
-    public LogtailService(LogtailManager logtailManager, @NonNull LogtailInfo logtailInfo, File logFile) {
+    public LogtailService(@NonNull LogtailManager logtailManager,
+                          @NonNull LogtailInfo logtailInfo,
+                          @NonNull File logFile) {
         this.logtailManager = logtailManager;
         this.logtailInfo = logtailInfo;
-        this.label = logtailInfo.getName() + LABEL_LOGTAIL;
+        this.label = logtailInfo.getGroup() + ":" + logtailInfo.getName() + LABEL_LOGTAIL;
         this.charset = (logtailInfo.getCharset() != null ? Charset.forName(logtailInfo.getCharset()): DEFAULT_CHARSET);
         this.sampleInterval = (logtailInfo.getSampleInterval() > 0 ? logtailInfo.getSampleInterval() : DEFAULT_SAMPLE_INTERVAL);
         this.lastLines = logtailInfo.getLastLines();

@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.appmon.status;
+package app.root.appmon.config;
 
+import com.aspectran.utils.Assert;
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
 import com.aspectran.utils.apon.ValueType;
@@ -24,12 +25,11 @@ import com.aspectran.utils.apon.ValueType;
  */
 public class StatusInfo extends AbstractParameters {
 
-    static final ParameterKey group;
-    static final ParameterKey name;
+    private static final ParameterKey group;
+    private static final ParameterKey name;
     private static final ParameterKey title;
-    static final ParameterKey collector;
-    static final ParameterKey source;
-    static final ParameterKey label;
+    private static final ParameterKey collector;
+    private static final ParameterKey target;
     private static final ParameterKey sampleInterval;
 
     private static final ParameterKey[] parameterKeys;
@@ -39,8 +39,7 @@ public class StatusInfo extends AbstractParameters {
         name = new ParameterKey("name", ValueType.STRING);
         title = new ParameterKey("title", ValueType.STRING);
         collector = new ParameterKey("collector", ValueType.STRING);
-        source = new ParameterKey("source", ValueType.STRING);
-        label = new ParameterKey("label", ValueType.STRING);
+        target = new ParameterKey("target", ValueType.STRING);
         sampleInterval = new ParameterKey("sampleInterval", ValueType.INT);
 
         parameterKeys = new ParameterKey[] {
@@ -48,8 +47,7 @@ public class StatusInfo extends AbstractParameters {
                 name,
                 title,
                 collector,
-                source,
-                label,
+                target,
                 sampleInterval
         };
     }
@@ -62,7 +60,7 @@ public class StatusInfo extends AbstractParameters {
         return getString(group);
     }
 
-    public void setGroup(String group) {
+    void setGroup(String group) {
         putValue(StatusInfo.group, group);
     }
 
@@ -90,20 +88,12 @@ public class StatusInfo extends AbstractParameters {
         putValue(StatusInfo.collector, collector);
     }
 
-    public String getSource() {
-        return getString(source);
+    public String getTarget() {
+        return getString(target);
     }
 
-    public void setSource(String source) {
-        putValue(StatusInfo.source, source);
-    }
-
-    public String getLabel() {
-        return getString(label);
-    }
-
-    public void setLabel(String label) {
-        putValue(StatusInfo.label, label);
+    public void setTarget(String target) {
+        putValue(StatusInfo.target, target);
     }
 
     public int getSampleInterval() {
@@ -112,6 +102,12 @@ public class StatusInfo extends AbstractParameters {
 
     public void setSampleInterval(int sampleInterval) {
         putValue(StatusInfo.sampleInterval, sampleInterval);
+    }
+
+    public void validateRequiredParameters() {
+        Assert.hasLength(getString(name), "Missing value of required parameter: " + getQualifiedName(name));
+        Assert.hasLength(getString(target), "Missing value of required parameter: " + getQualifiedName(target));
+        Assert.hasLength(getString(collector), "Missing value of required parameter: " + getQualifiedName(collector));
     }
 
 }

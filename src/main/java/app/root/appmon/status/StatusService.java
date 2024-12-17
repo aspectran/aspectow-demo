@@ -1,5 +1,6 @@
 package app.root.appmon.status;
 
+import app.root.appmon.config.StatusInfo;
 import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.lifecycle.AbstractLifeCycle;
@@ -18,10 +19,6 @@ public class StatusService extends AbstractLifeCycle {
 
     private final StatusReader statusReader;
 
-    private final String group;
-
-    private final String name;
-
     private final String label;
 
     private final int sampleInterval;
@@ -30,26 +27,16 @@ public class StatusService extends AbstractLifeCycle {
 
     public StatusService(@NonNull StatusManager statusManager,
                          @NonNull StatusInfo statusInfo,
-                         StatusReader statusReader) {
+                         @NonNull StatusReader statusReader) {
         this.statusManager = statusManager;
         this.statusInfo = statusInfo;
         this.statusReader = statusReader;
-        this.group = statusInfo.getGroup();
-        this.name = statusInfo.getName();
-        this.label = this.name + LABEL_STATUS + statusInfo.getLabel() + ":";
+        this.label = statusInfo.getGroup() + ":" + statusInfo.getName() + LABEL_STATUS;
         this.sampleInterval = statusInfo.getSampleInterval();
     }
 
     public StatusInfo getStatusInfo() {
         return statusInfo;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public String getName() {
-        return name;
     }
 
     void readStatus(@NonNull List<String> messages) {

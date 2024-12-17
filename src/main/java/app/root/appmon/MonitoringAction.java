@@ -15,7 +15,7 @@
  */
 package app.root.appmon;
 
-import app.root.appmon.endpoint.EndpointInfo;
+import app.root.appmon.config.EndpointInfo;
 import com.aspectran.core.component.bean.annotation.Action;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;

@@ -15,6 +15,7 @@
  */
 package app.root.appmon.endpoint;
 
+import app.root.appmon.config.EndpointInfo;
 import com.aspectran.utils.ResourceUtils;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 

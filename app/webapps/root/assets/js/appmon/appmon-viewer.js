@@ -8,8 +8,20 @@ function AppmonViewer() {
     let prevSentTime = new Date().getTime();
     let prevPosition = 0;
 
-    this.setLogtail = function (name, logtail) {
-        logtails[name] = logtail;
+    this.setIndicators = function (group, name, indicatorArr) {
+        indicators[group + ":" + name] = indicatorArr;
+    };
+
+    this.setMissileTrack = function (group, name, missileTrack) {
+        missileTracks[group + ":" + name] = (missileTrack.length > 0 ? missileTrack : null);
+    };
+
+    this.setStatus = function (group, name, status) {
+        statuses[group + ":" + name] = status;
+    };
+
+    this.setLogtail = function (group, name, logtail) {
+        logtails[group + ":" + name] = logtail;
     };
 
     this.refresh = function (logtail) {
@@ -17,7 +29,9 @@ function AppmonViewer() {
             scrollToBottom(logtail);
         } else {
             for (let key in logtails) {
-                scrollToBottom(logtails[key]);
+                if (!logtails[key].data("pause")) {
+                    scrollToBottom(logtails[key]);
+                }
             }
         }
     };
@@ -26,18 +40,6 @@ function AppmonViewer() {
         if (logtail) {
             logtail.empty();
         }
-    };
-
-    this.setMissileTrack = function (name, missileTrack) {
-        missileTracks[name] = (missileTrack.length > 0 ? missileTrack : null);
-    };
-
-    this.setIndicators = function (name, indicatorArr) {
-        indicators[name] = indicatorArr;
-    };
-
-    this.setStatus = function (name, status) {
-        statuses[name] = status;
     };
 
     this.setVisible = function (flag) {
@@ -49,8 +51,12 @@ function AppmonViewer() {
         }
     };
 
-    this.getLogtails = function () {
-        return logtails;
+    const getStatus = function (name) {
+        if (statuses && name) {
+            return statuses[name];
+        } else {
+            return $(".status-box");
+        }
     };
 
     const getLogtail = function (name) {
@@ -58,14 +64,6 @@ function AppmonViewer() {
             return logtails[name];
         } else {
             return $(".logtail");
-        }
-    };
-
-    const getStatus = function (name) {
-        if (statuses && name) {
-            return statuses[name];
-        } else {
-            return $(".status-box");
         }
     };
 
@@ -86,9 +84,10 @@ function AppmonViewer() {
     };
 
     this.printMessage = function (msg) {
-        let idx = msg.indexOf(":");
-        let name = msg.substring(0, idx);
-        let text = msg.substring(idx + 1);
+        let idx1 = msg.indexOf(":");
+        let idx2 = msg.indexOf(":", idx1 + 1);
+        let name = msg.substring(0, idx2);
+        let text = msg.substring(idx2 + 1);
         if (text.startsWith("logtail:")) {
             text = text.substring(8);
             if (text.startsWith("last:")) {
@@ -98,14 +97,8 @@ function AppmonViewer() {
                 printLog(name, text, true);
             }
         } else if (text.startsWith("status:")) {
-            text = text.substring(7);
-            idx = text.indexOf(":");
-            if (idx !== -1) {
-                let label = text.substring(0, idx);
-                let data = JSON.parse(text.substring(idx + 1));
-                console.log(name, label, data);
-                printStatus(name, label, data);
-            }
+            let data = JSON.parse(text.substring(7));
+            printStatus(name, data);
         }
     };
 
@@ -282,7 +275,9 @@ function AppmonViewer() {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    const printStatus = function (name, label, data) {
+    const printStatus = function (name, data) {
+        let idx = name.indexOf(":");
+        let label = (idx >= 0 ? name.substring(idx + 1) : "");
         switch (label) {
             case "session":
                 printSessionStatus(name, data);

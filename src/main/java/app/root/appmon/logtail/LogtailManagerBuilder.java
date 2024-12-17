@@ -1,35 +1,31 @@
 package app.root.appmon.logtail;
 
 import app.root.appmon.AppMonManager;
-import com.aspectran.utils.Assert;
-import com.aspectran.utils.ResourceUtils;
+import app.root.appmon.config.LogtailInfo;
 import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
-import com.aspectran.utils.apon.ParameterKey;
-import com.aspectran.utils.apon.Parameters;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public abstract class LogtailManagerBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(LogtailManagerBuilder.class);
 
-    private static final String LOGTAIL_CONFIG_FILE = "app/root/appmon/logtail-config.apon";
-
     @NonNull
-    public static LogtailManager build(@NonNull AppMonManager appMonManager) throws IOException {
-        LogtailConfig logTailConfig = new LogtailConfig(ResourceUtils.getResourceAsReader(LOGTAIL_CONFIG_FILE));
-        LogtailManager logtailManager = new LogtailManager(appMonManager);
-        for (LogtailInfo logTailInfo : logTailConfig.getLogTailInfoList()) {
+    public static void build(@NonNull AppMonManager appMonManager,
+                             @NonNull String groupName,
+                             @NonNull List<LogtailInfo> logtailInfoList) throws IOException {
+        LogtailManager logtailManager = new LogtailManager(appMonManager, groupName);
+        for (LogtailInfo logTailInfo : logtailInfoList) {
             if (logger.isDebugEnabled()) {
                 logger.debug(ToStringBuilder.toString("Create LogtailService", logTailInfo));
             }
-            validateRequiredParameter(logTailInfo, LogtailInfo.group);
-            validateRequiredParameter(logTailInfo, LogtailInfo.name);
-            validateRequiredParameter(logTailInfo, LogtailInfo.file);
+
+            logTailInfo.validateRequiredParameters();
 
             File logFile = null;
             try {
@@ -43,12 +39,7 @@ public abstract class LogtailManagerBuilder {
                 logtailManager.addLogtailService(logTailInfo.getName(), logtailService);
             }
         }
-        return logtailManager;
-    }
-
-    private static void validateRequiredParameter(@NonNull Parameters parameters, ParameterKey key) {
-        Assert.hasLength(parameters.getString(key),
-                "Missing value of required parameter: " + parameters.getQualifiedName(key));
+        appMonManager.addLogtailManager(logtailManager);
     }
 
 }

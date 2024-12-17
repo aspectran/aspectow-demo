@@ -16,12 +16,11 @@
 package app.root.appmon.status;
 
 import app.root.appmon.AppMonManager;
-import app.root.appmon.AppMonSession;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +33,19 @@ public class StatusManager {
 
     private final AppMonManager appMonManager;
 
-    public StatusManager(AppMonManager appMonManager) {
+    private final String groupName;
+
+    public StatusManager(AppMonManager appMonManager, String groupName) {
         this.appMonManager = appMonManager;
+        this.groupName = groupName;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public Collection<StatusService> getStatusServices() {
+        return statusServices.values();
     }
 
     void addStatusService(String name, StatusService statusService) {
@@ -50,89 +60,29 @@ public class StatusManager {
         return statusService;
     }
 
-    public List<StatusInfo> getStatusInfoList(String[] joinGroups) {
-        List<StatusInfo> infoList = new ArrayList<>(statusServices.size());
-        if (joinGroups != null && joinGroups.length > 0) {
-            for (String name : joinGroups) {
-                for (StatusService service : statusServices.values()) {
-                    if (service.getStatusInfo().getGroup().equals(name)) {
-                        infoList.add(service.getStatusInfo());
-                    }
-                }
-            }
-        } else {
-            for (StatusService service : statusServices.values()) {
-                infoList.add(service.getStatusInfo());
-            }
-        }
-        return infoList;
-    }
-
-    public void join(AppMonSession session) {
-        if (!statusServices.isEmpty()) {
-            String[] joinGroups = session.getJoinedGroups();
-            if (joinGroups != null && joinGroups.length > 0) {
-                for (StatusService service : statusServices.values()) {
-                    for (String group : joinGroups) {
-                        if (service.getGroup().equals(group)) {
-                            start(service);
-                        }
-                    }
-                }
-            } else {
-                for (StatusService service : statusServices.values()) {
-                    start(service);
-                }
+    public void start() {
+        for (StatusService service : statusServices.values()) {
+            try {
+                service.start();
+            } catch (Exception e) {
+                logger.warn(e);
             }
         }
     }
 
-    public void collectCurrentStatuses(AppMonSession session, List<String> messages) {
-        if (!statusServices.isEmpty()) {
-            String[] joinGroups = session.getJoinedGroups();
-            if (joinGroups != null && joinGroups.length > 0) {
-                for (StatusService service : statusServices.values()) {
-                    for (String group : joinGroups) {
-                        if (service.getGroup().equals(group)) {
-                            service.readStatus(messages);
-                        }
-                    }
-                }
-            } else {
-                for (StatusService service : statusServices.values()) {
-                    service.readStatus(messages);
-                }
+    public void stop() {
+        for (StatusService service : statusServices.values()) {
+            try {
+                service.stop();
+            } catch (Exception e) {
+                logger.warn(e);
             }
         }
     }
 
-    private void start(StatusService service) {
-        try {
-            service.start();
-        } catch (Exception e) {
-            logger.warn(e);
-        }
-    }
-
-    public void release(String[] unusedGroups) {
-        if (!statusServices.isEmpty()) {
-            if (unusedGroups != null) {
-                for (StatusService service : statusServices.values()) {
-                    for (String group : unusedGroups) {
-                        if (service.getGroup().equals(group)) {
-                            stop(service);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void stop(StatusService service) {
-        try {
-            service.stop();
-        } catch (Exception e) {
-            logger.warn(e);
+    public void collectStatuses(List<String> messages) {
+        for (StatusService service : statusServices.values()) {
+            service.readStatus(messages);
         }
     }
 

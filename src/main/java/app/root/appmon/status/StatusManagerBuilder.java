@@ -1,57 +1,48 @@
 package app.root.appmon.status;
 
 import app.root.appmon.AppMonManager;
-import com.aspectran.utils.Assert;
+import app.root.appmon.config.StatusInfo;
 import com.aspectran.utils.ClassUtils;
-import com.aspectran.utils.ResourceUtils;
 import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
-import com.aspectran.utils.apon.ParameterKey;
-import com.aspectran.utils.apon.Parameters;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
-public abstract class StatusManagerBuilder {
+import java.util.List;
 
-    private static final String STATUS_CONFIG_FILE = "app/root/appmon/status-config.apon";
+public abstract class StatusManagerBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(StatusManagerBuilder.class);
 
     @NonNull
-    public static StatusManager build(@NonNull AppMonManager appMonManager) throws Exception {
-        StatusConfig statusConfig = new StatusConfig(ResourceUtils.getResourceAsReader(STATUS_CONFIG_FILE));
-        StatusManager statusManager = new StatusManager(appMonManager);
-        for (StatusInfo statusInfo : statusConfig.getStatusInfoList()) {
+    public static StatusManager build(@NonNull AppMonManager appMonManager,
+                                      @NonNull String groupName,
+                                      @NonNull List<StatusInfo> statusInfoList) throws Exception {
+        StatusManager statusManager = new StatusManager(appMonManager, groupName);
+        for (StatusInfo statusInfo : statusInfoList) {
             if (logger.isDebugEnabled()) {
                 logger.debug(ToStringBuilder.toString("Create StatusService", statusInfo));
             }
-            validateRequiredParameter(statusInfo, StatusInfo.group);
-            validateRequiredParameter(statusInfo, StatusInfo.name);
-            validateRequiredParameter(statusInfo, StatusInfo.source);
-            validateRequiredParameter(statusInfo, StatusInfo.collector);
+            statusInfo.validateRequiredParameters();
 
             StatusReader statusReader = createStatusReader(statusManager, statusInfo);
             StatusService statusService = new StatusService(statusManager, statusInfo, statusReader);
             statusManager.addStatusService(statusInfo.getName(), statusService);
+            appMonManager.addStatusManager(statusManager);
         }
         return statusManager;
     }
 
-    private static void validateRequiredParameter(@NonNull Parameters parameters, ParameterKey key) {
-        Assert.hasLength(parameters.getString(key),
-                "Missing value of required parameter: " + parameters.getQualifiedName(key));
-    }
-
     @NonNull
     private static StatusReader createStatusReader(
-            @NonNull StatusManager manager, @NonNull StatusInfo info) throws Exception {
+            @NonNull StatusManager statusManager, @NonNull StatusInfo statusInfo) throws Exception {
         try {
-            Class<StatusReader> collectorType = ClassUtils.classForName(info.getCollector());
-            Object[] args = { manager, info };
+            Class<StatusReader> collectorType = ClassUtils.classForName(statusInfo.getCollector());
+            Object[] args = { statusManager, statusInfo };
             Class<?>[] argTypes = { StatusManager.class, StatusInfo.class };
             return ClassUtils.createInstance(collectorType, args, argTypes);
         } catch (Exception e) {
-            throw new Exception("Failed to create measure collector: " + info.getCollector(), e);
+            throw new Exception("Failed to create status reader: " + statusInfo, e);
         }
     }
 

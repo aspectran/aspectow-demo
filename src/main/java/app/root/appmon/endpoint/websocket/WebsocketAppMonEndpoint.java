@@ -18,9 +18,9 @@ package app.root.appmon.endpoint.websocket;
 import app.root.appmon.AppMonEndpoint;
 import app.root.appmon.AppMonManager;
 import app.root.appmon.AppMonSession;
-import app.root.appmon.group.GroupInfo;
-import app.root.appmon.logtail.LogtailInfo;
-import app.root.appmon.status.StatusInfo;
+import app.root.appmon.config.GroupInfo;
+import app.root.appmon.config.LogtailInfo;
+import app.root.appmon.config.StatusInfo;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.AvoidAdvice;
 import com.aspectran.core.component.bean.annotation.Component;
@@ -82,7 +82,7 @@ public class WebsocketAppMonEndpoint implements AppMonEndpoint {
 
     @Initialize
     public void registerEndpoint() {
-        appMonManager.putEndpoint(this);
+        appMonManager.addEndpoint(this);
     }
 
     @OnOpen
@@ -150,8 +150,8 @@ public class WebsocketAppMonEndpoint implements AppMonEndpoint {
         String json = new JsonBuilder().nullWritable(false)
                 .object()
                     .put("groups", groups)
-                    .put("logtails", logtails)
                     .put("statuses", statuses)
+                    .put("logtails", logtails)
                 .endObject()
                 .toString();
         broadcast(appMonSession, MESSAGE_JOINED + json);

@@ -89,13 +89,7 @@ function AppMonBuilder() {
         }
         $(".endpoint-box.available").hide().eq(endpointIndex).show();
         endpoints[endpointIndex].viewer.setVisible(true);
-        let logtails = endpoints[endpointIndex].viewer.getLogtails();
-        for (let key in logtails) {
-            let logtail = logtails[key];
-            if (!logtail.data("pause")) {
-                endpoints[endpointIndex].viewer.refresh(logtail);
-            }
-        }
+        endpoints[endpointIndex].viewer.refresh();
     };
 
     const changeGroup = function (endpointBox, groupName) {
@@ -119,12 +113,12 @@ function AppMonBuilder() {
         for (let key in payload.logtails) {
             let logtail = payload.logtails[key];
             let logtailBox = addLogtail(endpointBox, logtail);
-            endpoint.viewer.setLogtail(logtail.name, logtailBox.find(".logtail"));
+            endpoint.viewer.setLogtail(logtail.group, logtail.name, logtailBox.find(".logtail"));
         }
         for (let key in payload.statuses) {
             let status = payload.statuses[key];
             let statusBox = addStatus(endpointBox, status);
-            endpoint.viewer.setStatus(status.name, statusBox);
+            endpoint.viewer.setStatus(status.group, status.name, statusBox);
         }
         endpointBox.find(".logtail-box.available").each(function() {
             let logtail = $(this).find(".logtail");
@@ -133,12 +127,12 @@ function AppMonBuilder() {
             let logtailBox = logtail.closest(".logtail-box");
             let missileTrack = logtailBox.find(".missile-track.available");
             if (missileTrack.length > 0) {
-                endpoint.viewer.setMissileTrack(logtailName, missileTrack);
+                endpoint.viewer.setMissileTrack(groupName, logtailName, missileTrack);
             }
             let indicator1 = $(".endpoint.tabs .tabs-title.available .indicator").eq(endpoint.index);
             let indicator2 = endpointBox.find(".group.tabs .tabs-title.available[data-name=" + groupName + "]").find(".indicator");
             let indicator3 = logtailBox.find(".status-bar");
-            endpoint.viewer.setIndicators(logtailName, [indicator1, indicator2, indicator3]);
+            endpoint.viewer.setIndicators(groupName, logtailName, [indicator1, indicator2, indicator3]);
             logtail.data("tailing", true);
             logtailBox.find(".tailing-status").addClass("on");
         });
@@ -263,28 +257,28 @@ function AppMonBuilder() {
         });
     };
 
-    const addEndpoint = function (endpoint) {
+    const addEndpoint = function (endpointInfo) {
         let tabs = $(".endpoint.tabs");
         let tab0 = tabs.find(".tabs-title").eq(0);
         let tab = tab0.hide().clone();
         tab.addClass("available");
-        tab.attr("data-index", endpoint.index);
-        tab.attr("data-name", endpoint.name);
-        tab.attr("data-title", endpoint.title);
-        tab.attr("data-endpoint", endpoint.url);
+        tab.attr("data-index", endpointInfo.index);
+        tab.attr("data-name", endpointInfo.name);
+        tab.attr("data-title", endpointInfo.title);
+        tab.attr("data-endpoint", endpointInfo.url);
         let a = tab.find("a");
-        a.find(".title").text(" " + endpoint.title + " ");
+        a.find(".title").text(" " + endpointInfo.title + " ");
         tab.show().appendTo(tabs);
         let endpointBox = $(".endpoint-box");
         return endpointBox.eq(0).hide().clone()
             .addClass("available")
-            .attr("data-index", endpoint.index)
-            .attr("data-name", endpoint.name)
-            .attr("data-title", endpoint.title)
+            .attr("data-index", endpointInfo.index)
+            .attr("data-name", endpointInfo.name)
+            .attr("data-title", endpointInfo.title)
             .insertAfter(endpointBox.last()).show();
     };
 
-    const addGroup = function (endpointBox, group) {
+    const addGroup = function (endpointBox, groupInfo) {
         let endpointTitle = endpointBox.data("title");
         let tabs = endpointBox.find(".group.tabs");
         let tab0 = tabs.find(".tabs-title").eq(0);
@@ -292,46 +286,46 @@ function AppMonBuilder() {
         let tab = tab0.hide().clone()
             .addClass("available")
             .attr("data-index", index)
-            .attr("data-name", group.name)
-            .attr("title", endpointTitle + " ›› " + group.title);
-        tab.find("a .title").text(" " + group.title + " ");
+            .attr("data-name", groupInfo.name)
+            .attr("title", endpointTitle + " ›› " + groupInfo.title);
+        tab.find("a .title").text(" " + groupInfo.title + " ");
         tab.show().appendTo(tabs);
         let groupBox = endpointBox.find(".group-box").eq(0).hide().clone();
         groupBox.addClass("available")
-            .attr("data-name", group.name)
-            .attr("data-title", group.title);
+            .attr("data-name", groupInfo.name)
+            .attr("data-title", groupInfo.title);
         return groupBox.appendTo(endpointBox);
     };
 
-    const addLogtail = function (endpointBox, logtail) {
+    const addLogtail = function (endpointBox, logtailInfo) {
         let endpointIndex = endpointBox.data("index");
         let endpointTitle = endpointBox.data("title");
-        let groupBox = endpointBox.find(".group-box[data-name=" + logtail.group + "]");
+        let groupBox = endpointBox.find(".group-box[data-name=" + logtailInfo.group + "]");
         let logtailBox = groupBox.find(".logtail-box").eq(0).hide().clone();
         logtailBox.addClass("large-6 available");
-        logtailBox.attr("data-group", logtail.group);
-        logtailBox.attr("data-name", logtail.name);
-        logtailBox.find(".status-bar h4").text(endpointTitle + " ›› " + logtail.file);
+        logtailBox.attr("data-group", logtailInfo.group);
+        logtailBox.attr("data-name", logtailInfo.name);
+        logtailBox.find(".status-bar h4").text(endpointTitle + " ›› " + logtailInfo.file);
         logtailBox.find(".logtail")
             .attr("data-endpoint-index", endpointIndex).attr("data-endpoint-name", endpointTitle)
-            .attr("data-logtail-name", logtail.name);
-        if (logtail.visualizing) {
+            .attr("data-logtail-name", logtailInfo.name);
+        if (logtailInfo.visualizing) {
             logtailBox.addClass("with-track")
                 .find(".missile-track")
                     .addClass("available")
-                    .attr("data-visualizing", logtail.visualizing);
+                    .attr("data-visualizing", logtailInfo.visualizing);
         } else {
             logtailBox.addClass("no-track");
         }
         return logtailBox.appendTo(groupBox.find(".logtail-box-wrap")).show();
     };
 
-    const addStatus = function (endpointBox, status) {
-        let groupBox = endpointBox.find(".group-box[data-name=" + status.group + "]");
+    const addStatus = function (endpointBox, statusInfo) {
+        let groupBox = endpointBox.find(".group-box[data-name=" + statusInfo.group + "]");
         let statusBox = groupBox.find(".status-box").eq(0).hide().clone();
         statusBox.addClass("available")
-            .attr("data-group", status.group)
-            .attr("data-name", status.name);
+            .attr("data-group", statusInfo.group)
+            .attr("data-name", statusInfo.name);
         return statusBox.appendTo(groupBox).show();
     };
 }

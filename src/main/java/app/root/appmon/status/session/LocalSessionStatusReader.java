@@ -1,7 +1,7 @@
 package app.root.appmon.status.session;
 
 import app.jpetstore.user.UserSession;
-import app.root.appmon.status.StatusInfo;
+import app.root.appmon.config.StatusInfo;
 import app.root.appmon.status.StatusManager;
 import app.root.appmon.status.StatusReader;
 import app.root.appmon.status.StatusService;
@@ -12,6 +12,7 @@ import com.aspectran.core.component.session.SessionListenerRegistration;
 import com.aspectran.core.component.session.SessionStatistics;
 import com.aspectran.undertow.server.TowServer;
 import com.aspectran.utils.Assert;
+import com.aspectran.utils.StringUtils;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.json.JsonBuilder;
 import com.aspectran.utils.json.JsonString;
@@ -36,6 +37,8 @@ public class LocalSessionStatusReader implements StatusReader {
 
     private final StatusInfo statusInfo;
 
+    private final String deploymentName;
+
     private final SessionHandler sessionHandler;
 
     private LocalSessionStatusListener sessionListener;
@@ -47,8 +50,17 @@ public class LocalSessionStatusReader implements StatusReader {
         this.statusManager = statusManager;
         this.statusInfo = statusInfo;
 
-        TowServer towServer = statusManager.getBean(statusInfo.getSource());
-        this.sessionHandler = towServer.getSessionHandler(statusInfo.getName());
+        String[] arr = StringUtils.split(statusInfo.getTarget(), '/', 2);
+        String serverId = arr[0];
+        String deploymentName = arr[1];
+
+        try {
+            TowServer towServer = statusManager.getBean(serverId);
+            this.sessionHandler = towServer.getSessionHandler(deploymentName);
+            this.deploymentName = deploymentName;
+        } catch (Exception e) {
+            throw new RuntimeException("Cannot resolve session handler with " + statusInfo.getTarget(), e);
+        }
     }
 
     public StatusService getStatusService() {
@@ -58,14 +70,14 @@ public class LocalSessionStatusReader implements StatusReader {
     @Override
     public void start() {
         sessionListener = new LocalSessionStatusListener(this);
-        getSessionListenerRegistration().register(sessionListener, statusInfo.getName());
+        getSessionListenerRegistration().register(sessionListener, deploymentName);
     }
 
     @Override
     public void stop() {
         oldPayload = null;
         if (sessionListener != null) {
-            getSessionListenerRegistration().remove(sessionListener, statusInfo.getName());
+            getSessionListenerRegistration().remove(sessionListener, deploymentName);
         }
     }
 

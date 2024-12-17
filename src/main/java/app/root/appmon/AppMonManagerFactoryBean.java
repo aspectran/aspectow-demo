@@ -80,5 +80,4 @@ public class AppMonManagerFactoryBean implements ActivityContextAware, FactoryBe
         return appMonManager;
     }
 
-
 }

@@ -16,10 +16,8 @@
 package app.root.appmon.config;
 
 import com.aspectran.utils.Assert;
-import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
-import com.aspectran.utils.apon.Parameters;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -80,11 +78,6 @@ public class AppMonConfig extends AbstractParameters {
             }
         }
         return null;
-    }
-
-    private static void validateRequiredParameter(@NonNull Parameters parameters, ParameterKey key) {
-        Assert.hasLength(parameters.getString(key),
-                "Missing value of required parameter: " + parameters.getQualifiedName(key));
     }
 
 }

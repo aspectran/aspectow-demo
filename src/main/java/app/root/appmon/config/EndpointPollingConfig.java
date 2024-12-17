@@ -1,4 +1,4 @@
-package app.root.appmon.endpoint;
+package app.root.appmon.config;
 
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;

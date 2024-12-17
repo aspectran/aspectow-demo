@@ -15,7 +15,6 @@
  */
 package app.root.appmon.config;
 
-import app.root.appmon.endpoint.EndpointPollingConfig;
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
 import com.aspectran.utils.apon.ValueType;

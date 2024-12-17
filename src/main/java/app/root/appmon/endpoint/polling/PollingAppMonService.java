@@ -1,7 +1,7 @@
 package app.root.appmon.endpoint.polling;
 
 import app.root.appmon.AppMonManager;
-import app.root.appmon.endpoint.EndpointPollingConfig;
+import app.root.appmon.config.EndpointPollingConfig;
 import com.aspectran.core.component.AbstractComponent;
 import com.aspectran.utils.StringUtils;
 import com.aspectran.utils.annotation.jsr305.Nullable;

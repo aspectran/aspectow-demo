@@ -1,4 +1,4 @@
-package app.root.appmon;
+package app.root.appmon.endpoint;
 
 public interface AppMonEndpoint {
 

@@ -1,4 +1,4 @@
-package app.root.appmon.status;
+package app.root.appmon.service.status;
 
 public interface StatusReader {
 

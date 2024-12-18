@@ -25,10 +25,15 @@ endpoint: {
 group: {
     name: jpetstore
     title: JPetStore
+    event: {
+        name: request
+        reader: app.root.appmon.service.event.request.RequestEventReader
+        target: jpetstore
+    }
     status: {
         name: session
         title: JPetStore App Session Statistics
-        collector: app.root.appmon.status.session.LocalSessionStatusReader
+        reader: app.root.appmon.service.status.session.SessionStatusReader
         target: tow.server/jpetstore
         sampleInterval: 5000
     }
@@ -51,10 +56,15 @@ group: {
 group: {
     name: demo
     title: Demo
+    event: {
+        name: request
+        reader: app.root.appmon.service.event.request.RequestEventReader
+        target: demo
+    }
     status: {
         name: session
         title: Demo App Session Statistics
-        collector: app.root.appmon.status.session.LocalSessionStatusReader
+        reader: app.root.appmon.service.status.session.SessionStatusReader
         target: tow.server/demo
         sampleInterval: 5000
     }
@@ -77,10 +87,15 @@ group: {
 group: {
     name: root
     title: Root
+    event: {
+        name: request
+        reader: app.root.appmon.service.event.request.RequestEventReader
+        target: root
+    }
     status: {
         name: session
         title: Root App Session Statistics
-        collector: app.root.appmon.status.session.LocalSessionStatusReader
+        reader: app.root.appmon.service.status.session.SessionStatusReader
         target: tow.server/root
         sampleInterval: 5000
     }

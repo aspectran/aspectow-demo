@@ -1,19 +1,19 @@
-package app.root.appmon.status.session;
+package app.root.appmon.service.status.session;
 
 import com.aspectran.core.component.session.Session;
 import com.aspectran.core.component.session.SessionListener;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 
-import static app.root.appmon.status.session.LocalSessionStatusReader.USER_SESSION_KEY;
+import static app.root.appmon.service.status.session.SessionStatusReader.USER_SESSION_KEY;
 
 /**
  * <p>Created: 2024-12-13</p>
  */
-public class LocalSessionStatusListener implements SessionListener {
+public class SessionStatusListener implements SessionListener {
 
-    private final LocalSessionStatusReader statusReader;
+    private final SessionStatusReader statusReader;
 
-    public LocalSessionStatusListener(LocalSessionStatusReader statusReader) {
+    public SessionStatusListener(SessionStatusReader statusReader) {
         this.statusReader = statusReader;
     }
 

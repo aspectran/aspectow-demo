@@ -25,6 +25,10 @@ endpoint: {
 group: {
     name: jpetstore
     title: JPetStore
+    event: {
+        name: request
+        reader: app.root.appmon.service.event.request.RequestEventReader
+    }
     status: {
         name: session
         title: JPetStore App Session Statistics
@@ -51,6 +55,10 @@ group: {
 group: {
     name: demo
     title: Demo
+    event: {
+        name: request
+        reader: app.root.appmon.service.event.request.RequestEventReader
+    }
     status: {
         name: session
         title: Demo App Session Statistics
@@ -77,6 +85,10 @@ group: {
 group: {
     name: root
     title: Root
+    event: {
+        name: request
+        reader: app.root.appmon.service.event.request.RequestEventReader
+    }
     status: {
         name: session
         title: Root App Session Statistics

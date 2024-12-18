@@ -1,10 +1,10 @@
-package app.root.appmon.status.session;
+package app.root.appmon.service.status.session;
 
 import app.jpetstore.user.UserSession;
 import app.root.appmon.config.StatusInfo;
-import app.root.appmon.status.StatusManager;
-import app.root.appmon.status.StatusReader;
-import app.root.appmon.status.StatusService;
+import app.root.appmon.service.status.StatusReader;
+import app.root.appmon.service.status.StatusService;
+import app.root.appmon.service.status.StatusServiceManager;
 import com.aspectran.core.component.session.DefaultSession;
 import com.aspectran.core.component.session.Session;
 import com.aspectran.core.component.session.SessionHandler;
@@ -27,13 +27,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class LocalSessionStatusReader implements StatusReader {
+public class SessionStatusReader implements StatusReader {
 
-    private static final Logger logger = LoggerFactory.getLogger(LocalSessionStatusReader.class);
+    private static final Logger logger = LoggerFactory.getLogger(SessionStatusReader.class);
 
     public static final String USER_SESSION_KEY = "user";
 
-    private final StatusManager statusManager;
+    private final StatusServiceManager statusServiceManager;
 
     private final StatusInfo statusInfo;
 
@@ -41,13 +41,13 @@ public class LocalSessionStatusReader implements StatusReader {
 
     private final SessionHandler sessionHandler;
 
-    private LocalSessionStatusListener sessionListener;
+    private SessionStatusListener sessionListener;
 
     private volatile SessionStatusPayload oldPayload;
 
-    public LocalSessionStatusReader(@NonNull StatusManager statusManager,
-                                    @NonNull StatusInfo statusInfo) {
-        this.statusManager = statusManager;
+    public SessionStatusReader(@NonNull StatusServiceManager statusServiceManager,
+                               @NonNull StatusInfo statusInfo) {
+        this.statusServiceManager = statusServiceManager;
         this.statusInfo = statusInfo;
 
         String[] arr = StringUtils.split(statusInfo.getTarget(), '/', 2);
@@ -55,7 +55,7 @@ public class LocalSessionStatusReader implements StatusReader {
         String deploymentName = arr[1];
 
         try {
-            TowServer towServer = statusManager.getBean(serverId);
+            TowServer towServer = statusServiceManager.getBean(serverId);
             this.sessionHandler = towServer.getSessionHandler(deploymentName);
             this.deploymentName = deploymentName;
         } catch (Exception e) {
@@ -64,12 +64,12 @@ public class LocalSessionStatusReader implements StatusReader {
     }
 
     public StatusService getStatusService() {
-        return statusManager.getStatusService(statusInfo.getName());
+        return statusServiceManager.getService(statusInfo.getName());
     }
 
     @Override
     public void start() {
-        sessionListener = new LocalSessionStatusListener(this);
+        sessionListener = new SessionStatusListener(this);
         getSessionListenerRegistration().register(sessionListener, deploymentName);
     }
 
@@ -83,7 +83,7 @@ public class LocalSessionStatusReader implements StatusReader {
 
     @NonNull
     private SessionListenerRegistration getSessionListenerRegistration() {
-        SessionListenerRegistration sessionListenerRegistration = statusManager.getBean(SessionListenerRegistration.class);
+        SessionListenerRegistration sessionListenerRegistration = statusServiceManager.getBean(SessionListenerRegistration.class);
         if (sessionListenerRegistration == null) {
             throw new IllegalStateException("Bean for SessionListenerRegistration must be defined");
         }

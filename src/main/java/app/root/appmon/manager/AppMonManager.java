@@ -1,15 +1,18 @@
-package app.root.appmon;
+package app.root.appmon.manager;
 
 import app.root.appmon.config.EndpointInfo;
+import app.root.appmon.config.EndpointInfoHolder;
 import app.root.appmon.config.GroupInfo;
-import app.root.appmon.config.GroupManager;
+import app.root.appmon.config.GroupInfoHolder;
 import app.root.appmon.config.LogtailInfo;
 import app.root.appmon.config.StatusInfo;
-import app.root.appmon.endpoint.EndpointManager;
-import app.root.appmon.logtail.LogtailManager;
-import app.root.appmon.logtail.LogtailService;
-import app.root.appmon.status.StatusManager;
-import app.root.appmon.status.StatusService;
+import app.root.appmon.endpoint.AppMonEndpoint;
+import app.root.appmon.endpoint.AppMonSession;
+import app.root.appmon.service.event.EventServiceManager;
+import app.root.appmon.service.logtail.LogtailService;
+import app.root.appmon.service.logtail.LogtailServiceManager;
+import app.root.appmon.service.status.StatusService;
+import app.root.appmon.service.status.StatusServiceManager;
 import com.aspectran.core.activity.InstantActivitySupport;
 import com.aspectran.core.adapter.ApplicationAdapter;
 import com.aspectran.core.context.ActivityContext;
@@ -20,6 +23,7 @@ import com.aspectran.utils.security.TimeLimitedPBTokenIssuer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -28,20 +32,23 @@ import java.util.Set;
  */
 public class AppMonManager extends InstantActivitySupport {
 
-    private final EndpointManager endpointManager;
+    private final EndpointInfoHolder endpointInfoHolder;
 
-    private final GroupManager groupManager;
+    private final GroupInfoHolder groupInfoHolder;
 
-    private final List<StatusManager> statusManagers = new ArrayList<>();
+    private final List<StatusServiceManager> statusServiceManagers = new ArrayList<>();
 
-    private final List<LogtailManager> logtailManagers = new ArrayList<>();
+    private final List<EventServiceManager> eventServiceManagers = new ArrayList<>();
+
+    private final List<LogtailServiceManager> logtailServiceManagers = new ArrayList<>();
 
     private final List<AppMonEndpoint> endpoints = new ArrayList<>();
 
-    public AppMonManager(EndpointManager endpointManager,
-                         GroupManager groupManager) {
-        this.endpointManager = endpointManager;
-        this.groupManager = groupManager;
+    public AppMonManager(
+            EndpointInfoHolder endpointInfoHolder,
+            GroupInfoHolder groupInfoHolder) {
+        this.endpointInfoHolder = endpointInfoHolder;
+        this.groupInfoHolder = groupInfoHolder;
     }
 
     @Override
@@ -56,18 +63,26 @@ public class AppMonManager extends InstantActivitySupport {
         return super.getApplicationAdapter();
     }
 
-    public void addStatusManager(StatusManager statusManager) {
-        synchronized (statusManagers) {
-            if (!statusManagers.contains(statusManager)) {
-                statusManagers.add(statusManager);
+    public void addServiceManager(StatusServiceManager statusServiceManager) {
+        synchronized (statusServiceManagers) {
+            if (!statusServiceManagers.contains(statusServiceManager)) {
+                statusServiceManagers.add(statusServiceManager);
             }
         }
     }
 
-    public void addLogtailManager(LogtailManager logtailManager) {
-        synchronized (logtailManagers) {
-            if (!logtailManagers.contains(logtailManager)) {
-                logtailManagers.add(logtailManager);
+    public void addServiceManager(EventServiceManager eventServiceManager) {
+        synchronized (eventServiceManagers) {
+            if (!eventServiceManagers.contains(eventServiceManager)) {
+                eventServiceManagers.add(eventServiceManager);
+            }
+        }
+    }
+
+    public void addServiceManager(LogtailServiceManager logtailServiceManager) {
+        synchronized (logtailServiceManagers) {
+            if (!logtailServiceManagers.contains(logtailServiceManager)) {
+                logtailServiceManagers.add(logtailServiceManager);
             }
         }
     }
@@ -81,7 +96,7 @@ public class AppMonManager extends InstantActivitySupport {
     }
 
     public EndpointInfo getResidentEndpointInfo() {
-        EndpointInfo endpointInfo = endpointManager.getResidentEndpointInfo();
+        EndpointInfo endpointInfo = endpointInfoHolder.getResidentEndpointInfo();
         if (endpointInfo == null) {
             throw new IllegalStateException("Resident EndpointInfo not found");
         }
@@ -90,7 +105,7 @@ public class AppMonManager extends InstantActivitySupport {
 
     public List<EndpointInfo> getAvailableEndpointInfoList(String token) {
         List<EndpointInfo> endpointInfoList = new ArrayList<>();
-        for (EndpointInfo endpointInfo : endpointManager.getEndpointInfoList()) {
+        for (EndpointInfo endpointInfo : endpointInfoHolder.getEndpointInfoList()) {
             EndpointInfo info = endpointInfo.copy();
             String url = info.getUrl();
             if (!url.endsWith("/")) {
@@ -106,32 +121,34 @@ public class AppMonManager extends InstantActivitySupport {
     public String[] getVerifiedGroupNames(String[] joinGroups) {
         List<GroupInfo> groups = getGroupInfoList(joinGroups);
         if (!groups.isEmpty()) {
-            return GroupManager.extractGroupNames(groups);
+            return GroupInfoHolder.extractGroupNames(groups);
         } else {
             return new String[0];
         }
     }
 
     public List<GroupInfo> getGroupInfoList(String[] joinGroups) {
-        return groupManager.getGroupInfoList(joinGroups);
+        return groupInfoHolder.getGroupInfoList(joinGroups);
     }
 
     public List<StatusInfo> getStatusInfoList(String[] joinGroups) {
         List<StatusInfo> statusInfoList = new ArrayList<>();
         if (joinGroups != null && joinGroups.length > 0) {
             for (String groupName : joinGroups) {
-                for (StatusManager statusManager : statusManagers) {
-                    if (statusManager.getGroupName().equals(groupName)) {
-                        for (StatusService statusService : statusManager.getStatusServices()) {
-                            statusInfoList.add(statusService.getStatusInfo());
+                for (StatusServiceManager statusServiceManager : statusServiceManagers) {
+                    if (statusServiceManager.getGroupName().equals(groupName)) {
+                        Iterator<StatusService> statusServices = statusServiceManager.getServices();
+                        while (statusServices.hasNext()) {
+                            statusInfoList.add(statusServices.next().getServiceInfo());
                         }
                     }
                 }
             }
         } else {
-            for (StatusManager statusManager : statusManagers) {
-                for (StatusService statusService : statusManager.getStatusServices()) {
-                    statusInfoList.add(statusService.getStatusInfo());
+            for (StatusServiceManager statusServiceManager : statusServiceManagers) {
+                Iterator<StatusService> statusServices = statusServiceManager.getServices();
+                while (statusServices.hasNext()) {
+                    statusInfoList.add(statusServices.next().getServiceInfo());
                 }
             }
         }
@@ -142,18 +159,20 @@ public class AppMonManager extends InstantActivitySupport {
         List<LogtailInfo> logtailInfoList = new ArrayList<>();
         if (joinGroups != null && joinGroups.length > 0) {
             for (String groupName : joinGroups) {
-                for (LogtailManager logtailManager : logtailManagers) {
-                    if (logtailManager.getGroupName().equals(groupName)) {
-                        for (LogtailService logtailService : logtailManager.getLogtailServices()) {
-                            logtailInfoList.add(logtailService.getLogtailInfo());
+                for (LogtailServiceManager logtailServiceManager : logtailServiceManagers) {
+                    if (logtailServiceManager.getGroupName().equals(groupName)) {
+                        Iterator<LogtailService> logtailServices = logtailServiceManager.getServices();
+                        while (logtailServices.hasNext()) {
+                            logtailInfoList.add(logtailServices.next().getServiceInfo());
                         }
                     }
                 }
             }
         } else {
-            for (LogtailManager logtailManager : logtailManagers) {
-                for (LogtailService logtailService : logtailManager.getLogtailServices()) {
-                    logtailInfoList.add(logtailService.getLogtailInfo());
+            for (LogtailServiceManager logtailServiceManager : logtailServiceManagers) {
+                Iterator<LogtailService> logtailServices = logtailServiceManager.getServices();
+                while (logtailServices.hasNext()) {
+                    logtailInfoList.add(logtailServices.next().getServiceInfo());
                 }
             }
         }
@@ -165,23 +184,23 @@ public class AppMonManager extends InstantActivitySupport {
             String[] joinGroups = session.getJoinedGroups();
             if (joinGroups != null && joinGroups.length > 0) {
                 for (String group : joinGroups) {
-                    for (StatusManager statusManager : statusManagers) {
-                        if (statusManager.getGroupName().equals(group)) {
-                            statusManager.start();
+                    for (StatusServiceManager statusServiceManager : statusServiceManagers) {
+                        if (statusServiceManager.getGroupName().equals(group)) {
+                            statusServiceManager.start();
                         }
                     }
-                    for (LogtailManager logtailManager : logtailManagers) {
-                        if (logtailManager.getGroupName().equals(group)) {
-                            logtailManager.start();
+                    for (LogtailServiceManager logtailServiceManager : logtailServiceManagers) {
+                        if (logtailServiceManager.getGroupName().equals(group)) {
+                            logtailServiceManager.start();
                         }
                     }
                 }
             } else {
-                for (StatusManager statusManager : statusManagers) {
-                    statusManager.start();
+                for (StatusServiceManager statusServiceManager : statusServiceManagers) {
+                    statusServiceManager.start();
                 }
-                for (LogtailManager logtailManager : logtailManagers) {
-                    logtailManager.start();
+                for (LogtailServiceManager logtailServiceManager : logtailServiceManagers) {
+                    logtailServiceManager.start();
                 }
             }
             return true;
@@ -194,14 +213,14 @@ public class AppMonManager extends InstantActivitySupport {
         String[] unusedGroups = getUnusedGroups(session);
         if (unusedGroups != null) {
             for (String group : unusedGroups) {
-                for (StatusManager statusManager : statusManagers) {
-                    if (statusManager.getGroupName().equals(group)) {
-                        statusManager.stop();
+                for (StatusServiceManager statusServiceManager : statusServiceManagers) {
+                    if (statusServiceManager.getGroupName().equals(group)) {
+                        statusServiceManager.stop();
                     }
                 }
-                for (LogtailManager logtailManager : logtailManagers) {
-                    if (logtailManager.getGroupName().equals(group)) {
-                        logtailManager.stop();
+                for (LogtailServiceManager logtailServiceManager : logtailServiceManagers) {
+                    if (logtailServiceManager.getGroupName().equals(group)) {
+                        logtailServiceManager.stop();
                     }
                 }
             }
@@ -215,23 +234,23 @@ public class AppMonManager extends InstantActivitySupport {
             String[] joinGroups = session.getJoinedGroups();
             if (joinGroups != null && joinGroups.length > 0) {
                 for (String group : joinGroups) {
-                    for (StatusManager statusManager : statusManagers) {
-                        if (statusManager.getGroupName().equals(group)) {
-                            statusManager.collectStatuses(messages);
+                    for (StatusServiceManager statusServiceManager : statusServiceManagers) {
+                        if (statusServiceManager.getGroupName().equals(group)) {
+                            statusServiceManager.collectMessages(messages);
                         }
                     }
-                    for (LogtailManager logtailManager : logtailManagers) {
-                        if (logtailManager.getGroupName().equals(group)) {
-                            logtailManager.collectLastLogs(messages);
+                    for (LogtailServiceManager logtailServiceManager : logtailServiceManagers) {
+                        if (logtailServiceManager.getGroupName().equals(group)) {
+                            logtailServiceManager.collectMessages(messages);
                         }
                     }
                 }
             } else {
-                for (StatusManager statusManager : statusManagers) {
-                    statusManager.start();
+                for (StatusServiceManager statusServiceManager : statusServiceManagers) {
+                    statusServiceManager.start();
                 }
-                for (LogtailManager logtailManager : logtailManagers) {
-                    logtailManager.start();
+                for (LogtailServiceManager logtailServiceManager : logtailServiceManagers) {
+                    logtailServiceManager.start();
                 }
             }
         }
@@ -284,7 +303,7 @@ public class AppMonManager extends InstantActivitySupport {
         }
         Set<String> joinedGroups = new HashSet<>();
         for (String name : savedGroups) {
-            if (groupManager.containsGroup(name)) {
+            if (groupInfoHolder.containsGroup(name)) {
                 joinedGroups.add(name);
             }
         }

@@ -1,6 +1,6 @@
 package app.root.appmon.endpoint.websocket;
 
-import app.root.appmon.AppMonSession;
+import app.root.appmon.endpoint.AppMonSession;
 import com.aspectran.utils.Assert;
 import com.aspectran.utils.annotation.jsr305.Nullable;
 import jakarta.websocket.Session;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.appmon.status.session;
+package app.root.appmon.service.status.session;
 
 import com.aspectran.utils.json.JsonBuilder;
 import com.aspectran.utils.json.JsonString;

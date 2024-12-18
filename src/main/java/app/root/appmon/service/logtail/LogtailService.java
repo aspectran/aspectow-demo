@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.appmon.logtail;
+package app.root.appmon.service.logtail;
 
 import app.root.appmon.config.LogtailInfo;
+import app.root.appmon.service.Service;
 import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
-import com.aspectran.utils.lifecycle.AbstractLifeCycle;
+import com.aspectran.utils.apon.Parameters;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 import org.apache.commons.io.input.ReversedLinesFileReader;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class LogtailService extends AbstractLifeCycle {
+public class LogtailService extends Service {
 
     private static final Logger logger = LoggerFactory.getLogger(LogtailService.class);
 
@@ -44,7 +45,7 @@ public class LogtailService extends AbstractLifeCycle {
 
     private static final int DEFAULT_SAMPLE_INTERVAL = 1000;
 
-    private final LogtailManager logtailManager;
+    private final LogtailServiceManager logtailServiceManager;
 
     private final LogtailInfo logtailInfo;
 
@@ -63,10 +64,10 @@ public class LogtailService extends AbstractLifeCycle {
 
     private Tailer tailer;
 
-    public LogtailService(@NonNull LogtailManager logtailManager,
+    public LogtailService(@NonNull LogtailServiceManager logtailServiceManager,
                           @NonNull LogtailInfo logtailInfo,
                           @NonNull File logFile) {
-        this.logtailManager = logtailManager;
+        this.logtailServiceManager = logtailServiceManager;
         this.logtailInfo = logtailInfo;
         this.label = logtailInfo.getGroup() + ":" + logtailInfo.getName() + LABEL_LOGTAIL;
         this.charset = (logtailInfo.getCharset() != null ? Charset.forName(logtailInfo.getCharset()): DEFAULT_CHARSET);
@@ -75,11 +76,17 @@ public class LogtailService extends AbstractLifeCycle {
         this.logFile = logFile;
     }
 
-    public LogtailInfo getLogtailInfo() {
-        return logtailInfo;
+    @Override
+    public String getName() {
+        return logtailInfo.getName();
     }
 
-    void readLastLines(@NonNull List<String> messages) {
+    @SuppressWarnings("unchecked")
+    public <V extends Parameters> V getServiceInfo() {
+        return (V)logtailInfo;
+    }
+
+    public void read(@NonNull List<String> messages) {
         if (lastLines > 0) {
             try {
                 if (logFile.exists()) {
@@ -115,6 +122,11 @@ public class LogtailService extends AbstractLifeCycle {
     }
 
     @Override
+    public void broadcast(String message) {
+        logtailServiceManager.broadcast(label + message);
+    }
+
+    @Override
     protected void doStart() throws Exception {
         tailer = Tailer.builder()
                 .setFile(logFile)
@@ -139,10 +151,6 @@ public class LogtailService extends AbstractLifeCycle {
         } else {
             return super.toString();
         }
-    }
-
-    void broadcast(String message) {
-        logtailManager.broadcast(label + message);
     }
 
 }

@@ -60,6 +60,16 @@ public class AppMonConfig extends AbstractParameters {
         return getParametersList(group);
     }
 
+    public List<EventInfo> getEventInfoList(String groupName) {
+        Assert.notNull(groupName, "groupName must not be null");
+        for (GroupInfo groupInfo : getGroupInfoList()) {
+            if (groupName.equals(groupInfo.getName())) {
+                return groupInfo.getEventInfoList();
+            }
+        }
+        return null;
+    }
+
     public List<StatusInfo> getStatusInfoList(String groupName) {
         Assert.notNull(groupName, "groupName must not be null");
         for (GroupInfo groupInfo : getGroupInfoList()) {

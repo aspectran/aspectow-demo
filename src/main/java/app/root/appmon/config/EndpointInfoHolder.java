@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.appmon.endpoint;
+package app.root.appmon.config;
 
-import app.root.appmon.config.EndpointInfo;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 
 import java.util.ArrayList;
@@ -23,22 +22,22 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EndpointManager {
+public class EndpointInfoHolder {
 
-    private final Map<String, EndpointInfo> endpoints = new LinkedHashMap<>();
+    private final Map<String, EndpointInfo> endpointInfos = new LinkedHashMap<>();
 
-    public EndpointManager(@NonNull List<EndpointInfo> endpointInfoList) {
+    public EndpointInfoHolder(@NonNull List<EndpointInfo> endpointInfoList) {
         for (EndpointInfo info : endpointInfoList) {
-            endpoints.put(info.getName(), info);
+            endpointInfos.put(info.getName(), info);
         }
     }
 
     public List<EndpointInfo> getEndpointInfoList() {
-        return new ArrayList<>(endpoints.values());
+        return new ArrayList<>(endpointInfos.values());
     }
 
     public EndpointInfo getResidentEndpointInfo() {
-        for (EndpointInfo info : endpoints.values()) {
+        for (EndpointInfo info : endpointInfos.values()) {
             if (info.isResident()) {
                 return info;
             }

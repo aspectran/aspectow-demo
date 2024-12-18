@@ -7,13 +7,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GroupManager {
+public class GroupInfoHolder {
 
-    private final Map<String, GroupInfo> groups = new LinkedHashMap<>();
+    private final Map<String, GroupInfo> groupInfos = new LinkedHashMap<>();
 
-    public GroupManager(@NonNull List<GroupInfo> groupInfoList) {
+    public GroupInfoHolder(@NonNull List<GroupInfo> groupInfoList) {
         for (GroupInfo info : groupInfoList) {
-            groups.put(info.getName(), info);
+            groupInfos.put(info.getName(), info);
 
             for (StatusInfo statusInfo : info.getStatusInfoList()) {
                 statusInfo.setGroup(info.getName());
@@ -25,23 +25,23 @@ public class GroupManager {
     }
 
     public List<GroupInfo> getGroupInfoList(String[] joinGroups) {
-        List<GroupInfo> infoList = new ArrayList<>(groups.size());
+        List<GroupInfo> infoList = new ArrayList<>(groupInfos.size());
         if (joinGroups != null && joinGroups.length > 0) {
             for (String name : joinGroups) {
-                for (GroupInfo info : groups.values()) {
+                for (GroupInfo info : groupInfos.values()) {
                     if (info.getName().equals(name)) {
                         infoList.add(info);
                     }
                 }
             }
         } else {
-            infoList.addAll(groups.values());
+            infoList.addAll(groupInfos.values());
         }
         return infoList;
     }
 
     public boolean containsGroup(String groupName) {
-        return groups.containsKey(groupName);
+        return groupInfos.containsKey(groupName);
     }
 
     @NonNull

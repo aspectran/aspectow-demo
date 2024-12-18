@@ -13,38 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.appmon.logtail;
+package app.root.appmon.service.status;
 
-import org.apache.commons.io.input.Tailer;
-import org.apache.commons.io.input.TailerListener;
+import app.root.appmon.manager.AppMonManager;
+import app.root.appmon.service.ServiceManager;
 
-public class LogTailerListener implements TailerListener {
+public class StatusServiceManager extends ServiceManager {
 
-    private final LogtailService service;
-
-    public LogTailerListener(LogtailService service) {
-        this.service = service;
-    }
-
-    @Override
-    public void init(Tailer tailer) {
-    }
-
-    @Override
-    public void fileNotFound() {
-    }
-
-    @Override
-    public void fileRotated() {
-    }
-
-    @Override
-    public void handle(String line) {
-        service.broadcast(line);
-    }
-
-    @Override
-    public void handle(Exception e) {
+    public StatusServiceManager(AppMonManager appMonManager, String groupName) {
+        super(appMonManager, groupName);
     }
 
 }

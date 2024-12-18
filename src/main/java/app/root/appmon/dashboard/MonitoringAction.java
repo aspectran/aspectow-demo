@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.appmon;
+package app.root.appmon.dashboard;
 
 import app.root.appmon.config.EndpointInfo;
+import app.root.appmon.manager.AppMonManager;
 import com.aspectran.core.component.bean.annotation.Action;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;

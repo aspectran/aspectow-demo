@@ -1,6 +1,6 @@
 package app.root.appmon.endpoint.polling;
 
-import app.root.appmon.AppMonSession;
+import app.root.appmon.endpoint.AppMonSession;
 import com.aspectran.utils.thread.AutoLock;
 import com.aspectran.utils.timer.CyclicTimeout;
 

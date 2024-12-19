@@ -71,7 +71,7 @@ public class WebsocketAppMonEndpoint implements AppMonEndpoint {
 
     private static final String MESSAGE_ESTABLISHED = "established:";
 
-    private static final Set<WebsocketAppMonSession> sessions = Collections.synchronizedSet(new HashSet<>());
+    private static final Set<WebsocketAppMonSession> sessions = new HashSet<>();
 
     private final AppMonManager appMonManager;
 
@@ -136,10 +136,12 @@ public class WebsocketAppMonEndpoint implements AppMonEndpoint {
 
     private void addSession(Session session, String message) {
         WebsocketAppMonSession appMonSession = new WebsocketAppMonSession(session);
-        if (sessions.add(appMonSession)) {
-            String[] joinGroups = appMonManager.getVerifiedGroupNames(StringUtils.splitCommaDelimitedString(message));
-            appMonSession.saveJoinedGroups(joinGroups);
-            sendJoined(appMonSession);
+        synchronized (sessions) {
+            if (sessions.add(appMonSession)) {
+                String[] joinGroups = appMonManager.getVerifiedGroupNames(StringUtils.splitCommaDelimitedString(message));
+                appMonSession.saveJoinedGroups(joinGroups);
+                sendJoined(appMonSession);
+            }
         }
     }
 
@@ -168,8 +170,10 @@ public class WebsocketAppMonEndpoint implements AppMonEndpoint {
 
     private void removeSession(Session session) {
         WebsocketAppMonSession appMonSession = new WebsocketAppMonSession(session);
-        if (sessions.remove(appMonSession)) {
-            appMonManager.release(appMonSession);
+        synchronized (sessions) {
+            if (sessions.remove(appMonSession)) {
+                appMonManager.release(appMonSession);
+            }
         }
     }
 
@@ -198,12 +202,14 @@ public class WebsocketAppMonEndpoint implements AppMonEndpoint {
     @Override
     public boolean isUsingGroup(String group) {
         if (StringUtils.hasLength(group)) {
-            for (WebsocketAppMonSession appMonSession : sessions) {
-                String[] savedGroups = appMonSession.getJoinedGroups();
-                if (savedGroups != null) {
-                    for (String saved : savedGroups) {
-                        if (group.equals(saved)) {
-                            return true;
+            synchronized (sessions) {
+                for (WebsocketAppMonSession appMonSession : sessions) {
+                    String[] savedGroups = appMonSession.getJoinedGroups();
+                    if (savedGroups != null) {
+                        for (String saved : savedGroups) {
+                            if (group.equals(saved)) {
+                                return true;
+                            }
                         }
                     }
                 }

@@ -1,6 +1,7 @@
 package app.root.appmon.config;
 
 import com.aspectran.utils.annotation.jsr305.NonNull;
+import jdk.jfr.Event;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -15,6 +16,9 @@ public class GroupInfoHolder {
         for (GroupInfo info : groupInfoList) {
             groupInfos.put(info.getName(), info);
 
+            for (EventInfo eventInfo : info.getEventInfoList()) {
+                eventInfo.setGroup(info.getName());
+            }
             for (StatusInfo statusInfo : info.getStatusInfoList()) {
                 statusInfo.setGroup(info.getName());
             }

@@ -15,14 +15,11 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
     const openSocket = function () {
         // onErrorObserved(endpoint);
         // return;
-        if (socket) {
-            socket.close();
-        }
+        closeSocket();
         let url = new URL(endpoint.url, location.href);
         url.protocol = url.protocol.replace('https:', 'wss:');
         url.protocol = url.protocol.replace('http:', 'ws:');
         socket = new WebSocket(url.href);
-        let self = this;
         socket.onopen = function (event) {
             pendingMessages.push("Socket connection successful");
             socket.send("join:");
@@ -45,7 +42,7 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
             }
         };
         socket.onclose = function (event) {
-            endpoint.viewer.printEventMessage('Socket connection closed. Please refresh this page to try again!');
+            endpoint.viewer.printEventMessage("Socket connection closed. Please refresh this page to try again!");
             closeSocket();
         };
         socket.onerror = function (event) {
@@ -53,10 +50,7 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
             if (onErrorObserved) {
                 onErrorObserved(endpoint);
             } else {
-                endpoint.viewer.printErrorMessage('Could not connect to WebSocket server');
-                setTimeout(function () {
-                    openSocket();
-                }, 60000);
+                endpoint.viewer.printErrorMessage("Could not connect to WebSocket server");
             }
         };
     };

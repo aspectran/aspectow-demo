@@ -157,6 +157,7 @@ public class CountryCodeLookup {
         System.out.println(getInstance().getCountryCode("103.99.216.86", Locale.KOREA));
         System.out.println(getInstance().getCountryCode("103.99.216.999", Locale.KOREA));
         System.out.println(getInstance().getCountryCode("0:0:0:0:0:0:0:1", Locale.KOREA));
+        System.out.println(getInstance().getCountryCode("2a01:6502:a56:4735::1", Locale.KOREA));
     }
 
 }

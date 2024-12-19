@@ -88,7 +88,10 @@ function AppmonViewer() {
         let idx2 = msg.indexOf(":", idx1 + 1);
         let name = msg.substring(0, idx2);
         let text = msg.substring(idx2 + 1);
-        if (text.startsWith("logtail:")) {
+        if (text.startsWith("event:")) {
+            console.log(msg);
+            text = text.substring(6);
+        } else if (text.startsWith("logtail:")) {
             text = text.substring(8);
             if (text.startsWith("last:")) {
                 text = text.substring(5);

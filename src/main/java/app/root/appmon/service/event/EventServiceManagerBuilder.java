@@ -18,9 +18,9 @@ public class EventServiceManagerBuilder {
     private static final Logger logger = LoggerFactory.getLogger(EventServiceManagerBuilder.class);
 
     @NonNull
-    public static EventServiceManager build(@NonNull AppMonManager appMonManager,
-                                            @NonNull String groupName,
-                                            @NonNull List<EventInfo> eventInfoList) throws Exception {
+    public static void build(@NonNull AppMonManager appMonManager,
+                             @NonNull String groupName,
+                             @NonNull List<EventInfo> eventInfoList) throws Exception {
         EventServiceManager eventServiceManager = new EventServiceManager(appMonManager, groupName);
         for (EventInfo eventInfo : eventInfoList) {
             if (logger.isDebugEnabled()) {
@@ -33,7 +33,7 @@ public class EventServiceManagerBuilder {
             eventServiceManager.addService(eventService);
             appMonManager.addServiceManager(eventServiceManager);
         }
-        return eventServiceManager;
+        appMonManager.addServiceManager(eventServiceManager);
     }
 
     @NonNull

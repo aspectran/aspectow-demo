@@ -2,6 +2,7 @@ package app.root.appmon.service.event.request;
 
 import app.root.appmon.config.EventInfo;
 import app.root.appmon.service.event.EventReader;
+import app.root.appmon.service.event.EventService;
 import app.root.appmon.service.event.EventServiceManager;
 import com.aspectran.core.component.aspect.AspectRuleRegistry;
 import com.aspectran.core.context.ActivityContext;
@@ -36,20 +37,36 @@ public class RequestEventReader implements EventReader {
         this.target = eventInfo.getTarget();
     }
 
+    public EventService getEventService() {
+        return eventServiceManager.getService(eventInfo.getName());
+    }
+
     @Override
     public void start() throws Exception {
         AspectRuleRegistry aspectRuleRegistry = findAspectRuleRegistry(target);
 
-
         AspectRule aspectRule = new AspectRule();
         aspectRule.setId(ASPECT_ID);
+        aspectRule.setOrder(-1);
+        aspectRule.setIsolated(true);
 
         JoinpointRule joinpointRule = new JoinpointRule();
         joinpointRule.setJoinpointTargetType(JoinpointTargetType.ACTIVITY);
         aspectRule.setJoinpointRule(joinpointRule);
 
-        AspectAdviceRule aspectAdviceRule = aspectRule.newAspectAdviceRule(AspectAdviceType.BEFORE);
+        AspectAdviceRule beforeAspectAdviceRule = aspectRule.newAspectAdviceRule(AspectAdviceType.BEFORE);
+        beforeAspectAdviceRule.setAdviceAction(activity -> {
+            RequestEventAspect requestEventAspect = new RequestEventAspect(getEventService());
+            requestEventAspect.request(activity);
+            return requestEventAspect;
+        });
 
+        AspectAdviceRule afterAspectAdviceRule = aspectRule.newAspectAdviceRule(AspectAdviceType.AFTER);
+        afterAspectAdviceRule.setAdviceAction(activity -> {
+            RequestEventAspect requestEventAspect = activity.getBeforeAdviceResult(ASPECT_ID);
+            requestEventAspect.complete(activity);
+            return null;
+        });
 
         aspectRuleRegistry.addAspectRule(aspectRule);
     }

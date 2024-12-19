@@ -63,18 +63,18 @@ public class AppMonManager extends InstantActivitySupport {
         return super.getApplicationAdapter();
     }
 
-    public void addServiceManager(StatusServiceManager statusServiceManager) {
-        synchronized (statusServiceManagers) {
-            if (!statusServiceManagers.contains(statusServiceManager)) {
-                statusServiceManagers.add(statusServiceManager);
-            }
-        }
-    }
-
     public void addServiceManager(EventServiceManager eventServiceManager) {
         synchronized (eventServiceManagers) {
             if (!eventServiceManagers.contains(eventServiceManager)) {
                 eventServiceManagers.add(eventServiceManager);
+            }
+        }
+    }
+
+    public void addServiceManager(StatusServiceManager statusServiceManager) {
+        synchronized (statusServiceManagers) {
+            if (!statusServiceManagers.contains(statusServiceManager)) {
+                statusServiceManagers.add(statusServiceManager);
             }
         }
     }
@@ -184,6 +184,11 @@ public class AppMonManager extends InstantActivitySupport {
             String[] joinGroups = session.getJoinedGroups();
             if (joinGroups != null && joinGroups.length > 0) {
                 for (String group : joinGroups) {
+                    for (EventServiceManager eventServiceManager : eventServiceManagers) {
+                        if (eventServiceManager.getGroupName().equals(group)) {
+                            eventServiceManager.start();
+                        }
+                    }
                     for (StatusServiceManager statusServiceManager : statusServiceManagers) {
                         if (statusServiceManager.getGroupName().equals(group)) {
                             statusServiceManager.start();
@@ -196,6 +201,9 @@ public class AppMonManager extends InstantActivitySupport {
                     }
                 }
             } else {
+                for (EventServiceManager eventServiceManager : eventServiceManagers) {
+                    eventServiceManager.start();
+                }
                 for (StatusServiceManager statusServiceManager : statusServiceManagers) {
                     statusServiceManager.start();
                 }
@@ -213,6 +221,11 @@ public class AppMonManager extends InstantActivitySupport {
         String[] unusedGroups = getUnusedGroups(session);
         if (unusedGroups != null) {
             for (String group : unusedGroups) {
+                for (EventServiceManager eventServiceManager : eventServiceManagers) {
+                    if (eventServiceManager.getGroupName().equals(group)) {
+                        eventServiceManager.stop();
+                    }
+                }
                 for (StatusServiceManager statusServiceManager : statusServiceManagers) {
                     if (statusServiceManager.getGroupName().equals(group)) {
                         statusServiceManager.stop();
@@ -234,6 +247,11 @@ public class AppMonManager extends InstantActivitySupport {
             String[] joinGroups = session.getJoinedGroups();
             if (joinGroups != null && joinGroups.length > 0) {
                 for (String group : joinGroups) {
+                    for (EventServiceManager eventServiceManager : eventServiceManagers) {
+                        if (eventServiceManager.getGroupName().equals(group)) {
+                            eventServiceManager.collectMessages(messages);
+                        }
+                    }
                     for (StatusServiceManager statusServiceManager : statusServiceManagers) {
                         if (statusServiceManager.getGroupName().equals(group)) {
                             statusServiceManager.collectMessages(messages);
@@ -246,11 +264,14 @@ public class AppMonManager extends InstantActivitySupport {
                     }
                 }
             } else {
+                for (EventServiceManager eventServiceManager : eventServiceManagers) {
+                    eventServiceManager.collectMessages(messages);
+                }
                 for (StatusServiceManager statusServiceManager : statusServiceManagers) {
-                    statusServiceManager.start();
+                    statusServiceManager.collectMessages(messages);
                 }
                 for (LogtailServiceManager logtailServiceManager : logtailServiceManagers) {
-                    logtailServiceManager.start();
+                    logtailServiceManager.collectMessages(messages);
                 }
             }
         }

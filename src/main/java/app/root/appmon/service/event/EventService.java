@@ -14,7 +14,7 @@ import java.util.Timer;
  */
 public class EventService extends Service {
 
-    private static final String LABEL_STATUS = ":event:";
+    private static final String LABEL_EVENT = ":event:";
 
     private final EventServiceManager eventServiceManager;
 
@@ -32,7 +32,7 @@ public class EventService extends Service {
         this.eventServiceManager = eventServiceManager;
         this.eventInfo = eventInfo;
         this.eventReader = eventReader;
-        this.label = eventInfo.getGroup() + ":" + eventInfo.getName() + LABEL_STATUS;
+        this.label = eventInfo.getGroup() + ":" + eventInfo.getName() + LABEL_EVENT;
     }
 
     @Override

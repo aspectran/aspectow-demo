@@ -20,31 +20,32 @@ public class RequestEventAdvice {
     }
 
     public void request(@NonNull Activity activity) {
-        startTime = System.nanoTime();
+        startTime = System.currentTimeMillis();
+//
+//        JsonBuilder jsonBuilder = new JsonBuilder()
+//                .prettyPrint(false)
+//                .nullWritable(false)
+//                .object()
+//                    .put("startTime", startTime)
+//                    .put("thread", Thread.currentThread().getName());
+//
+//        SessionAdapter sessionAdapter = activity.getSessionAdapter();
+//        if (sessionAdapter != null) {
+//            jsonBuilder.put("sessionId", sessionAdapter.getId());
+//        }
+//
+//        jsonBuilder.endObject();
+//        eventService.broadcast("start:" + jsonBuilder);
+    }
+
+    public void complete(@NonNull Activity activity) {
+        long elapsedTime = System.currentTimeMillis() - startTime;
 
         JsonBuilder jsonBuilder = new JsonBuilder()
                 .prettyPrint(false)
                 .nullWritable(false)
                 .object()
                     .put("startTime", startTime)
-                    .put("thread", Thread.currentThread().getName());
-
-        SessionAdapter sessionAdapter = activity.getSessionAdapter();
-        if (sessionAdapter != null) {
-            jsonBuilder.put("sessionId", sessionAdapter.getId());
-        }
-
-        jsonBuilder.endObject();
-        eventService.broadcast("start:" + jsonBuilder);
-    }
-
-    public void complete(@NonNull Activity activity) {
-        long elapsedTime = System. nanoTime() - startTime;
-
-        JsonBuilder jsonBuilder = new JsonBuilder()
-                .prettyPrint(false)
-                .nullWritable(false)
-                .object()
                     .put("elapsedTime", elapsedTime)
                     .put("thread", Thread.currentThread().getName());
 
@@ -53,8 +54,13 @@ public class RequestEventAdvice {
             jsonBuilder.put("sessionId", sessionAdapter.getId());
         }
 
+        Throwable error = activity.getRootCauseOfRaisedException();
+        if (error != null) {
+            jsonBuilder.put("error", error);
+        }
+
         jsonBuilder.endObject();
-        eventService.broadcast("end:" + jsonBuilder);
+        eventService.broadcast(jsonBuilder.toString());
     }
 
 }

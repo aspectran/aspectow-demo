@@ -13,17 +13,17 @@ function AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
             url: endpoint.basePath + "appmon/endpoint/join",
             type: 'post',
             dataType: "json",
-            success: function (data) {
-                if (data) {
+            success: function (payload) {
+                if (payload) {
                     endpoint['mode'] = "polling";
-                    endpoint['pollingInterval'] = data.pollingInterval;
+                    endpoint['pollingInterval'] = payload.pollingInterval;
                     if (onEndpointJoined) {
-                        onEndpointJoined(endpoint, data);
+                        onEndpointJoined(endpoint, payload);
                     }
                     if (onEstablishCompleted) {
-                        onEstablishCompleted(endpoint, data);
+                        onEstablishCompleted(endpoint, payload);
                     }
-                    endpoint.viewer.printEventMessage("Polling every " + data.pollingInterval + " milliseconds.");
+                    endpoint.viewer.printEventMessage("Polling every " + payload.pollingInterval + " milliseconds.");
                     polling();
                 }
             }
@@ -44,7 +44,7 @@ function AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
             success: function (data) {
                 if (data) {
                     for (let key in data) {
-                        endpoint.viewer.printMessage(data[key]);
+                        endpoint.viewer.processMessage(data[key]);
                     }
                     setTimeout(polling, endpoint.pollingInterval);
                 } else {

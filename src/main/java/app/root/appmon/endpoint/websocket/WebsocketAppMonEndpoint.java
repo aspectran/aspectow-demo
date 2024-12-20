@@ -16,8 +16,6 @@
 package app.root.appmon.endpoint.websocket;
 
 import app.root.appmon.config.GroupInfo;
-import app.root.appmon.config.LogtailInfo;
-import app.root.appmon.config.StatusInfo;
 import app.root.appmon.endpoint.AppMonEndpoint;
 import app.root.appmon.endpoint.AppMonSession;
 import app.root.appmon.manager.AppMonManager;
@@ -44,7 +42,6 @@ import jakarta.websocket.server.ServerEndpoint;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -147,13 +144,10 @@ public class WebsocketAppMonEndpoint implements AppMonEndpoint {
 
     private void sendJoined(@NonNull AppMonSession appMonSession) {
         List<GroupInfo> groups = appMonManager.getGroupInfoList(appMonSession.getJoinedGroups());
-        List<LogtailInfo> logtails = appMonManager.getLogtailInfoList(appMonSession.getJoinedGroups());
-        List<StatusInfo> statuses = appMonManager.getStatusInfoList(appMonSession.getJoinedGroups());
-        String json = new JsonBuilder().nullWritable(false)
+        String json = new JsonBuilder()
+                .nullWritable(false)
                 .object()
                     .put("groups", groups)
-                    .put("statuses", statuses)
-                    .put("logtails", logtails)
                 .endObject()
                 .toString();
         broadcast(appMonSession, MESSAGE_JOINED + json);

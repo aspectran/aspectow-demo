@@ -33,7 +33,7 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
                 }
                 let msg = event.data;
                 if (established) {
-                    endpoint.viewer.printMessage(msg);
+                    endpoint.viewer.processMessage(msg);
                 } else if (msg.startsWith("joined:")) {
                     console.log(msg);
                     let payload = JSON.parse(msg.substring(7));

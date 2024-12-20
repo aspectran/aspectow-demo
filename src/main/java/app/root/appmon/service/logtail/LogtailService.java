@@ -37,9 +37,7 @@ public class LogtailService extends Service {
 
     private static final Logger logger = LoggerFactory.getLogger(LogtailService.class);
 
-    private static final String LABEL_LOGTAIL = ":logtail:";
-
-    private static final String LABEL_LAST = "last:";
+    private static final String TYPE = ":logtail:";
 
     private static final Charset DEFAULT_CHARSET = Charset.defaultCharset();
 
@@ -69,7 +67,7 @@ public class LogtailService extends Service {
                           @NonNull File logFile) {
         this.logtailServiceManager = logtailServiceManager;
         this.logtailInfo = logtailInfo;
-        this.label = logtailInfo.getGroup() + ":" + logtailInfo.getName() + LABEL_LOGTAIL;
+        this.label = logtailInfo.getGroup() + TYPE + logtailInfo.getName() + ":";
         this.charset = (logtailInfo.getCharset() != null ? Charset.forName(logtailInfo.getCharset()): DEFAULT_CHARSET);
         this.sampleInterval = (logtailInfo.getSampleInterval() > 0 ? logtailInfo.getSampleInterval() : DEFAULT_SAMPLE_INTERVAL);
         this.lastLines = logtailInfo.getLastLines();
@@ -114,7 +112,7 @@ public class LogtailService extends Service {
                 if (line == null) {
                     break;
                 }
-                list.add(label + LABEL_LAST + line);
+                list.add(label + line);
             }
             Collections.reverse(list);
         }

@@ -37,9 +37,9 @@ public class GroupInfo extends AbstractParameters {
     static {
         name = new ParameterKey("name", ValueType.STRING);
         title = new ParameterKey("title", ValueType.STRING);
-        status = new ParameterKey("status", StatusInfo.class, true, true);
-        event = new ParameterKey("event", EventInfo.class, true, true);
-        logtail = new ParameterKey("logtail", LogtailInfo.class, true, true);
+        status = new ParameterKey("statuses", new String[] {"status"}, StatusInfo.class, true, true);
+        event = new ParameterKey("events", new String[] {"event"}, EventInfo.class, true, true);
+        logtail = new ParameterKey("logtails", new String[] {"logtail"}, LogtailInfo.class, true, true);
 
         parameterKeys = new ParameterKey[] {
                 name,

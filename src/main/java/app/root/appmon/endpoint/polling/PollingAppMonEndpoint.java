@@ -3,8 +3,6 @@ package app.root.appmon.endpoint.polling;
 import app.root.appmon.config.EndpointInfo;
 import app.root.appmon.config.EndpointPollingConfig;
 import app.root.appmon.config.GroupInfo;
-import app.root.appmon.config.LogtailInfo;
-import app.root.appmon.config.StatusInfo;
 import app.root.appmon.endpoint.AppMonEndpoint;
 import app.root.appmon.endpoint.AppMonSession;
 import app.root.appmon.manager.AppMonManager;
@@ -71,13 +69,9 @@ public class PollingAppMonEndpoint implements AppMonEndpoint {
         }
 
         List<GroupInfo> groups = appMonManager.getGroupInfoList(appMonSession.getJoinedGroups());
-        List<LogtailInfo> logtails = appMonManager.getLogtailInfoList(appMonSession.getJoinedGroups());
-        List<StatusInfo> statuses = appMonManager.getStatusInfoList(appMonSession.getJoinedGroups());
         List<String> messages = appMonManager.getLastMessages(appMonSession);
         return Map.of(
                 "groups", groups,
-                "statuses", statuses,
-                "logtails", logtails,
                 "pollingInterval", appMonSession.getPollingInterval(),
                 "messages", messages
         );

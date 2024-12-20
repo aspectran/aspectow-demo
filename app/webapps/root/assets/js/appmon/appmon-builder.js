@@ -40,7 +40,7 @@ function AppMonBuilder() {
                 buildGroups();
                 for (let key in payload.messages) {
                     let msg = payload.messages[key];
-                    endpoint.viewer.printMessage(msg);
+                    endpoint.viewer.processMessage(msg);
                 }
                 if (endpoints.length) {
                     changeEndpoint(0);
@@ -107,28 +107,29 @@ function AppMonBuilder() {
     const buildEndpoint = function (endpoint, payload) {
         let endpointBox = addEndpoint(endpoint);
         for (let key in payload.groups) {
-            let group = payload.groups[key];
-            addGroup(endpointBox, group);
-        }
-        for (let key in payload.logtails) {
-            let logtail = payload.logtails[key];
-            let logtailBox = addLogtail(endpointBox, logtail);
-            endpoint.viewer.setLogtail(logtail.group, logtail.name, logtailBox.find(".logtail"));
-        }
-        for (let key in payload.statuses) {
-            let status = payload.statuses[key];
-            let statusBox = addStatus(endpointBox, status);
-            endpoint.viewer.setStatus(status.group, status.name, statusBox);
+            let groupInfo = payload.groups[key];
+            addGroup(endpointBox, groupInfo);
+            for (let key in groupInfo.events) {
+                let eventInfo = groupInfo.events[key];
+                let trackBox = addTrack(endpointBox, eventInfo);
+                endpoint.viewer.setTrack(groupInfo.name, eventInfo.name, trackBox);
+            }
+            for (let key in groupInfo.logtails) {
+                let logtailInfo = groupInfo.logtails[key];
+                let logtailBox = addLogtail(endpointBox, logtailInfo);
+                endpoint.viewer.setLogtail(groupInfo.name, logtailInfo.name, logtailBox.find(".logtail"));
+            }
+            for (let key in groupInfo.statuses) {
+                let statusInfo = groupInfo.statuses[key];
+                let statusBox = addStatus(endpointBox, statusInfo);
+                endpoint.viewer.setStatus(groupInfo.name, statusInfo.name, statusBox);
+            }
         }
         endpointBox.find(".logtail-box.available").each(function() {
             let logtail = $(this).find(".logtail");
             let groupName = $(this).data("group");
             let logtailName = logtail.data("logtail-name");
             let logtailBox = logtail.closest(".logtail-box");
-            let missileTrack = logtailBox.find(".missile-track.available");
-            if (missileTrack.length > 0) {
-                endpoint.viewer.setMissileTrack(groupName, logtailName, missileTrack);
-            }
             let indicator1 = $(".endpoint.tabs .tabs-title.available .indicator").eq(endpoint.index);
             let indicator2 = endpointBox.find(".group.tabs .tabs-title.available[data-name=" + groupName + "]").find(".indicator");
             let indicator3 = logtailBox.find(".status-bar");
@@ -220,20 +221,15 @@ function AppMonBuilder() {
                     liStacked.addClass("on");
                     endpointBox.addClass("stacked");
                 } else if (li.hasClass("compact")) {
-                    li.addClass("on vertical");
-                    endpointBox.addClass("compact vertical");
+                    li.addClass("on");
+                    endpointBox.addClass("compact");
+                    logtailBox.addClass("large-6");
                 }
             } else {
                 if (li.hasClass("compact")) {
-                    if (li.hasClass("vertical")) {
-                        li.removeClass("vertical").addClass("horizontal");
-                        endpointBox.removeClass("vertical").addClass("horizontal");
-                        logtailBox.addClass("large-6");
-                    } else if (li.hasClass("horizontal")) {
-                        li.removeClass("on horizontal");
-                        endpointBox.removeClass("compact horizontal");
-                        logtailBox.removeClass("large-6");
-                    }
+                    li.removeClass("on");
+                    endpointBox.removeClass("compact");
+                    logtailBox.removeClass("large-6");
                 }
             }
             let endpointIndex = endpointBox.data("index");
@@ -297,6 +293,15 @@ function AppMonBuilder() {
         return groupBox.appendTo(endpointBox);
     };
 
+    const addTrack = function (endpointBox, eventInfo) {
+        let groupBox = endpointBox.find(".group-box[data-name=" + eventInfo.group + "]");
+        let trackBox = groupBox.find(".track-box").eq(0).hide().clone();
+        trackBox.addClass("available")
+            .attr("data-group", eventInfo.group)
+            .attr("data-name", eventInfo.name);
+        return trackBox.appendTo(groupBox.find("> .grid-x")).show();
+    };
+
     const addLogtail = function (endpointBox, logtailInfo) {
         let endpointIndex = endpointBox.data("index");
         let endpointTitle = endpointBox.data("title");
@@ -305,19 +310,13 @@ function AppMonBuilder() {
         logtailBox.addClass("large-6 available");
         logtailBox.attr("data-group", logtailInfo.group);
         logtailBox.attr("data-name", logtailInfo.name);
-        logtailBox.find(".status-bar h4").text(endpointTitle + " ›› " + logtailInfo.file);
+        logtailBox.find(".status-bar h4")
+            .text(endpointTitle + " ›› " + logtailInfo.file);
         logtailBox.find(".logtail")
-            .attr("data-endpoint-index", endpointIndex).attr("data-endpoint-name", endpointTitle)
+            .attr("data-endpoint-index", endpointIndex)
+            .attr("data-endpoint-name", endpointTitle)
             .attr("data-logtail-name", logtailInfo.name);
-        if (logtailInfo.visualizing) {
-            logtailBox.addClass("with-track")
-                .find(".missile-track")
-                    .addClass("available")
-                    .attr("data-visualizing", logtailInfo.visualizing);
-        } else {
-            logtailBox.addClass("no-track");
-        }
-        return logtailBox.appendTo(groupBox.find(".logtail-box-wrap")).show();
+        return logtailBox.appendTo(groupBox.find("> .grid-x")).show();
     };
 
     const addStatus = function (endpointBox, statusInfo) {
@@ -326,6 +325,6 @@ function AppMonBuilder() {
         statusBox.addClass("available")
             .attr("data-group", statusInfo.group)
             .attr("data-name", statusInfo.name);
-        return statusBox.appendTo(groupBox).show();
+        return statusBox.appendTo(groupBox.find("> .grid-x")).show();
     };
 }

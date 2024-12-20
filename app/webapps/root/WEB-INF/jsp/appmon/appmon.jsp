@@ -24,7 +24,10 @@
         </dd>
     </dl>
     <div class="cell group-box">
-        <div class="grid-x logtail-box-wrap">
+        <div class="grid-x">
+            <div class="cell track-box">
+                <div class="track-stack"></div>
+            </div>
             <div class="cell logtail-box">
                 <div class="status-bar">
                     <h4 class="ellipses"></h4>
@@ -37,9 +40,6 @@
                     <a href="#" class="pause-switch" title="Pause log output">
                         <span class="icon fi-pause"></span>
                     </a>
-                </div>
-                <div class="missile-track">
-                    <div class="track-stack"></div>
                 </div>
                 <pre class="logtail"></pre>
             </div>

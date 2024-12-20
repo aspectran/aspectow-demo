@@ -12,7 +12,7 @@ import java.util.TimerTask;
 
 public class StatusService extends Service {
 
-    private static final String LABEL_STATUS = ":status:";
+    private static final String TYPE = ":status:";
 
     private final StatusServiceManager statusServiceManager;
 
@@ -32,7 +32,7 @@ public class StatusService extends Service {
         this.statusServiceManager = statusServiceManager;
         this.statusInfo = statusInfo;
         this.statusReader = statusReader;
-        this.label = statusInfo.getGroup() + ":" + statusInfo.getName() + LABEL_STATUS;
+        this.label = statusInfo.getGroup() + TYPE + statusInfo.getName() + ":";
         this.sampleInterval = statusInfo.getSampleInterval();
     }
 

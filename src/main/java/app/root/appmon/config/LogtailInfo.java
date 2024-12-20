@@ -32,7 +32,6 @@ public class LogtailInfo extends AbstractParameters {
     private static final ParameterKey charset;
     private static final ParameterKey sampleInterval;
     private static final ParameterKey lastLines;
-    private static final ParameterKey visualizing;
 
     private static final ParameterKey[] parameterKeys;
 
@@ -44,7 +43,6 @@ public class LogtailInfo extends AbstractParameters {
         charset = new ParameterKey("charset", ValueType.STRING);
         sampleInterval = new ParameterKey("sampleInterval", ValueType.INT);
         lastLines = new ParameterKey("lastLines", ValueType.INT);
-        visualizing = new ParameterKey("visualizing", ValueType.BOOLEAN);
 
         parameterKeys = new ParameterKey[] {
                 group,
@@ -53,8 +51,7 @@ public class LogtailInfo extends AbstractParameters {
                 file,
                 charset,
                 sampleInterval,
-                lastLines,
-                visualizing
+                lastLines
         };
     }
 
@@ -116,14 +113,6 @@ public class LogtailInfo extends AbstractParameters {
 
     public void setLastLines(int lastLines) {
         putValue(LogtailInfo.lastLines, lastLines);
-    }
-
-    public boolean isVisualizing() {
-        return getBoolean(visualizing, false);
-    }
-
-    public void setVisualizing(boolean visualizing) {
-        putValue(LogtailInfo.visualizing, visualizing);
     }
 
     public void validateRequiredParameters() {

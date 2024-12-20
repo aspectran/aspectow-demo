@@ -118,7 +118,7 @@ ul.speed-options li.on {
 .logtail-box.with-track .logtail {
     height: 480px;
 }
-.logtail-box.with-track .missile-track {
+.logtail-box.with-track .track-box {
     display: block;
 }
 .logtail-box .logtail p {
@@ -151,32 +151,15 @@ ul.speed-options li.on {
     display: block !important;
     padding: 1px;
 }
-.endpoint-box.stacked .logtail-box .logtail {
-    height: 580px;
-}
-.endpoint-box.stacked .logtail-box.with-track .logtail {
-    height: 460px;
-}
-.endpoint-box.compact.vertical .logtail-box.available.no-track .logtail {
-    height: 350px;
-}
 
-@keyframes missileAnimation {
-    from {
-        left: 0;
-    }
-    to {
-        left: calc(100% - 210px);
-    }
-}
-.missile-track {
+.track-box {
     position: relative;
     height: 120px;
     background-color: #0d1939;
     overflow: hidden;
     display: none;
 }
-.missile-track .track-stack {
+.track-box .track-stack {
     position: absolute;
     top: 0;
     right: 0;
@@ -185,7 +168,15 @@ ul.speed-options li.on {
     background-color: red;
     opacity: .15;
 }
-.missile {
+@keyframes bulletAnimation {
+    from {
+        left: 0;
+    }
+    to {
+        left: calc(100% - 210px);
+    }
+}
+.track-box .bullet {
     position: absolute;
     top: 40%;
     right: 10px;
@@ -193,27 +184,26 @@ ul.speed-options li.on {
     height: 12px;
     border-radius: 60%;
     background: linear-gradient(to right, rgba(9, 17, 39, 0) 0%, rgba(255, 26, 39, 0.4) 100%);
-    animation-name: missileAnimation;
+    animation-name: bulletAnimation;
     animation-timing-function: linear;
     animation-iteration-count: 1;
+    animation-duration: .8s;
     z-index: 100;
 }
-.missile.hidden {
-    display: none;
-}
-.mis-1 {
+.bullet-w1 {
     animation-duration: .8s;
 }
-.mis-2 {
+.bullet-w2 {
     height: 16px;
     background: linear-gradient(to right, rgba(204, 204, 204, 0) 0%, rgba(255, 88, 9, 0.52) 100%);
     animation-duration: 1.05s;
 }
-.mis-3 {
+.bullet-w3 {
     height: 20px;
     background: linear-gradient(to right, rgba(9, 17, 39, 0) 0%, rgba(255, 29, 112, 0.4) 100%);
     animation-duration: 1.3s;
 }
+
 .status-box {
     display: none;
 }

@@ -43,7 +43,6 @@ group: {
         file: /logs/jpetstore.log
         lastLines: 200
         sampleInterval: 300
-        visualizing: true
     }
     logtail: {
         name: access
@@ -74,7 +73,6 @@ group: {
         file: /logs/demo.log
         lastLines: 200
         sampleInterval: 300
-        visualizing: true
     }
     logtail: {
         name: access
@@ -105,7 +103,6 @@ group: {
         file: /logs/root.log
         lastLines: 200
         sampleInterval: 300
-        visualizing: true
     }
     logtail: {
         name: access

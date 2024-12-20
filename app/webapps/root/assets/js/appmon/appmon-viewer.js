@@ -1,27 +1,25 @@
 function AppmonViewer() {
     let logtails = {};
-    let missileTracks = {};
-    let indicators = {};
     let statuses = {};
+    let tracks = {};
+    let indicators = {};
     let visible = false;
-    let prevLogTime = null;
-    let prevSentTime = new Date().getTime();
     let prevPosition = 0;
 
     this.setIndicators = function (group, name, indicatorArr) {
-        indicators[group + ":" + name] = indicatorArr;
+        indicators[group + ":event:" + name] = indicatorArr;
     };
 
-    this.setMissileTrack = function (group, name, missileTrack) {
-        missileTracks[group + ":" + name] = (missileTrack.length > 0 ? missileTrack : null);
+    this.setTrack = function (group, name, trackBox) {
+        tracks[group + ":event:" + name] = trackBox;
     };
 
-    this.setStatus = function (group, name, status) {
-        statuses[group + ":" + name] = status;
+    this.setStatus = function (group, name, statusBox) {
+        statuses[group + ":status:" + name] = statusBox;
     };
 
-    this.setLogtail = function (group, name, logtail) {
-        logtails[group + ":" + name] = logtail;
+    this.setLogtail = function (group, name, logtailBox) {
+        logtails[group + ":logtail:" + name] = logtailBox;
     };
 
     this.refresh = function (logtail) {
@@ -45,9 +43,17 @@ function AppmonViewer() {
     this.setVisible = function (flag) {
         visible = !!flag;
         if (!visible) {
-            for (let key in missileTracks) {
-                missileTracks[key].find(".missile").remove();
+            for (let key in tracks) {
+                tracks[key].find(".missile").remove();
             }
+        }
+    };
+
+    const getTrack = function (name) {
+        if (tracks && name) {
+            return tracks[name];
+        } else {
+            return $(".track-box");
         }
     };
 
@@ -83,40 +89,6 @@ function AppmonViewer() {
         }
     };
 
-    this.printMessage = function (msg) {
-        let idx1 = msg.indexOf(":");
-        let idx2 = msg.indexOf(":", idx1 + 1);
-        let name = msg.substring(0, idx2);
-        let text = msg.substring(idx2 + 1);
-        if (text.startsWith("event:")) {
-            console.log(msg);
-            text = text.substring(6);
-        } else if (text.startsWith("logtail:")) {
-            text = text.substring(8);
-            if (text.startsWith("last:")) {
-                text = text.substring(5);
-                printLog(name, text, false);
-            } else {
-                printLog(name, text, true);
-            }
-        } else if (text.startsWith("status:")) {
-            let data = JSON.parse(text.substring(7));
-            printStatus(name, data);
-        }
-    };
-
-    const printLog = function (name, text, visualizing) {
-        indicate(name);
-        let logtail = getLogtail(name);
-        if (!logtail.data("pause")) {
-            if (visualizing) {
-                visualize(name, text);
-            }
-            $("<p/>").text(text).appendTo(logtail);
-            scrollToBottom(logtail);
-        }
-    };
-
     this.printEventMessage = function (text, name) {
         if (name) {
             let logtail = getLogtail(name);
@@ -141,6 +113,70 @@ function AppmonViewer() {
         }
     };
 
+    this.processMessage = function (msg) {
+        let idx1 = msg.indexOf(":");
+        let idx2 = msg.indexOf(":", idx1 + 1);
+        let idx3 = msg.indexOf(":", idx2 + 1);
+        let type = msg.substring(idx1 + 1, idx2);
+        let label = msg.substring(idx2 + 1, idx3);
+        let name = msg.substring(0, idx3);
+        let text = msg.substring(idx3 + 1);
+        console.log(type, text);
+        switch (type) {
+            case "event":
+                processEvent(name, label, JSON.parse(text));
+                break;
+            case "logtail":
+                printLog(name, text);
+                break;
+            case "status":
+                processStatus(name, label, JSON.parse(text));
+                break;
+
+        }
+    };
+
+    const processEvent = function (name, label, data) {
+        indicate(name);
+        if (visible) {
+            switch (label) {
+                case "request":
+                    let track = getTrack(name);
+                    if (track) {
+                        launchBullet(track, data);
+                    }
+            }
+        }
+    }
+
+    const launchBullet = function (track, data) {
+        let sessionId = data.sessionId;
+        let elapsedMillis = data.elapsedTime; //millis
+        let lifespan = elapsedMillis + 1100;
+        let position = generateRandom(3, 107);
+        if (prevPosition) {
+            if (Math.abs(position - prevPosition) <= 20) {
+                position = generateRandom(3, 111);
+                if (Math.abs(position - prevPosition) <= 20) {
+                    position = generateRandom(3, 111);
+                }
+            }
+        }
+        prevPosition = position;
+        let bullet = $("<div/>")
+            .addClass("bullet")
+            .attr("sessionId", sessionId)
+            .css("top", position + "px")
+            .appendTo(track);
+        setTimeout(function () {
+            bullet.remove();
+        }, lifespan);
+    };
+
+    const generateRandom = function (min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    };
+
     const indicate = function (name) {
         let indicatorArr = indicators[name];
         if (indicatorArr) {
@@ -160,127 +196,15 @@ function AppmonViewer() {
         }
     };
 
-    const visualize = function (name, text) {
-        if (visible) {
-            let missileTrack = missileTracks[name];
-            if (missileTrack) {
-                setTimeout(function () {
-                    let visualizing = missileTrack.data("visualizing");
-                    if (visualizing) {
-                        launchMissile(missileTrack, text);
-                    }
-                }, 1);
-            }
+    const printLog = function (name, text) {
+        let logtail = getLogtail(name);
+        if (!logtail.data("pause")) {
+            $("<p/>").text(text).appendTo(logtail);
+            scrollToBottom(logtail);
         }
     };
 
-    const pattern1 = /^DEBUG (.+) \[(.+)] Create new session id=([^\s;]+)/;
-    const pattern2 = /^DEBUG (.+) \[(.+)] Session ([^\s;]+) accessed, stopping timer, active requests=(\d+)/;
-    const pattern3 = /^DEBUG (.+) \[(.+)] Session ([^\s;]+) complete, active requests=(\d+)/;
-    const pattern4 = /^DEBUG (.+) \[(.+)] Invalidate session id=([^\s;]+)/;
-    const pattern5 = /^DEBUG (.+) \[(.+)] Reject session id=([^\s;]+)/;
-
-    const launchMissile = function (missileTrack, text) {
-        let matches1 = pattern1.exec(text);
-        let matches2 = pattern2.exec(text);
-        let matches3 = pattern3.exec(text);
-        let matches4 = pattern4.exec(text);
-        let matches5 = pattern5.exec(text);
-
-        // if (matches1 || matches2 || matches3 || matches4 || matches5) {
-        //     console.log(text);
-        //     console.log('matches1', matches1);
-        //     console.log('matches2', matches2);
-        //     console.log('matches3', matches3);
-        //     console.log('matches4', matches4);
-        //     console.log('matches5', matches5);
-        // }
-
-        let dateTime = "";
-        let sessionId = "";
-        let requests = 0;
-        let delay = 0;
-        if (matches3 || matches4 || matches5) {
-            if (matches3) {
-                sessionId = matches3[3];
-                requests = parseInt(matches3[4]) + 1;
-            } else if (matches4) {
-                sessionId = matches4[3];
-                requests = 1
-            } else if (matches5) {
-                sessionId = matches5[3];
-                requests = 1
-            }
-            if (requests > 3) {
-                requests = 3;
-            }
-            let mis = missileTrack.find(".missile[sessionId='" + sessionId + "_" + requests + "']");
-            if (mis.length > 0) {
-                let dur = 650 + mis.data("delay")||0;
-                if (mis.hasClass("mis-2")) {
-                    dur += 250;
-                } else if (mis.hasClass("mis-3")) {
-                    dur += 500;
-                }
-                setTimeout(function () {
-                    mis.remove();
-                }, dur + 800);
-            }
-            return;
-        }
-        if (matches1 || matches2) {
-            if (matches1) {
-                dateTime = matches1[1];
-                sessionId = matches1[3];
-                requests = 1;
-            } else if (matches2) {
-                dateTime = matches2[1];
-                sessionId = matches2[3];
-                requests = matches2[4];
-            }
-            if (requests > 3) {
-                requests = 3;
-            }
-            let logTime = moment(dateTime);
-            let currTime = new Date().getTime();
-            let spentTime = currTime - prevSentTime;
-            if (prevLogTime) {
-                delay = logTime.diff(prevLogTime);
-                if (delay >= 1000 || delay < 0 || spentTime >= delay + 1000) {
-                    delay = 0;
-                }
-            }
-            prevLogTime = logTime;
-            prevSentTime = currTime;
-        }
-        if (requests > 0) {
-            let position = generateRandom(3, 120 - 3 - (requests * 4 + 8));
-            if (delay < 1000 && prevPosition) {
-                if (Math.abs(position - prevPosition) <= 20) {
-                    position = generateRandom(3, 120 - 3 - (requests * 4 + 8));
-                    if (Math.abs(position - prevPosition) <= 20) {
-                        position = generateRandom(3, 120 - 3 - (requests * 4 + 8));
-                    }
-                }
-            }
-            prevPosition = position;
-            let mis = $("<div/>").attr("sessionId", sessionId + "_" + requests);
-            mis.data("delay", 1000 + delay);
-            setTimeout(function () {
-                mis.addClass("mis-" + requests).removeClass("hidden");
-            }, 1000 + delay);
-            mis.css("top", position + "px");
-            mis.appendTo(missileTrack).addClass("hidden missile");
-        }
-    };
-
-    const generateRandom = function (min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    };
-
-    const printStatus = function (name, data) {
-        let idx = name.indexOf(":");
-        let label = (idx >= 0 ? name.substring(idx + 1) : "");
+    const processStatus = function (name, label, data) {
         switch (label) {
             case "session":
                 printSessionStatus(name, data);

@@ -34,8 +34,8 @@ public class AppMonConfig extends AbstractParameters {
     private static final ParameterKey[] parameterKeys;
 
     static {
-        endpoint = new ParameterKey("endpoint", EndpointInfo.class, true, true);
-        group = new ParameterKey("group", GroupInfo.class, true, true);
+        endpoint = new ParameterKey("endpoints", new String[] {"endpoint"}, EndpointInfo.class, true, true);
+        group = new ParameterKey("groups", new String[] {"group"}, GroupInfo.class, true, true);
 
         parameterKeys = new ParameterKey[] {
                 endpoint,

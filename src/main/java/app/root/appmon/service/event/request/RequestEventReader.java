@@ -58,7 +58,7 @@ public class RequestEventReader implements EventReader {
         AspectAdviceRule beforeAspectAdviceRule = aspectRule.newAspectAdviceRule(AspectAdviceType.BEFORE);
         beforeAspectAdviceRule.setAdviceAction(activity -> {
             RequestEventAdvice requestEventAspect = new RequestEventAdvice(getEventService());
-            requestEventAspect.request(activity);
+            requestEventAspect.request();
             return requestEventAspect;
         });
 

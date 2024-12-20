@@ -19,23 +19,8 @@ public class RequestEventAdvice {
         this.eventService = eventService;
     }
 
-    public void request(@NonNull Activity activity) {
+    public void request() {
         startTime = System.currentTimeMillis();
-//
-//        JsonBuilder jsonBuilder = new JsonBuilder()
-//                .prettyPrint(false)
-//                .nullWritable(false)
-//                .object()
-//                    .put("startTime", startTime)
-//                    .put("thread", Thread.currentThread().getName());
-//
-//        SessionAdapter sessionAdapter = activity.getSessionAdapter();
-//        if (sessionAdapter != null) {
-//            jsonBuilder.put("sessionId", sessionAdapter.getId());
-//        }
-//
-//        jsonBuilder.endObject();
-//        eventService.broadcast("start:" + jsonBuilder);
     }
 
     public void complete(@NonNull Activity activity) {

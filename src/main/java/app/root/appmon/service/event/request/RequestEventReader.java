@@ -23,18 +23,19 @@ public class RequestEventReader implements EventReader {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestEventReader.class);
 
-    private final static String ASPECT_ID = "requestEventReaderAspect";
-
     private final EventServiceManager eventServiceManager;
 
     private final EventInfo eventInfo;
 
     private final String target;
 
+    private final String aspectId;
+
     public RequestEventReader(@NonNull EventServiceManager eventServiceManager, @NonNull EventInfo eventInfo) {
         this.eventServiceManager = eventServiceManager;
         this.eventInfo = eventInfo;
         this.target = eventInfo.getTarget();
+        this.aspectId = getClass().getName() + ".ASPECT-" + hashCode();
     }
 
     public EventService getEventService() {
@@ -46,7 +47,7 @@ public class RequestEventReader implements EventReader {
         AspectRuleRegistry aspectRuleRegistry = findAspectRuleRegistry(target);
 
         AspectRule aspectRule = new AspectRule();
-        aspectRule.setId(ASPECT_ID);
+        aspectRule.setId(aspectId);
         aspectRule.setOrder(-1);
         aspectRule.setIsolated(true);
 
@@ -63,7 +64,7 @@ public class RequestEventReader implements EventReader {
 
         AspectAdviceRule afterAspectAdviceRule = aspectRule.newAspectAdviceRule(AspectAdviceType.AFTER);
         afterAspectAdviceRule.setAdviceAction(activity -> {
-            RequestEventAdvice requestEventAspect = activity.getBeforeAdviceResult(ASPECT_ID);
+            RequestEventAdvice requestEventAspect = activity.getBeforeAdviceResult(aspectId);
             requestEventAspect.complete(activity);
             return null;
         });
@@ -75,7 +76,7 @@ public class RequestEventReader implements EventReader {
     public void stop() {
         try {
             AspectRuleRegistry aspectRuleRegistry = findAspectRuleRegistry(target);
-            aspectRuleRegistry.removeAspectRule(ASPECT_ID);
+            aspectRuleRegistry.removeAspectRule(aspectId);
         } catch (Exception e) {
             logger.warn(e);
         }

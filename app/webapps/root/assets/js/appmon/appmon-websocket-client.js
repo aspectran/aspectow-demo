@@ -13,8 +13,8 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
     };
 
     const openSocket = function () {
-        // onErrorObserved(endpoint);
-        // return;
+        onErrorObserved(endpoint);
+        return;
         closeSocket();
         let url = new URL(endpoint.url, location.href);
         url.protocol = url.protocol.replace('https:', 'wss:');

@@ -1,0 +1,106 @@
+package app.root.appmon.exporter.state;
+
+import app.root.appmon.config.StateInfo;
+import app.root.appmon.exporter.Exporter;
+import com.aspectran.utils.ToStringBuilder;
+import com.aspectran.utils.annotation.jsr305.NonNull;
+import com.aspectran.utils.apon.Parameters;
+
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class StateExporter extends Exporter {
+
+    private static final String TYPE = ":state:";
+
+    private final StateExporterManager stateExporterManager;
+
+    private final StateInfo stateInfo;
+
+    private final StateReader stateReader;
+
+    private final String label;
+
+    private final int sampleInterval;
+
+    private Timer timer;
+
+    public StateExporter(@NonNull StateExporterManager stateExporterManager,
+                         @NonNull StateInfo stateInfo,
+                         @NonNull StateReader stateReader) {
+        this.stateExporterManager = stateExporterManager;
+        this.stateInfo = stateInfo;
+        this.stateReader = stateReader;
+        this.label = stateInfo.getGroup() + TYPE + stateInfo.getName() + ":";
+        this.sampleInterval = stateInfo.getSampleInterval();
+    }
+
+    @Override
+    public String getName() {
+        return stateInfo.getName();
+    }
+
+    @SuppressWarnings("unchecked")
+    public <V extends Parameters> V getExporterInfo() {
+        return (V) stateInfo;
+    }
+
+    @Override
+    public void read(@NonNull List<String> messages) {
+        String data = stateReader.read();
+        if (data != null) {
+            messages.add(label + data);
+        }
+    }
+
+    @Override
+    public void broadcast(String message) {
+        stateExporterManager.broadcast(label + message);
+    }
+
+    private void broadcastIfChanged() {
+        String data = stateReader.readIfChanged();
+        if (data != null) {
+            broadcast(data);
+        }
+    }
+
+    @Override
+    protected void doStart() throws Exception {
+        stateReader.start();
+        broadcastIfChanged();
+        if (sampleInterval > 0 && timer == null) {
+            String name = new ToStringBuilder("StatusReadingTimer")
+                    .append("statusReader", stateReader)
+                    .append("sampleInterval", sampleInterval)
+                    .toString();
+            timer = new Timer(name);
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    broadcastIfChanged();
+                }
+            }, 0, sampleInterval);
+        }
+    }
+
+    @Override
+    protected void doStop() throws Exception {
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+        stateReader.stop();
+    }
+
+    @Override
+    public String toString() {
+        if (isStopped()) {
+            return ToStringBuilder.toString(super.toString(), stateInfo);
+        } else {
+            return super.toString();
+        }
+    }
+
+}

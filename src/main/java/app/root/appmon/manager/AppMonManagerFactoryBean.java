@@ -15,7 +15,8 @@ import com.aspectran.utils.annotation.jsr305.NonNull;
  */
 @Component
 @Bean("appMonManager")
-public class AppMonManagerFactoryBean extends AppMonManagerFactory implements ActivityContextAware, FactoryBean<AppMonManager> {
+public class AppMonManagerFactoryBean extends AppMonManagerFactory
+        implements ActivityContextAware, FactoryBean<AppMonManager> {
 
     @Override
     @AvoidAdvice

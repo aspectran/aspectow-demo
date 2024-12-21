@@ -5,11 +5,11 @@ import app.root.appmon.config.EndpointInfoHolder;
 import app.root.appmon.config.EventInfo;
 import app.root.appmon.config.GroupInfo;
 import app.root.appmon.config.GroupInfoHolder;
-import app.root.appmon.config.LogtailInfo;
-import app.root.appmon.config.StatusInfo;
-import app.root.appmon.service.event.EventServiceManagerBuilder;
-import app.root.appmon.service.logtail.LogtailServiceManagerBuilder;
-import app.root.appmon.service.status.StatusServiceManagerBuilder;
+import app.root.appmon.config.LogInfo;
+import app.root.appmon.config.StateInfo;
+import app.root.appmon.exporter.event.EventExporterManagerBuilder;
+import app.root.appmon.exporter.log.LogExporterManagerBuilder;
+import app.root.appmon.exporter.state.StateExporterManagerBuilder;
 import com.aspectran.core.context.ActivityContext;
 import com.aspectran.utils.Assert;
 
@@ -46,15 +46,15 @@ public class AppMonManagerFactory {
         for (GroupInfo groupInfo : config.getGroupInfoList()) {
             List<EventInfo> eventInfoList = config.getEventInfoList(groupInfo.getName());
             if (eventInfoList != null) {
-                EventServiceManagerBuilder.build(appMonManager, groupInfo.getName(), eventInfoList);
+                EventExporterManagerBuilder.build(appMonManager, groupInfo.getName(), eventInfoList);
             }
-            List<StatusInfo> statusInfoList = config.getStatusInfoList(groupInfo.getName());
-            if (statusInfoList != null) {
-                StatusServiceManagerBuilder.build(appMonManager, groupInfo.getName(), statusInfoList);
+            List<StateInfo> stateInfoList = config.getStateInfoList(groupInfo.getName());
+            if (stateInfoList != null) {
+                StateExporterManagerBuilder.build(appMonManager, groupInfo.getName(), stateInfoList);
             }
-            List<LogtailInfo> logtailInfoList = config.getLogtailInfoList(groupInfo.getName());
-            if (logtailInfoList != null) {
-                LogtailServiceManagerBuilder.build(appMonManager, groupInfo.getName(), logtailInfoList);
+            List<LogInfo> logInfoList = config.getLogtailInfoList(groupInfo.getName());
+            if (logInfoList != null) {
+                LogExporterManagerBuilder.build(appMonManager, groupInfo.getName(), logInfoList);
             }
         }
         return appMonManager;

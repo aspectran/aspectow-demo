@@ -27,24 +27,24 @@ group: {
     title: JPetStore
     event: {
         name: request
-        reader: app.root.appmon.service.event.request.RequestEventReader
+        reader: app.root.appmon.exporter.event.request.RequestEventReader
+        target: jpetstore
     }
-    status: {
+    state: {
         name: session
         title: JPetStore App Session Statistics
-        collector: app.root.appmon.status.session.LocalSessionStatusReader
+        reader: app.root.appmon.exporter.state.session.SessionStateReader
         target: tow.server/jpetstore
         sampleInterval: 5000
     }
-    logtail: {
+    log: {
         name: app
         title: JPetStore App
         file: /logs/jpetstore.log
         lastLines: 200
         sampleInterval: 300
-        visualizing: true
     }
-    logtail: {
+    log: {
         name: access
         title: JPetStore Access
         file: /logs/jpetstore-access.log
@@ -57,24 +57,24 @@ group: {
     title: Demo
     event: {
         name: request
-        reader: app.root.appmon.service.event.request.RequestEventReader
+        reader: app.root.appmon.exporter.event.request.RequestEventReader
+        target: demo
     }
-    status: {
+    state: {
         name: session
         title: Demo App Session Statistics
-        collector: app.root.appmon.status.session.LocalSessionStatusReader
+        reader: app.root.appmon.exporter.state.session.SessionStateReader
         target: tow.server/demo
         sampleInterval: 5000
     }
-    logtail: {
+    log: {
         name: app
         title: Demo App
         file: /logs/demo.log
         lastLines: 200
         sampleInterval: 300
-        visualizing: true
     }
-    logtail: {
+    log: {
         name: access
         title: Demo Access
         file: /logs/demo-access.log
@@ -87,24 +87,24 @@ group: {
     title: Root
     event: {
         name: request
-        reader: app.root.appmon.service.event.request.RequestEventReader
+        reader: app.root.appmon.exporter.event.request.RequestEventReader
+        target: root
     }
-    status: {
+    state: {
         name: session
         title: Root App Session Statistics
-        collector: app.root.appmon.status.session.LocalSessionStatusReader
+        reader: app.root.appmon.exporter.state.session.SessionStateReader
         target: tow.server/root
         sampleInterval: 5000
     }
-    logtail: {
+    log: {
         name: app
         title: Root App
         file: /logs/root.log
         lastLines: 200
         sampleInterval: 300
-        visualizing: true
     }
-    logtail: {
+    log: {
         name: access
         title: Root Access
         file: /logs/root-access.log

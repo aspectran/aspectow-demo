@@ -1,13 +1,20 @@
-.options {
+.endpoint-box.stacked .group.tabs {
+    display: none;
+}
+.endpoint-box.stacked .group-box.available {
+    display: block !important;
+    padding: 1px;
+}
+.endpoint-box .options {
     font-size: 90%;
     text-align: right;
 }
-ul.layout-options {
+.endpoint-box ul.layout-options {
     float: right;
     list-style-type: none;
     margin: 0;
 }
-ul.layout-options li {
+.endpoint-box ul.layout-options li {
     float: left;
     margin-left: .3em;
     border: 1px solid #ccc;
@@ -15,23 +22,23 @@ ul.layout-options li {
     border-radius: 5px;
     color: #777;
 }
-ul.layout-options li a {
+.endpoint-box ul.layout-options li a {
     color: #777;
 }
-ul.layout-options li.on {
+.endpoint-box ul.layout-options li.on {
     background-color: #748fa0;
     color: #fff;
 }
-ul.layout-options li.on a {
+.endpoint-box ul.layout-options li.on a {
     color: #fff;
 }
-ul.speed-options {
+.endpoint-box ul.speed-options {
     float: right;
     list-style-type: none;
     margin: 0;
     display: none;
 }
-ul.speed-options li {
+.endpoint-box ul.speed-options li {
     float: left;
     margin-left: .3em;
     border: 1px solid #ccc;
@@ -40,9 +47,59 @@ ul.speed-options li {
     color: #777;
     cursor: pointer;
 }
-ul.speed-options li.on {
+.endpoint-box ul.speed-options li.on {
     background-color: #748fa0;
     color: #fff;
+}
+
+.track-box {
+    position: relative;
+    height: 120px;
+    background-color: #0d1939;
+    overflow: hidden;
+    display: none;
+}
+.track-box .track-stack {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 220px;
+    height: 120px;
+    background-color: red;
+    opacity: .15;
+}
+@keyframes bulletAnimation {
+    from {
+        left: 0;
+    }
+    to {
+        left: calc(100% - 210px);
+    }
+}
+.track-box .bullet {
+    position: absolute;
+    top: 40%;
+    right: 10px;
+    width: 200px;
+    height: 12px;
+    border-radius: 60%;
+    background: linear-gradient(to right, rgba(9, 17, 39, 0) 0%, rgba(255, 26, 39, 0.4) 100%);
+    animation-name: bulletAnimation;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+    animation-duration: .8s;
+    z-index: 100;
+}
+.track-stack .req-num {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: white;
+    font-size: 3em;
+    text-align: center;
+    opacity: .8;
 }
 
 .log-box .status-bar {
@@ -110,7 +167,7 @@ ul.speed-options li.on {
     margin: 0;
     padding: 10px;
     overflow: auto;
-    height: 600px;
+    height: 500px;
     color: #f1f1f1;
     background-color: #222;
     border: none;
@@ -142,66 +199,6 @@ ul.speed-options li.on {
     background-color: palevioletred;
     border: 1px solid palevioletred;
     color: yellow;
-}
-
-.endpoint-box.stacked .group.tabs {
-    display: none;
-}
-.endpoint-box.stacked .group-box.available {
-    display: block !important;
-    padding: 1px;
-}
-
-.track-box {
-    position: relative;
-    height: 120px;
-    background-color: #0d1939;
-    overflow: hidden;
-    display: none;
-}
-.track-box .track-stack {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 220px;
-    height: 120px;
-    background-color: red;
-    opacity: .15;
-}
-@keyframes bulletAnimation {
-    from {
-        left: 0;
-    }
-    to {
-        left: calc(100% - 210px);
-    }
-}
-.track-box .bullet {
-    position: absolute;
-    top: 40%;
-    right: 10px;
-    width: 200px;
-    height: 12px;
-    border-radius: 60%;
-    background: linear-gradient(to right, rgba(9, 17, 39, 0) 0%, rgba(255, 26, 39, 0.4) 100%);
-    animation-name: bulletAnimation;
-    animation-timing-function: linear;
-    animation-iteration-count: 1;
-    animation-duration: .8s;
-    z-index: 100;
-}
-.bullet-w1 {
-    animation-duration: .8s;
-}
-.bullet-w2 {
-    height: 16px;
-    background: linear-gradient(to right, rgba(204, 204, 204, 0) 0%, rgba(255, 88, 9, 0.52) 100%);
-    animation-duration: 1.05s;
-}
-.bullet-w3 {
-    height: 20px;
-    background: linear-gradient(to right, rgba(9, 17, 39, 0) 0%, rgba(255, 29, 112, 0.4) 100%);
-    animation-duration: 1.3s;
 }
 
 .state-box {

@@ -4,8 +4,6 @@ import app.root.appmon.config.EventInfo;
 import app.root.appmon.exporter.event.EventExporter;
 import app.root.appmon.exporter.event.EventExporterManager;
 import app.root.appmon.exporter.event.EventReader;
-import com.aspectran.core.activity.Activity;
-import com.aspectran.core.activity.process.action.Executable;
 import com.aspectran.core.component.aspect.AspectRuleRegistry;
 import com.aspectran.core.context.ActivityContext;
 import com.aspectran.core.context.rule.AspectAdviceRule;
@@ -15,6 +13,7 @@ import com.aspectran.core.context.rule.type.AspectAdviceType;
 import com.aspectran.core.context.rule.type.JoinpointTargetType;
 import com.aspectran.core.service.CoreServiceHolder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
+import com.aspectran.utils.json.JsonBuilder;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
@@ -65,14 +64,10 @@ public class RequestEventReader implements EventReader {
         });
 
         AspectAdviceRule afterAspectAdviceRule = aspectRule.newAspectAdviceRule(AspectAdviceType.AFTER);
-        afterAspectAdviceRule.setAdviceAction(new Executable() {
-            @Override
-            public Object execute(Activity activity) throws Exception {
-                RequestEventAdvice requestEventAspect = activity.getBeforeAdviceResult(aspectId);
-                requestEventAspect.complete(activity);
-                return null;
-            }
-
+        afterAspectAdviceRule.setAdviceAction(activity -> {
+            RequestEventAdvice requestEventAspect = activity.getBeforeAdviceResult(aspectId);
+            requestEventAspect.complete(activity);
+            return null;
         });
 
         aspectRuleRegistry.addAspectRule(aspectRule);
@@ -86,6 +81,17 @@ public class RequestEventReader implements EventReader {
         } catch (Exception e) {
             logger.warn(e);
         }
+    }
+
+    @Override
+    public String read() {
+        return new JsonBuilder()
+                .prettyPrint(false)
+                .nullWritable(false)
+                .object()
+                    .put("number", RequestEventAdvice.counter.longValue())
+                .endObject()
+                .toString();
     }
 
     @NonNull

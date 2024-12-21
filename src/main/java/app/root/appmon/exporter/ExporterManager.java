@@ -5,7 +5,6 @@ import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +33,6 @@ public abstract class ExporterManager {
 
     public String getGroupName() {
         return groupName;
-    }
-
-    @SuppressWarnings("unchecked")
-    public <V extends Exporter> Iterator<V> getExporters() {
-        return (Iterator<V>) exporters.values().iterator();
     }
 
     public void addExporter(Exporter exporter) {

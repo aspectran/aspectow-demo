@@ -44,6 +44,10 @@ public class EventExporter extends Exporter {
 
     @Override
     public void read(@NonNull List<String> messages) {
+        String json = eventReader.read();
+        if (json != null) {
+            messages.add(label + json);
+        }
     }
 
     @Override

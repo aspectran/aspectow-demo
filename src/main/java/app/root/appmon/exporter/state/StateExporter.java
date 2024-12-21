@@ -48,9 +48,9 @@ public class StateExporter extends Exporter {
 
     @Override
     public void read(@NonNull List<String> messages) {
-        String data = stateReader.read();
-        if (data != null) {
-            messages.add(label + data);
+        String json = stateReader.read();
+        if (json != null) {
+            messages.add(label + json);
         }
     }
 

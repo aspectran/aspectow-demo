@@ -1,12 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
-<link rel="stylesheet" href="<aspectran:url value="/assets/appmon/css/appmon.css?20241220"/>">
+<link rel="stylesheet" href="<aspectran:url value="/assets/appmon/css/appmon.css?20241221"/>">
 <script src="<aspectran:url value="/assets/countries/countries.js?20241217"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/appmon-builder.js?20241220"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/appmon-viewer.js?20241220"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/appmon-websocket-client.js?20241220"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/appmon-polling-client.js?20241220"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/appmon-builder.js?20241221"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/appmon-viewer.js?20241221"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/appmon-websocket-client.js?20241221"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/appmon-polling-client.js?20241221"/>"></script>
 <div class="grid-x endpoint-box compact horizontal">
     <div class="cell options t10 b5">
         <ul class="speed-options">
@@ -26,7 +26,7 @@
     <div class="cell group-box">
         <div class="grid-x">
             <div class="cell track-box">
-                <div class="track-stack"></div>
+                <div class="track-stack"><div class="req-num"></div></div>
             </div>
             <div class="cell log-box">
                 <div class="status-bar">

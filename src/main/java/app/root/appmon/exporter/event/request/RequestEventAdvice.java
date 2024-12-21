@@ -6,12 +6,18 @@ import com.aspectran.core.adapter.SessionAdapter;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.json.JsonBuilder;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * <p>Created: 2024-12-19</p>
  */
 public class RequestEventAdvice {
 
+    static final AtomicLong counter = new AtomicLong();
+
     private final EventExporter eventExporter;
+
+    private long number;
 
     private long startTime;
 
@@ -22,6 +28,7 @@ public class RequestEventAdvice {
     }
 
     public void request(@NonNull Activity activity) {
+        number = counter.incrementAndGet();
         startTime = System.currentTimeMillis();
 
         // Since the servlet container does not allow session creation after
@@ -40,6 +47,7 @@ public class RequestEventAdvice {
                 .prettyPrint(false)
                 .nullWritable(false)
                 .object()
+                    .put("number", number)
                     .put("startTime", startTime)
                     .put("elapsedTime", elapsedTime)
                     .put("thread", Thread.currentThread().getName())

@@ -9,4 +9,6 @@ public interface EventReader {
 
     void stop();
 
+    String read();
+
 }

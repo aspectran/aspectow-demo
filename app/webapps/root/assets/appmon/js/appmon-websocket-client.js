@@ -34,7 +34,7 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
                 }
                 let msg = event.data;
                 if (established) {
-                    endpoint.viewer.processMessage(msg);
+                    endpoint.viewer.processMessage(endpoint, msg);
                 } else if (msg.startsWith("joined:")) {
                     console.log(msg);
                     let payload = JSON.parse(msg.substring(7));
@@ -43,15 +43,19 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
             }
         };
         socket.onclose = function (event) {
-            endpoint.viewer.printEventMessage("Socket connection closed. Please refresh this page to try again!");
-            closeSocket();
+            if (event.code === 1000) {
+                endpoint.viewer.printEventMessage("Socket connection closed.");
+            } else {
+                closeSocket();
+                endpoint.viewer.printEventMessage("Socket connection closed. Please refresh this page to try again!");
+            }
         };
         socket.onerror = function (event) {
             console.error("WebSocket error observed:", event);
             if (onErrorObserved) {
                 onErrorObserved(endpoint);
             } else {
-                endpoint.viewer.printErrorMessage("Could not connect to WebSocket server");
+                endpoint.viewer.printErrorMessage("Could not connect to WebSocket server.");
             }
         };
     };

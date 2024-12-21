@@ -44,7 +44,7 @@ function AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
             success: function (data) {
                 if (data) {
                     for (let key in data) {
-                        endpoint.viewer.processMessage(data[key]);
+                        endpoint.viewer.processMessage(endpoint, data[key]);
                     }
                     setTimeout(polling, endpoint.pollingInterval);
                 } else {

@@ -40,7 +40,7 @@ function AppMonBuilder() {
                 buildGroups();
                 for (let key in payload.messages) {
                     let msg = payload.messages[key];
-                    endpoint.viewer.processMessage(msg);
+                    endpoint.viewer.processMessage(endpoint, msg);
                 }
                 if (endpoints.length) {
                     changeEndpoint(0);
@@ -60,9 +60,14 @@ function AppMonBuilder() {
             }
         }
         function onErrorObserved(endpoint) {
-            let client = new AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted);
-            endpoint['client'] = client;
-            client.start();
+            setTimeout(function () {
+                if (endpoint.index === 1) {
+                    clearScreen();
+                }
+                let client = new AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted);
+                endpoint['client'] = client;
+                client.start();
+            }, (endpoint.index - 1) * 1000);
         }
 
         if (endpointIndex === 0) {
@@ -106,18 +111,29 @@ function AppMonBuilder() {
 
     const buildEndpoint = function (endpoint, payload) {
         let endpointBox = addEndpoint(endpoint);
+        let indicatorEndpoint = $(".endpoint.tabs .tabs-title.available .indicator").eq(endpoint.index);
+        endpoint.viewer.putIndicator("endpoint", "event", endpoint.index, indicatorEndpoint);
         for (let key in payload.groups) {
             let groupInfo = payload.groups[key];
             addGroup(endpointBox, groupInfo);
+            let indicatorGroup = endpointBox.find(".group.tabs .tabs-title.available[data-name=" + groupInfo.name + "]").find(".indicator");
+            endpoint.viewer.putIndicator("group", "event", groupInfo.name, indicatorGroup);
             for (let key in groupInfo.events) {
                 let eventInfo = groupInfo.events[key];
                 let trackBox = addTrackBox(endpointBox, eventInfo);
+                let reqNum = trackBox.find(".req-num");
                 endpoint.viewer.putTrack(groupInfo.name, eventInfo.name, trackBox);
+                endpoint.viewer.putIndicator(groupInfo.name, "event", "req-num", reqNum);
             }
             for (let key in groupInfo.logs) {
                 let logInfo = groupInfo.logs[key];
                 let logBox = addLogBox(endpointBox, logInfo);
-                endpoint.viewer.putLogBox(groupInfo.name, logInfo.name, logBox.find(".log"));
+                let log = logBox.find(".log");
+                log.data("tailing", true);
+                logBox.find(".tailing-status").addClass("on");
+                endpoint.viewer.putLogBox(groupInfo.name, logInfo.name, log);
+                let indicatorLog = logBox.find(".status-bar");
+                endpoint.viewer.putIndicator(groupInfo.name, "log", logInfo.name, indicatorLog);
             }
             for (let key in groupInfo.states) {
                 let stateInfo = groupInfo.states[key];
@@ -125,18 +141,6 @@ function AppMonBuilder() {
                 endpoint.viewer.putStateBox(groupInfo.name, stateInfo.name, stateBox);
             }
         }
-        endpointBox.find(".log-box.available").each(function() {
-            let log = $(this).find(".log");
-            let groupName = $(this).data("group");
-            let logName = log.data("log-name");
-            let logBox = log.closest(".log-box");
-            let indicator1 = $(".endpoint.tabs .tabs-title.available .indicator").eq(endpoint.index);
-            let indicator2 = endpointBox.find(".group.tabs .tabs-title.available[data-name=" + groupName + "]").find(".indicator");
-            let indicator3 = logBox.find(".status-bar");
-            endpoint.viewer.putIndicators(groupName, logName, [indicator1, indicator2, indicator3]);
-            log.data("tailing", true);
-            logBox.find(".tailing-status").addClass("on");
-        });
         if (endpoint.mode === "polling") {
             $("ul.speed-options").show();
         }

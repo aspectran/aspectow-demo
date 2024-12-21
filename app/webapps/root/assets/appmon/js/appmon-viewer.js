@@ -6,20 +6,20 @@ function AppmonViewer() {
     let visible = false;
     let prevPosition = 0;
 
-    this.putLogBox = function (group, name, logBox) {
-        logs[group + ":log:" + name] = logBox;
+    this.putLogBox = function (group, label, logBox) {
+        logs[group + ":log:" + label] = logBox;
     };
 
-    this.putStateBox = function (group, name, stateBox) {
-        states[group + ":state:" + name] = stateBox;
+    this.putStateBox = function (group, label, stateBox) {
+        states[group + ":state:" + label] = stateBox;
     };
 
-    this.putTrack = function (group, name, trackBox) {
-        tracks[group + ":event:" + name] = trackBox;
+    this.putTrack = function (group, label, trackBox) {
+        tracks[group + ":event:" + label] = trackBox;
     };
 
-    this.putIndicators = function (group, name, indicatorArr) {
-        indicators[group + ":event:" + name] = indicatorArr;
+    this.putIndicator = function (group, type, label, indicator) {
+        indicators[group + ":" + type + ":" + label] = indicator;
     };
 
     const getLogBox = function (name) {
@@ -84,7 +84,7 @@ function AppmonViewer() {
         visible = !!flag;
         if (!visible) {
             for (let key in tracks) {
-                tracks[key].find(".missile").remove();
+                tracks[key].find(".bullet").remove();
             }
         }
     };
@@ -113,86 +113,96 @@ function AppmonViewer() {
         }
     };
 
-    this.processMessage = function (msg) {
+    this.processMessage = function (endpoint, msg) {
         let idx1 = msg.indexOf(":");
         let idx2 = msg.indexOf(":", idx1 + 1);
         let idx3 = msg.indexOf(":", idx2 + 1);
+        let group = msg.substring(0, idx1);
         let type = msg.substring(idx1 + 1, idx2);
         let label = msg.substring(idx2 + 1, idx3);
         let name = msg.substring(0, idx3);
         let text = msg.substring(idx3 + 1);
         switch (type) {
             case "event":
-                processEvent(name, label, JSON.parse(text));
+                indicate(endpoint, group, type, label);
+                processEvent(group, label, name, JSON.parse(text));
                 break;
             case "log":
+                indicate(endpoint, group, type, label);
                 printLog(name, text);
                 break;
             case "state":
-                processState(name, label, JSON.parse(text));
+                processState(label, name, JSON.parse(text));
                 break;
         }
     };
 
-    const processEvent = function (name, label, data) {
-        indicate(name);
-        if (visible) {
-            switch (label) {
-                case "request":
+    const processEvent = function (group, label, name, data) {
+        switch (label) {
+            case "request":
+                let reqNum = indicators[group + ":event:req-num"];
+                if (reqNum) {
+                    reqNum.text(data.number);
+                }
+                if (visible) {
                     let track = getTrack(name);
                     if (track) {
                         launchBullet(track, data);
                     }
-            }
+                }
         }
     }
 
     const launchBullet = function (track, data) {
-        let sessionId = data.sessionId;
-        let elapsedMillis = data.elapsedTime; //millis
-        let lifespan = elapsedMillis + 1100;
-        let position = generateRandom(3, 107);
-        if (prevPosition) {
-            if (Math.abs(position - prevPosition) <= 20) {
-                position = generateRandom(3, 111);
+        if (data.elapsedTime) {
+            let elapsedMillis = data.elapsedTime; //millis
+            let lifespan = elapsedMillis + 1100;
+            let position = generateRandom(3, 107);
+            if (prevPosition) {
                 if (Math.abs(position - prevPosition) <= 20) {
                     position = generateRandom(3, 111);
+                    if (Math.abs(position - prevPosition) <= 20) {
+                        position = generateRandom(3, 111);
+                    }
                 }
             }
+            prevPosition = position;
+            let bullet = $("<div class='bullet'/>")
+                .attr("sessionId", data.sessionId)
+                .css("top", position + "px")
+                .appendTo(track);
+            setTimeout(function () {
+                bullet.remove();
+            }, lifespan);
         }
-        prevPosition = position;
-        let bullet = $("<div/>")
-            .addClass("bullet")
-            .attr("sessionId", sessionId)
-            .css("top", position + "px")
-            .appendTo(track);
-        setTimeout(function () {
-            bullet.remove();
-        }, lifespan);
     };
 
     const generateRandom = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    const indicate = function (name) {
-        let indicatorArr = indicators[name];
-        if (indicatorArr) {
-            let first = true;
-            for (let key in indicatorArr) {
-                if (first || visible) {
-                    let indicator = indicatorArr[key];
-                    if (!indicator.hasClass("on")) {
-                        indicator.addClass("blink on");
-                        setTimeout(function () {
-                            indicator.removeClass("blink on");
-                        }, 500);
-                    }
-                }
-                first = false;
+    const indicate = function (endpoint, group, type, label) {
+        let indicator1 = indicators["endpoint:event:" + endpoint.index];
+        blink(indicator1);
+        if (visible) {
+            if (type === "log") {
+                let indicator3 = indicators[group + ":" + type + ":" + label];
+                blink(indicator3);
+            } else {
+                let indicator2 = indicators["group:event:" + group];
+                blink(indicator2);
             }
         }
     };
+
+    const blink = function (indicator) {
+        if (indicator && !indicator.hasClass("on")) {
+            indicator.addClass("blink on");
+            setTimeout(function () {
+                indicator.removeClass("blink on");
+            }, 500);
+        }
+    }
 
     const printLog = function (name, text) {
         let logBox = getLogBox(name);
@@ -202,7 +212,7 @@ function AppmonViewer() {
         }
     };
 
-    const processState = function (name, label, data) {
+    const processState = function (label, name, data) {
         switch (label) {
             case "session":
                 printSessionState(name, data);
@@ -211,40 +221,42 @@ function AppmonViewer() {
 
     const printSessionState = function (name, data) {
         let stateBox = getStateBox(name);
-        stateBox.find(".activeSessionCount").text(data.activeSessionCount);
-        stateBox.find(".highestActiveSessionCount").text(data.highestActiveSessionCount);
-        stateBox.find(".evictedSessionCount").text(data.evictedSessionCount);
-        stateBox.find(".createdSessionCount").text(data.createdSessionCount);
-        stateBox.find(".expiredSessionCount").text(data.expiredSessionCount);
-        stateBox.find(".rejectedSessionCount").text(data.rejectedSessionCount);
-        stateBox.find(".elapsed").text(data.elapsedTime);
-        let ul = stateBox.find("ul.sessions");
-        if (data.createdSessions) {
-            data.createdSessions.forEach(function (info) {
-                ul.find("li[data-sid='" + info.sessionId + "']").remove();
-                let indicator = $("<div/>").addClass("indicator");
-                if (!info.username) {
-                    indicator.addClass("logged-out")
-                }
-                let li = $("<li/>").attr("data-sid", info.sessionId).append(indicator).appendTo(ul);
-                if (info.country) {
-                    $("<img class='flag'/>")
-                        .attr("src", "/assets/countries/flags/" + info.country.toLowerCase() + ".png")
-                        .attr("alt", info.country)
-                        .attr("title", countries[info.country].name)
-                        .appendTo(li);
-                }
-                let str = "Session <strong>" + info.sessionId + "</strong> created at <strong>" + info.createAt + "</strong>";
-                if (info.username) {
-                    str = "(<strong>" + info.username + "</strong>) " + str;
-                }
-                $("<span/>").html(str).appendTo(li);
-            });
-        }
-        if (data.destroyedSessions) {
-            data.destroyedSessions.forEach(function (sessionId) {
-                ul.find("li[data-sid='" + sessionId + "']").remove();
-            });
+        if (stateBox) {
+            stateBox.find(".activeSessionCount").text(data.activeSessionCount);
+            stateBox.find(".highestActiveSessionCount").text(data.highestActiveSessionCount);
+            stateBox.find(".evictedSessionCount").text(data.evictedSessionCount);
+            stateBox.find(".createdSessionCount").text(data.createdSessionCount);
+            stateBox.find(".expiredSessionCount").text(data.expiredSessionCount);
+            stateBox.find(".rejectedSessionCount").text(data.rejectedSessionCount);
+            stateBox.find(".elapsed").text(data.elapsedTime);
+            let ul = stateBox.find("ul.sessions");
+            if (data.createdSessions) {
+                data.createdSessions.forEach(function (info) {
+                    ul.find("li[data-sid='" + info.sessionId + "']").remove();
+                    let indicator = $("<div/>").addClass("indicator");
+                    if (!info.username) {
+                        indicator.addClass("logged-out")
+                    }
+                    let li = $("<li/>").attr("data-sid", info.sessionId).append(indicator).appendTo(ul);
+                    if (info.country) {
+                        $("<img class='flag'/>")
+                            .attr("src", "/assets/countries/flags/" + info.country.toLowerCase() + ".png")
+                            .attr("alt", info.country)
+                            .attr("title", countries[info.country].name)
+                            .appendTo(li);
+                    }
+                    let str = "Session <strong>" + info.sessionId + "</strong> created at <strong>" + info.createAt + "</strong>";
+                    if (info.username) {
+                        str = "(<strong>" + info.username + "</strong>) " + str;
+                    }
+                    $("<span/>").html(str).appendTo(li);
+                });
+            }
+            if (data.destroyedSessions) {
+                data.destroyedSessions.forEach(function (sessionId) {
+                    ul.find("li[data-sid='" + sessionId + "']").remove();
+                });
+            }
         }
     };
 }

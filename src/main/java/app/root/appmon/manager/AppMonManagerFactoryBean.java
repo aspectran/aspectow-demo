@@ -30,14 +30,14 @@ public class AppMonManagerFactoryBean implements ActivityContextAware, FactoryBe
 
     @Initialize(profile = "!prod")
     public void createAppMonManager() throws Exception {
-        AppMonConfig appMonConfig = AppMonConfigBuilder.build(false);
-        appMonManager = AppMonManagerBuilder.build(context, appMonConfig);
+        AppMonConfig config = AppMonConfigBuilder.build(false);
+        appMonManager = AppMonManagerBuilder.build(context, config);
     }
 
     @Initialize(profile = "prod")
     public void createAppMonManagerForProd() throws Exception {
-        AppMonConfig appMonConfig = AppMonConfigBuilder.build(true);
-        appMonManager = AppMonManagerBuilder.build(context, appMonConfig);
+        AppMonConfig config = AppMonConfigBuilder.build(true);
+        appMonManager = AppMonManagerBuilder.build(context, config);
     }
 
     @Override

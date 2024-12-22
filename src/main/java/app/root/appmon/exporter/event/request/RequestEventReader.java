@@ -4,7 +4,6 @@ import app.root.appmon.config.EventInfo;
 import app.root.appmon.exporter.event.EventExporter;
 import app.root.appmon.exporter.event.EventExporterManager;
 import app.root.appmon.exporter.event.EventReader;
-import com.aspectran.core.component.aspect.AspectRuleRegistry;
 import com.aspectran.core.context.ActivityContext;
 import com.aspectran.core.context.rule.AspectAdviceRule;
 import com.aspectran.core.context.rule.AspectRule;
@@ -49,7 +48,10 @@ public class RequestEventReader implements EventReader {
 
     @Override
     public void start() throws Exception {
-        AspectRuleRegistry aspectRuleRegistry = findAspectRuleRegistry(target);
+        ActivityContext context = CoreServiceHolder.findActivityContext(target);
+        if (context == null) {
+            throw new Exception("Could not find ActivityContext named '" + target + "'");
+        }
 
         AspectRule aspectRule = new AspectRule();
         aspectRule.setId(aspectId);
@@ -76,14 +78,16 @@ public class RequestEventReader implements EventReader {
             return null;
         });
 
-        aspectRuleRegistry.addAspectRule(aspectRule);
+        context.getAspectRuleRegistry().addAspectRule(aspectRule);
     }
 
     @Override
     public void stop() {
         try {
-            AspectRuleRegistry aspectRuleRegistry = findAspectRuleRegistry(target);
-            aspectRuleRegistry.removeAspectRule(aspectId);
+            ActivityContext context = CoreServiceHolder.findActivityContext(target);
+            if (context != null) {
+                context.getAspectRuleRegistry().removeAspectRule(aspectId);
+            }
         } catch (Exception e) {
             logger.warn(e);
         }
@@ -98,15 +102,6 @@ public class RequestEventReader implements EventReader {
                     .put("number", counter.longValue())
                 .endObject()
                 .toString();
-    }
-
-    @NonNull
-    private AspectRuleRegistry findAspectRuleRegistry(String contextName) throws Exception {
-        ActivityContext context = CoreServiceHolder.findActivityContext(contextName);
-        if (context == null) {
-            throw new Exception("Could not find ActivityContext with name '" + target + "'");
-        }
-        return context.getAspectRuleRegistry();
     }
 
 }

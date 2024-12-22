@@ -155,8 +155,6 @@ function AppmonViewer() {
 
     const launchBullet = function (track, data) {
         if (data.elapsedTime) {
-            let elapsedMillis = data.elapsedTime; //millis
-            let lifespan = elapsedMillis + 1100;
             let position = generateRandom(3, 107);
             if (prevPosition) {
                 if (Math.abs(position - prevPosition) <= 20) {
@@ -170,10 +168,16 @@ function AppmonViewer() {
             let bullet = $("<div class='bullet'/>")
                 .attr("sessionId", data.sessionId)
                 .css("top", position + "px")
-                .appendTo(track);
+                .appendTo(track).fadeIn(15);
             setTimeout(function () {
-                bullet.remove();
-            }, lifespan);
+                bullet.addClass("arrive");
+                setTimeout(function () {
+                    bullet.fadeOut(500);
+                    setTimeout(function () {
+                        bullet.remove();
+                    }, 500);
+                }, data.elapsedTime + 300);
+            }, 800);
         }
     };
 

@@ -17,12 +17,16 @@ import com.aspectran.utils.json.JsonBuilder;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * <p>Created: 2024-12-18</p>
  */
 public class RequestEventReader implements EventReader {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestEventReader.class);
+
+    private final AtomicLong counter = new AtomicLong();
 
     private final EventExporterManager eventExporterManager;
 
@@ -39,7 +43,7 @@ public class RequestEventReader implements EventReader {
         this.aspectId = getClass().getName() + ".ASPECT-" + hashCode();
     }
 
-    public EventExporter getEventService() {
+    public EventExporter getEventExporter() {
         return eventExporterManager.getExporter(eventInfo.getName());
     }
 
@@ -58,7 +62,8 @@ public class RequestEventReader implements EventReader {
 
         AspectAdviceRule beforeAspectAdviceRule = aspectRule.newAspectAdviceRule(AspectAdviceType.BEFORE);
         beforeAspectAdviceRule.setAdviceAction(activity -> {
-            RequestEventAdvice requestEventAspect = new RequestEventAdvice(getEventService());
+            long number = counter.incrementAndGet();
+            RequestEventAdvice requestEventAspect = new RequestEventAdvice(number);
             requestEventAspect.request(activity);
             return requestEventAspect;
         });
@@ -66,7 +71,8 @@ public class RequestEventReader implements EventReader {
         AspectAdviceRule afterAspectAdviceRule = aspectRule.newAspectAdviceRule(AspectAdviceType.AFTER);
         afterAspectAdviceRule.setAdviceAction(activity -> {
             RequestEventAdvice requestEventAspect = activity.getBeforeAdviceResult(aspectId);
-            requestEventAspect.complete(activity);
+            String json = requestEventAspect.complete(activity);
+            getEventExporter().broadcast(json);
             return null;
         });
 
@@ -89,7 +95,7 @@ public class RequestEventReader implements EventReader {
                 .prettyPrint(false)
                 .nullWritable(false)
                 .object()
-                    .put("number", RequestEventAdvice.counter.longValue())
+                    .put("number", counter.longValue())
                 .endObject()
                 .toString();
     }

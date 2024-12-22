@@ -1,34 +1,26 @@
 package app.root.appmon.exporter.event.request;
 
-import app.root.appmon.exporter.event.EventExporter;
 import com.aspectran.core.activity.Activity;
 import com.aspectran.core.adapter.SessionAdapter;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.json.JsonBuilder;
-
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * <p>Created: 2024-12-19</p>
  */
 public class RequestEventAdvice {
 
-    static final AtomicLong counter = new AtomicLong();
-
-    private final EventExporter eventExporter;
-
-    private long number;
+    private final long number;
 
     private long startTime;
 
     private String sessionId;
 
-    public RequestEventAdvice(EventExporter eventExporter) {
-        this.eventExporter = eventExporter;
+    public RequestEventAdvice(long number) {
+        this.number = number;
     }
 
     public void request(@NonNull Activity activity) {
-        number = counter.incrementAndGet();
         startTime = System.currentTimeMillis();
 
         // Since the servlet container does not allow session creation after
@@ -39,11 +31,11 @@ public class RequestEventAdvice {
         }
     }
 
-    public void complete(@NonNull Activity activity) {
+    public String complete(@NonNull Activity activity) {
         long elapsedTime = System.currentTimeMillis() - startTime;
         Throwable error = activity.getRootCauseOfRaisedException();
 
-        String json = new JsonBuilder()
+        return new JsonBuilder()
                 .prettyPrint(false)
                 .nullWritable(false)
                 .object()
@@ -55,7 +47,6 @@ public class RequestEventAdvice {
                     .put("error", error)
                 .endObject()
                 .toString();
-        eventExporter.broadcast(json);
     }
 
 }

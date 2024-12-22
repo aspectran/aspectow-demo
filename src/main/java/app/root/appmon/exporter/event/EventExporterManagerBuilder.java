@@ -1,7 +1,6 @@
 package app.root.appmon.exporter.event;
 
 import app.root.appmon.config.EventInfo;
-import app.root.appmon.manager.AppMonManager;
 import com.aspectran.utils.ClassUtils;
 import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
@@ -18,22 +17,19 @@ public class EventExporterManagerBuilder {
     private static final Logger logger = LoggerFactory.getLogger(EventExporterManagerBuilder.class);
 
     @NonNull
-    public static void build(@NonNull AppMonManager appMonManager,
-                             @NonNull String groupName,
+    public static void build(@NonNull EventExporterManager eventExporterManager,
                              @NonNull List<EventInfo> eventInfoList) throws Exception {
-        EventExporterManager eventExporterManager = new EventExporterManager(appMonManager, groupName);
         for (EventInfo eventInfo : eventInfoList) {
             if (logger.isDebugEnabled()) {
                 logger.debug(ToStringBuilder.toString("Create EventExporter", eventInfo));
             }
+
             eventInfo.validateRequiredParameters();
 
             EventReader eventReader = createEventReader(eventExporterManager, eventInfo);
             EventExporter eventExporter = new EventExporter(eventExporterManager, eventInfo, eventReader);
             eventExporterManager.addExporter(eventExporter);
-            appMonManager.addExporterManager(eventExporterManager);
         }
-        appMonManager.addExporterManager(eventExporterManager);
     }
 
     @NonNull
@@ -45,7 +41,7 @@ public class EventExporterManagerBuilder {
             Class<?>[] argTypes = { EventExporterManager.class, EventInfo.class };
             return ClassUtils.createInstance(readerType, args, argTypes);
         } catch (Exception e) {
-            throw new Exception("Failed to create event exporter: " + eventInfo, e);
+            throw new Exception("Failed to create event reader: " + eventInfo, e);
         }
     }
     

@@ -1,7 +1,7 @@
 package app.root.appmon.exporter.log;
 
 import app.root.appmon.config.LogInfo;
-import app.root.appmon.manager.AppMonManager;
+import com.aspectran.core.adapter.ApplicationAdapter;
 import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.logging.Logger;
@@ -16,10 +16,9 @@ public abstract class LogExporterManagerBuilder {
     private static final Logger logger = LoggerFactory.getLogger(LogExporterManagerBuilder.class);
 
     @NonNull
-    public static void build(@NonNull AppMonManager appMonManager,
-                             @NonNull String groupName,
-                             @NonNull List<LogInfo> logInfoList) throws IOException {
-        LogExporterManager logExporterManager = new LogExporterManager(appMonManager, groupName);
+    public static void build(@NonNull LogExporterManager logExporterManager,
+                             @NonNull List<LogInfo> logInfoList,
+                             @NonNull ApplicationAdapter applicationAdapter) throws IOException {
         for (LogInfo logInfo : logInfoList) {
             if (logger.isDebugEnabled()) {
                 logger.debug(ToStringBuilder.toString("Create LogExporter", logInfo));
@@ -29,7 +28,7 @@ public abstract class LogExporterManagerBuilder {
 
             File logFile = null;
             try {
-                String file = appMonManager.getApplicationAdapter().toRealPath(logInfo.getFile());
+                String file = applicationAdapter.toRealPath(logInfo.getFile());
                 logFile = new File(file).getCanonicalFile();
             } catch (IOException e) {
                 logger.error("Failed to resolve absolute path to log file " + logInfo.getFile(), e);
@@ -39,7 +38,6 @@ public abstract class LogExporterManagerBuilder {
                 logExporterManager.addExporter(logExporter);
             }
         }
-        appMonManager.addExporterManager(logExporterManager);
     }
 
 }

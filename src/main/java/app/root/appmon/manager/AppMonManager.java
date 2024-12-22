@@ -37,7 +37,7 @@ public class AppMonManager extends InstantActivitySupport {
 
     private final List<LogExporterManager> logExporterManagers = new ArrayList<>();
 
-    private final List<AppMonEndpoint> endpoints = new ArrayList<>();
+    private final Set<AppMonEndpoint> endpoints = new HashSet<>();
 
     public AppMonManager(EndpointInfoHolder endpointInfoHolder, GroupInfoHolder groupInfoHolder) {
         this.endpointInfoHolder = endpointInfoHolder;
@@ -56,36 +56,26 @@ public class AppMonManager extends InstantActivitySupport {
         return super.getApplicationAdapter();
     }
 
-    public void addExporterManager(EventExporterManager eventExporterManager) {
-        synchronized (eventExporterManagers) {
-            if (!eventExporterManagers.contains(eventExporterManager)) {
-                eventExporterManagers.add(eventExporterManager);
-            }
-        }
+    EventExporterManager newEventExporterManager(String groupName) {
+        EventExporterManager eventExporterManager = new EventExporterManager(this, groupName);
+        eventExporterManagers.add(eventExporterManager);
+        return eventExporterManager;
     }
 
-    public void addExporterManager(StateExporterManager stateExporterManager) {
-        synchronized (stateExporterManagers) {
-            if (!stateExporterManagers.contains(stateExporterManager)) {
-                stateExporterManagers.add(stateExporterManager);
-            }
-        }
+    StateExporterManager newStateExporterManager(String groupName) {
+        StateExporterManager stateExporterManager = new StateExporterManager(this, groupName);
+        stateExporterManagers.add(stateExporterManager);
+        return stateExporterManager;
     }
 
-    public void addExporterManager(LogExporterManager logExporterManager) {
-        synchronized (logExporterManagers) {
-            if (!logExporterManagers.contains(logExporterManager)) {
-                logExporterManagers.add(logExporterManager);
-            }
-        }
+    LogExporterManager newLogExporterManager(String groupName) {
+        LogExporterManager logExporterManager = new LogExporterManager(this, groupName);
+        logExporterManagers.add(logExporterManager);
+        return logExporterManager;
     }
 
     public void addEndpoint(AppMonEndpoint endpoint) {
-        synchronized (endpoints) {
-            if (!endpoints.contains(endpoint)) {
-                endpoints.add(endpoint);
-            }
-        }
+        endpoints.add(endpoint);
     }
 
     public EndpointInfo getResidentEndpointInfo() {

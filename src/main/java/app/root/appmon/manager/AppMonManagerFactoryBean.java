@@ -1,5 +1,6 @@
 package app.root.appmon.manager;
 
+import app.root.appmon.config.AppMonConfig;
 import app.root.appmon.config.AppMonConfigBuilder;
 import com.aspectran.core.component.bean.ablility.FactoryBean;
 import com.aspectran.core.component.bean.annotation.AvoidAdvice;
@@ -15,28 +16,33 @@ import com.aspectran.utils.annotation.jsr305.NonNull;
  */
 @Component
 @Bean("appMonManager")
-public class AppMonManagerFactoryBean extends AppMonManagerFactory
-        implements ActivityContextAware, FactoryBean<AppMonManager> {
+public class AppMonManagerFactoryBean implements ActivityContextAware, FactoryBean<AppMonManager> {
+
+    private ActivityContext context;
+
+    private AppMonManager appMonManager;
 
     @Override
     @AvoidAdvice
     public void setActivityContext(@NonNull ActivityContext context) {
-        super.setActivityContext(context);
+        this.context = context;
     }
 
     @Initialize(profile = "!prod")
-    public void createAppMonConfig() throws Exception {
-        setAppMonConfig(AppMonConfigBuilder.build(false));
+    public void createAppMonManager() throws Exception {
+        AppMonConfig appMonConfig = AppMonConfigBuilder.build(false);
+        appMonManager = AppMonManagerBuilder.build(context, appMonConfig);
     }
 
     @Initialize(profile = "prod")
-    public void createAppMonConfigForProd() throws Exception {
-        setAppMonConfig(AppMonConfigBuilder.build(true));
+    public void createAppMonManagerForProd() throws Exception {
+        AppMonConfig appMonConfig = AppMonConfigBuilder.build(true);
+        appMonManager = AppMonManagerBuilder.build(context, appMonConfig);
     }
 
     @Override
-    public AppMonManager getObject() throws Exception {
-        return createAppMonManager();
+    public AppMonManager getObject() {
+        return appMonManager;
     }
 
 }

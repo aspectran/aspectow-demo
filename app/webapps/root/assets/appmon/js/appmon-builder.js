@@ -123,7 +123,7 @@ function AppMonBuilder() {
                 let trackBox = addTrackBox(endpointBox, eventInfo);
                 let reqNum = trackBox.find(".req-num");
                 endpoint.viewer.putTrack(groupInfo.name, eventInfo.name, trackBox);
-                endpoint.viewer.putIndicator(groupInfo.name, "event", "req-num", reqNum);
+                endpoint.viewer.putIndicator(groupInfo.name, "event", eventInfo.name, reqNum);
             }
             for (let key in groupInfo.logs) {
                 let logInfo = groupInfo.logs[key];

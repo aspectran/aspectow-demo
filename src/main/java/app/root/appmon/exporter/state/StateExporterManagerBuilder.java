@@ -1,7 +1,6 @@
 package app.root.appmon.exporter.state;
 
 import app.root.appmon.config.StateInfo;
-import app.root.appmon.manager.AppMonManager;
 import com.aspectran.utils.ClassUtils;
 import com.aspectran.utils.ToStringBuilder;
 import com.aspectran.utils.annotation.jsr305.NonNull;
@@ -15,22 +14,19 @@ public abstract class StateExporterManagerBuilder {
     private static final Logger logger = LoggerFactory.getLogger(StateExporterManagerBuilder.class);
 
     @NonNull
-    public static StateExporterManager build(@NonNull AppMonManager appMonManager,
-                                             @NonNull String groupName,
-                                             @NonNull List<StateInfo> stateInfoList) throws Exception {
-        StateExporterManager stateExporterManager = new StateExporterManager(appMonManager, groupName);
+    public static void build(@NonNull StateExporterManager stateExporterManager,
+                             @NonNull List<StateInfo> stateInfoList) throws Exception {
         for (StateInfo stateInfo : stateInfoList) {
             if (logger.isDebugEnabled()) {
                 logger.debug(ToStringBuilder.toString("Create StateExporter", stateInfo));
             }
+
             stateInfo.validateRequiredParameters();
 
             StateReader stateReader = createStateReader(stateExporterManager, stateInfo);
             StateExporter stateExporter = new StateExporter(stateExporterManager, stateInfo, stateReader);
             stateExporterManager.addExporter(stateExporter);
-            appMonManager.addExporterManager(stateExporterManager);
         }
-        return stateExporterManager;
     }
 
     @NonNull

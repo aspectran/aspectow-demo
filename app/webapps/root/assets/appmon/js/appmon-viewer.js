@@ -125,7 +125,7 @@ function AppmonViewer() {
         switch (type) {
             case "event":
                 indicate(endpoint, group, type, label);
-                processEvent(group, label, name, JSON.parse(text));
+                processEvent(label, name, JSON.parse(text));
                 break;
             case "log":
                 indicate(endpoint, group, type, label);
@@ -137,10 +137,10 @@ function AppmonViewer() {
         }
     };
 
-    const processEvent = function (group, label, name, data) {
+    const processEvent = function (label, name, data) {
         switch (label) {
             case "request":
-                let reqNum = indicators[group + ":event:req-num"];
+                let reqNum = indicators[name];
                 if (reqNum) {
                     reqNum.text(data.number);
                 }
@@ -186,7 +186,7 @@ function AppmonViewer() {
         blink(indicator1);
         if (visible) {
             if (type === "log") {
-                let indicator3 = indicators[group + ":" + type + ":" + label];
+                let indicator3 = indicators[group + ":log:" + label];
                 blink(indicator3);
             } else {
                 let indicator2 = indicators["group:event:" + group];

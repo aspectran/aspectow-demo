@@ -155,12 +155,12 @@ function AppmonViewer() {
 
     const launchBullet = function (track, data) {
         if (data.elapsedTime) {
-            let position = generateRandom(3, 107);
+            let position = generateRandom(3, 103);
             if (prevPosition) {
                 if (Math.abs(position - prevPosition) <= 20) {
-                    position = generateRandom(3, 111);
+                    position = generateRandom(3, 103);
                     if (Math.abs(position - prevPosition) <= 20) {
-                        position = generateRandom(3, 111);
+                        position = generateRandom(3, 103);
                     }
                 }
             }

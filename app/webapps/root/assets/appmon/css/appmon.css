@@ -107,10 +107,9 @@
     left: 0;
     right: 0;
     bottom: 0;
-    color: white;
+    color: #0cf418;
     font-size: 3em;
     text-align: center;
-    opacity: .8;
 }
 
 .log-box .status-bar {

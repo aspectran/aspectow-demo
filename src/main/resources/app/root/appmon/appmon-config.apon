@@ -41,14 +41,14 @@ group: {
         name: app
         title: JPetStore App
         file: /logs/jpetstore.log
-        lastLines: 200
+        lastLines: 1000
         sampleInterval: 300
     }
     log: {
         name: access
         title: JPetStore Access
         file: /logs/jpetstore-access.log
-        lastLines: 200
+        lastLines: 1000
         sampleInterval: 300
     }
 }
@@ -71,14 +71,14 @@ group: {
         name: app
         title: Demo App
         file: /logs/demo.log
-        lastLines: 200
+        lastLines: 1000
         sampleInterval: 300
     }
     log: {
         name: access
         title: Demo Access
         file: /logs/demo-access.log
-        lastLines: 200
+        lastLines: 1000
         sampleInterval: 300
     }
 }
@@ -101,14 +101,14 @@ group: {
         name: app
         title: Root App
         file: /logs/root.log
-        lastLines: 200
+        lastLines: 1000
         sampleInterval: 300
     }
     log: {
         name: access
         title: Root Access
         file: /logs/root-access.log
-        lastLines: 200
+        lastLines: 1000
         sampleInterval: 300
     }
 }

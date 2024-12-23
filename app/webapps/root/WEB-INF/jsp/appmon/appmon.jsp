@@ -1,12 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
-<link rel="stylesheet" href="<aspectran:url value="/assets/appmon/css/appmon.css?20241222"/>">
+<link rel="stylesheet" href="<aspectran:url value="/assets/appmon/css/appmon.css?20241223"/>">
 <script src="<aspectran:url value="/assets/countries/countries.js?20241217"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/appmon-builder.js?20241222"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/appmon-viewer.js?20241222"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/appmon-websocket-client.js?20241222"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/appmon-polling-client.js?20241222"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/appmon-builder.js?20241223"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/appmon-viewer.js?20241223"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/appmon-websocket-client.js?20241223"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/appmon-polling-client.js?20241223"/>"></script>
 <div class="grid-x endpoint-box compact horizontal">
     <div class="cell options t10 b5">
         <ul class="speed-options">
@@ -25,23 +25,13 @@
     </dl>
     <div class="cell group-box">
         <div class="grid-x">
+            <dl class="cell tabs b0">
+                <dd class="tabs-title"><a><span class="bullet fi-list-bullet"></span>
+                    <span class="title"> </span> <span class="indicator fi-loop"></span></a>
+                </dd>
+            </dl>
             <div class="cell track-box">
                 <div class="track-stack"><div class="req-num"></div></div>
-            </div>
-            <div class="cell log-box">
-                <div class="status-bar">
-                    <h4 class="ellipses"></h4>
-                    <a href="#" class="tailing-switch" title="Scroll to End of Log">
-                        <span class="tailing-status"></span>
-                    </a>
-                    <a href="#" class="clear-screen" title="Clear screen">
-                        <span class="icon fi-x"></span>
-                    </a>
-                    <a href="#" class="pause-switch" title="Pause log output">
-                        <span class="icon fi-pause"></span>
-                    </a>
-                </div>
-                <pre class="log"></pre>
             </div>
             <div class="cell state-box">
                 <div class="grid-x">
@@ -71,6 +61,21 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="cell log-box">
+                <div class="status-bar">
+                    <h4 class="ellipses"></h4>
+                    <a href="#" class="tailing-switch" title="Scroll to End of Log">
+                        <span class="tailing-status"></span>
+                    </a>
+                    <a href="#" class="clear-screen" title="Clear screen">
+                        <span class="icon fi-x"></span>
+                    </a>
+                    <a href="#" class="pause-switch" title="Pause log output">
+                        <span class="icon fi-pause"></span>
+                    </a>
+                </div>
+                <pre class="log"></pre>
             </div>
         </div>
     </div>

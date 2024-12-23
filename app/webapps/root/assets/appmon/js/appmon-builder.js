@@ -110,13 +110,15 @@ function AppMonBuilder() {
     };
 
     const buildEndpoint = function (endpoint, payload) {
-        let endpointBox = addEndpoint(endpoint);
+        let endpointBox = addEndpointBox(endpoint);
         let indicatorEndpoint = $(".endpoint.tabs .tabs-title.available .indicator").eq(endpoint.index);
         endpoint.viewer.putIndicator("endpoint", "event", endpoint.index, indicatorEndpoint);
         for (let key in payload.groups) {
             let groupInfo = payload.groups[key];
-            addGroup(endpointBox, groupInfo);
-            let indicatorGroup = endpointBox.find(".group.tabs .tabs-title.available[data-name=" + groupInfo.name + "]").find(".indicator");
+            addGroupBox(endpointBox, groupInfo);
+            let indicatorGroup = endpointBox
+                .find(".group.tabs .tabs-title[data-name=" + groupInfo.name + "], .group-box[data-name=" + groupInfo.name + "] .tabs-title")
+                .find(".indicator");
             endpoint.viewer.putIndicator("group", "event", groupInfo.name, indicatorGroup);
             for (let key in groupInfo.events) {
                 let eventInfo = groupInfo.events[key];
@@ -124,6 +126,11 @@ function AppMonBuilder() {
                 let reqNum = trackBox.find(".req-num");
                 endpoint.viewer.putTrack(groupInfo.name, eventInfo.name, trackBox);
                 endpoint.viewer.putIndicator(groupInfo.name, "event", eventInfo.name, reqNum);
+            }
+            for (let key in groupInfo.states) {
+                let stateInfo = groupInfo.states[key];
+                let stateBox = addStateBox(endpointBox, stateInfo);
+                endpoint.viewer.putStateBox(groupInfo.name, stateInfo.name, stateBox);
             }
             for (let key in groupInfo.logs) {
                 let logInfo = groupInfo.logs[key];
@@ -134,11 +141,6 @@ function AppMonBuilder() {
                 endpoint.viewer.putLogBox(groupInfo.name, logInfo.name, log);
                 let indicatorLog = logBox.find(".status-bar");
                 endpoint.viewer.putIndicator(groupInfo.name, "log", logInfo.name, indicatorLog);
-            }
-            for (let key in groupInfo.states) {
-                let stateInfo = groupInfo.states[key];
-                let stateBox = addStateBox(endpointBox, stateInfo);
-                endpoint.viewer.putStateBox(groupInfo.name, stateInfo.name, stateBox);
             }
         }
         if (endpoint.mode === "polling") {
@@ -210,8 +212,6 @@ function AppMonBuilder() {
             endpoint.viewer.clear(log);
         });
         $(".layout-options li a").click(function() {
-            let endpointBox = $(this).closest(".endpoint-box");
-            let logBox = endpointBox.find(".log-box.available");
             let liStacked = $(".layout-options li.stacked");
             let liTabbed = $(".layout-options li.tabbed");
             let li = $(this).parent();
@@ -219,23 +219,26 @@ function AppMonBuilder() {
                 if (li.hasClass("tabbed")) {
                     liTabbed.addClass("on");
                     liStacked.removeClass("on");
-                    endpointBox.removeClass("stacked");
+                    $(".endpoint-box").removeClass("stacked");
                 } else if (li.hasClass("stacked")) {
                     liTabbed.removeClass("on");
                     liStacked.addClass("on");
-                    endpointBox.addClass("stacked");
+                    $(".endpoint-box").addClass("stacked");
                 } else if (li.hasClass("compact")) {
                     li.addClass("on");
-                    endpointBox.addClass("compact");
-                    logBox.addClass("large-6");
+                    $(".endpoint-box").addClass("compact")
+                        .find(".log-box.available")
+                            .addClass("large-6");
                 }
             } else {
                 if (li.hasClass("compact")) {
                     li.removeClass("on");
-                    endpointBox.removeClass("compact");
-                    logBox.removeClass("large-6");
+                    $(".endpoint-box").removeClass("compact")
+                        .find(".log-box.available")
+                            .removeClass("large-6");
                 }
             }
+            let endpointBox = $(this).closest(".endpoint-box");
             let endpointIndex = endpointBox.data("index");
             endpointBox.find(".log-box.available").each(function () {
                 if ($(this).find(".tailing-status").hasClass("on")) {
@@ -257,7 +260,7 @@ function AppMonBuilder() {
         });
     };
 
-    const addEndpoint = function (endpointInfo) {
+    const addEndpointBox = function (endpointInfo) {
         let tabs = $(".endpoint.tabs");
         let tab0 = tabs.find(".tabs-title").eq(0);
         let tab = tab0.hide().clone();
@@ -278,7 +281,7 @@ function AppMonBuilder() {
             .insertAfter(endpointBox.last()).show();
     };
 
-    const addGroup = function (endpointBox, groupInfo) {
+    const addGroupBox = function (endpointBox, groupInfo) {
         let endpointTitle = endpointBox.data("title");
         let tabs = endpointBox.find(".group.tabs");
         let tab0 = tabs.find(".tabs-title").eq(0);
@@ -293,8 +296,13 @@ function AppMonBuilder() {
         let groupBox = endpointBox.find(".group-box").eq(0).hide().clone();
         groupBox.addClass("available")
             .attr("data-name", groupInfo.name)
-            .attr("data-title", groupInfo.title);
-        return groupBox.appendTo(endpointBox);
+            .attr("data-title", groupInfo.title)
+            .appendTo(endpointBox);
+        groupBox.find(".tabs .tabs-title")
+            .addClass("is-active")
+                .find("a .title")
+                .text(" " + groupInfo.title + " ");
+        return groupBox;
     };
 
     const addTrackBox = function (endpointBox, eventInfo) {

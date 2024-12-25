@@ -1,6 +1,7 @@
-package app.root.common.listener;
+package app.demo.common.listener;
 
-import app.root.util.CountryCodeLookup;
+import app.root.util.IPToCountryLookup;
+import app.root.util.TransletUtils;
 import com.aspectran.core.activity.Activity;
 import com.aspectran.core.activity.InstantActivitySupport;
 import com.aspectran.core.component.bean.ablility.InitializableBean;
@@ -14,25 +15,32 @@ import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.logging.Logger;
 import com.aspectran.utils.logging.LoggerFactory;
 
+import java.util.Locale;
+
 /**
  * <p>Created: 2024-12-13</p>
  */
 @Component
 @AvoidAdvice
-public class UserCountryCodeListener extends InstantActivitySupport implements SessionListener, InitializableBean {
+public class UserCountryLookupListener extends InstantActivitySupport implements SessionListener, InitializableBean {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserCountryCodeListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(app.root.common.listener.UserCountryLookupListener.class);
 
     @Override
     public void sessionCreated(@NonNull Session session) {
         Activity activity = getCurrentActivity();
-        String countryCode = CountryCodeLookup.getInstance().getCountryCode(activity.getTranslet());
-        if (StringUtils.hasLength(countryCode)) {
-            session.setAttribute("user.countryCode", countryCode);
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("Country code of Session " + session.getId() + ": " +
-                    (countryCode == null ? "None" : countryCode));
+        String ipAddress = TransletUtils.getRemoteAddr(activity.getTranslet());
+        if (!StringUtils.isEmpty(ipAddress)) {
+            session.setAttribute("user.ipAddress", ipAddress);
+            Locale locale = activity.getTranslet().getRequestAdapter().getLocale();
+            String countryCode = IPToCountryLookup.getInstance().getCountryCode(ipAddress, locale);
+            if (StringUtils.hasLength(countryCode)) {
+                session.setAttribute("user.countryCode", countryCode);
+            }
+            if (logger.isDebugEnabled()) {
+                logger.debug("Country code of IP address " + ipAddress + ": " +
+                        (countryCode == null ? "None" : countryCode));
+            }
         }
     }
 

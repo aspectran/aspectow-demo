@@ -172,7 +172,7 @@
 .log-box .status-bar .tailing-switch .tailing-status.on {
     background-color: #39aa56;
 }
-.log-box .log {
+.log-box .log-console {
     clear: both;
     margin: 0;
     padding: 10px;
@@ -184,7 +184,7 @@
     border-radius: 0;
     box-shadow: -20px 20px 60px -20px #0d1939 inset;
 }
-.log-box .log p {
+.log-box .log-console p {
     font-size: 12px;
     line-height: 16px;
     white-space: nowrap;
@@ -192,11 +192,11 @@
     margin: 0;
     padding: 0;
 }
-.log-box .log p:hover {
+.log-box .log-console p:hover {
     color: #fafafa;
     background-color: #333;
 }
-.log-box .log p.event {
+.log-box .log-console p.event {
     border-radius: 20px;
     text-align: center;
     border: 1px solid rgba(186, 254, 230, 0.53);
@@ -205,22 +205,22 @@
     color: #fff;
     background-color: #333;
 }
-.log-box .log p.event.error {
+.log-box .log-console p.event.error {
     background-color: palevioletred;
     border: 1px solid palevioletred;
     color: yellow;
 }
 
-.state-box {
+.display-box {
     display: none;
 }
-.state-box .panel {
+.display-box .panel {
     border: 1px solid #ccc;
     border-bottom: 2px solid #ccc;
     border-radius: 0;
     height: 260px;
 }
-.state-box dl.sessions dt {
+.display-box dl.session-statistics dt {
     float: left;
     clear: left;
     padding: 0;
@@ -228,7 +228,7 @@
     height: 30px;
     font-size: 1em;
 }
-.state-box dl.sessions dd {
+.display-box dl.session-statistics dd {
     text-align: right;
     font-weight: bold;
     font-size: 1em;
@@ -246,6 +246,12 @@
 .sessions-box ul.sessions li {
     list-style-type: none;
     white-space: nowrap;
+}
+.sessions-box ul.sessions li.inactive {
+    opacity: .5;
+}
+.sessions-box ul.sessions li.hidden {
+    display: none;
 }
 .sessions-box ul.sessions li .indicator {
     background-color: #13CF13;

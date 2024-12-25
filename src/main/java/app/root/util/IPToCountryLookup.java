@@ -43,9 +43,9 @@ import java.util.Locale;
  *
  * <p>Created: 2020/06/29</p>
  */
-public class CountryCodeLookup {
+public class IPToCountryLookup {
 
-    private static final Logger logger = LoggerFactory.getLogger(CountryCodeLookup.class);
+    private static final Logger logger = LoggerFactory.getLogger(IPToCountryLookup.class);
 
     private static final int TIMEOUT = 3000;
 
@@ -54,7 +54,7 @@ public class CountryCodeLookup {
     private static final String FAILED = "(failed)";
 
     private static final Cache<String, String> cache =
-            new ConcurrentLruCache<>(64, CountryCodeLookup::getCountryCode);
+            new ConcurrentLruCache<>(64, IPToCountryLookup::getCountryCode);
 
     private static final List<String> iso2CountryCodes;
 
@@ -66,7 +66,7 @@ public class CountryCodeLookup {
 
     private static final RequestConfig requestConfig;
 
-    private static final CountryCodeLookup instance;
+    private static final IPToCountryLookup instance;
 
     static {
         iso2CountryCodes = List.of(Locale.getISOCountries());
@@ -86,10 +86,10 @@ public class CountryCodeLookup {
                 .setConnectionRequestTimeout(TIMEOUT)
                 .build();
 
-        instance = new CountryCodeLookup();
+        instance = new IPToCountryLookup();
     }
 
-    private CountryCodeLookup() {
+    private IPToCountryLookup() {
     }
 
     public String getCountryCode(Translet translet) {
@@ -149,7 +149,7 @@ public class CountryCodeLookup {
         return (locale != null ? locale.getCountry() : null);
     }
 
-    public static CountryCodeLookup getInstance() {
+    public static IPToCountryLookup getInstance() {
         return instance;
     }
 

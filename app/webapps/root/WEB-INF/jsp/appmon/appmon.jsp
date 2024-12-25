@@ -1,12 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
-<link rel="stylesheet" href="<aspectran:url value="/assets/appmon/css/appmon.css?20241223"/>">
+<link rel="stylesheet" href="<aspectran:url value="/assets/appmon/css/appmon.css?20241225"/>">
 <script src="<aspectran:url value="/assets/countries/countries.js?20241217"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/appmon-builder.js?20241223"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/appmon-viewer.js?20241223"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/appmon-websocket-client.js?20241223"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/appmon-polling-client.js?20241223"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/appmon-builder.js?20241225"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/appmon-viewer.js?20241225"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/appmon-websocket-client.js?20241225"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/appmon-polling-client.js?20241225"/>"></script>
 <div class="grid-x endpoint-box compact horizontal">
     <div class="cell options t10 b5">
         <ul class="speed-options">
@@ -33,11 +33,11 @@
             <div class="cell track-box">
                 <div class="track-stack"><div class="req-num"></div></div>
             </div>
-            <div class="cell state-box">
+            <div class="cell display-box">
                 <div class="grid-x">
                     <div class="cell small-12 large-4">
                         <div class="panel">
-                            <dl class="sessions">
+                            <dl class="session-statistics">
                                 <dt>Current Active Sessions</dt>
                                 <dd><span class="number activeSessionCount">0</span></dd>
                                 <dt>Current Inactive Sessions</dt>
@@ -75,7 +75,7 @@
                         <span class="icon fi-pause"></span>
                     </a>
                 </div>
-                <pre class="log"></pre>
+                <pre class="log-console"></pre>
             </div>
         </div>
     </div>

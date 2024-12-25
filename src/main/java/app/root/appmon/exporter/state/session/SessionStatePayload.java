@@ -41,6 +41,10 @@ public class SessionStatePayload {
 
     private String[] destroyedSessions;
 
+    private String[] evictedSessions;
+
+    private JsonString[] residedSessions;
+
     public long getCreatedSessionCount() {
         return createdSessionCount;
     }
@@ -111,6 +115,22 @@ public class SessionStatePayload {
 
     public void setDestroyedSessions(String[] destroyedSessions) {
         this.destroyedSessions = destroyedSessions;
+    }
+
+    public String[] getEvictedSessions() {
+        return evictedSessions;
+    }
+
+    public void setEvictedSessions(String[] evictedSessions) {
+        this.evictedSessions = evictedSessions;
+    }
+
+    public JsonString[] getResidedSessions() {
+        return residedSessions;
+    }
+
+    public void setResidedSessions(JsonString[] residedSessions) {
+        this.residedSessions = residedSessions;
     }
 
     @Override

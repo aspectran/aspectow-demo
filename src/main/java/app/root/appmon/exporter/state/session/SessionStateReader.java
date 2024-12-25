@@ -132,6 +132,20 @@ public class SessionStateReader implements StateReader {
         return payload.toJson();
     }
 
+    String readWithEvictedSession(String sessionId) {
+        SessionStatePayload payload = load();
+        oldPayload = payload;
+        payload.setEvictedSessions(new String[] { sessionId });
+        return payload.toJson();
+    }
+
+    String readWithResidedSession(Session session) {
+        SessionStatePayload payload = load();
+        oldPayload = payload;
+        payload.setResidedSessions(new JsonString[] { serialize(session) });
+        return payload.toJson();
+    }
+
     SessionStatePayload loadWithActiveSessions() {
         SessionStatePayload payload = load();
         payload.setCreatedSessions(getAllActiveSessions());
@@ -165,7 +179,7 @@ public class SessionStateReader implements StateReader {
         return list.toArray(new JsonString[0]);
     }
 
-    public JsonString serialize(Session session) {
+    private static JsonString serialize(Session session) {
         Assert.notNull(session, "Session must not be null");
         UserSession userSession = session.getAttribute(USER_SESSION_KEY);
         String username;
@@ -180,20 +194,21 @@ public class SessionStateReader implements StateReader {
                 .object()
                     .put("sessionId", session.getId())
                     .put("username", username)
-                    .put("country", session.getAttribute("user.countryCode"))
+                    .put("countryCode", session.getAttribute("user.countryCode"))
+                    .put("ipAddress", session.getAttribute("user.ipAddress"))
                     .put("createAt", formatTime(session.getCreationTime()))
                 .endObject()
                 .toJsonString();
     }
 
     @NonNull
-    private String formatTime(long time) {
+    private static String formatTime(long time) {
         LocalDateTime date = LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault());
         return date.toString();
     }
 
     @NonNull
-    private String formatDuration(long startTime) {
+    private static String formatDuration(long startTime) {
         Instant start = Instant.ofEpochMilli(startTime);
         Instant end = Instant.now();
         Duration duration = Duration.between(start, end);

@@ -1,5 +1,4 @@
 function AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
-
     this.start = function () {
         join();
     };
@@ -44,7 +43,7 @@ function AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
             success: function (data) {
                 if (data) {
                     for (let key in data) {
-                        endpoint.viewer.processMessage(endpoint, data[key]);
+                        endpoint.viewer.processMessage(data[key]);
                     }
                     setTimeout(polling, endpoint.pollingInterval);
                 } else {
@@ -71,5 +70,4 @@ function AppmonPollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
             }
         });
     };
-
 }

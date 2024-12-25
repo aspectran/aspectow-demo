@@ -1,119 +1,107 @@
-function AppmonViewer() {
-    let logs = {};
-    let states = {};
-    let tracks = {};
-    let indicators = {};
+function AppmonViewer(endpoint) {
+    let $tracks = {};
+    let $displays = {};
+    let $consoles = {};
+    let $indicators = {};
     let visible = false;
     let prevPosition = 0;
 
-    this.putLogBox = function (group, label, logBox) {
-        logs[group + ":log:" + label] = logBox;
+    this.putTrack = function (group, label, $track) {
+        $tracks[group + ":event:" + label] = $track;
     };
 
-    this.putStateBox = function (group, label, stateBox) {
-        states[group + ":state:" + label] = stateBox;
+    this.putConsole = function (group, label, $console) {
+        $consoles[group + ":log:" + label] = $console;
     };
 
-    this.putTrack = function (group, label, trackBox) {
-        tracks[group + ":event:" + label] = trackBox;
+    this.putDisplay = function (group, label, $display) {
+        $displays[group + ":state:" + label] = $display;
     };
 
-    this.putIndicator = function (group, type, label, indicator) {
-        indicators[group + ":" + type + ":" + label] = indicator;
-    };
-
-    const getLogBox = function (name) {
-        if (logs && name) {
-            return logs[name];
-        } else {
-            return $(".log");
-        }
-    };
-
-    const getStateBox = function (name) {
-        if (states && name) {
-            return states[name];
-        } else {
-            return $(".state-box");
-        }
+    this.putIndicator = function (group, type, label, $indicator) {
+        $indicators[group + ":" + type + ":" + label] = $indicator;
     };
 
     const getTrack = function (name) {
-        if (tracks && name) {
-            return tracks[name];
-        } else {
-            return $(".track-box");
-        }
+        return ($tracks && name ? $tracks[name] : null);
     };
 
-    this.refresh = function (logBox) {
-        if (logBox) {
-            scrollToBottom(logBox);
+    const getDisplay = function (name) {
+        return ($displays && name ? $displays[name] : null);
+    };
+
+    const getConsole = function (name) {
+        return ($consoles && name ? $consoles[name] : null);
+    };
+
+    this.refreshConsole = function ($console) {
+        if ($console) {
+            scrollToBottom($console);
         } else {
-            for (let key in logs) {
-                if (!logs[key].data("pause")) {
-                    scrollToBottom(logs[key]);
+            for (let key in $consoles) {
+                if (!$consoles[key].data("pause")) {
+                    scrollToBottom($consoles[key]);
                 }
             }
         }
     };
 
-    this.clear = function (logBox) {
-        if (logBox) {
-            logBox.empty();
+    this.clearConsole = function ($console) {
+        if ($console) {
+            $console.empty();
         }
     };
 
-    const scrollToBottom = function (logBox) {
-        if (logBox.data("tailing")) {
-            let timer = logBox.data("timer");
+    const scrollToBottom = function ($console) {
+        if ($console && $console.data("tailing")) {
+            let timer = $console.data("timer");
             if (timer) {
                 clearTimeout(timer);
             }
             timer = setTimeout(function () {
-                logBox.scrollTop(logBox.prop("scrollHeight"));
-                if (logBox.find("p").length > 11000) {
-                    logBox.find("p:gt(10000)").remove();
+                $console.scrollTop($console.prop("scrollHeight"));
+                if ($console.find("p").length > 11000) {
+                    $console.find("p:gt(10000)").remove();
                 }
             }, 300);
-            logBox.data("timer", timer);
+            $console.data("timer", timer);
         }
     };
 
     this.setVisible = function (flag) {
         visible = !!flag;
         if (!visible) {
-            for (let key in tracks) {
-                tracks[key].find(".bullet").remove();
+            for (let key in $tracks) {
+                $tracks[key].find(".bullet").remove();
             }
         }
     };
 
-    this.printEventMessage = function (text, name) {
+    this.printEventMessage = function (msg, name) {
         if (name) {
-            let log = getLogBox(name);
-            $("<p/>").addClass("event ellipses").html(text).appendTo(log);
-            scrollToBottom(log);
+            let $console = getConsole(name);
+            $("<p/>").addClass("event ellipses").html(msg).appendTo($console);
+            scrollToBottom($console);
         } else {
-            for (let key in logs) {
-                this.printEventMessage(text, key);
+            for (let key in $consoles) {
+                this.printEventMessage(msg, key);
             }
         }
     };
 
-    this.printErrorMessage = function (text, name) {
-        if (name || !Object.keys(logs).length) {
-            let log = getLogBox(name);
-            $("<p/>").addClass("event error").html(text).appendTo(log);
-            scrollToBottom(log);
+    this.printErrorMessage = function (msg, name) {
+        if (name || !Object.keys($consoles).length) {
+            let $console = getConsole(name);
+            $("<p/>").addClass("event error").html(msg).appendTo($console);
+            scrollToBottom($console);
         } else {
-            for (let key in logs) {
-                this.printErrorMessage(text, key);
+            for (let key in $consoles) {
+                this.printErrorMessage(msg, key);
             }
         }
     };
 
-    this.processMessage = function (endpoint, msg) {
+    this.processMessage = function (msg) {
         let idx1 = msg.indexOf(":");
         let idx2 = msg.indexOf(":", idx1 + 1);
         let idx3 = msg.indexOf(":", idx2 + 1);
@@ -124,11 +112,11 @@ function AppmonViewer() {
         let text = msg.substring(idx3 + 1);
         switch (type) {
             case "event":
-                indicate(endpoint, group, type, label);
+                indicate(group, type, label);
                 processEvent(label, name, JSON.parse(text));
                 break;
             case "log":
-                indicate(endpoint, group, type, label);
+                indicate(group, type, label);
                 printLog(name, text);
                 break;
             case "state":
@@ -140,20 +128,20 @@ function AppmonViewer() {
     const processEvent = function (label, name, data) {
         switch (label) {
             case "request":
-                let reqNum = indicators[name];
-                if (reqNum) {
-                    reqNum.text(data.number);
+                let $reqNum = $indicators[name];
+                if ($reqNum) {
+                    $reqNum.text(data.number);
                 }
                 if (visible) {
-                    let track = getTrack(name);
-                    if (track) {
-                        launchBullet(track, data);
+                    let $track = getTrack(name);
+                    if ($track) {
+                        launchBullet($track, data);
                     }
                 }
         }
     }
 
-    const launchBullet = function (track, data) {
+    const launchBullet = function ($track, data) {
         if (data.elapsedTime) {
             let position = generateRandom(3, 103);
             if (prevPosition) {
@@ -165,16 +153,16 @@ function AppmonViewer() {
                 }
             }
             prevPosition = position;
-            let bullet = $("<div class='bullet'/>")
+            let $bullet = $("<div class='bullet'/>")
                 .attr("sessionId", data.sessionId)
                 .css("top", position + "px")
-                .appendTo(track).fadeIn(15);
+                .appendTo($track).fadeIn(15);
             setTimeout(function () {
-                bullet.addClass("arrive");
+                $bullet.addClass("arrive");
                 setTimeout(function () {
-                    bullet.fadeOut(500);
+                    $bullet.fadeOut(500);
                     setTimeout(function () {
-                        bullet.remove();
+                        $bullet.remove();
                     }, 500);
                 }, data.elapsedTime + 300);
             }, 800);
@@ -185,34 +173,34 @@ function AppmonViewer() {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    const indicate = function (endpoint, group, type, label) {
-        let indicator1 = indicators["endpoint:event:" + endpoint.index];
-        blink(indicator1);
+    const indicate = function (group, type, label) {
+        let $indicator1 = $indicators["endpoint:event:" + endpoint.index];
+        blink($indicator1);
         if (visible) {
             if (type === "log") {
-                let indicator3 = indicators[group + ":log:" + label];
-                blink(indicator3);
+                let $indicator3 = $indicators[group + ":log:" + label];
+                blink($indicator3);
             } else {
-                let indicator2 = indicators["group:event:" + group];
-                blink(indicator2);
+                let $indicator2 = $indicators["group:event:" + group];
+                blink($indicator2);
             }
         }
     };
 
-    const blink = function (indicator) {
-        if (indicator && !indicator.hasClass("on")) {
-            indicator.addClass("blink on");
+    const blink = function ($indicator) {
+        if ($indicator && !$indicator.hasClass("on")) {
+            $indicator.addClass("blink on");
             setTimeout(function () {
-                indicator.removeClass("blink on");
+                $indicator.removeClass("blink on");
             }, 500);
         }
     }
 
     const printLog = function (name, text) {
-        let logBox = getLogBox(name);
-        if (!logBox.data("pause")) {
-            $("<p/>").text(text).appendTo(logBox);
-            scrollToBottom(logBox);
+        let $console = getConsole(name);
+        if (!$console.data("pause")) {
+            $("<p/>").text(text).appendTo($console);
+            scrollToBottom($console);
         }
     };
 
@@ -224,43 +212,60 @@ function AppmonViewer() {
     };
 
     const printSessionState = function (name, data) {
-        let stateBox = getStateBox(name);
-        if (stateBox) {
-            stateBox.find(".activeSessionCount").text(data.activeSessionCount);
-            stateBox.find(".highestActiveSessionCount").text(data.highestActiveSessionCount);
-            stateBox.find(".evictedSessionCount").text(data.evictedSessionCount);
-            stateBox.find(".createdSessionCount").text(data.createdSessionCount);
-            stateBox.find(".expiredSessionCount").text(data.expiredSessionCount);
-            stateBox.find(".rejectedSessionCount").text(data.rejectedSessionCount);
-            stateBox.find(".elapsed").text(data.elapsedTime);
-            let ul = stateBox.find("ul.sessions");
+        let $display = getDisplay(name);
+        if ($display) {
+            $display.find(".activeSessionCount").text(data.activeSessionCount);
+            $display.find(".highestActiveSessionCount").text(data.highestActiveSessionCount);
+            $display.find(".evictedSessionCount").text(data.evictedSessionCount);
+            $display.find(".createdSessionCount").text(data.createdSessionCount);
+            $display.find(".expiredSessionCount").text(data.expiredSessionCount);
+            $display.find(".rejectedSessionCount").text(data.rejectedSessionCount);
+            $display.find(".elapsed").text(data.elapsedTime);
+            let $sessions = $display.find("ul.sessions");
             if (data.createdSessions) {
-                data.createdSessions.forEach(function (info) {
-                    ul.find("li[data-sid='" + info.sessionId + "']").remove();
-                    let indicator = $("<div/>").addClass("indicator");
-                    if (!info.username) {
-                        indicator.addClass("logged-out")
-                    }
-                    let li = $("<li/>").attr("data-sid", info.sessionId).append(indicator).appendTo(ul);
-                    if (info.country) {
-                        $("<img class='flag'/>")
-                            .attr("src", "/assets/countries/flags/" + info.country.toLowerCase() + ".png")
-                            .attr("alt", info.country)
-                            .attr("title", countries[info.country].name)
-                            .appendTo(li);
-                    }
-                    let str = "Session <strong>" + info.sessionId + "</strong> created at <strong>" + info.createAt + "</strong>";
-                    if (info.username) {
-                        str = "(<strong>" + info.username + "</strong>) " + str;
-                    }
-                    $("<span/>").html(str).appendTo(li);
+                data.createdSessions.forEach(function (session) {
+                    addSessionItem($sessions, session);
                 });
             }
             if (data.destroyedSessions) {
                 data.destroyedSessions.forEach(function (sessionId) {
-                    ul.find("li[data-sid='" + sessionId + "']").remove();
+                    $sessions.find("li[data-sid='" + sessionId + "']").remove();
+                });
+            }
+            if (data.evictedSessions) {
+                data.evictedSessions.forEach(function (sessionId) {
+                    let $item = $sessions.find("li[data-sid='" + sessionId + "']").addClass("inactive");
+                    setTimeout(function () {
+                        $item.addClass("hidden");
+                    }, 30000);
+                });
+            }
+            if (data.residedSessions) {
+                data.residedSessions.forEach(function (session) {
+                    addSessionItem($sessions, session);
                 });
             }
         }
+    };
+
+    const addSessionItem = function ($sessions, session) {
+        $sessions.find("li[data-sid='" + session.sessionId + "']").remove();
+        let $indicator = $("<div/>").addClass("indicator");
+        if (!session.username) {
+            $indicator.addClass("logged-out")
+        }
+        let $item = $("<li/>").attr("data-sid", session.sessionId).append($indicator).appendTo($sessions);
+        if (session.countryCode) {
+            $("<img class='flag'/>")
+                .attr("src", "/assets/countries/flags/" + session.countryCode.toLowerCase() + ".png")
+                .attr("alt", session.countryCode)
+                .attr("title", countries[session.countryCode].name + "/ " + session.ipAddress)
+                .appendTo($item);
+        }
+        let str = "Session <strong>" + session.sessionId + "</strong> created at <strong>" + session.createAt + "</strong>";
+        if (session.username) {
+            str = "(<strong>" + session.username + "</strong>) " + str;
+        }
+        $("<span/>").html(str).appendTo($item);
     };
 }

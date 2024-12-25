@@ -34,7 +34,7 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
                 }
                 let msg = event.data;
                 if (established) {
-                    endpoint.viewer.processMessage(endpoint, msg);
+                    endpoint.viewer.processMessage(msg);
                 } else if (msg.startsWith("joined:")) {
                     console.log(msg);
                     let payload = JSON.parse(msg.substring(7));
@@ -52,7 +52,7 @@ function AppmonWebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted,
         };
         socket.onerror = function (event) {
             console.error("WebSocket error observed:", event);
-            if (onErrorObserved) {
+            if (!endpoint.mode && onErrorObserved) {
                 onErrorObserved(endpoint);
             } else {
                 endpoint.viewer.printErrorMessage("Could not connect to WebSocket server.");

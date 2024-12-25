@@ -30,6 +30,18 @@ public class SessionStateListener implements SessionListener {
     }
 
     @Override
+    public void sessionEvicted(@NonNull Session session) {
+        String json = statusReader.readWithEvictedSession(session.getId());
+        statusReader.getStateExporter().broadcast(json);
+    }
+
+    @Override
+    public void sessionResided(@NonNull Session session) {
+        String json = statusReader.readWithResidedSession(session);
+        statusReader.getStateExporter().broadcast(json);
+    }
+
+    @Override
     public void attributeUpdated(Session session, String name, Object newValue, Object oldValue) {
         if (USER_SESSION_KEY.equals(name)) {
             String json = statusReader.readWithCreatedSession(session);

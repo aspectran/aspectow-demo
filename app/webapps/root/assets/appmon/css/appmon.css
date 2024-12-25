@@ -248,7 +248,7 @@
     white-space: nowrap;
 }
 .sessions-box ul.sessions li.inactive {
-    opacity: .5;
+    opacity: .4;
 }
 .sessions-box ul.sessions li.hidden {
     display: none;

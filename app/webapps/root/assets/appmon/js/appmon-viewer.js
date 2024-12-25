@@ -113,19 +113,19 @@ function AppmonViewer(endpoint) {
         switch (type) {
             case "event":
                 indicate(group, type, label);
-                processEvent(label, name, JSON.parse(text));
+                processEventData(label, name, JSON.parse(text));
                 break;
             case "log":
                 indicate(group, type, label);
                 printLog(name, text);
                 break;
             case "state":
-                processState(label, name, JSON.parse(text));
+                processStateData(label, name, JSON.parse(text));
                 break;
         }
     };
 
-    const processEvent = function (label, name, data) {
+    const processEventData = function (label, name, data) {
         switch (label) {
             case "request":
                 let $reqNum = $indicators[name];
@@ -204,7 +204,7 @@ function AppmonViewer(endpoint) {
         }
     };
 
-    const processState = function (label, name, data) {
+    const processStateData = function (label, name, data) {
         switch (label) {
             case "session":
                 printSessionState(name, data);
@@ -259,7 +259,7 @@ function AppmonViewer(endpoint) {
             $("<img class='flag'/>")
                 .attr("src", "/assets/countries/flags/" + session.countryCode.toLowerCase() + ".png")
                 .attr("alt", session.countryCode)
-                .attr("title", countries[session.countryCode].name + "/ " + session.ipAddress)
+                .attr("title", countries[session.countryCode].name + " / " + session.ipAddress)
                 .appendTo($item);
         }
         let str = "Session <strong>" + session.sessionId + "</strong> created at <strong>" + session.createAt + "</strong>";

@@ -133,11 +133,13 @@ public class IPToCountryLookup {
                 Parameters parameters = JsonToParameters.from(result);
                 Parameters whois = parameters.getParameters("whois");
                 String countryCode = whois.getString("countryCode");
-                if (countryCode != null && iso2CountryCodes.contains(countryCode)) {
-                    return countryCode;
-                } else {
-                    return NONE;
+                if (countryCode == null || !iso2CountryCodes.contains(countryCode)) {
+                    countryCode = NONE;
                 }
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Country code of IP address " + ipAddress + " is " + countryCode);
+                }
+                return countryCode;
             }
         } catch (IOException e) {
             logger.error("IP address lookup failed: " + ipAddress, e);

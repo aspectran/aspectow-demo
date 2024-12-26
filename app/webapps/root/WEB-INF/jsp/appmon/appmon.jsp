@@ -38,18 +38,18 @@
                     <div class="cell small-12 large-4">
                         <div class="panel">
                             <dl class="session-statistics">
-                                <dt>Current Active Sessions</dt>
-                                <dd><span class="number activeSessionCount">0</span></dd>
-                                <dt>Current Inactive Sessions</dt>
-                                <dd><span class="number evictedSessionCount">0</span></dd>
-                                <dt>Highest Active Sessions</dt>
-                                <dd><span class="number highestActiveSessionCount">0</span></dd>
-                                <dt title="Number of sessions created since system bootup">Created Sessions</dt>
-                                <dd><span class="number createdSessionCount">0</span></dd>
-                                <dt>Expired Sessions</dt>
-                                <dd><span class="number expiredSessionCount">0</span></dd>
-                                <dt>Rejected Sessions</dt>
-                                <dd><span class="number rejectedSessionCount">0</span></dd>
+                                <dt title="The number of active sessions">Current Active Sessions</dt>
+                                <dd><span class="number numberOfActives">0</span></dd>
+                                <dt title="The highest number of sessions that have been active at a single time">Highest Active Sessions</dt>
+                                <dd><span class="number highestNumberOfActives">0</span></dd>
+                                <dt title="The number of sessions created since system bootup">Created Sessions</dt>
+                                <dd><span class="number numberOfCreated">0</span></dd>
+                                <dt title="The number of expired sessions">Expired Sessions</dt>
+                                <dd><span class="number numberOfExpired">0</span></dd>
+                                <dt title="This number of sessions includes sessions that are inactive or have been transferred to a session manager on another clustered server">Unmanaged Sessions</dt>
+                                <dd><span class="number numberOfUnmanaged">0</span></dd>
+                                <dt title="The number of rejected sessions">Rejected Sessions</dt>
+                                <dd><span class="number numberOfRejected">0</span></dd>
                             </dl>
                             <p class="text-right"><i>Elapsed <span class="elapsed"></span></i></p>
                         </div>

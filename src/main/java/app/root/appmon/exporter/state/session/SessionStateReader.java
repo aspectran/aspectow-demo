@@ -156,12 +156,12 @@ public class SessionStateReader implements StateReader {
     private SessionStatePayload load() {
         SessionStatistics statistics = sessionHandler.getStatistics();
         SessionStatePayload payload = new SessionStatePayload();
-        payload.setCreatedSessionCount(statistics.getCreatedSessions());
-        payload.setExpiredSessionCount(statistics.getExpiredSessions());
-        payload.setActiveSessionCount(statistics.getActiveSessions());
-        payload.setHighestActiveSessionCount(statistics.getHighestActiveSessions());
-        payload.setEvictedSessionCount(statistics.getEvictedSessions());
-        payload.setRejectedSessionCount(statistics.getRejectedSessions());
+        payload.setNumberOfCreated(statistics.getNumberOfCreated());
+        payload.setNumberOfExpired(statistics.getNumberOfExpired());
+        payload.setNumberOfActives(statistics.getNumberOfActives());
+        payload.setHighestNumberOfActives(statistics.getHighestNumberOfActives());
+        payload.setNumberOfUnmanaged(Math.abs(statistics.getNumberOfUnmanaged()));
+        payload.setNumberOfRejected(statistics.getNumberOfRejected());
         payload.setElapsedTime(formatDuration(statistics.getStartTime()));
         return payload;
     }

@@ -12,8 +12,6 @@ import com.aspectran.core.component.session.SessionListener;
 import com.aspectran.core.component.session.SessionListenerRegistration;
 import com.aspectran.utils.StringUtils;
 import com.aspectran.utils.annotation.jsr305.NonNull;
-import com.aspectran.utils.logging.Logger;
-import com.aspectran.utils.logging.LoggerFactory;
 
 import java.util.Locale;
 
@@ -23,8 +21,6 @@ import java.util.Locale;
 @Component
 @AvoidAdvice
 public class UserCountryLookupListener extends InstantActivitySupport implements SessionListener, InitializableBean {
-
-    private static final Logger logger = LoggerFactory.getLogger(UserCountryLookupListener.class);
 
     @Override
     public void sessionCreated(@NonNull Session session) {
@@ -36,10 +32,6 @@ public class UserCountryLookupListener extends InstantActivitySupport implements
             String countryCode = IPToCountryLookup.getInstance().getCountryCode(ipAddress, locale);
             if (StringUtils.hasLength(countryCode)) {
                 session.setAttribute("user.countryCode", countryCode);
-            }
-            if (logger.isDebugEnabled()) {
-                logger.debug("Country code of IP address " + ipAddress + ": " +
-                        (countryCode == null ? "None" : countryCode));
             }
         }
     }

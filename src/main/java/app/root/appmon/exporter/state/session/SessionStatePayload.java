@@ -23,17 +23,17 @@ import com.aspectran.utils.json.JsonString;
  */
 public class SessionStatePayload {
 
-    private long createdSessionCount;
+    private long numberOfCreated;
 
-    private long expiredSessionCount;
+    private long numberOfExpired;
 
-    private long activeSessionCount;
+    private long numberOfActives;
 
-    private long highestActiveSessionCount;
+    private long highestNumberOfActives;
 
-    private long evictedSessionCount;
+    private long numberOfUnmanaged;
 
-    private long rejectedSessionCount;
+    private long numberOfRejected;
 
     private String elapsedTime;
 
@@ -45,52 +45,52 @@ public class SessionStatePayload {
 
     private JsonString[] residedSessions;
 
-    public long getCreatedSessionCount() {
-        return createdSessionCount;
+    public long getNumberOfCreated() {
+        return numberOfCreated;
     }
 
-    public void setCreatedSessionCount(long createdSessionCount) {
-        this.createdSessionCount = createdSessionCount;
+    public void setNumberOfCreated(long numberOfCreated) {
+        this.numberOfCreated = numberOfCreated;
     }
 
-    public long getExpiredSessionCount() {
-        return expiredSessionCount;
+    public long getNumberOfExpired() {
+        return numberOfExpired;
     }
 
-    public void setExpiredSessionCount(long expiredSessionCount) {
-        this.expiredSessionCount = expiredSessionCount;
+    public void setNumberOfExpired(long numberOfExpired) {
+        this.numberOfExpired = numberOfExpired;
     }
 
-    public long getEvictedSessionCount() {
-        return evictedSessionCount;
+    public long getNumberOfUnmanaged() {
+        return numberOfUnmanaged;
     }
 
-    public long getActiveSessionCount() {
-        return activeSessionCount;
+    public long getNumberOfActives() {
+        return numberOfActives;
     }
 
-    public void setActiveSessionCount(long activeSessionCount) {
-        this.activeSessionCount = activeSessionCount;
+    public void setNumberOfActives(long numberOfActives) {
+        this.numberOfActives = numberOfActives;
     }
 
-    public void setEvictedSessionCount(long evictedSessionCount) {
-        this.evictedSessionCount = evictedSessionCount;
+    public void setNumberOfUnmanaged(long numberOfUnmanaged) {
+        this.numberOfUnmanaged = numberOfUnmanaged;
     }
 
-    public long getHighestActiveSessionCount() {
-        return highestActiveSessionCount;
+    public long getHighestNumberOfActives() {
+        return highestNumberOfActives;
     }
 
-    public void setHighestActiveSessionCount(long highestActiveSessionCount) {
-        this.highestActiveSessionCount = highestActiveSessionCount;
+    public void setHighestNumberOfActives(long highestNumberOfActives) {
+        this.highestNumberOfActives = highestNumberOfActives;
     }
 
-    public long getRejectedSessionCount() {
-        return rejectedSessionCount;
+    public long getNumberOfRejected() {
+        return numberOfRejected;
     }
 
-    public void setRejectedSessionCount(long rejectedSessionCount) {
-        this.rejectedSessionCount = rejectedSessionCount;
+    public void setNumberOfRejected(long numberOfRejected) {
+        this.numberOfRejected = numberOfRejected;
     }
 
     public String getElapsedTime() {
@@ -141,12 +141,12 @@ public class SessionStatePayload {
         if (!(other instanceof SessionStatePayload that)) {
             return false;
         }
-        return that.createdSessionCount == createdSessionCount &&
-                that.expiredSessionCount == expiredSessionCount &&
-                that.evictedSessionCount == evictedSessionCount &&
-                that.activeSessionCount == activeSessionCount &&
-                that.highestActiveSessionCount == highestActiveSessionCount &&
-                that.rejectedSessionCount == rejectedSessionCount;
+        return that.numberOfCreated == numberOfCreated &&
+                that.numberOfExpired == numberOfExpired &&
+                that.numberOfUnmanaged == numberOfUnmanaged &&
+                that.numberOfActives == numberOfActives &&
+                that.highestNumberOfActives == highestNumberOfActives &&
+                that.numberOfRejected == numberOfRejected;
     }
 
     public String toJson() {

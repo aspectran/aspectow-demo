@@ -214,12 +214,12 @@ function AppmonViewer(endpoint) {
     const printSessionState = function (name, data) {
         let $display = getDisplay(name);
         if ($display) {
-            $display.find(".activeSessionCount").text(data.activeSessionCount);
-            $display.find(".highestActiveSessionCount").text(data.highestActiveSessionCount);
-            $display.find(".evictedSessionCount").text(data.evictedSessionCount);
-            $display.find(".createdSessionCount").text(data.createdSessionCount);
-            $display.find(".expiredSessionCount").text(data.expiredSessionCount);
-            $display.find(".rejectedSessionCount").text(data.rejectedSessionCount);
+            $display.find(".numberOfCreated").text(data.numberOfCreated);
+            $display.find(".numberOfExpired").text(data.numberOfExpired);
+            $display.find(".numberOfActives").text(data.numberOfActives);
+            $display.find(".highestNumberOfActives").text(data.highestNumberOfActives);
+            $display.find(".numberOfUnmanaged").text(data.numberOfUnmanaged);
+            $display.find(".numberOfRejected").text(data.numberOfRejected);
             $display.find(".elapsed").text(data.elapsedTime);
             let $sessions = $display.find("ul.sessions");
             if (data.createdSessions) {

@@ -256,7 +256,7 @@ function AppmonViewer(endpoint) {
         }
         let $item = $("<li/>").attr("data-sid", session.sessionId).append($indicator).appendTo($sessions);
         if (session.countryCode) {
-            $("<img class='flag'/>")
+            $("<img class='flag' alt=''/>")
                 .attr("src", "/assets/countries/flags/" + session.countryCode.toLowerCase() + ".png")
                 .attr("alt", session.countryCode)
                 .attr("title", countries[session.countryCode].name + " / " + session.ipAddress)

@@ -271,7 +271,7 @@ public class AppMonManager extends InstantActivitySupport {
     }
 
     public String issueToken() {
-        return TimeLimitedPBTokenIssuer.getToken();
+        return TimeLimitedPBTokenIssuer.getToken(1000L * 60 * 60 * 12); // 12 hours
     }
 
     public void validateToken(String token) throws InvalidPBTokenException {

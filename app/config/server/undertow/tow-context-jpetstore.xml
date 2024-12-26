@@ -123,7 +123,7 @@
                 </bean>
             </item>
             <item name="sessionStore">
-                <bean class="com.aspectran.core.component.session.FileSessionStoreFactory">
+                <bean class="com.aspectran.core.component.session.FileSessionStoreFactoryBean">
                     <properties>
                         <item name="storeDir">/work/_sessions/%{tow.context.jpetstore.name}</item>
                         <item name="nonPersistentAttributes" type="array">
@@ -149,7 +149,7 @@
                 </bean>
             </item>
             <item name="sessionStore">
-                <bean class="com.aspectran.core.component.session.redis.lettuce.DefaultLettuceSessionStoreFactory">
+                <bean class="com.aspectran.core.component.session.redis.lettuce.DefaultLettuceSessionStoreFactoryBean">
                     <properties>
                         <item name="poolConfig">
                             <bean class="com.aspectran.core.component.session.redis.lettuce.RedisConnectionPoolConfig">

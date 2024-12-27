@@ -156,16 +156,16 @@ function AppmonViewer(endpoint) {
             let $bullet = $("<div class='bullet'/>")
                 .attr("sessionId", data.sessionId)
                 .css("top", position + "px")
-                .appendTo($track).fadeIn(15);
+                .appendTo($track).show();
             setTimeout(function () {
                 $bullet.addClass("arrive");
                 setTimeout(function () {
-                    $bullet.fadeOut(500);
+                    $bullet.fadeOut(1000);
                     setTimeout(function () {
                         $bullet.remove();
                     }, 500);
-                }, data.elapsedTime + 300);
-            }, 800);
+                }, data.elapsedTime + 350);
+            }, 900);
         }
     };
 

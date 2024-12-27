@@ -89,7 +89,7 @@
     width: 200px;
     height: 14px;
     border-radius: 50%;
-    background: linear-gradient(to right, rgba(9, 17, 39, 0) 30%, rgba(17, 213, 57, 0.66) 100%);
+    background: linear-gradient(to right, rgba(9, 17, 39, 0) 27%, rgba(17, 213, 57, 0.66) 100%);
     animation-name: bulletAnimation;
     animation-timing-function: linear;
     animation-iteration-count: 1;
@@ -98,7 +98,12 @@
     display: none;
 }
 .track-box .bullet.arrive {
-    background: #d0ff00;
+    background: #29bf9c;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    width: 200px;
+    height: 10px;
+    margin: 2px 0;
     opacity: .3;
 }
 .track-stack .req-num {

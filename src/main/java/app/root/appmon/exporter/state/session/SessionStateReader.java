@@ -20,7 +20,7 @@ import app.root.appmon.config.StateInfo;
 import app.root.appmon.exporter.state.StateExporter;
 import app.root.appmon.exporter.state.StateExporterManager;
 import app.root.appmon.exporter.state.StateReader;
-import com.aspectran.core.component.session.DefaultSession;
+import com.aspectran.core.component.session.ManagedSession;
 import com.aspectran.core.component.session.Session;
 import com.aspectran.core.component.session.SessionHandler;
 import com.aspectran.core.component.session.SessionListenerRegistration;
@@ -186,7 +186,7 @@ public class SessionStateReader implements StateReader {
         Set<String> sessionIds = sessionHandler.getActiveSessions();
         List<JsonString> list = new ArrayList<>(sessionIds.size());
         for (String sessionId : sessionIds) {
-            DefaultSession session = sessionHandler.getSession(sessionId);
+            ManagedSession session = sessionHandler.getSession(sessionId);
             if (session != null) {
                 list.add(serialize(session));
             }

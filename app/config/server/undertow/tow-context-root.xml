@@ -39,7 +39,7 @@
                         </item>
                     </properties>
                     <properties profile="prod">
-                        <item name="domain" value="public.aspectran.com"/>
+                        <item name="domain" value="aspectran.com"/>
                         <item name="path" value="/"/>
                     </properties>
                 </bean>

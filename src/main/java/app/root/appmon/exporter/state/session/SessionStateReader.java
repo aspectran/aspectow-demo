@@ -15,7 +15,6 @@
  */
 package app.root.appmon.exporter.state.session;
 
-import app.jpetstore.user.UserSession;
 import app.root.appmon.config.StateInfo;
 import app.root.appmon.exporter.state.StateExporter;
 import app.root.appmon.exporter.state.StateExporterManager;
@@ -196,19 +195,12 @@ public class SessionStateReader implements StateReader {
 
     private static JsonString serialize(Session session) {
         Assert.notNull(session, "Session must not be null");
-        UserSession userSession = session.getAttribute(USER_SESSION_KEY);
-        String username;
-        if (userSession != null && userSession.getAccount() != null) {
-            username = userSession.getAccount().getUsername();
-        } else {
-            username = null;
-        }
         return new JsonBuilder()
                 .nullWritable(false)
                 .prettyPrint(false)
                 .object()
                     .put("sessionId", session.getId())
-                    .put("username", username)
+                    .put("username", session.getAttribute("user.name"))
                     .put("countryCode", session.getAttribute("user.countryCode"))
                     .put("ipAddress", session.getAttribute("user.ipAddress"))
                     .put("createAt", formatTime(session.getCreationTime()))

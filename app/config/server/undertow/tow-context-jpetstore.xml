@@ -114,9 +114,9 @@
                         <item>
                             workerName: jn0
                             maxActiveSessions: 99999
-                            maxIdleSeconds: 10
-                            evictionIdleSeconds: 5
-                            scavengingIntervalSeconds: 10
+                            maxIdleSeconds: 489
+                            evictionIdleSeconds: 258
+                            scavengingIntervalSeconds: 180
                             clusterEnabled: false
                         </item>
                     </arguments>
@@ -137,9 +137,9 @@
                         <item>
                             workerName: jn0
                             maxActiveSessions: 99999
-                            maxIdleSeconds: 10
-                            evictionIdleSeconds: 5
-                            scavengingIntervalSeconds: 10
+                            maxIdleSeconds: 489
+                            evictionIdleSeconds: 258
+                            scavengingIntervalSeconds: 180
                             clusterEnabled: true
                         </item>
                     </arguments>

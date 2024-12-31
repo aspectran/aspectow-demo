@@ -126,9 +126,6 @@
                 <bean class="com.aspectran.core.component.session.FileSessionStoreFactoryBean">
                     <properties>
                         <item name="storeDir">/work/_sessions/%{tow.context.demo.name}</item>
-                        <item name="nonPersistentAttributes" type="array">
-                            <value>io.undertow.websocket.current-connections</value>
-                        </item>
                     </properties>
                 </bean>
             </item>
@@ -157,9 +154,6 @@
                                     <item name="uri">%{system:redis.uri}/12</item>
                                 </properties>
                             </bean>
-                        </item>
-                        <item name="nonPersistentAttributes" type="array">
-                            <value>io.undertow.websocket.current-connections</value>
                         </item>
                     </properties>
                 </bean>

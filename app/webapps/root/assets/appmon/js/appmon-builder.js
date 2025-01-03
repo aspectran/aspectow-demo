@@ -40,7 +40,7 @@ function AppMonBuilder() {
                 buildGroups();
                 for (let key in payload.messages) {
                     let msg = payload.messages[key];
-                    endpoint.viewer.processMessage(endpoint, msg);
+                    endpoint.viewer.processMessage(msg);
                 }
                 if (endpoints.length) {
                     changeEndpoint(0);

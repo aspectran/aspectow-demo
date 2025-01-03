@@ -30,14 +30,23 @@ public class GroupInfoHolder {
         for (GroupInfo info : groupInfoList) {
             groupInfos.put(info.getName(), info);
 
-            for (EventInfo eventInfo : info.getEventInfoList()) {
-                eventInfo.setGroup(info.getName());
+            List<EventInfo> eventInfoList = info.getEventInfoList();
+            if (eventInfoList != null) {
+                for (EventInfo eventInfo : eventInfoList) {
+                    eventInfo.setGroup(info.getName());
+                }
             }
-            for (StateInfo stateInfo : info.getStateInfoList()) {
-                stateInfo.setGroup(info.getName());
+            List<StateInfo> stateInfoList = info.getStateInfoList();
+            if (stateInfoList != null) {
+                for (StateInfo stateInfo : stateInfoList) {
+                    stateInfo.setGroup(info.getName());
+                }
             }
-            for (LogInfo logInfo : info.getLogInfoList()) {
-                logInfo.setGroup(info.getName());
+            List<LogInfo> logInfoList = info.getLogInfoList();
+            if (logInfoList != null) {
+                for (LogInfo logInfo : logInfoList) {
+                    logInfo.setGroup(info.getName());
+                }
             }
         }
     }

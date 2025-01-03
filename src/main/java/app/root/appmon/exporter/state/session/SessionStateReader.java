@@ -19,6 +19,7 @@ import app.root.appmon.config.StateInfo;
 import app.root.appmon.exporter.state.StateExporter;
 import app.root.appmon.exporter.state.StateExporterManager;
 import app.root.appmon.exporter.state.StateReader;
+import com.aspectran.core.component.bean.NoSuchBeanException;
 import com.aspectran.core.component.session.ManagedSession;
 import com.aspectran.core.component.session.Session;
 import com.aspectran.core.component.session.SessionHandler;
@@ -97,11 +98,11 @@ public class SessionStateReader implements StateReader {
 
     @NonNull
     private SessionListenerRegistration getSessionListenerRegistration() {
-        SessionListenerRegistration sessionListenerRegistration = stateExporterManager.getBean(SessionListenerRegistration.class);
-        if (sessionListenerRegistration == null) {
-            throw new IllegalStateException("Bean for SessionListenerRegistration must be defined");
+        try {
+            return stateExporterManager.getBean(SessionListenerRegistration.class);
+        } catch (NoSuchBeanException e) {
+            throw new IllegalStateException("Bean for SessionListenerRegistration must be defined", e);
         }
-        return sessionListenerRegistration;
     }
 
     @Override

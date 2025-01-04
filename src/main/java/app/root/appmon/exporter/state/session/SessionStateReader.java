@@ -84,15 +84,19 @@ public class SessionStateReader implements StateReader {
 
     @Override
     public void start() {
-        sessionListener = new SessionStateListener(this);
-        getSessionListenerRegistration().register(sessionListener, deploymentName);
+        if (sessionHandler != null) {
+            sessionListener = new SessionStateListener(this);
+            getSessionListenerRegistration().register(sessionListener, deploymentName);
+        }
     }
 
     @Override
     public void stop() {
-        oldPayload = null;
-        if (sessionListener != null) {
-            getSessionListenerRegistration().remove(sessionListener, deploymentName);
+        if (sessionHandler != null) {
+            oldPayload = null;
+            if (sessionListener != null) {
+                getSessionListenerRegistration().remove(sessionListener, deploymentName);
+            }
         }
     }
 
@@ -107,6 +111,9 @@ public class SessionStateReader implements StateReader {
 
     @Override
     public String read() {
+        if (sessionListener == null) {
+            return null;
+        }
         try {
             SessionStatePayload payload = loadWithActiveSessions();
             oldPayload = payload;
@@ -119,6 +126,9 @@ public class SessionStateReader implements StateReader {
 
     @Override
     public String readIfChanged() {
+        if (sessionListener == null) {
+            return null;
+        }
         try {
             SessionStatePayload payload = load();
             if (!payload.equals(oldPayload)) {

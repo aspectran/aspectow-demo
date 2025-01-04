@@ -53,7 +53,7 @@ public abstract class StateExporterManagerBuilder {
             Class<?>[] argTypes = { StateExporterManager.class, StateInfo.class };
             return ClassUtils.createInstance(readerType, args, argTypes);
         } catch (Exception e) {
-            throw new Exception("Failed to create state reader: " + stateInfo, e);
+            throw new Exception(ToStringBuilder.toString("Failed to create state reader", stateInfo), e);
         }
     }
 

@@ -56,7 +56,7 @@ public class EventExporterManagerBuilder {
             Class<?>[] argTypes = { EventExporterManager.class, EventInfo.class };
             return ClassUtils.createInstance(readerType, args, argTypes);
         } catch (Exception e) {
-            throw new Exception("Failed to create event reader: " + eventInfo, e);
+            throw new Exception(ToStringBuilder.toString("Failed to create event reader", eventInfo), e);
         }
     }
     

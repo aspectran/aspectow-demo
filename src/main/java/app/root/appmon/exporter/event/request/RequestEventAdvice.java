@@ -16,7 +16,6 @@
 package app.root.appmon.exporter.event.request;
 
 import com.aspectran.core.activity.Activity;
-import com.aspectran.core.adapter.SessionAdapter;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.utils.json.JsonBuilder;
 
@@ -40,9 +39,8 @@ public class RequestEventAdvice {
 
         // Since the servlet container does not allow session creation after
         // the response is committed, the session ID must be secured in advance.
-        SessionAdapter sessionAdapter = activity.getSessionAdapter();
-        if (sessionAdapter != null) {
-            sessionId = sessionAdapter.getId();
+        if (activity.hasSessionAdapter()) {
+            sessionId = activity.getSessionAdapter().getId();
         }
     }
 

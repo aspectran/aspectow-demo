@@ -23,6 +23,7 @@ import com.aspectran.core.context.ActivityContext;
 import com.aspectran.core.context.rule.AspectAdviceRule;
 import com.aspectran.core.context.rule.AspectRule;
 import com.aspectran.core.context.rule.JoinpointRule;
+import com.aspectran.core.context.rule.params.PointcutParameters;
 import com.aspectran.core.context.rule.type.AspectAdviceType;
 import com.aspectran.core.context.rule.type.JoinpointTargetType;
 import com.aspectran.core.service.CoreServiceHolder;
@@ -75,6 +76,10 @@ public class RequestEventReader implements EventReader {
 
         JoinpointRule joinpointRule = new JoinpointRule();
         joinpointRule.setJoinpointTargetType(JoinpointTargetType.ACTIVITY);
+        if (eventInfo.hasParameters()) {
+            PointcutParameters pointcutParameters = new PointcutParameters(eventInfo.getParameters().toString());
+            JoinpointRule.updatePointcutRule(joinpointRule, pointcutParameters);
+        }
         aspectRule.setJoinpointRule(joinpointRule);
 
         AspectAdviceRule beforeAspectAdviceRule = aspectRule.newAspectAdviceRule(AspectAdviceType.BEFORE);

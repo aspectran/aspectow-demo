@@ -12,7 +12,7 @@ endpoint: {
 }
 endpoint: {
     name: endpoint-2
-    title: Server-2
+    title: Server-2(Same as Server-1)
     url: /appmon/server/endpoint
     resident: false
     polling: {
@@ -59,6 +59,11 @@ group: {
         name: request
         reader: app.root.appmon.exporter.event.request.RequestEventReader
         target: demo
+        parameters: {
+            +: /
+            +: /**
+            -: /examples/gs-rest-service/**
+        }
     }
     state: {
         name: session
@@ -78,6 +83,39 @@ group: {
         name: access
         title: Demo Access
         file: /logs/demo-access.log
+        lastLines: 1000
+        sampleInterval: 300
+    }
+}
+group: {
+    name: demo2
+    title: RESTful Demo
+    event: {
+        name: request
+        reader: app.root.appmon.exporter.event.request.RequestEventReader
+        target: demo
+        parameters: {
+            +: /examples/gs-rest-service/**
+        }
+    }
+    state: {
+        name: session
+        title: Demo App Session Statistics
+        reader: app.root.appmon.exporter.state.session.SessionStateReader
+        target: tow.server/demo
+        sampleInterval: 5000
+    }
+    log: {
+        name: app
+        title: Demo App
+        file: /logs/demo2.log
+        lastLines: 1000
+        sampleInterval: 300
+    }
+    log: {
+        name: access
+        title: Demo Access
+        file: /logs/demo2-access.log
         lastLines: 1000
         sampleInterval: 300
     }

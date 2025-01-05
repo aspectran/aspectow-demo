@@ -18,6 +18,7 @@ package app.root.appmon.config;
 import com.aspectran.utils.Assert;
 import com.aspectran.utils.apon.AbstractParameters;
 import com.aspectran.utils.apon.ParameterKey;
+import com.aspectran.utils.apon.Parameters;
 import com.aspectran.utils.apon.ValueType;
 
 /**
@@ -29,6 +30,7 @@ public class EventInfo extends AbstractParameters {
     private static final ParameterKey name;
     private static final ParameterKey reader;
     private static final ParameterKey target;
+    private static final ParameterKey parameters;
 
     private static final ParameterKey[] parameterKeys;
 
@@ -37,12 +39,14 @@ public class EventInfo extends AbstractParameters {
         name = new ParameterKey("name", ValueType.STRING);
         reader = new ParameterKey("reader", ValueType.STRING);
         target = new ParameterKey("target", ValueType.STRING);
+        parameters = new ParameterKey("parameters", ValueType.PARAMETERS);
 
         parameterKeys = new ParameterKey[] {
                 group,
                 name,
                 reader,
-                target
+                target,
+                parameters
         };
     }
 
@@ -80,6 +84,18 @@ public class EventInfo extends AbstractParameters {
 
     public void setTarget(String target) {
         putValue(EventInfo.target, target);
+    }
+
+    public boolean hasParameters() {
+        return hasValue(parameters);
+    }
+
+    public Parameters getParameters() {
+        return getParameters(parameters);
+    }
+
+    public void setParameters(Parameters parameters) {
+        putValue(EventInfo.parameters, parameters);
     }
 
     public void validateRequiredParameters() {

@@ -19,6 +19,7 @@ import app.root.appmon.config.StateInfo;
 import app.root.appmon.exporter.state.StateExporter;
 import app.root.appmon.exporter.state.StateExporterManager;
 import app.root.appmon.exporter.state.StateReader;
+import com.aspectran.core.component.UnavailableException;
 import com.aspectran.core.component.bean.NoSuchBeanException;
 import com.aspectran.core.component.session.ManagedSession;
 import com.aspectran.core.component.session.Session;
@@ -95,7 +96,11 @@ public class SessionStateReader implements StateReader {
         if (sessionHandler != null) {
             oldPayload = null;
             if (sessionListener != null) {
-                getSessionListenerRegistration().remove(sessionListener, deploymentName);
+                try {
+                    getSessionListenerRegistration().remove(sessionListener, deploymentName);
+                } catch (UnavailableException e) {
+                    // ignored
+                }
             }
         }
     }

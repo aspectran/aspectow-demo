@@ -101,6 +101,7 @@ function AppMonBuilder() {
         let endpointIndex = $endpointBox.data("index");
         $endpointBox.find(".group-box").hide();
         let $groupBox = $endpointBox.find(".group-box[data-name=" + groupName + "]").show();
+        $groupBox.find(".track-box .bullet").remove();
         $groupBox.find(".log-box.available .log-console").each(function () {
             let $console = $(this);
             if (!$console.data("pause")) {

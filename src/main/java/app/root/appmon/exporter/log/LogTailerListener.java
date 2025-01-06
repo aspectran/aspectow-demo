@@ -20,10 +20,10 @@ import org.apache.commons.io.input.TailerListener;
 
 public class LogTailerListener implements TailerListener {
 
-    private final LogExporter service;
+    private final LogExporter logExporter;
 
-    public LogTailerListener(LogExporter service) {
-        this.service = service;
+    public LogTailerListener(LogExporter logExporter) {
+        this.logExporter = logExporter;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class LogTailerListener implements TailerListener {
 
     @Override
     public void handle(String line) {
-        service.broadcast(line);
+        logExporter.broadcast(line);
     }
 
     @Override

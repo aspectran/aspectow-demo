@@ -19,6 +19,7 @@ import app.root.appmon.config.EventInfo;
 import app.root.appmon.exporter.event.EventExporter;
 import app.root.appmon.exporter.event.EventExporterManager;
 import app.root.appmon.exporter.event.EventReader;
+import com.aspectran.core.component.UnavailableException;
 import com.aspectran.core.context.ActivityContext;
 import com.aspectran.core.context.rule.AspectAdviceRule;
 import com.aspectran.core.context.rule.AspectRule;
@@ -106,7 +107,11 @@ public class RequestEventReader implements EventReader {
         try {
             ActivityContext context = CoreServiceHolder.findActivityContext(target);
             if (context != null) {
-                context.getAspectRuleRegistry().removeAspectRule(aspectId);
+                try {
+                    context.getAspectRuleRegistry().removeAspectRule(aspectId);
+                } catch (UnavailableException e) {
+                    // ignored
+                }
             }
         } catch (Exception e) {
             logger.warn(e);

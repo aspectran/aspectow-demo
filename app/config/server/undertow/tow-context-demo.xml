@@ -98,9 +98,6 @@
                     </properties>
                 </bean>
             </item>
-            <item name="outerHandlerChainWrappers" type="array">
-                <value>#{tow.server.handler.loggingGroupAssistHandlerWrapper}</value>
-            </item>
         </properties>
     </bean>
 

@@ -48,6 +48,7 @@
                             <value>#{tow.context.root.servletContext}</value>
                             <value>#{tow.context.demo.servletContext}</value>
                             <value>#{tow.context.jpetstore.servletContext}</value>
+                            <value>#{tow.context.appmon.servletContext}</value>
                         </item>
                         <item name="handlerChainWrappers" type="array">
                             <value>#{tow.server.handler.encodingHandlerWrapper}</value>

@@ -84,6 +84,6 @@
     $(function () {
         const token = "${page.token}";
         const endpoint = "${page.endpoint}";
-        new AppMonBuilder().build("<aspectran:url value="/"/>", token, endpoint);
+        new AppMonBuilder().build("<aspectran:url value="/appmon"/>", token, endpoint);
     });
 </script>

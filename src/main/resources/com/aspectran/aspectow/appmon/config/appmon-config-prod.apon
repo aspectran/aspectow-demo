@@ -30,9 +30,8 @@ group: {
         reader: request.event.exporter.com.aspectran.appmon.RequestEventReader
         target: jpetstore
     }
-    state: {
+    event: {
         name: session
-        title: JPetStore App Session Statistics
         reader: session.state.exporter.com.aspectran.appmon.SessionStateReader
         target: tow.server/jpetstore
         sampleInterval: 5000
@@ -60,9 +59,8 @@ group: {
         reader: request.event.exporter.com.aspectran.appmon.RequestEventReader
         target: demo
     }
-    state: {
+    event: {
         name: session
-        title: Demo App Session Statistics
         reader: session.state.exporter.com.aspectran.appmon.SessionStateReader
         target: tow.server/demo
         sampleInterval: 5000
@@ -90,9 +88,8 @@ group: {
         reader: request.event.exporter.com.aspectran.appmon.RequestEventReader
         target: root
     }
-    state: {
+    event: {
         name: session
-        title: Root App Session Statistics
         reader: session.state.exporter.com.aspectran.appmon.SessionStateReader
         target: tow.server/root
         sampleInterval: 5000

@@ -30,10 +30,9 @@ group: {
         reader: com.aspectran.aspectow.appmon.exporter.event.request.RequestEventReader
         target: jpetstore
     }
-    state: {
+    event: {
         name: session
-        title: JPetStore App Session Statistics
-        reader: com.aspectran.aspectow.appmon.exporter.state.session.SessionStateReader
+        reader: com.aspectran.aspectow.appmon.exporter.event.session.SessionEventReader
         target: tow.server/jpetstore
         sampleInterval: 5000
     }
@@ -65,10 +64,9 @@ group: {
             -: /examples/gs-rest-service/**
         }
     }
-    state: {
+    event: {
         name: session
-        title: Demo App Session Statistics
-        reader: com.aspectran.aspectow.appmon.exporter.state.session.SessionStateReader
+        reader: com.aspectran.aspectow.appmon.exporter.event.session.SessionEventReader
         target: tow.server/demo
         sampleInterval: 5000
     }
@@ -98,10 +96,9 @@ group: {
             +: /examples/gs-rest-service/**
         }
     }
-    state: {
+    event: {
         name: session
-        title: Demo App Session Statistics
-        reader: com.aspectran.aspectow.appmon.exporter.state.session.SessionStateReader
+        reader: com.aspectran.aspectow.appmon.exporter.event.session.SessionEventReader
         target: tow.server/demo
         sampleInterval: 5000
     }
@@ -128,10 +125,10 @@ group: {
         reader: com.aspectran.aspectow.appmon.exporter.event.request.RequestEventReader
         target: root
     }
-    state: {
+    event: {
         name: session
         title: Root App Session Statistics
-        reader: com.aspectran.aspectow.appmon.exporter.state.session.SessionStateReader
+        reader: com.aspectran.aspectow.appmon.exporter.event.session.SessionEventReader
         target: tow.server/root
         sampleInterval: 5000
     }
@@ -157,13 +154,6 @@ group: {
         name: request
         reader: com.aspectran.aspectow.appmon.exporter.event.request.RequestEventReader
         target: appmon
-    }
-    state: {
-        name: session
-        title: AppMon Session Statistics
-        reader: com.aspectran.aspectow.appmon.exporter.state.session.SessionStateReader
-        target: tow.server/appmon
-        sampleInterval: 5000
     }
     log: {
         name: appmon

@@ -106,6 +106,9 @@
                 <entry name="demo2">
                     +: /demo/examples/gs-rest-service/**
                 </entry>
+                <entry name="appmon">
+                    +: /appmon/**
+                </entry>
             </item>
         </properties>
         <properties profile="prod">
@@ -117,6 +120,9 @@
                 <entry name="demo">
                     +: /demo
                     +: /demo/**
+                </entry>
+                <entry name="appmon">
+                    +: /appmon/**
                 </entry>
             </item>
         </properties>

@@ -78,7 +78,7 @@
             <div class="top-bar-right">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <li>
-                        <a href="<aspectran:url value="/monitoring/"/>" target="_blank">Monitoring</a>
+                        <a href="<aspectran:url value="/monitoring/"/>">Monitoring</a>
                     </li>
                 </ul>
                 <div class="quick-search-box">

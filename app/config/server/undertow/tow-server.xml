@@ -15,6 +15,28 @@
         </properties>
     </environment>
 
+    <environment>
+        <description>
+            Undertow uses XNIO as the default connector. XNIO can be configured through the following settings:
+            - workerIoThreads: which is the number of IO threads to create. These threads are shared between multiple
+            connections therefore they mustn’t perform blocking operations as while the operation is blocking,
+            other connections will essentially hang. If not specified, a default will be chosen, which is
+            calculated by Math.max(Runtime.getRuntime().availableProcessors(), 2).
+            - workerTaskMaxThreads: This is the maximum number workers allowed to run blocking tasks such as Servlet
+            requests. In general terms, the default value of it (workerIoThreads * 8) is reasonable default for
+            most cases. If you see that new requests are being queued up, you should investigate the cause of it.
+            If your application is working as expected, then you should increase this task-max-threads parameter.
+        </description>
+        <properties profile="(!stage, !prod)">
+            <item name="tow.server.workerIoThreads" valueType="int">4</item>
+            <item name="tow.server.workerTaskMaxThreads" valueType="int">32</item>
+        </properties>
+        <properties profile="stage, prod">
+            <item name="tow.server.workerIoThreads" valueType="int">8</item>
+            <item name="tow.server.workerTaskMaxThreads" valueType="int">64</item>
+        </properties>
+    </environment>
+
     <bean id="tow.server" class="com.aspectran.undertow.server.DefaultTowServer">
         <properties>
             <item name="autoStart">%{tow.server.startup}</item>
@@ -38,6 +60,8 @@
                 <bean class="com.aspectran.undertow.server.TowOptions">
                     <properties>
                         <item name="workerName">TOW</item>
+                        <item name="workerIoThreads">%{tow.server.workerIoThreads}</item>
+                        <item name="workerTaskMaxThreads">%{tow.server.workerTaskMaxThreads}</item>
                     </properties>
                 </bean>
             </item>

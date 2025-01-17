@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
 <link rel="stylesheet" href="<aspectran:url value="/assets/appmon/css/appmon.css?20241226"/>">
-<script src="https://aspectran.github.io/assets/countries/countries.js"></script>
+<script src="https://aspectran.com/assets/countries/countries.js"></script>
 <script src="<aspectran:url value="/assets/appmon/js/appmon-builder.js?20241226"/>"></script>
 <script src="<aspectran:url value="/assets/appmon/js/appmon-viewer.js?20241226"/>"></script>
 <script src="<aspectran:url value="/assets/appmon/js/appmon-websocket-client.js?20241226"/>"></script>

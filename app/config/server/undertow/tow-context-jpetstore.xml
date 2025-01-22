@@ -10,9 +10,6 @@
     <environment>
         <properties>
             <item name="tow.context.jpetstore.name">jpetstore</item>
-            <item name="tow.context.jpetstore.path">/jpetstore</item>
-            <item name="tow.context.jpetstore.baseDir">/webapps/jpetstore</item>
-            <item name="tow.context.jpetstore.scratchDir">/work/_webapps/jpetstore</item>
         </properties>
     </environment>
 
@@ -21,15 +18,15 @@
           scope="prototype">
         <properties>
             <item name="deploymentName">%{tow.context.jpetstore.name}</item>
-            <item name="contextPath">%{tow.context.jpetstore.path}</item>
+            <item name="contextPath">/%{tow.context.jpetstore.name}</item>
             <item name="resourceManager">
                 <bean class="com.aspectran.undertow.server.handler.resource.TowResourceManager">
                     <properties>
-                        <item name="base">%{tow.context.jpetstore.baseDir}</item>
+                        <item name="base">/webapps/%{tow.context.jpetstore.name}</item>
                     </properties>
                 </bean>
             </item>
-            <item name="scratchDir">%{tow.context.jpetstore.scratchDir}</item>
+            <item name="scratchDir">/work/_webapps/%{tow.context.jpetstore.name}</item>
             <item name="sessionManager">#{tow.context.jpetstore.sessionManager}</item>
             <item name="servletSessionConfig">
                 <bean class="io.undertow.servlet.api.ServletSessionConfig">
@@ -85,7 +82,7 @@
                     <properties>
                         <item name="tldResources" type="array">
                             <value>classpath:com/aspectran/web/support/tags/aspectran.tld</value>
-                            <value>%{tow.context.jpetstore.baseDir}/WEB-INF/taglibs</value>
+                            <value>/webapps/%{tow.context.jpetstore.name}/WEB-INF/taglibs</value>
                         </item>
                     </properties>
                 </bean>

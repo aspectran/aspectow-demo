@@ -10,6 +10,7 @@
     <environment>
         <properties>
             <item name="tow.context.demo.name">demo</item>
+            <item name="tow.context.demo.config">classpath:app/demo/demo-config.apon</item>
         </properties>
     </environment>
 
@@ -42,7 +43,7 @@
                 </bean>
             </item>
             <item name="initParams" type="map">
-                <entry name="aspectran:config" value="classpath:app/demo/demo-config.apon"/>
+                <entry name="aspectran:config">%{tow.context.demo.config}</entry>
             </item>
             <item name="servlets" type="array">
                 <bean class="com.aspectran.undertow.server.servlet.TowServlet">

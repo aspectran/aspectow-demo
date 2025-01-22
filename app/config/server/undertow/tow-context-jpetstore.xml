@@ -10,6 +10,7 @@
     <environment>
         <properties>
             <item name="tow.context.jpetstore.name">jpetstore</item>
+            <item name="tow.context.jpetstore.config">classpath:app/jpetstore/jpetstore-config.apon</item>
         </properties>
     </environment>
 
@@ -42,7 +43,7 @@
                 </bean>
             </item>
             <item name="initParams" type="map">
-                <entry name="aspectran:config" value="classpath:app/jpetstore/jpetstore-config.apon"/>
+                <entry name="aspectran:config">%{tow.context.jpetstore.config}</entry>
             </item>
             <item name="servlets" type="array">
                 <bean class="com.aspectran.undertow.server.servlet.TowServlet">

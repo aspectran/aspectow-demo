@@ -34,7 +34,6 @@ group: {
         name: session
         reader: com.aspectran.aspectow.appmon.exporter.event.session.SessionEventReader
         target: tow.server/jpetstore
-        sampleInterval: 5000
     }
     log: {
         name: app
@@ -68,7 +67,6 @@ group: {
         name: session
         reader: com.aspectran.aspectow.appmon.exporter.event.session.SessionEventReader
         target: tow.server/demo
-        sampleInterval: 5000
     }
     log: {
         name: app
@@ -100,7 +98,6 @@ group: {
         name: session
         reader: com.aspectran.aspectow.appmon.exporter.event.session.SessionEventReader
         target: tow.server/demo
-        sampleInterval: 5000
     }
     log: {
         name: app
@@ -130,7 +127,6 @@ group: {
         title: Root App Session Statistics
         reader: com.aspectran.aspectow.appmon.exporter.event.session.SessionEventReader
         target: tow.server/root
-        sampleInterval: 5000
     }
     log: {
         name: app

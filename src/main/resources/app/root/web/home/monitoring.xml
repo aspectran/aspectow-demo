@@ -3,12 +3,12 @@
         "https://aspectran.com/dtd/aspectran-8.dtd">
 <aspectran>
 
-    <bean class="com.aspectran.aspectow.appmon.manager.AppMonConfigResolver">
+    <bean class="com.aspectran.aspectow.appmon.backend.config.BackendConfigResolver">
         <properties profile="!prod">
-            <item name="configLocation">/config/appmon/appmon-config.apon</item>
+            <item name="configLocation">/config/appmon/appmon-backend-config.apon</item>
         </properties>
         <properties profile="prod">
-            <item name="configLocation">/config/appmon/appmon-config-prod.apon</item>
+            <item name="configLocation">/config/appmon/appmon-backend-config-prod.apon</item>
         </properties>
     </bean>
 

@@ -4,6 +4,7 @@ function FrontViewer(endpoint) {
     let $indicators = {};
     let visible = false;
     let prevPosition = 0;
+    let currentActivities = [];
 
     this.putDisplay = function (group, label, $display) {
         $displays[group + ":event:" + label] = $display;
@@ -105,8 +106,10 @@ function FrontViewer(endpoint) {
         let text = msg.substring(idx3 + 1);
         switch (type) {
             case "event":
-                indicate(group, type, label);
-                processEventData(label, name, JSON.parse(text));
+                if (text.length) {
+                    indicate(group, type, label);
+                    processEventData(label, name, JSON.parse(text));
+                }
                 break;
             case "log":
                 indicate(group, type, label);
@@ -125,16 +128,30 @@ function FrontViewer(endpoint) {
 
     const processEventData = function (label, name, data) {
         switch (label) {
-            case "request":
-                let $reqNum = $indicators[name];
-                if ($reqNum) {
-                    $reqNum.text(data.number);
+            case "activity":
+                if (data.activities) {
+                    printActivities(name, data.activities);
                 }
                 if (visible) {
                     let $track = getDisplay(name);
                     if ($track) {
-                        launchBullet($track, data);
+                        let varName = name.replace(':', '_');
+                        if (!currentActivities[varName]) {
+                            currentActivities[varName] = 0;
+                            printCurrentActivities(name, 0);
+                        }
+                        launchBullet($track, data, function () {
+                            currentActivities[varName]++;
+                            printCurrentActivities(name, currentActivities[varName]);
+                        }, function () {
+                            if (currentActivities[varName] > 0) {
+                                currentActivities[varName]--;
+                            }
+                            printCurrentActivities(name, currentActivities[varName]);
+                        });
                     }
+                } else {
+                    printCurrentActivities(name, 0);
                 }
                 break;
             case "session":
@@ -143,8 +160,11 @@ function FrontViewer(endpoint) {
         }
     }
 
-    const launchBullet = function ($track, data) {
+    const launchBullet = function ($track, data, onLeaving, onArriving) {
         if (data.elapsedTime) {
+            if (onLeaving) {
+                onLeaving();
+            }
             let position = generateRandom(3, 103);
             if (prevPosition) {
                 if (Math.abs(position - prevPosition) <= 20) {
@@ -165,6 +185,9 @@ function FrontViewer(endpoint) {
                     $bullet.fadeOut(1000);
                     setTimeout(function () {
                         $bullet.remove();
+                        if (onArriving) {
+                            onArriving();
+                        }
                     }, 500);
                 }, data.elapsedTime + 350);
             }, 900);
@@ -195,6 +218,20 @@ function FrontViewer(endpoint) {
             setTimeout(function () {
                 $indicator.removeClass("blink on");
             }, 500);
+        }
+    }
+
+    const printActivities = function (name, data) {
+        let $activities = $indicators[name];
+        if ($activities) {
+            $activities.find(".total").text(data.total);
+        }
+    }
+
+    const printCurrentActivities = function (name, current) {
+        let $activities = $indicators[name];
+        if ($activities) {
+            $activities.find(".current").text(current);
         }
     }
 

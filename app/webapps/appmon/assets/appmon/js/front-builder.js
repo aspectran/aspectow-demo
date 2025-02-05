@@ -1,164 +1,320 @@
 function FrontBuilder() {
 
     const endpoints = [];
+    const instances = [];
+    const viewers = [];
+    const clients = [];
 
-    this.build = function (basePath, token, currentEndpoint, joinGroups) {
+    this.build = function (basePath, token, currentEndpoint, joinInstances) {
         $.ajax({
-            url: basePath + "backend/endpoints/" + token,
+            url: basePath + "backend/" + token + "/config",
             type: 'get',
             dataType: "json",
+            data: {
+                joinInstances: joinInstances
+            },
             success: function (data) {
                 if (data) {
                     endpoints.length = 0;
+                    instances.length = 0;
+                    viewers.length = 0;
+                    clients.length = 0;
                     let index = 0;
                     for (let key in data.endpoints) {
                         let endpoint = data.endpoints[key];
-                        endpoint['index'] = index++;
+                        endpoint['index'] = index;
                         endpoint['basePath'] = basePath;
                         endpoint['token'] = data.token;
                         if (!currentEndpoint || currentEndpoint === endpoint.name) {
+                            endpoint.active = true;
                             endpoints.push(endpoint);
+                            viewers[index] = new FrontViewer();
                         }
+                        index++;
+                        console.log('endpoint', endpoint);
                     }
+                    for (let key in data.instances) {
+                        let instance = data.instances[key];
+                        instances.push(instance);
+                        console.log('instance', instance);
+                    }
+                    buildView();
                     if (endpoints.length) {
-                        establishEndpoint(0, joinGroups);
+                        establish(0, joinInstances);
                     }
                 }
             }
         });
     };
 
-    const establishEndpoint = function (endpointIndex, joinGroups) {
+    const establish = function (endpointIndex, joinInstances) {
         console.log('endpointIndex', endpointIndex);
-        function onEndpointJoined(endpoint, payload) {
-            buildEndpointView(endpoint, payload);
-            for (let key in payload.messages) {
-                let msg = payload.messages[key];
-                endpoint.viewer.processMessage(msg);
+        function onJoined(endpoint, payload) {
+            if (endpoint.established) {
+                clearConsole(endpoint.index);
+                return;
+            }
+            if (payload) {
+                for (let key in payload.messages) {
+                    let msg = payload.messages[key];
+                    viewers[endpointIndex].processMessage(msg);
+                }
             }
         }
-        function onEstablishCompleted(endpoint) {
+        function onEstablished(endpoint) {
+            if (endpoint.established) {
+                console.log("Reconnection established");
+                return;
+            }
+            console.log("Connection established");
+            endpoint['established'] = true;
             if (endpoint.index < endpoints.length - 1) {
-                establishEndpoint(endpoint.index + 1, joinGroups);
+                establish(endpoint.index + 1, joinInstances);
             } else if (endpoint.index === endpoints.length - 1) {
-                initEndpointViews();
-                if (endpoints.length) {
-                    changeEndpoint(0);
-                    changeGroup();
-                    if (location.hash) {
-                        let groupName = location.hash.substring(1);
-                        changeGroup(groupName);
+                initView();
+                let instanceName = changeInstance();
+                if (instanceName && location.hash) {
+                    let instanceName2 = location.hash.substring(1);
+                    if (instanceName !== instanceName2) {
+                        changeInstance(instanceName2);
                     }
                 }
             }
         }
-        function onErrorObserved(endpoint) {
+        function onFailed(endpoint) {
             setTimeout(function () {
-                if (endpoint.index === 0) {
-                    clearScreen();
-                }
-                let client = new PollingClient(endpoint, onEndpointJoined, onEstablishCompleted);
-                endpoint['client'] = client;
-                client.start(joinGroups);
+                let client = new PollingClient(endpoint, viewers[endpoint.index], onJoined, onEstablished);
+                clients[endpoint.index] = client;
+                client.start(joinInstances);
             }, (endpoint.index - 1) * 1000);
         }
 
-        if (endpointIndex === 0) {
-            clearScreen();
-        }
-
         let endpoint = endpoints[endpointIndex];
-        console.log('endpoint', endpoint);
-        endpoint['viewer'] = new FrontViewer(endpoint);
-        let client = new WebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted, onErrorObserved);
-        endpoint['client'] = client;
-        client.start(joinGroups);
+        let viewer = viewers[endpointIndex];
+        let client = new WebsocketClient(endpoint, viewer, onJoined, onEstablished, onFailed);
+        clients[endpointIndex] = client;
+        client.start(joinInstances);
     };
 
-    const clearScreen = function () {
+    const clearView = function () {
         $(".endpoint.tabs .tabs-title.available").remove();
         $(".endpoint.tabs .tabs-title").show();
-        $(".endpoint-box.available").remove();
-        $(".endpoint-box").show();
+        $(".display-box.available").remove();
+        $(".track-box-box.available").remove();
+        $(".sessions-box-box.available").remove();
+        $(".console-box.available").remove();
+    };
+
+    const clearConsole = function (endpointIndex) {
+        $(".console-box[data-endpoint-index=" + endpointIndex + "] .console").empty();
     };
 
     const changeEndpoint = function (endpointIndex) {
-        for (let key in endpoints) {
-            endpoints[key].viewer.setVisible(false);
+        let availableTabs = $(".endpoint.tabs .tabs-title.available").length;
+        if (availableTabs <= 1) {
+            return;
         }
-        $(".endpoint-box.available").hide().eq(endpointIndex).show();
-        endpoints[endpointIndex].viewer.setVisible(true);
-        endpoints[endpointIndex].viewer.refreshConsole();
+        let activeTabs = $(".endpoint.tabs .tabs-title.available.is-active").length;
+        let endpoint = endpoints[endpointIndex];
+        if (activeTabs === 0) {
+            for (let key in endpoints) {
+                if (!!endpoints[key].active) {
+                    endpoints[key].active = false;
+                    viewEndpoint(endpoints[key]);
+                }
+            }
+            endpoint.active = true;
+            viewEndpoint(endpoint);
+        } else if (activeTabs === 1 && endpoint.active) {
+            for (let key in endpoints) {
+                if (endpoints[key].index !== endpoint.index) {
+                    endpoints[key].active = true;
+                    viewEndpoint(endpoints[key]);
+                }
+            }
+        } else if (activeTabs === 1 && !endpoint.active) {
+            for (let key in endpoints) {
+                if (endpoints[key].index !== endpoint.index) {
+                    endpoints[key].active = false;
+                    viewEndpoint(endpoints[key]);
+                }
+            }
+            endpoint.active = true;
+            viewEndpoint(endpoint);
+        } else {
+            endpoint.active = !!!endpoint.active;
+            viewEndpoint(endpoint);
+        }
+        let activeEndpoints = 0;
+        for (let key in endpoints) {
+            if (endpoints[key].active) {
+                activeEndpoints++;
+            }
+        }
+        $(".endpoint.tabs .tabs-title.available").removeClass("is-active");
+        if (availableTabs > activeEndpoints) {
+            for (let key in endpoints) {
+                if (endpoints[key].active) {
+                    $(".endpoint.tabs .tabs-title[data-endpoint-index=" + endpoints[key].index + "]").addClass("is-active");
+                }
+            }
+        }
     };
 
-    const changeGroup = function (groupName) {
-        let exists = false;
-        $(".endpoint-box.available").each(function () {
-            let $endpointBox = $(this);
-            $endpointBox.find(".tabs-title.available").each(function () {
-                if (!groupName) {
-                    groupName = $(this).data("name");
+    const viewEndpoint = function (endpoint) {
+        if (endpoint.active) {
+            for (let key in instances) {
+                let instance = instances[key];
+                if (instance.active) {
+                    $(".display-box[data-endpoint-index=" + endpoint.index + "][data-instance-name=" + instance.name + "]").show();
+                    $(".console-box[data-endpoint-index=" + endpoint.index + "][data-instance-name=" + instance.name + "]").show();
                 }
-                if ($(this).data("name") === groupName) {
-                    if (!$(this).hasClass("is-active")) {
-                        $(this).addClass("is-active");
-                        changeEndpointGroup($endpointBox, groupName);
-                    }
-                    exists = true;
-                } else {
-                    $(this).removeClass("is-active");
+            }
+            viewers[endpoint.index].setVisible(true);
+            viewers[endpoint.index].refreshConsole();
+        } else {
+            viewers[endpoint.index].setVisible(false);
+            for (let key in instances) {
+                let instance = instances[key];
+                if (instance.active) {
+                    $(".display-box[data-endpoint-index=" + endpoint.index + "][data-instance-name=" + instance.name + "]").hide();
+                    $(".console-box[data-endpoint-index=" + endpoint.index + "][data-instance-name=" + instance.name + "]").hide();
                 }
-            });
-        });
-        if (!exists && groupName) {
-            changeGroup();
+            }
         }
     }
 
-    const changeEndpointGroup = function ($endpointBox, groupName) {
-        let $groupBox = $endpointBox.find(".group-box[data-name=" + groupName + "]");
-        if ($groupBox.length) {
-            $endpointBox.find(".group-box").hide();
-            $groupBox.show();
-            $groupBox.find(".track-box .bullet").remove();
-            $groupBox.find(".log-box.available .log-console").each(function () {
-                let $console = $(this);
-                if (!$console.data("pause")) {
-                    let endpointIndex = $endpointBox.data("index");
-                    endpoints[endpointIndex].viewer.refreshConsole($console);
+    const changeInstance = function (instanceName) {
+        let exists = false;
+        for (let key in instances) {
+            let instance = instances[key];
+            if (!instanceName) {
+                instanceName = instance.name;
+            }
+            let $tabTitle = $(".instance.tabs .tabs-title[data-instance-name=" + instance.name + "]");
+            if (instance.name === instanceName) {
+                if (!!!instance.active) {
+                    instance.active = true;
+                    $tabTitle.addClass("is-active");
+                    viewEndpointInstance(instanceName);
                 }
-            });
+                exists = true;
+            } else {
+                instance.active = false;
+                $tabTitle.removeClass("is-active");
+            }
+        }
+        if (!exists && instanceName) {
+            return changeInstance();
+        } else {
+            return instanceName;
+        }
+    }
+
+    const viewEndpointInstance = function (instanceName) {
+        for (let key in endpoints) {
+            let endpoint = endpoints[key];
+            if (endpoint.active) {
+                $(".track-box.available[data-endpoint-index=" + endpoint.index + "] .bullet").remove();
+                $(".display-box.available[data-endpoint-index=" + endpoint.index + "][data-instance-name!=" + instanceName + "]").hide();
+                $(".display-box.available[data-endpoint-index=" + endpoint.index + "][data-instance-name=" + instanceName + "]").show();
+                $(".console-box.available[data-endpoint-index=" + endpoint.index + "][data-instance-name!=" + instanceName + "]").hide();
+                $(".console-box.available[data-endpoint-index=" + endpoint.index + "][data-instance-name=" + instanceName + "]").show().each(function () {
+                    let $console = $(this).find(".console");
+                    if (!$console.data("pause")) {
+                        viewers[endpoint.index].refreshConsole($console);
+                    }
+                });
+            }
         }
     };
 
-    const initEndpointViews = function () {
-        $(".endpoint.tabs .tabs-title.available").eq(0).addClass("is-active");
-        $(".endpoint.tabs .tabs-title.available a").click(function() {
-            $(".endpoint.tabs .tabs-title").removeClass("is-active");
-            let $tab = $(this).closest(".tabs-title").addClass("is-active");
-            let endpointIndex = $tab.data("index");
+    const initView = function () {
+        for (let key in endpoints) {
+            let endpoint = endpoints[key];
+            if (endpoint.active) {
+                viewers[endpoint.index].setVisible(true);
+            }
+        }
+        $("ul.speed-options").hide();
+        let pollingMode = false;
+        for (let key in endpoints) {
+            let endpoint = endpoints[key];
+            if (endpoint.mode === "polling") {
+                pollingMode = true;
+            }
+        }
+        if (pollingMode) {
+            $("ul.speed-options").show();
+        } else {
+            $("ul.speed-options").hide();
+        }
+    };
+
+    const buildView = function () {
+        clearView();
+        for (let key in endpoints) {
+            let endpoint = endpoints[key];
+            let $titleTab = addEndpointTab(endpoint);
+            let $endpointIndicator = $titleTab.find(".indicator");
+            viewers[endpoint.index].putIndicator("endpoint", "event", "", $endpointIndicator);
+        }
+        for (let key in instances) {
+            let instance = instances[key];
+            let $titleTab = addInstanceTab(instance);
+            let $instanceIndicator = $titleTab.find(".indicator");
+            for (let key in endpoints) {
+                let endpoint = endpoints[key];
+                viewers[endpoint.index].putIndicator("instance", "event", instance.name, $instanceIndicator);
+                if (instance.events && instance.events.length) {
+                    let $displayBox = addDisplayBox(endpoint, instance);
+                    for (let key in instance.events) {
+                        let event = instance.events[key];
+                        if (event.name === "activity") {
+                            let $trackBox = addTrackBox($displayBox, endpoint, instance, event);
+                            let $activities = $trackBox.find(".activities");
+                            viewers[endpoint.index].putDisplay(instance.name, event.name, $trackBox);
+                            viewers[endpoint.index].putIndicator(instance.name, "event", event.name, $activities);
+                        } else if (event.name === "session") {
+                            let $sessionsBox = addSessionsBox($displayBox, endpoint, instance, event);
+                            viewers[endpoint.index].putDisplay(instance.name, event.name, $sessionsBox);
+                        }
+                    }
+                }
+                for (let key in instance.logs) {
+                    let logInfo = instance.logs[key];
+                    let $consoleBox = addConsoleBox(endpoint, instance, logInfo);
+                    let $console = $consoleBox.find(".console").data("tailing", true);
+                    $consoleBox.find(".tailing-status").addClass("on");
+                    viewers[endpoint.index].putConsole(instance.name, logInfo.name, $console);
+                    let $logIndicator = $consoleBox.find(".status-bar");
+                    viewers[endpoint.index].putIndicator(instance.name, "log", logInfo.name, $logIndicator);
+                }
+            }
+        }
+        $(".endpoint.tabs .tabs-title.available a").on("click", function() {
+            let endpointIndex = $(this).closest(".tabs-title").data("endpoint-index");
             changeEndpoint(endpointIndex);
         });
-        $(".endpoint-box.available .group.tabs .tabs-title.available a").click(function() {
-            let $groupTab = $(this).closest(".tabs-title");
-            let groupName = $groupTab.data("name");
-            changeGroup(groupName);
+        $(".instance.tabs .tabs-title.available a").on("click", function() {
+            let instanceName = $(this).closest(".tabs-title").data("instance-name");
+            changeInstance(instanceName);
         });
-        $(".log-box .tailing-switch").click(function() {
-            let $console = $(this).closest(".log-box").find(".log-console");
-            let endpointIndex = $console.data("endpoint-index");
+        $(".console-box .tailing-switch").on("click", function() {
+            let $consoleBox = $(this).closest(".console-box");
+            let $console = $consoleBox.find(".console");
+            let endpointIndex = $consoleBox.data("endpoint-index");
             if ($console.data("tailing")) {
                 $console.data("tailing", false);
-                $(this).find(".tailing-status").removeClass("on");
+                $consoleBox.find(".tailing-status").removeClass("on");
             } else {
                 $console.data("tailing", true);
                 $(this).find(".tailing-status").addClass("on");
-                let endpoint = endpoints[endpointIndex];
-                endpoint.viewer.refreshConsole($console);
+                viewers[endpointIndex].refreshConsole($console);
             }
         });
-        $(".log-box .pause-switch").click(function() {
-            let $console = $(this).closest(".log-box").find(".log-console");
+        $(".console-box .pause-switch").on("click", function() {
+            let $console = $(this).closest(".console-box").find(".console");
             if ($console.data("pause")) {
                 $console.data("pause", false);
                 $(this).removeClass("on");
@@ -167,175 +323,109 @@ function FrontBuilder() {
                 $(this).addClass("on");
             }
         });
-        $(".log-box .clear-screen").click(function() {
-            let $console = $(this).closest(".log-box").find(".log-console");
-            let endpointIndex = $console.data("endpoint-index");
-            let endpoint = endpoints[endpointIndex];
-            endpoint.viewer.clearConsole($console);
+        $(".console-box .clear-screen").on("click", function() {
+            let $consoleBox = $(this).closest(".console-box");
+            let $console = $consoleBox.find(".console");
+            let endpointIndex = $consoleBox.data("endpoint-index");
+            viewers[endpointIndex].clearConsole($console);
         });
-        $(".layout-options li a").click(function() {
-            let $liStacked = $(".layout-options li.stacked");
-            let $liTabbed = $(".layout-options li.tabbed");
+        $(".layout-options li a").on("click", function() {
             let $li = $(this).parent();
             if (!$li.hasClass("on")) {
-                if ($li.hasClass("tabbed")) {
-                    $liTabbed.addClass("on");
-                    $liStacked.removeClass("on");
-                    $(".endpoint-box").removeClass("stacked");
-                } else if ($li.hasClass("stacked")) {
-                    $liTabbed.removeClass("on");
-                    $liStacked.addClass("on");
-                    $(".endpoint-box").addClass("stacked");
-                } else if ($li.hasClass("compact")) {
+                if ($li.hasClass("compact")) {
                     $li.addClass("on");
-                    $(".endpoint-box").addClass("compact")
-                        .find(".log-box.available")
-                            .addClass("large-6");
+                    $(".console-box.available").addClass("large-6");
                 }
             } else {
                 if ($li.hasClass("compact")) {
                     $li.removeClass("on");
-                    $(".endpoint-box").removeClass("compact")
-                        .find(".log-box.available")
-                            .removeClass("large-6");
+                    $(".console-box.available").removeClass("large-6");
                 }
             }
-            let $endpointBox = $(this).closest(".endpoint-box");
-            let endpointIndex = $endpointBox.data("index");
-            $endpointBox.find(".log-box.available").each(function () {
-                if ($(this).find(".tailing-status").hasClass("on")) {
-                    endpoints[endpointIndex].viewer.refreshConsole();
-                }
-            });
         });
-        $(".speed-options li").click(function() {
-            let $endpointBox = $(this).closest(".endpoint-box");
-            let endpointIndex = $endpointBox.data("index");
-            let $liFast = $(".speed-options li.fast");
-            if ($liFast.hasClass("on")) {
-                $liFast.removeClass("on");
-                endpoints[endpointIndex].client.speed(0);
-            } else {
-                $liFast.addClass("on");
-                endpoints[endpointIndex].client.speed(1);
+        $(".speed-options li").on("click", function() {
+            for (let key in endpoints) {
+                let endpoint = endpoints[key];
+                if (endpoint.mode === "polling") {
+                    let $liFast = $(".speed-options li.fast");
+                    if ($liFast.hasClass("on")) {
+                        $liFast.removeClass("on");
+                        clients[endpoint.index].speed(0);
+                    } else {
+                        $liFast.addClass("on");
+                        clients[endpoint.index].speed(1);
+                    }
+                    break;
+                }
             }
         });
     };
 
-    const buildEndpointView = function (endpoint, payload) {
-        let $endpointBox = addEndpointBox(endpoint);
-        let indicatorEndpoint = $(".endpoint.tabs .tabs-title.available .indicator").eq(endpoint.index);
-        endpoint.viewer.putIndicator("endpoint", "event", endpoint.index, indicatorEndpoint);
-        for (let key in payload.groups) {
-            let groupInfo = payload.groups[key];
-            addGroupBox($endpointBox, groupInfo);
-            let $indicatorGroup = $endpointBox
-                .find(".group.tabs .tabs-title[data-name=" + groupInfo.name + "], .group-box[data-name=" + groupInfo.name + "] .tabs-title")
-                .find(".indicator");
-            endpoint.viewer.putIndicator("group", "event", groupInfo.name, $indicatorGroup);
-            for (let key in groupInfo.events) {
-                let eventInfo = groupInfo.events[key];
-                if (eventInfo.name === "activity") {
-                    let $trackBox = addTrackBox($endpointBox, eventInfo);
-                    let $reqNum = $trackBox.find(".activities");
-                    endpoint.viewer.putDisplay(groupInfo.name, eventInfo.name, $trackBox);
-                    endpoint.viewer.putIndicator(groupInfo.name, "event", eventInfo.name, $reqNum);
-                } else if (eventInfo.name === "session") {
-                    let $displayBox = addDisplayBox($endpointBox, eventInfo);
-                    endpoint.viewer.putDisplay(groupInfo.name, eventInfo.name, $displayBox);
-                }
-            }
-            for (let key in groupInfo.logs) {
-                let logInfo = groupInfo.logs[key];
-                let $logBox = addLogBox($endpointBox, logInfo);
-                let $console = $logBox.find(".log-console").data("tailing", true);
-                $logBox.find(".tailing-status").addClass("on");
-                endpoint.viewer.putConsole(groupInfo.name, logInfo.name, $console);
-                let $indicatorLog = $logBox.find(".status-bar");
-                endpoint.viewer.putIndicator(groupInfo.name, "log", logInfo.name, $indicatorLog);
-            }
-        }
-        if (endpoint.mode === "polling") {
-            $("ul.speed-options").show();
-        }
-    };
-
-    const addEndpointBox = function (endpointInfo) {
+    const addEndpointTab = function (endpointInfo) {
         let $tabs = $(".endpoint.tabs");
-        let $tab0 = $tabs.find(".tabs-title").eq(0);
-        let $tab = $tab0.hide().clone()
+        let $tab = $tabs.find(".tabs-title").eq(0).hide().clone()
             .addClass("available")
-            .attr("data-index", endpointInfo.index)
-            .attr("data-name", endpointInfo.name)
-            .attr("data-title", endpointInfo.title)
-            .attr("data-endpoint", endpointInfo.url);
+            .attr("data-endpoint-index", endpointInfo.index)
+            .attr("data-endpoint-name", endpointInfo.name)
+            .attr("data-endpoint-title", endpointInfo.title)
+            .attr("data-endpoint-url", endpointInfo.url);
         $tab.find("a .title").text(" " + endpointInfo.title + " ");
         $tab.show().appendTo($tabs);
-        let $endpointBox = $(".endpoint-box");
-        return $endpointBox.eq(0).hide().clone()
-            .addClass("available")
-            .attr("data-index", endpointInfo.index)
-            .attr("data-name", endpointInfo.name)
-            .attr("data-title", endpointInfo.title)
-            .insertAfter($endpointBox.last()).show();
+        return $tab;
     };
 
-    const addGroupBox = function ($endpointBox, groupInfo) {
-        let endpointTitle = $endpointBox.data("title");
-        let $tabs = $endpointBox.find(".group.tabs");
+    const addInstanceTab = function (instanceInfo) {
+        let $tabs = $(".instance.tabs");
         let $tab0 = $tabs.find(".tabs-title").eq(0);
-        let index = $tabs.find(".tabs-title").length - 1;
         let $tab = $tab0.hide().clone()
             .addClass("available")
-            .attr("data-index", index)
-            .attr("data-name", groupInfo.name)
-            .attr("title", endpointTitle + " ›› " + groupInfo.title);
-        $tab.find("a .title").text(" " + groupInfo.title + " ");
+            .attr("data-instance-name", instanceInfo.name)
+            .attr("title", instanceInfo.title);
+        $tab.find("a .title").text(" " + instanceInfo.title + " ");
         $tab.show().appendTo($tabs);
-        let $groupBox = $endpointBox.find(".group-box").eq(0).hide().clone();
-        $groupBox.addClass("available")
-            .attr("data-name", groupInfo.name)
-            .attr("data-title", groupInfo.title)
-            .appendTo($endpointBox);
-        $groupBox.find(".tabs .tabs-title")
-            .addClass("is-active")
-            .find("a .title")
-                .text(" " + groupInfo.title + " ");
-        return $groupBox;
+        return $tab;
     };
 
-    const addTrackBox = function ($endpointBox, eventInfo) {
-        let $groupBox = $endpointBox.find(".group-box[data-name=" + eventInfo.group + "]");
-        let $trackBox = $groupBox.find(".track-box").eq(0).hide().clone()
+    const addDisplayBox = function (endpointInfo, instanceInfo) {
+        let $displayBox = $(".display-box");
+        let $newBox = $displayBox.eq(0).hide().clone()
             .addClass("available")
-            .attr("data-group", eventInfo.group)
-            .attr("data-name", eventInfo.name);
-        return $trackBox.appendTo($groupBox.find("> .grid-x")).show();
+            .attr("data-endpoint-index", endpointInfo.index)
+            .attr("data-instance-name", instanceInfo.name)
+        $newBox.find(".status-bar h4")
+            .text(endpointInfo.title);
+        return $newBox.insertAfter($displayBox.last()).show();
     };
 
-    const addLogBox = function ($endpointBox, logInfo) {
-        let endpointIndex = $endpointBox.data("index");
-        let endpointTitle = $endpointBox.data("title");
-        let $groupBox = $endpointBox.find(".group-box[data-name=" + logInfo.group + "]");
-        let $logBox = $groupBox.find(".log-box").eq(0).hide().clone()
-            .addClass("large-6 available")
-            .attr("data-group", logInfo.group)
-            .attr("data-name", logInfo.name);
-        $logBox.find(".status-bar h4")
-            .text(endpointTitle + " ›› " + logInfo.file);
-        $logBox.find(".log-console")
-            .attr("data-endpoint-index", endpointIndex)
-            .attr("data-endpoint-name", endpointTitle)
+    const addTrackBox = function ($displayBox, endpointInfo, instanceInfo, eventInfo) {
+        let $trackBox = $displayBox.find(".track-box");
+        let $newBox = $trackBox.eq(0).hide().clone()
+            .addClass("available")
+            .attr("data-endpoint-index", endpointInfo.index)
+            .attr("data-instance-name", instanceInfo.name)
+            .attr("data-event-name", eventInfo.name);
+        return $newBox.insertAfter($trackBox.last()).show();
+    };
+
+    const addSessionsBox = function ($displayBox, endpointInfo, instanceInfo, eventInfo) {
+        let $sessionsBox = $displayBox.find(".sessions-box");
+        let $newBox = $sessionsBox.eq(0).hide().clone()
+            .addClass("available")
+            .attr("data-endpoint-index", endpointInfo.index)
+            .attr("data-instance-name", instanceInfo.name)
+            .attr("data-event-name", eventInfo.name);
+        return $newBox.insertAfter($sessionsBox.last()).show();
+    };
+
+    const addConsoleBox = function (endpointInfo, instanceInfo, logInfo) {
+        let $consoleBox = $(".console-box");
+        let $newBox = $consoleBox.eq(0).hide().clone()
+            .addClass("available large-6")
+            .attr("data-endpoint-index", endpointInfo.index)
+            .attr("data-instance-name", instanceInfo.name)
             .attr("data-log-name", logInfo.name);
-        return $logBox.appendTo($groupBox.find("> .grid-x")).show();
-    };
-
-    const addDisplayBox = function (endpointBox, eventInfo) {
-        let $groupBox = endpointBox.find(".group-box[data-name=" + eventInfo.group + "]");
-        let $displayBox = $groupBox.find(".display-box").eq(0).hide().clone()
-            .addClass("available")
-            .attr("data-group", eventInfo.group)
-            .attr("data-name", eventInfo.name);
-        return $displayBox.appendTo($groupBox.find("> .grid-x")).show();
+        $newBox.find(".status-bar h4")
+            .text(endpointInfo.title + " ›› " + logInfo.file);
+        return $newBox.insertAfter($consoleBox.last()).show();
     };
 }

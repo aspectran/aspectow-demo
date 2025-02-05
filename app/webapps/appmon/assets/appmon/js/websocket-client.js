@@ -1,18 +1,21 @@
-function WebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted, onErrorObserved) {
+function WebsocketClient(endpoint, viewer, onJoined, onEstablished, onFailed) {
+
+    const MODE = "websocket";
     let socket = null;
     let heartbeatTimer = null;
     let pendingMessages = [];
     let established = false;
+    let retryCount = 0;
 
-    this.start = function (joinGroups) {
-        openSocket(joinGroups);
+    this.start = function (joinInstances) {
+        openSocket(joinInstances);
     };
 
     this.stop = function () {
         closeSocket();
     };
 
-    const openSocket = function (joinGroups) {
+    const openSocket = function (joinInstances) {
         // For test
         // onErrorObserved(endpoint);
         // return;
@@ -22,64 +25,76 @@ function WebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted, onErr
         url.protocol = url.protocol.replace('http:', 'ws:');
         socket = new WebSocket(url.href);
         socket.onopen = function (event) {
+            console.log("Socket connected:", endpoint.url);
             pendingMessages.push("Socket connection successful");
-            socket.send("join:" + (joinGroups||""));
+            socket.send("join:" + (joinInstances||""));
             heartbeatPing();
+            retryCount = 0;
         };
         socket.onmessage = function (event) {
             if (typeof event.data === "string") {
-                if (event.data === "--pong--") {
-                    heartbeatPing();
-                    return;
-                }
                 let msg = event.data;
                 if (established) {
-                    endpoint.viewer.processMessage(msg);
+                    if (msg.startsWith("pong:")) {
+                        endpoint.token = msg.substring(5);
+                        heartbeatPing();
+                    } else {
+                        viewer.processMessage(msg);
+                    }
                 } else if (msg.startsWith("joined:")) {
-                    console.log(msg);
-                    let payload = JSON.parse(msg.substring(7));
+                    console.log(msg, endpoint.token);
+                    let payload = (msg.length > 7 ? JSON.parse(msg.substring(7)) : null);
                     establish(payload);
                 }
             }
         };
         socket.onclose = function (event) {
+            console.log("Socket closed: ", event.code);
             if (event.code === 1000) {
-                endpoint.viewer.printMessage("Socket connection closed.");
+                viewer.printMessage("Socket connection closed.");
             } else {
                 closeSocket();
-                endpoint.viewer.printMessage("Socket connection closed. Please refresh this page to try again!");
+                if (retryCount++ < 10) {
+                    viewer.printMessage("Socket connection closed. Trying to reconnect... (" + retryCount + "/10)");
+                    setTimeout(function () {
+                        openSocket(joinInstances);
+                    }, 5000);
+                } else {
+                    viewer.printMessage("Socket reconnection failed.");
+                }
             }
         };
         socket.onerror = function (event) {
-            console.error("WebSocket error observed:", event);
-            if (!endpoint.mode && onErrorObserved) {
-                onErrorObserved(endpoint);
-            } else {
-                endpoint.viewer.printErrorMessage("Could not connect to WebSocket server.");
+            if (endpoint.mode === MODE) {
+                console.error("WebSocket error observed:", event);
+                viewer.printErrorMessage("Could not connect to the WebSocket server.");
+            } else if (onFailed) {
+                onFailed(endpoint);
             }
         };
     };
 
     const closeSocket = function () {
         if (socket) {
+            established = false;
             socket.close();
             socket = null;
         }
     };
 
     const establish = function (payload) {
-        if (onEndpointJoined) {
-            endpoint['mode'] = "websocket";
-            onEndpointJoined(endpoint, payload);
+        if (onJoined) {
+            endpoint['mode'] = MODE;
+            onJoined(endpoint, payload);
         }
         while (pendingMessages.length) {
-            endpoint.viewer.printMessage(pendingMessages.shift());
+            viewer.printMessage(pendingMessages.shift());
         }
-        if (onEstablishCompleted) {
-            onEstablishCompleted(endpoint);
+        if (onEstablished) {
+            onEstablished(endpoint);
         }
         while (pendingMessages.length) {
-            endpoint.viewer.printMessage(pendingMessages.shift());
+            viewer.printMessage(pendingMessages.shift());
         }
         established = true;
         socket.send("established:");
@@ -91,8 +106,8 @@ function WebsocketClient(endpoint, onEndpointJoined, onEstablishCompleted, onErr
         }
         heartbeatTimer = setTimeout(function () {
             if (socket) {
-                socket.send("--ping--");
+                socket.send("ping:");
             }
-        }, 57000);
+        }, 50000);
     };
 }

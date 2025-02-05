@@ -1,4 +1,7 @@
-function PollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
+function PollingClient(endpoint, viewer, onJoined, onEstablished) {
+
+    const MODE = "polling";
+
     this.start = function (joinGroups) {
         join(joinGroups);
     };
@@ -7,26 +10,26 @@ function PollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
         changePollingInterval(speed);
     };
 
-    const join = function (joinGroups) {
+    const join = function (joinInstances) {
         $.ajax({
-            url: endpoint.basePath + "backend/endpoint/" + endpoint.token + "/join",
+            url: endpoint.basePath + "backend/polling/" + endpoint.token + "/join",
             type: 'post',
             dataType: "json",
             data: {
-                joinGroups: joinGroups
+                joinInstances: joinInstances
             },
             success: function (data) {
                 if (data) {
-                    endpoint['mode'] = "polling";
+                    endpoint['mode'] = MODE;
                     endpoint['token'] = data.token;
                     endpoint['pollingInterval'] = data.pollingInterval;
-                    if (onEndpointJoined) {
-                        onEndpointJoined(endpoint, data);
+                    if (onJoined) {
+                        onJoined(endpoint, data);
                     }
-                    if (onEstablishCompleted) {
-                        onEstablishCompleted(endpoint);
+                    if (onEstablished) {
+                        onEstablished(endpoint);
                     }
-                    endpoint.viewer.printMessage("Polling every " + data.pollingInterval + " milliseconds.");
+                    viewer.printMessage("Polling every " + data.pollingInterval + " milliseconds.");
                     polling();
                 }
             }
@@ -35,17 +38,17 @@ function PollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
 
     const polling = function () {
         $.ajax({
-            url: endpoint.basePath + "backend/endpoint/" + endpoint.token + "/pull",
+            url: endpoint.basePath + "backend/polling/" + endpoint.token + "/pull",
             type: 'get',
             success: function (data) {
                 if (data && data.token && data.messages) {
                     endpoint['token'] = data.token;
                     for (let key in data.messages) {
-                        endpoint.viewer.processMessage(data.messages[key]);
+                        viewer.processMessage(data.messages[key]);
                     }
                     setTimeout(polling, endpoint.pollingInterval);
                 } else {
-                    endpoint.viewer.printErrorMessage("Connection lost. Please refresh this page to try again!");
+                    viewer.printErrorMessage("Connection lost. Please refresh this page to try again!");
                 }
             }
         });
@@ -53,7 +56,7 @@ function PollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
 
     const changePollingInterval = function (speed) {
         $.ajax({
-            url: endpoint.basePath + "backend/endpoint/" + endpoint.token + "/pollingInterval",
+            url: endpoint.basePath + "backend/polling/" + endpoint.token + "/pollingInterval",
             type: 'post',
             dataType: "json",
             data: {
@@ -63,7 +66,7 @@ function PollingClient(endpoint, onEndpointJoined, onEstablishCompleted) {
                 console.log("pollingInterval", data);
                 if (data) {
                     endpoint.pollingInterval = data;
-                    endpoint.viewer.printMessage("Polling every " + data + " milliseconds.");
+                    viewer.printMessage("Polling every " + data + " milliseconds.");
                 }
             }
         });

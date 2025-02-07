@@ -5,10 +5,10 @@
 
     <bean class="com.aspectran.aspectow.appmon.backend.config.BackendConfigResolver">
         <properties profile="!prod">
-            <item name="configLocation">/config/appmon/appmon-backend-config.apon</item>
+            <item name="configLocation">/config/appmon/backend-config.apon</item>
         </properties>
         <properties profile="prod">
-            <item name="configLocation">/config/appmon/appmon-backend-config-prod.apon</item>
+            <item name="configLocation">/config/appmon/backend-config-prod.apon</item>
         </properties>
     </bean>
 

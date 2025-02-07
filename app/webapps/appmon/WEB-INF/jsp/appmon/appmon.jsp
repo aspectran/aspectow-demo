@@ -78,8 +78,9 @@
 </div>
 <script>
     $(function () {
+        const basePath = "<aspectran:url value="/"/>";
         const token = "${page.token}";
         const endpoint = "${page.endpoint}";
-        new FrontBuilder().build("<aspectran:url value="/"/>", token, endpoint);
+        new FrontBuilder().build(basePath, token, endpoint);
     });
 </script>

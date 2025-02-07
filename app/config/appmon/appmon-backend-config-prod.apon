@@ -5,13 +5,13 @@ pollingConfig: {
 }
 endpoint: {
     mode: auto
-    name: endpoint-1
+    name: backend1
     title: Server-1
     url: /appmon/backend1
 }
 endpoint: {
     mode: auto
-    name: endpoint-2
+    name: backend2
     title: Server-2
     url: /appmon/backend2
 }

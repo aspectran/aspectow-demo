@@ -49,7 +49,7 @@
         <div class="grid-container ${page.style}">
             <div class="top-bar-logo">
                 <div class="circle">
-                    <a class="logo" href="/" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                    <a class="logo" href="<aspectran:url value="/"/>" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
                 </div>
             </div>
             <div class="top-bar-left">

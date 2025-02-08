@@ -6,13 +6,13 @@ pollingConfig: {
 endpoint: {
     mode: auto
     name: backend1
-    title: Localhost(Websocket Mode)
+    title: Localhost(Websocket)
     url: /appmon/backend
 }
 endpoint: {
-    mode: polling
+    mode: auto
     name: backend2
-    title: Localhost(Polling Mode)
+    title: Localhost(Polling)
     url: /appmon/backend
 }
 instance: {

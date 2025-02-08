@@ -35,18 +35,22 @@ import java.util.Locale;
  */
 @Component
 @AvoidAdvice
-public class UserCountryLookupListener extends InstantActivitySupport implements SessionListener, InitializableBean {
+public class UserTrackingListener extends InstantActivitySupport implements SessionListener, InitializableBean {
+
+    private static final String USER_IP_ADDRESS = "user.ipAddress";
+
+    private static final String USER_COUNTRY_CODE = "user.countryCode";
 
     @Override
     public void sessionCreated(@NonNull Session session) {
         Activity activity = getCurrentActivity();
         String ipAddress = TransletUtils.getRemoteAddr(activity.getTranslet());
         if (!StringUtils.isEmpty(ipAddress)) {
-            session.setAttribute("user.ipAddress", ipAddress);
+            session.setAttribute(USER_IP_ADDRESS, ipAddress);
             Locale locale = activity.getTranslet().getRequestAdapter().getLocale();
             String countryCode = IPToCountryLookup.getInstance().getCountryCode(ipAddress, locale);
             if (StringUtils.hasLength(countryCode)) {
-                session.setAttribute("user.countryCode", countryCode);
+                session.setAttribute(USER_COUNTRY_CODE, countryCode);
             }
         }
     }

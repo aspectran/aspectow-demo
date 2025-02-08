@@ -36,7 +36,12 @@
 <nav id="navigation" class="no-js">
     <div class="title-bar" data-responsive-toggle="gnb-menu" data-hide-for="large" style="display:none">
         <div class="title-bar-left">
-            <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+            <aspectran:profile expression="prod">
+                <a class="logo" href="https://public.aspectran.com" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+            </aspectran:profile>
+            <aspectran:profile expression="!prod">
+                <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+            </aspectran:profile>
         </div>
         <div class="title-bar-center">
             <a href="#top-of-page">Aspectran</a>
@@ -49,7 +54,12 @@
         <div class="grid-container ${page.style}">
             <div class="top-bar-logo">
                 <div class="circle">
-                    <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                    <aspectran:profile expression="prod">
+                        <a class="logo" href="https://public.aspectran.com" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                    </aspectran:profile>
+                    <aspectran:profile expression="!prod">
+                        <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                    </aspectran:profile>
                 </div>
             </div>
             <div class="top-bar-left">
@@ -64,11 +74,21 @@
             </div>
             <div class="top-bar-right">
                 <ul class="dropdown menu" data-dropdown-menu>
-                    <li><a href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank">Monitoring</a></li>
+                    <aspectran:profile expression="prod">
+                        <li><a href="https://public.aspectran.com/monitoring/#jpetstore" target="_blank">Monitoring</a></li>
+                    </aspectran:profile>
+                    <aspectran:profile expression="!prod">
+                        <li><a href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank">Monitoring</a></li>
+                    </aspectran:profile>
                     <li>
                         <a title="Sample applications built on Aspectran">More Sample Apps</a>
                         <ul class="submenu menu vertical" data-submenu>
-                            <li><a href="<aspectran:url value="/../demo/"/>">Aspectran Demo</a></li>
+                            <aspectran:profile expression="prod">
+                                <li><a href="https://demo.aspectran.com">Aspectran Demo</a></li>
+                            </aspectran:profile>
+                            <aspectran:profile expression="!prod">
+                                <li><a href="<aspectran:url value="/../demo/"/>">Aspectran Demo</a></li>
+                            </aspectran:profile>
                         </ul>
                     </li>
                 </ul>
@@ -88,7 +108,12 @@
             <div class="grid-container ${page.style}">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <li><a href="<aspectran:url value="/../"/>">Sample Apps</a></li>
+                        <aspectran:profile expression="prod">
+                            <li><a href="<aspectran:url value="https://public.aspectran.com/"/>">Sample Apps</a></li>
+                        </aspectran:profile>
+                        <aspectran:profile expression="!prod">
+                            <li><a href="<aspectran:url value="/../"/>">Sample Apps</a></li>
+                        </aspectran:profile>
                         <li><a href="<aspectran:url value="/"/>">JPetStore Demo</a></li>
                     </ul>
                 </nav>
@@ -123,7 +148,12 @@
             <div class="cell">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <li><a href="<aspectran:url value="https://public.aspectran.com/"/>">Sample Apps</a></li>
+                        <aspectran:profile expression="prod">
+                            <li><a href="<aspectran:url value="https://public.aspectran.com/"/>">Sample Apps</a></li>
+                        </aspectran:profile>
+                        <aspectran:profile expression="!prod">
+                            <li><a href="<aspectran:url value="/../"/>">Sample Apps</a></li>
+                        </aspectran:profile>
                         <li><a href="<aspectran:url value="/"/>">JPetStore Demo</a></li>
                     </ul>
                 </nav>

@@ -12,8 +12,8 @@
         </properties>
     </bean>
 
-    <translet name="/monitoring/">
-        <redirect path="/appmon/front/#{class:com.aspectran.utils.security.TimeLimitedPBTokenIssuer^token}" encoding="false"/>
+    <translet name="/monitoring/${instances}">
+        <redirect path="/appmon/front/#{class:com.aspectran.utils.security.TimeLimitedPBTokenIssuer^token}/${instances}"/>
     </translet>
 
 </aspectran>

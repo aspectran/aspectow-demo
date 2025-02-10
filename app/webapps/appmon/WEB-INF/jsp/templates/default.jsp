@@ -65,10 +65,10 @@
             <div class="top-bar-left">
                 <ul class="dropdown menu">
                     <aspectran:profile expression="prod">
-                        <li><a href="https://public.aspectran.com/monitoring/">AppMon</a></li>
+                        <li><a href="https://public.aspectran.com/monitoring/${page.instances}">AppMon</a></li>
                     </aspectran:profile>
                     <aspectran:profile expression="!prod">
-                        <li><a href="<aspectran:url value="/../monitoring/"/>">AppMon</a></li>
+                        <li><a href="<aspectran:url value="/../monitoring/${page.instances}"/>">AppMon</a></li>
                     </aspectran:profile>
                 </ul>
             </div>

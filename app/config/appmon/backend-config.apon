@@ -130,6 +130,7 @@ instance: {
 instance: {
     name: appmon
     title: AppMon
+    hidden: true
     event: {
         name: activity
         target: appmon

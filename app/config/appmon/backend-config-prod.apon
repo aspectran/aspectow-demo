@@ -93,3 +93,26 @@ instance: {
         sampleInterval: 300
     }
 }
+instance: {
+    name: appmon
+    title: AppMon
+    hidden: true
+    event: {
+        name: activity
+        target: appmon
+    }
+    log: {
+        name: appmon
+        title: AppMon
+        file: /logs/appmon.log
+        lastLines: 1000
+        sampleInterval: 300
+    }
+    log: {
+        name: access
+        title: AppMon Access
+        file: /logs/appmon-access.log
+        lastLines: 1000
+        sampleInterval: 300
+    }
+}

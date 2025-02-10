@@ -36,11 +36,9 @@ function FrontBuilder() {
                     }
                     for (let key in data.instances) {
                         let instance = data.instances[key];
-                        if (!!instance.hidden) {
-                            instance['active'] = false;
-                            instances.push(instance);
-                            console.log("instance", instance);
-                        }
+                        instance['active'] = false;
+                        instances.push(instance);
+                        console.log("instance", instance);
                     }
                     buildView();
                     bindEvents();

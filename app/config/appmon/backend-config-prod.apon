@@ -25,6 +25,9 @@ instance: {
     event: {
         name: activity
         target: jpetstore
+        parameters: {
+            +: /**
+        }
     }
     event: {
         name: session
@@ -51,6 +54,9 @@ instance: {
     event: {
         name: activity
         target: demo
+        parameters: {
+            +: /**
+        }
     }
     event: {
         name: session
@@ -77,6 +83,9 @@ instance: {
     event: {
         name: activity
         target: root
+        parameters: {
+            +: /**
+        }
     }
     event: {
         name: session
@@ -104,6 +113,9 @@ instance: {
     event: {
         name: activity
         target: appmon
+        parameters: {
+            +: /**
+        }
     }
     log: {
         name: appmon

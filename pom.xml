@@ -100,12 +100,7 @@
         </dependency>
         <dependency>
             <groupId>com.aspectran</groupId>
-            <artifactId>aspectow-appmon-backend</artifactId>
-            <version>${aspectow.appmon.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.aspectran</groupId>
-            <artifactId>aspectow-appmon-front</artifactId>
+            <artifactId>aspectow-appmon</artifactId>
             <version>${aspectow.appmon.version}</version>
         </dependency>
         <dependency>

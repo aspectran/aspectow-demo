@@ -70,16 +70,6 @@
                             <li><a href="https://github.com/aspectran/aspectran-jpetstore">GitHub</a></li>
                         </ul>
                     </li>
-                </ul>
-            </div>
-            <div class="top-bar-right">
-                <ul class="dropdown menu" data-dropdown-menu>
-                    <aspectran:profile expression="prod">
-                        <li><a href="https://public.aspectran.com/monitoring/#jpetstore" target="_blank">Monitoring</a></li>
-                    </aspectran:profile>
-                    <aspectran:profile expression="!prod">
-                        <li><a href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank">Monitoring</a></li>
-                    </aspectran:profile>
                     <li>
                         <a title="Sample applications built on Aspectran">More Sample Apps</a>
                         <ul class="submenu menu vertical" data-submenu>
@@ -91,6 +81,16 @@
                             </aspectran:profile>
                         </ul>
                     </li>
+                </ul>
+            </div>
+            <div class="top-bar-right">
+                <ul class="dropdown menu" data-dropdown-menu>
+                    <aspectran:profile expression="prod">
+                        <li><a href="https://public.aspectran.com/monitoring/#jpetstore" target="_blank">Monitoring</a></li>
+                    </aspectran:profile>
+                    <aspectran:profile expression="!prod">
+                        <li><a href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank">Monitoring</a></li>
+                    </aspectran:profile>
                 </ul>
                 <div class="quick-search-box">
                     <form name="google_quick_search">

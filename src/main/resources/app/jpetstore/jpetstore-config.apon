@@ -4,4 +4,9 @@ context: {
     scan: [
         app.jpetstore
     ]
+    profiles: {
+        active: [
+            h2
+        ]
+    }
 }

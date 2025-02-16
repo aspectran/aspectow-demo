@@ -51,8 +51,8 @@
     </aspect>
 
     <append file="/config/server/server.xml"/>
-    <append resource="app/root/mybatis/mybatis.xml"/>
-    <append resource="app/root/shell/root-shell.xml"/>
-    <append resource="app/root/web/root-web.xml"/>
+    <append resource="app/root/mybatis/mybatis-context.xml"/>
+    <append resource="app/root/shell/shell-context.xml"/>
+    <append resource="app/root/web/web-context.xml"/>
 
 </aspectran>

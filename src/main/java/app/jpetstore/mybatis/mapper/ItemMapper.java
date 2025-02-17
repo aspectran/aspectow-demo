@@ -33,7 +33,7 @@ import java.util.Map;
 @Mapper
 public interface ItemMapper {
 
-    void updateInventoryQuantity(Map<String, Object> param);
+    void updateInventoryQuantity(Map<String, Object> params);
 
     int getInventoryQuantity(String itemId);
 

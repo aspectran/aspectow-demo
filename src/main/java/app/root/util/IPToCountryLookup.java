@@ -137,12 +137,12 @@ public class IPToCountryLookup {
                     countryCode = NONE;
                 }
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Country code of IP address " + ipAddress + " is " + countryCode);
+                    logger.debug("Country code of IP address {} is {}", ipAddress, countryCode);
                 }
                 return countryCode;
             }
         } catch (IOException e) {
-            logger.error("IP address lookup failed: " + ipAddress, e);
+            logger.error("IP address lookup failed: {}", ipAddress, e);
         }
         return FAILED;
     }

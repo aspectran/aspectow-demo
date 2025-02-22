@@ -95,7 +95,7 @@
                             evictionIdleSeconds: 258
                             maxIdleSecondsForNew: 60
                             evictionIdleSecondsForNew: 30
-                            scavengingIntervalSeconds: 180
+                            scavengingIntervalSeconds: 90
                             clusterEnabled: false
                         </item>
                     </arguments>
@@ -105,7 +105,7 @@
                 <bean class="com.aspectran.core.component.session.FileSessionStoreFactoryBean">
                     <properties>
                         <item name="storeDir">/work/_sessions/%{tow.context.root.name}</item>
-                        <item name="gracePeriodSecs" valueType="int">100</item>
+                        <item name="gracePeriodSecs" valueType="int">30</item>
                     </properties>
                 </bean>
             </item>
@@ -121,7 +121,7 @@
                             evictionIdleSeconds: 258
                             maxIdleSecondsForNew: 60
                             evictionIdleSecondsForNew: 30
-                            scavengingIntervalSeconds: 180
+                            scavengingIntervalSeconds: 90
                             clusterEnabled: true
                         </item>
                     </arguments>
@@ -137,7 +137,6 @@
                                 </properties>
                             </bean>
                         </item>
-                        <item name="gracePeriodSecs" valueType="int">100</item>
                     </properties>
                 </bean>
             </item>

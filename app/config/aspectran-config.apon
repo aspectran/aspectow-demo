@@ -14,10 +14,10 @@ context: {
     ]
     profiles: {
         default: [
+            h2
             dev
         ]
         active: [
-            h2
         ]
     }
     autoReload: {

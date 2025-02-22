@@ -37,7 +37,7 @@
     <div class="title-bar" data-responsive-toggle="gnb-menu" data-hide-for="large" style="display:none">
         <div class="title-bar-left">
             <aspectran:profile expression="prod">
-                <a class="logo" href="https://public.aspectran.com" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                <a class="logo" href="https://public.aspectran.com/" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
             </aspectran:profile>
             <aspectran:profile expression="!prod">
                 <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
@@ -55,7 +55,7 @@
             <div class="top-bar-logo">
                 <div class="circle">
                     <aspectran:profile expression="prod">
-                        <a class="logo" href="https://public.aspectran.com" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                        <a class="logo" href="https://public.aspectran.com/" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
                     </aspectran:profile>
                     <aspectran:profile expression="!prod">
                         <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="https://aspectran.com/assets/img/aspectran-site-logo.png" alt="Aspectran"/></a>
@@ -74,7 +74,7 @@
                         <a title="Sample applications built on Aspectran">More Sample Apps</a>
                         <ul class="submenu menu vertical" data-submenu>
                             <aspectran:profile expression="prod">
-                                <li><a href="https://demo.aspectran.com">Aspectran Demo</a></li>
+                                <li><a href="https://demo.aspectran.com/">Aspectran Demo</a></li>
                             </aspectran:profile>
                             <aspectran:profile expression="!prod">
                                 <li><a href="<aspectran:url value="/../demo/"/>">Aspectran Demo</a></li>

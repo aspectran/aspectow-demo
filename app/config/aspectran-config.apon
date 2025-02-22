@@ -17,8 +17,6 @@ context: {
             h2
             dev
         ]
-        active: [
-        ]
     }
     autoReload: {
         scanIntervalSeconds: 5

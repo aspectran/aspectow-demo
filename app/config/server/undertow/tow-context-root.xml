@@ -33,25 +33,11 @@
                     <properties>
                         <item name="sessionTrackingModes" type="set">
                             <value>#{class:jakarta.servlet.SessionTrackingMode^COOKIE}</value>
-                            <value>#{class:jakarta.servlet.SessionTrackingMode^URL}</value>
                         </item>
                         <item name="path" value="/"/>
                     </properties>
                     <properties profile="prod">
                         <item name="domain" value="aspectran.com"/>
-                    </properties>
-                </bean>
-            </item>
-            <item name="filters" type="array">
-                <bean class="com.aspectran.undertow.server.servlet.TowFilter">
-                    <arguments>
-                        <item>urlSessionTrackingFilter</item>
-                        <item>com.aspectran.web.servlet.filter.URLSessionTrackingFilter</item>
-                    </arguments>
-                    <properties>
-                        <item name="mappingUrls" type="array">
-                            <value>/*</value>
-                        </item>
                     </properties>
                 </bean>
             </item>

@@ -190,15 +190,16 @@
 }
 .sessions-box ul.sessions li .hits {
     font-weight: bold;
-    font-size: .85em;
     color: #fff;
     background-color: #44535b;
     border-left: 3px solid #009400;
     border-radius: 0 20px 20px 0;
     margin-right: 6px;
+    padding: 3px 0;
 }
 .sessions-box ul.sessions li .hits.count {
-    padding: 0 8px 0 4px;
+    padding-left: 5px;
+    padding-right: 10px;
 }
 .sessions-box ul.sessions li .hits.active {
     background-color: #02b502;

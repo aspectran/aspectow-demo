@@ -52,11 +52,11 @@
 <script>
   $(function() {
     $(".undercon").on("click", function () {
-      $(this).fadeOut(200, function () {
-        $(this).fadeIn();
+      $(this).fadeOut(300, function () {
         setTimeout(function () {
           location.href = "/monitoring/";
-        }, 10);
+        }, 100);
+        $(this).fadeIn(300);
       });
     });
   });

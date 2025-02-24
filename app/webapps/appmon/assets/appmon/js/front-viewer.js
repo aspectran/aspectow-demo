@@ -288,7 +288,7 @@ function FrontViewer() {
         if (session.username) {
             $hits.addClass("active");
         }
-        let $li = $("<li/>")
+        let $li = $("<li class='ellipses'/>")
             .attr("data-sid", session.sessionId)
             .attr("data-temp-resident", session.tempResident)
             .attr("data-inactive-interval", session.inactiveInterval)
@@ -308,10 +308,15 @@ function FrontViewer() {
                 .appendTo($li);
         }
         if (session.username) {
-            $li.append("<span class='username'>" + session.username + "</span>");
+            $("<span class='username'/>")
+                .text(session.username)
+                .appendTo($li);
         }
-        $li.append("<span class='session-id'>" + session.sessionId + "</span>")
-            .appendTo($sessions);
+        $("<span class='session-id'/>")
+            .attr("title", session.sessionId)
+            .text(session.sessionId)
+            .appendTo($li);
+        $li.appendTo($sessions);
     };
 
     const updateSessionHits = function (name, sessionId) {

@@ -49,3 +49,14 @@
     </div>
   </div>
 </div>
+<script>
+  $(function() {
+    $(".undercon").on("click", function () {
+      $(this).fadeOut(500, function () {
+        $(this).fadeIn(100, function () {
+          location.href = "/monitoring/";
+        });
+      });
+    });
+  });
+</script>

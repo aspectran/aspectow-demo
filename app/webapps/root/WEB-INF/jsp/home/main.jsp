@@ -54,7 +54,9 @@
     $(".undercon").on("click", function () {
       $(this).fadeOut(200, function () {
         $(this).fadeIn();
-        location.href = "/monitoring/";
+        setTimeout(function () {
+          location.href = "/monitoring/";
+        }, 10);
       });
     });
   });

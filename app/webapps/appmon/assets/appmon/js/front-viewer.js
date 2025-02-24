@@ -288,7 +288,7 @@ function FrontViewer() {
         if (session.username) {
             $hits.addClass("active");
         }
-        let $li = $("<li class='ellipses'/>")
+        let $li = $("<li/>")
             .attr("data-sid", session.sessionId)
             .attr("data-temp-resident", session.tempResident)
             .attr("data-inactive-interval", session.inactiveInterval)

@@ -280,7 +280,7 @@ function FrontViewer() {
     const addSession = function ($sessions, session) {
         let $old = $sessions.find("li[data-sid='" + session.sessionId + "']").detach();
         let cnt = ($old.length ? $old.find("span.hits").data("hits")||0 : 0);
-        let $hits = $("<span class='hits'></span>").data("hits", cnt).text(cnt);
+        let $hits = $("<div class='hits'></div>").data("hits", cnt).text(cnt);
         if (cnt > 0) {
             $hits.addClass("count");
         }
@@ -308,32 +308,11 @@ function FrontViewer() {
                 .appendTo($li);
         }
         if (session.username) {
-            $("<span class='username'/>")
+            $("<div class='username'/>")
                 .text(session.username)
                 .appendTo($li);
         }
         $li.appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
-        $li.clone().appendTo($sessions);
     };
 
     const updateSessionHits = function (name, sessionId) {

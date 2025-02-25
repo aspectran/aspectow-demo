@@ -291,6 +291,7 @@ function FrontViewer() {
             .attr("data-sid", session.sessionId)
             .attr("data-temp-resident", session.tempResident)
             .attr("data-inactive-interval", session.inactiveInterval)
+            .attr("title", session.ipAddress + " / " + session.sessionId + " / " + session.createAt)
             .append($hits);
         if (session.tempResident) {
             $li.addClass("inactive");
@@ -303,7 +304,7 @@ function FrontViewer() {
             $("<img class='flag' alt=''/>")
                 .attr("src", "https://aspectran.com/assets/countries/flags/" + session.countryCode.toLowerCase() + ".png")
                 .attr("alt", session.countryCode)
-                .attr("title", countries[session.countryCode].name + " / " + session.ipAddress)
+                .attr("title", countries[session.countryCode].name)
                 .appendTo($li);
         }
         if (session.username) {
@@ -311,11 +312,28 @@ function FrontViewer() {
                 .text(session.username)
                 .appendTo($li);
         }
-        $("<span class='session-id'/>")
-            .attr("title", session.sessionId)
-            .text(session.sessionId)
-            .appendTo($li);
         $li.appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
+        $li.clone().appendTo($sessions);
     };
 
     const updateSessionHits = function (name, sessionId) {

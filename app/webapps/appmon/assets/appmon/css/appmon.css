@@ -189,12 +189,15 @@
 }
 .sessions-box ul.sessions li {
     list-style-type: none;
-    border-top: 1px solid #ccc;
-    width: 360px;
     display: inline-block;
     overflow: clip;
     white-space: nowrap;
     text-overflow: ellipsis;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    border-top: 1px solid #8396a2;
+    border-right: 1px solid #8396a2;
+    border-bottom: 1px solid #8396a2;
 }
 .sessions-box ul.sessions li.inactive {
     opacity: .4;
@@ -203,7 +206,6 @@
     display: none;
 }
 .sessions-box ul.sessions li .hits {
-    font-weight: bold;
     color: transparent;
     background-color: #8396a2;
     border-left: 3px solid #009400;
@@ -228,14 +230,8 @@
     vertical-align: top;
 }
 .sessions-box ul.sessions li .username {
-    margin-left: 6px;
-    font-weight: bold;
-    font-size: .9em;
-}
-.sessions-box ul.sessions li .session-id {
-    margin-left: 6px;
+    padding-left: 6px;
     padding-right: 6px;
-    font-style: italic;
     font-size: .9em;
 }
 

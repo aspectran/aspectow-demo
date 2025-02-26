@@ -10,7 +10,7 @@
     <title>JPetStore Demo</title>
     <meta name="description" content="JPetStore is a full web application built on top of MyBatis 3, Aspectran 8."/>
     <link rel="stylesheet" type="text/css" href="https://aspectran.com/assets/css/aspectran.css"/>
-    <link rel="stylesheet" type="text/css" href="<aspectran:url value="/css/jpetstore.css"/>"/>
+    <link rel="stylesheet" type="text/css" href="<aspectran:url value="/css/jpetstore.css?20250226"/>"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap">
     <script src="https://aspectran.com/assets/js/modernizr-custom.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -168,7 +168,7 @@
     </div>
     </c:if>
     <c:if test="${page.style ne 'fluid'}">
-    <div id="window" class="grid-container" style="min-width:900px;padding:0;">
+    <div id="window" class="grid-container" style="padding:0;">
         <c:if test="${not empty INCLUDE_PAGE}">
             <jsp:include page="/WEB-INF/jsp/${INCLUDE_PAGE}.jsp"/>
         </c:if>

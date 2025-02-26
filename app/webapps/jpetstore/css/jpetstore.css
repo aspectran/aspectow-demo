@@ -43,6 +43,7 @@ body > #Logo {
     color: #eaac00;
     text-decoration: none;
     font-family: helvetica, tahoma, arial, verdana, sans-serif;
+    font-size: 1.1em;
     text-align: center;
 }
 
@@ -79,7 +80,7 @@ body > #Menu {
 
 #Search {
     margin: 0;
-    padding: 19px 15px 0 15px;
+    padding: 15px 15px 0 15px;
     float: right;
     text-align: center;
     color: #eaac00;
@@ -211,6 +212,7 @@ body > #Banner {
     background: inherit;
     text-align: center;
     width: 40%;
+    padding: 10px;
 }
 
 #MainImageContent {

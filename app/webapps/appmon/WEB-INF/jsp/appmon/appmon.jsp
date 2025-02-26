@@ -60,6 +60,7 @@
             </div>
         </div>
     </div>
+    <div class="cell"></div>
     <div class="cell console-box">
         <div class="status-bar">
             <h4 class="ellipses"></h4>

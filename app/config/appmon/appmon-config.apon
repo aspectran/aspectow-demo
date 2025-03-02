@@ -147,6 +147,10 @@ instance: {
             +: /**
         }
     }
+    event: {
+        name: session
+        target: tow.server/appmon
+    }
     log: {
         name: appmon
         title: AppMon

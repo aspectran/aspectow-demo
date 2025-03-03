@@ -30,16 +30,15 @@ import com.aspectran.utils.annotation.jsr305.NonNull;
 
 import java.util.Locale;
 
+import static com.aspectran.appmon.exporter.event.session.SessionEventReader.USER_COUNTRY_CODE;
+import static com.aspectran.appmon.exporter.event.session.SessionEventReader.USER_IP_ADDRESS;
+
 /**
  * <p>Created: 2024-12-13</p>
  */
 @Component
 @AvoidAdvice
 public class UserTrackingListener extends InstantActivitySupport implements SessionListener, InitializableBean {
-
-    private static final String USER_IP_ADDRESS = "user.ipAddress";
-
-    private static final String USER_COUNTRY_CODE = "user.countryCode";
 
     @Override
     public void sessionCreated(@NonNull Session session) {

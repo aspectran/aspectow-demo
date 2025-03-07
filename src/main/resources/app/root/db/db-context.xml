@@ -12,13 +12,13 @@
             FactoryBean that creates an MyBatis SqlSessionFactory using default MyBatis Configuration.
         </description>
         <properties>
-            <item name="configLocation" value="classpath:app/root/mybatis/mybatis-config.xml"/>
+            <item name="configLocation" value="classpath:app/root/db/mybatis-config.xml"/>
             <item name="environment" value="default"/>
             <item name="properties" type="properties">
-                <entry name="driver">%{classpath:app/root/mybatis/memo.db.properties^driver}</entry>
-                <entry name="url">%{classpath:app/root/mybatis/memo.db.properties^url}</entry>
-                <entry name="username">%{classpath:app/root/mybatis/memo.db.properties^username}</entry>
-                <entry name="password">%{classpath:app/root/mybatis/memo.db.properties^password}</entry>
+                <entry name="driver">%{classpath:app/root/db/memo.db.properties^driver}</entry>
+                <entry name="url">%{classpath:app/root/db/memo.db.properties^url}</entry>
+                <entry name="username">%{classpath:app/root/db/memo.db.properties^username}</entry>
+                <entry name="password">%{classpath:app/root/db/memo.db.properties^password}</entry>
             </item>
         </properties>
     </bean>

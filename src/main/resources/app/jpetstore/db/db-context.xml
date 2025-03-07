@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 8.0//EN"
+        "https://aspectran.com/dtd/aspectran-8.dtd">
+<aspectran>
+
+    <description>
+        Configuration for database transactions
+    </description>
+
+    <bean id="jpetstoreDBProperties" class="com.aspectran.core.support.PropertiesFactoryBean">
+        <properties profile="dev">
+            <item name="locations" type="array">
+                <value>classpath:app/jpetstore/mybatis/jpetstore.db.properties</value>
+            </item>
+        </properties>
+        <properties profile="!dev">
+            <item name="locations" type="array">
+                <value>classpath:app/jpetstore/mybatis/jpetstore.db-prod.properties</value>
+            </item>
+        </properties>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="com.aspectran.mybatis.SqlSessionFactoryBean" lazyDestroy="true">
+        <description>
+            FactoryBean that creates an MyBatis SqlSessionFactory using default MyBatis Configuration.
+        </description>
+        <properties>
+            <item name="configLocation" value="classpath:app/jpetstore/mybatis/mybatis-config.xml"/>
+            <item name="environment" value="default"/>
+            <item name="properties" type="properties">
+                <entry name="driver">#{jpetstoreDBProperties^driver}</entry>
+                <entry name="url">#{jpetstoreDBProperties^url}</entry>
+                <entry name="username">#{jpetstoreDBProperties^username}</entry>
+                <entry name="password">#{jpetstoreDBProperties^password}</entry>
+            </item>
+        </properties>
+    </bean>
+
+</aspectran>

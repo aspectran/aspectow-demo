@@ -39,7 +39,7 @@
         </settings>
     </aspect>
 
-    <append resource="app/jpetstore/mybatis/mybatis-context.xml"/>
+    <append resource="app/jpetstore/db/db-context.xml"/>
     <append resource="app/jpetstore/web/jpetstore-web.xml"/>
 
 </aspectran>

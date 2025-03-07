@@ -28,7 +28,7 @@
     </environments>
 
     <mappers>
-        <mapper resource="app/root/mybatis/mappers/memo.xml"/>
+        <mapper resource="app/root/db/mapper/memo.xml"/>
     </mappers>
 
 </configuration>

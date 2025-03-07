@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.mybatis;
+package app.jpetstore.common.db;
 
 import com.aspectran.core.component.bean.annotation.After;
 import com.aspectran.core.component.bean.annotation.Aspect;
@@ -30,33 +30,33 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 /**
- * Advice to handle database transactions in reuse mode.
+ * Advice to handle database transactions in batch mode.
  * <ul>
- * <li>PreparedStatements will be reused.
+ * <li>Batches all updates (including inserts and deletes), SELECTs can be run as needed.
  * </ul>
  */
 @Component
 @Bean(lazyDestroy = true)
 @Scope(ScopeType.PROTOTYPE)
 @Aspect(
-        id = "reuseTxAspect",
+        id = "batchTxAspect",
         order = 0
 )
 @Joinpoint(
         pointcut = {
-                "+: **@reuseSqlSession"
+                "+: **@batchSqlSession"
         }
 )
-public class ReuseTxAspect extends SqlSessionTxAdvice {
+public class BatchTxAspect extends SqlSessionTxAdvice {
 
     @Autowired
-    public ReuseTxAspect(SqlSessionFactory sqlSessionFactory) {
+    public BatchTxAspect(SqlSessionFactory sqlSessionFactory) {
         super(sqlSessionFactory);
     }
 
     @Before
     public void open() {
-        setExecutorType(ExecutorType.REUSE);
+        setExecutorType(ExecutorType.BATCH);
         super.open();
     }
 

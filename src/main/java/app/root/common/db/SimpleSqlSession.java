@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.mybatis;
+package app.root.common.db;
 
 import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.mybatis.SqlSessionAgent;
 
 @Component
-@Bean(id = "reuseSqlSession", lazyDestroy = true)
-public class ReuseSqlSession extends SqlSessionAgent {
+@Bean(id = "simpleSqlSession", lazyDestroy = true)
+public class SimpleSqlSession extends SqlSessionAgent {
 
-    public ReuseSqlSession() {
-        super("reuseTxAspect");
+    public SimpleSqlSession() {
+        super("simpleTxAspect");
+        setAutoParameters(true);
     }
 
 }

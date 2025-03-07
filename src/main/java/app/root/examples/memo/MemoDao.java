@@ -15,7 +15,7 @@
  */
 package app.root.examples.memo;
 
-import app.root.mybatis.SimpleSqlSession;
+import app.root.common.db.SimpleSqlSession;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;

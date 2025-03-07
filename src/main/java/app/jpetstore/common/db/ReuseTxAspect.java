@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.mybatis;
+package app.jpetstore.common.db;
 
 import com.aspectran.core.component.bean.annotation.After;
 import com.aspectran.core.component.bean.annotation.Aspect;
@@ -26,40 +26,37 @@ import com.aspectran.core.component.bean.annotation.Joinpoint;
 import com.aspectran.core.component.bean.annotation.Scope;
 import com.aspectran.core.context.rule.type.ScopeType;
 import com.aspectran.mybatis.SqlSessionTxAdvice;
+import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 /**
- * Advice to handle database transactions in simple mode.
+ * Advice to handle database transactions in reuse mode.
  * <ul>
- * <li>A transaction scope will be started (i.e. NOT auto-commit).
- * <li>A Connection object will be acquired from the DataSource instance
- *     configured by the active environment.
- * <li>The transaction isolation level will be the default used by the driver or
- *     data source.
- * <li>No PreparedStatements will be reused, and no updates will be batched.
+ * <li>PreparedStatements will be reused.
  * </ul>
  */
 @Component
 @Bean(lazyDestroy = true)
 @Scope(ScopeType.PROTOTYPE)
 @Aspect(
-        id = "simpleTxAspect",
+        id = "reuseTxAspect",
         order = 0
 )
 @Joinpoint(
         pointcut = {
-                "+: **@simpleSqlSession"
+                "+: **@reuseSqlSession"
         }
 )
-public class SimpleTxAspect extends SqlSessionTxAdvice {
+public class ReuseTxAspect extends SqlSessionTxAdvice {
 
     @Autowired
-    public SimpleTxAspect(SqlSessionFactory sqlSessionFactory) {
+    public ReuseTxAspect(SqlSessionFactory sqlSessionFactory) {
         super(sqlSessionFactory);
     }
 
     @Before
     public void open() {
+        setExecutorType(ExecutorType.REUSE);
         super.open();
     }
 

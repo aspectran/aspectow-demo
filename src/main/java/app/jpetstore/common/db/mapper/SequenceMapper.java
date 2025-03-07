@@ -13,51 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.mybatis.mapper;
+package app.jpetstore.common.db.mapper;
 
-import app.jpetstore.catalog.domain.Product;
+import app.jpetstore.order.domain.Sequence;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.mybatis.SqlMapperAgent;
 import com.aspectran.mybatis.SqlMapperDao;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
 /**
- * The Interface ProductMapper.
+ * The Interface SequenceMapper.
  *
  * @author Juho Jeong
  */
 @Mapper
-public interface ProductMapper {
+public interface SequenceMapper {
 
-    List<Product> getProductListByCategory(String categoryId);
+    Sequence getSequence(Sequence sequence);
 
-    Product getProduct(String productId);
-
-    List<Product> searchProductList(String keywords);
+    void updateSequence(Sequence sequence);
 
     @Component
-    class Dao extends SqlMapperDao<ProductMapper> implements ProductMapper {
+    class Dao extends SqlMapperDao<SequenceMapper> implements SequenceMapper {
 
         @Autowired
         public Dao(SqlMapperAgent mapperAgent) {
-            super(mapperAgent, ProductMapper.class);
-        }
-        @Override
-        public List<Product> getProductListByCategory(String categoryId) {
-            return simple().getProductListByCategory(categoryId);
+            super(mapperAgent, SequenceMapper.class);
         }
 
         @Override
-        public Product getProduct(String productId) {
-            return simple().getProduct(productId);
+        public Sequence getSequence(Sequence sequence) {
+            return simple().getSequence(sequence);
         }
 
         @Override
-        public List<Product> searchProductList(String keywords) {
-            return simple().searchProductList(keywords);
+        public void updateSequence(Sequence sequence) {
+            simple().updateSequence(sequence);
         }
 
     }

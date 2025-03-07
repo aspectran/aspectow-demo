@@ -28,13 +28,7 @@
     </environments>
 
     <mappers>
-        <mapper resource="app/jpetstore/db/mapper/AccountMapper.xml"/>
-        <mapper resource="app/jpetstore/db/mapper/CategoryMapper.xml"/>
-        <mapper resource="app/jpetstore/db/mapper/ItemMapper.xml"/>
-        <mapper resource="app/jpetstore/db/mapper/LineItemMapper.xml"/>
-        <mapper resource="app/jpetstore/db/mapper/OrderMapper.xml"/>
-        <mapper resource="app/jpetstore/db/mapper/ProductMapper.xml"/>
-        <mapper resource="app/jpetstore/db/mapper/SequenceMapper.xml"/>
+        <mapper resource="app/root/common/db/mapper/memo.xml"/>
     </mappers>
 
 </configuration>

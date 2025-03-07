@@ -39,6 +39,6 @@
         </settings>
     </aspect>
 
-    <append resource="app/demo/web/demo-web.xml"/>
+    <append resource="app/demo/demo-web.xml"/>
 
 </aspectran>

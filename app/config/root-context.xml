@@ -51,7 +51,7 @@
     </aspect>
 
     <append file="/config/server/server.xml"/>
-    <append resource="app/root/db/db-context.xml"/>
+    <append resource="app/root/common/db/db-context.xml"/>
     <append resource="app/root/shell/shell-context.xml"/>
     <append resource="app/root/web/web-context.xml"/>
 

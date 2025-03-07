@@ -34,13 +34,13 @@
         </settings>
     </aspect>
 
-    <append resource="app/demo/web/home/main.xml"/>
-    <append resource="app/demo/web/examples/hello-world.xml"/>
-    <append resource="app/demo/web/examples/gs-rest-service.xml"/>
-    <append resource="app/demo/web/examples/file-upload.xml"/>
-    <append resource="app/demo/web/terminal/translet-interpreter.xml"/>
-    <append resource="app/demo/web/terminal/terminal-commands.xml"/>
-    <append resource="app/demo/web/skylark/skylark.xml"/>
-    <append resource="app/demo/web/chat/chat.xml"/>
+    <append resource="app/demo/home/main.xml"/>
+    <append resource="app/demo/examples/hello-world.xml"/>
+    <append resource="app/demo/examples/gs-rest-service.xml"/>
+    <append resource="app/demo/examples/file-upload.xml"/>
+    <append resource="app/demo/terminal/translet-interpreter.xml"/>
+    <append resource="app/demo/terminal/terminal-commands.xml"/>
+    <append resource="app/demo/skylark/skylark.xml"/>
+    <append resource="app/demo/chat/chat.xml"/>
 
 </aspectran>

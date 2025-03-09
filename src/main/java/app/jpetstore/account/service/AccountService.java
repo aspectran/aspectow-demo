@@ -29,7 +29,6 @@ import java.util.Optional;
  * @author Juho Jeong
  */
 @Component
-@Bean("accountService")
 public class AccountService {
 
     private final AccountMapper.Dao dao;

@@ -25,6 +25,8 @@ import app.jpetstore.order.domain.Sequence;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
+import com.aspectran.core.component.bean.aware.EnvironmentAware;
+import com.aspectran.core.context.env.Environment;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 
 import java.util.HashMap;
@@ -37,8 +39,7 @@ import java.util.Map;
  * @author Juho Jeong
  */
 @Component
-@Bean("orderService")
-public class OrderService {
+public class OrderService implements EnvironmentAware {
 
     private final ItemMapper.Dao itemDao;
 
@@ -47,6 +48,8 @@ public class OrderService {
     private final LineItemMapper.Dao lineItemDao;
 
     private final SequenceMapper.Dao sequenceDao;
+
+    private boolean oracle;
 
     @Autowired
     public OrderService(ItemMapper.Dao itemDao,
@@ -57,6 +60,11 @@ public class OrderService {
         this.orderDao = orderDao;
         this.lineItemDao = lineItemDao;
         this.sequenceDao = sequenceDao;
+    }
+
+    @Override
+    public void setEnvironment(@NonNull Environment environment) {
+        oracle = environment.acceptsProfiles("oracle");
     }
 
     /**
@@ -114,7 +122,7 @@ public class OrderService {
      * @return the orders by username
      */
     public List<Order> getOrdersByUsername(String username) {
-        return orderDao.getOrdersByUsername(username);
+        return orderDao.getOrdersByUsername(username, oracle);
     }
 
     /**

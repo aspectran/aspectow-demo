@@ -32,7 +32,6 @@ import java.util.Iterator;
  * @author Juho Jeong
  */
 @Component
-@Bean("cartService")
 public class CartService {
 
     private final CatalogService catalogService;

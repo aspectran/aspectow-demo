@@ -8,14 +8,14 @@
     </description>
 
     <bean id="jpetstoreDBProperties" class="com.aspectran.core.support.PropertiesFactoryBean">
-        <properties profile="dev">
+        <properties profile="h2">
             <item name="locations" type="array">
-                <value>classpath:app/jpetstore/common/db/jpetstore.db.properties</value>
+                <value>classpath:app/jpetstore/common/db/jpetstore.db-h2.properties</value>
             </item>
         </properties>
-        <properties profile="!dev">
+        <properties profile="oracle">
             <item name="locations" type="array">
-                <value>classpath:app/jpetstore/common/db/jpetstore.db-prod.properties</value>
+                <value>classpath:app/jpetstore/common/db/jpetstore.db-oracle.properties</value>
             </item>
         </properties>
     </bean>

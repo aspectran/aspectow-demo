@@ -41,7 +41,6 @@ import java.util.List;
  * @author Juho Jeong
  */
 @Component
-@Bean
 public class AccountActivity {
 
     public AccountService accountService;

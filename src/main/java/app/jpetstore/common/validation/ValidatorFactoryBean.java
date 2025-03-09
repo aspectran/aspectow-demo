@@ -27,7 +27,7 @@ import jakarta.validation.Validator;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 
 @Component
-@Bean("validator")
+@Bean
 public class ValidatorFactoryBean implements InitializableFactoryBean<Validator> {
 
     private final MessageSource messageSource;

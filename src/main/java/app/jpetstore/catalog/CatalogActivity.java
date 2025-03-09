@@ -36,7 +36,6 @@ import java.util.List;
  * @author Juho Jeong
  */
 @Component
-@Bean
 public class CatalogActivity {
 
     private final CatalogService catalogService;

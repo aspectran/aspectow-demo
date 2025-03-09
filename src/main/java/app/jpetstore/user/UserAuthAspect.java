@@ -32,7 +32,6 @@ import java.util.Map;
  * <p>Created: 4/5/24</p>
  */
 @Component
-@Bean
 @Aspect("userAuthAspect")
 @Joinpoint(
         pointcut = {

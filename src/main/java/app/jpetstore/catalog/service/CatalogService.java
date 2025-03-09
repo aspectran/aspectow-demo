@@ -34,7 +34,6 @@ import java.util.List;
  * @author Juho Jeong
  */
 @Component
-@Bean("catalogService")
 public class CatalogService {
 
     private final CategoryMapper.Dao categoryDao;

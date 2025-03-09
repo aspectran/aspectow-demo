@@ -42,7 +42,6 @@ import java.util.List;
  * @author Juho Jeong
  */
 @Component
-@Bean
 public class OrderActivity {
 
     private final OrderService orderService;

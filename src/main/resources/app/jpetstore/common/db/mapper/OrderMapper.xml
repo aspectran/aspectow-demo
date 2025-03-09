@@ -57,38 +57,77 @@
   </select>
 
   <select id="getOrdersByUsername" resultType="app.jpetstore.order.domain.Order">
-    SELECT
-      BILLADDR1 AS billAddress1,
-      BILLADDR2 AS billAddress2,
-      BILLCITY,
-      BILLCOUNTRY,
-      BILLSTATE,
-      BILLTOFIRSTNAME,
-      BILLTOLASTNAME,
-      BILLZIP,
-      SHIPADDR1 AS shipAddress1,
-      SHIPADDR2 AS shipAddress2,
-      SHIPCITY,
-      SHIPCOUNTRY,
-      SHIPSTATE,
-      SHIPTOFIRSTNAME,
-      SHIPTOLASTNAME,
-      SHIPZIP,
-      CARDTYPE,
-      COURIER,
-      CREDITCARD,
-      EXPRDATE AS expiryDate,
-      LOCALE,
-      ORDERDATE,
-      ORDERS.ORDERID,
-      TOTALPRICE,
-      USERID AS username,
-      STATUS
-    FROM ORDERS, ORDERSTATUS
-    WHERE ORDERS.USERID = #{value}
-      AND ORDERS.ORDERID = ORDERSTATUS.ORDERID
-    ORDER BY ORDERDATE DESC
-    LIMIT 100
+    <choose>
+      <when test="oracle">
+        SELECT A.*, B.STATUS FROM (
+          SELECT /*+ index_desc(ORDERS PK_ORDERS) */
+            ORDERID,
+            BILLADDR1 AS billAddress1,
+            BILLADDR2 AS billAddress2,
+            BILLCITY,
+            BILLCOUNTRY,
+            BILLSTATE,
+            BILLTOFIRSTNAME,
+            BILLTOLASTNAME,
+            BILLZIP,
+            SHIPADDR1 AS shipAddress1,
+            SHIPADDR2 AS shipAddress2,
+            SHIPCITY,
+            SHIPCOUNTRY,
+            SHIPSTATE,
+            SHIPTOFIRSTNAME,
+            SHIPTOLASTNAME,
+            SHIPZIP,
+            CARDTYPE,
+            COURIER,
+            CREDITCARD,
+            EXPRDATE AS expiryDate,
+            LOCALE,
+            ORDERDATE,
+            TOTALPRICE,
+            USERID AS username
+          FROM ORDERS
+          WHERE USERID = #{username}
+            AND ROWNUM &lt;= 100
+        ) A, ORDERSTATUS B
+        WHERE A.ORDERID = B.ORDERID
+        ORDER BY A.ORDERDATE DESC
+      </when>
+      <otherwise>
+        SELECT
+          BILLADDR1 AS billAddress1,
+          BILLADDR2 AS billAddress2,
+          BILLCITY,
+          BILLCOUNTRY,
+          BILLSTATE,
+          BILLTOFIRSTNAME,
+          BILLTOLASTNAME,
+          BILLZIP,
+          SHIPADDR1 AS shipAddress1,
+          SHIPADDR2 AS shipAddress2,
+          SHIPCITY,
+          SHIPCOUNTRY,
+          SHIPSTATE,
+          SHIPTOFIRSTNAME,
+          SHIPTOLASTNAME,
+          SHIPZIP,
+          CARDTYPE,
+          COURIER,
+          CREDITCARD,
+          EXPRDATE AS expiryDate,
+          LOCALE,
+          ORDERDATE,
+          ORDERS.ORDERID,
+          TOTALPRICE,
+          USERID AS username,
+          STATUS
+        FROM ORDERS, ORDERSTATUS
+        WHERE ORDERS.USERID = #{username}
+          AND ORDERS.ORDERID = ORDERSTATUS.ORDERID
+        ORDER BY ORDERDATE DESC
+        LIMIT 100
+      </otherwise>
+    </choose>
   </select>
 
   <insert id="insertOrder">

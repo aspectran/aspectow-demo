@@ -1,152 +1,149 @@
 create table supplier (
-                          suppid int not null,
-                          name varchar2(80) null,
-                          status varchar2(2) not null,
-                          addr1 varchar2(80) null,
-                          addr2 varchar2(80) null,
-                          city varchar2(80) null,
-                          state varchar2(80) null,
-                          zip varchar2(5) null,
-                          phone varchar2(80) null,
-                          constraint pk_supplier primary key (suppid)
+    suppid int not null,
+    name varchar2(80) null,
+    status varchar2(2) not null,
+    addr1 varchar2(80) null,
+    addr2 varchar2(80) null,
+    city varchar2(80) null,
+    state varchar2(80) null,
+    zip varchar2(5) null,
+    phone varchar2(80) null,
+    constraint pk_supplier primary key (suppid)
 );
 
 create table signon (
-                        username varchar2(25) not null,
-                        password varchar2(25) not null,
-                        constraint pk_signon primary key (username)
+    username varchar2(25) not null,
+    password varchar2(25) not null,
+    constraint pk_signon primary key (username)
 );
 
 create table account (
-                         userid varchar2(80) not null,
-                         email varchar2(80) not null,
-                         firstname varchar2(80) not null,
-                         lastname varchar2(80) not null,
-                         status varchar2(2) null,
-                         addr1 varchar2(80) not null,
-                         addr2 varchar2(40) null,
-                         city varchar2(80) not  null,
-                         state varchar2(80) not null,
-                         zip varchar2(20) not null,
-                         country varchar2(30) not null,
-                         phone varchar2(80) not null,
-                         constraint pk_account primary key (userid)
+    userid varchar2(80) not null,
+    email varchar2(80) not null,
+    firstname varchar2(80) not null,
+    lastname varchar2(80) not null,
+    status varchar2(2) null,
+    addr1 varchar2(80) not null,
+    addr2 varchar2(40) null,
+    city varchar2(80) not  null,
+    state varchar2(80) not null,
+    zip varchar2(20) not null,
+    country varchar2(30) not null,
+    phone varchar2(80) not null,
+    constraint pk_account primary key (userid)
 );
 
 create table profile (
-                         userid varchar2(80) not null,
-                         langpref varchar2(80) not null,
-                         favcategory varchar2(30),
-                         mylistopt NUMBER(5),
-                         banneropt NUMBER(5),
-                         constraint pk_profile primary key (userid)
+    userid varchar2(80) not null,
+    langpref varchar2(80) not null,
+    favcategory varchar2(30),
+    mylistopt NUMBER(5),
+    banneropt NUMBER(5),
+    constraint pk_profile primary key (userid)
 );
 
 create table bannerdata (
-                            favcategory varchar2(80) not null,
-                            bannername varchar2(255) null,
-                            constraint pk_bannerdata primary key (favcategory)
+    favcategory varchar2(80) not null,
+    bannername varchar2(255) null,
+    constraint pk_bannerdata primary key (favcategory)
 );
 
 create table orders (
-                        orderid int not null,
-                        userid varchar2(80) not null,
-                        orderdate DATE not null,
-                        shipaddr1 varchar2(80) not null,
-                        shipaddr2 varchar2(80) null,
-                        shipcity varchar2(80) not null,
-                        shipstate varchar2(80) not null,
-                        shipzip varchar2(20) not null,
-                        shipcountry varchar2(20) not null,
-                        billaddr1 varchar2(80) not null,
-                        billaddr2 varchar2(80)  null,
-                        billcity varchar2(80) not null,
-                        billstate varchar2(80) not null,
-                        billzip varchar2(20) not null,
-                        billcountry varchar2(20) not null,
-                        courier varchar2(80) not null,
-                        totalprice decimal(10,2) not null,
-                        billtofirstname varchar2(80) not null,
-                        billtolastname varchar2(80) not null,
-                        shiptofirstname varchar2(80) not null,
-                        shiptolastname varchar2(80) not null,
-                        creditcard varchar2(80) not null,
-                        exprdate varchar2(7) not null,
-                        cardtype varchar2(80) not null,
-                        locale varchar2(80) not null,
-                        constraint pk_orders primary key (orderid)
+    orderid int not null,
+    userid varchar2(80) not null,
+    orderdate DATE not null,
+    shipaddr1 varchar2(80) not null,
+    shipaddr2 varchar2(80) null,
+    shipcity varchar2(80) not null,
+    shipstate varchar2(80) not null,
+    shipzip varchar2(20) not null,
+    shipcountry varchar2(20) not null,
+    billaddr1 varchar2(80) not null,
+    billaddr2 varchar2(80)  null,
+    billcity varchar2(80) not null,
+    billstate varchar2(80) not null,
+    billzip varchar2(20) not null,
+    billcountry varchar2(20) not null,
+    courier varchar2(80) not null,
+    totalprice decimal(10,2) not null,
+    billtofirstname varchar2(80) not null,
+    billtolastname varchar2(80) not null,
+    shiptofirstname varchar2(80) not null,
+    shiptolastname varchar2(80) not null,
+    creditcard varchar2(80) not null,
+    exprdate varchar2(7) not null,
+    cardtype varchar2(80) not null,
+    locale varchar2(80) not null,
+    constraint pk_orders primary key (orderid)
 );
 
 create table orderstatus (
-                             orderid NUMBER(15) not null,
-                             linenum NUMBER(5) not null,
-                             timestamp DATE not null,
-                             status varchar2(2) not null,
-                             constraint pk_orderstatus primary key (orderid, linenum)
+    orderid NUMBER(15) not null,
+    linenum NUMBER(5) not null,
+    timestamp DATE not null,
+    status varchar2(2) not null,
+    constraint pk_orderstatus primary key (orderid, linenum)
 );
 
 create table lineitem (
-                          orderid NUMBER(15) not null,
-                          linenum NUMBER(5) not null,
-                          itemid varchar2(10) not null,
-                          quantity int not null,
-                          unitprice decimal(10,2) not null,
-                          constraint pk_lineitem primary key (orderid, linenum)
+    orderid NUMBER(15) not null,
+    linenum NUMBER(5) not null,
+    itemid varchar2(10) not null,
+    quantity int not null,
+    unitprice decimal(10,2) not null,
+    constraint pk_lineitem primary key (orderid, linenum)
 );
 
 create table category (
-                          catid varchar2(10) not null,
-                          name varchar2(80) null,
-                          image varchar2(128) null,
-                          descn varchar2(255) null,
-                          constraint pk_category primary key (catid)
+    catid varchar2(10) not null,
+    name varchar2(80) null,
+    image varchar2(128) null,
+    descn varchar2(255) null,
+    constraint pk_category primary key (catid)
 );
 
 create table product (
-                         productid varchar2(10) not null,
-                         category varchar2(10) not null,
-                         name varchar2(80) null,
-                         image varchar2(128) null,
-                         descn varchar2(255) null,
-                         constraint pk_product primary key (productid),
-                         constraint fk_product_1 foreign key (category)
-                             references category (catid)
+    productid varchar2(10) not null,
+    category varchar2(10) not null,
+    name varchar2(80) null,
+    image varchar2(128) null,
+    descn varchar2(255) null,
+    constraint pk_product primary key (productid),
+    constraint fk_product_1 foreign key (category) references category (catid)
 );
 
 create index productCat on product (category);
 create index productName on product (name);
 
 create table item (
-                      itemid varchar2(10) not null,
-                      productid varchar2(10) not null,
-                      listprice decimal(10,2) null,
-                      unitcost decimal(10,2) null,
-                      supplier NUMBER(15) null,
-                      status varchar2(2) null,
-                      attr1 varchar2(80) null,
-                      attr2 varchar2(80) null,
-                      attr3 varchar2(80) null,
-                      attr4 varchar2(80) null,
-                      attr5 varchar2(80) null,
-                      constraint pk_item primary key (itemid),
-                      constraint fk_item_1 foreign key (productid)
-                          references product (productid),
-                      constraint fk_item_2 foreign key (supplier)
-                          references supplier (suppid)
+    itemid varchar2(10) not null,
+    productid varchar2(10) not null,
+    listprice decimal(10,2) null,
+    unitcost decimal(10,2) null,
+    supplier NUMBER(15) null,
+    status varchar2(2) null,
+    attr1 varchar2(80) null,
+    attr2 varchar2(80) null,
+    attr3 varchar2(80) null,
+    attr4 varchar2(80) null,
+    attr5 varchar2(80) null,
+    constraint pk_item primary key (itemid),
+    constraint fk_item_1 foreign key (productid) references product (productid),
+    constraint fk_item_2 foreign key (supplier) references supplier (suppid)
 );
 
 create index itemProd on item (productid);
 
 create table inventory (
-                           itemid varchar2(10) not null,
-                           qty NUMBER(5) not null,
-                           constraint pk_inventory primary key (itemid)
+    itemid varchar2(10) not null,
+    qty NUMBER(5) not null,
+    constraint pk_inventory primary key (itemid)
 );
 
 create table sequence (
-                          name varchar2(30) not null,
-                          nextid NUMBER(15) not null,
-                          constraint pk_sequence primary key (name)
+    name varchar2(30) not null,
+    nextid NUMBER(15) not null,
+    constraint pk_sequence primary key (name)
 );
 
 

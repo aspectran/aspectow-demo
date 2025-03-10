@@ -58,7 +58,7 @@
 
   <select id="getOrdersByUsername" resultType="app.jpetstore.order.domain.Order">
     <choose>
-      <when test="oracle">
+      <when test="_databaseId == 'oracle'">
         SELECT A.*, B.STATUS FROM (
           SELECT /*+ index_desc(ORDERS PK_ORDERS) */
             ORDERID,

@@ -21,7 +21,6 @@ import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.mybatis.SqlMapperAgent;
 import com.aspectran.mybatis.SqlMapperDao;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
 
-    List<Order> getOrdersByUsername(@Param("username") String username, @Param("oracle") boolean oracle);
+    List<Order> getOrdersByUsername(String username);
 
     Order getOrder(int orderId);
 
@@ -54,8 +53,8 @@ public interface OrderMapper {
         }
 
         @Override
-        public List<Order> getOrdersByUsername(String username, boolean oracle) {
-            return simple().getOrdersByUsername(username, oracle);
+        public List<Order> getOrdersByUsername(String username) {
+            return simple().getOrdersByUsername(username);
         }
 
         @Override

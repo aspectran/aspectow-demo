@@ -5,7 +5,7 @@ context: {
         app.jpetstore
     ]
     profiles: {
-        essential: [
+        base: [
             h2
         ]
         default: [

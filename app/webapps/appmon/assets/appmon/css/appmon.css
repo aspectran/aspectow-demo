@@ -149,7 +149,12 @@
     display: none;
 }
 .chart-box .chart {
-    background-color: #ccc;
+    height: 174px;
+    box-shadow: 0 8px 15px -10px rgba(50,50,50,0.33);
+}
+.chart-box .chart-title {
+    padding: 2px 6px;
+    font-size: .9em;
 }
 
 .sessions-box {
@@ -170,10 +175,10 @@
     font-size: .9em;
     padding: 0 .5em 0 0;
 }
-.sessions-box dl.session-statistics {
+.sessions-box dl.session-stats {
     margin-bottom: .3em;
 }
-.sessions-box dl.session-statistics dt {
+.sessions-box dl.session-stats dt {
     float: left;
     clear: left;
     padding: 0 0 0 .5em;
@@ -187,7 +192,7 @@
     white-space: nowrap;
     text-wrap: nowrap;
 }
-.sessions-box dl.session-statistics dd {
+.sessions-box dl.session-stats dd {
     text-align: right;
     font-weight: normal;
     font-size: 1em;

@@ -169,6 +169,7 @@ function FrontBuilder() {
                 let instance = instances[key];
                 if (instance.active) {
                     $(".display-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").show();
+                    $(".chart-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").show();
                     $(".console-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").show();
                 }
             }
@@ -180,6 +181,7 @@ function FrontBuilder() {
                 let instance = instances[key];
                 if (instance.active) {
                     $(".display-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").hide();
+                    $(".chart-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").hide();
                     $(".console-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").hide();
                 }
             }
@@ -235,6 +237,8 @@ function FrontBuilder() {
                 $(".track-box[data-domain-index=" + domain.index + "] .bullet").remove();
                 $(".display-box[data-domain-index=" + domain.index + "][data-instance-name!=" + instanceName + "]").hide();
                 $(".display-box[data-domain-index=" + domain.index + "][data-instance-name=" + instanceName + "]").show();
+                $(".chart-box[data-domain-index=" + domain.index + "][data-instance-name!=" + instanceName + "]").hide();
+                $(".chart-box[data-domain-index=" + domain.index + "][data-instance-name=" + instanceName + "]").show();
                 $(".console-box[data-domain-index=" + domain.index + "][data-instance-name!=" + instanceName + "]").hide();
                 $(".console-box[data-domain-index=" + domain.index + "][data-instance-name=" + instanceName + "]").show().each(function () {
                     let $console = $(this).find(".console");
@@ -269,15 +273,15 @@ function FrontBuilder() {
             if (!$li.hasClass("on")) {
                 if ($li.hasClass("compact")) {
                     $li.addClass("on");
-                    if (domains.length > 1) {
-                        $(".display-box.available").addClass("large-6");
-                    }
+                    $(".display-box.available").addClass("large-6");
+                    $(".chart-box.available").addClass("large-6");
                     $(".console-box.available").addClass("large-6");
                 }
             } else {
                 if ($li.hasClass("compact")) {
                     $li.removeClass("on");
                     $(".display-box.available").removeClass("large-6");
+                    $(".chart-box.available").removeClass("large-6");
                     $(".console-box.available").removeClass("large-6");
                 }
             }
@@ -385,7 +389,11 @@ function FrontBuilder() {
                             let $sessionsBox = addSessionsBox($displayBox, domain, instance, event);
                             viewers[domain.index].putDisplay(instance.name, event.name, $sessionsBox);
                         }
-                        addChartBox($displayBox, domain, instance, event);
+                    }
+                    let $chartBox = addChartBox(domain, instance);
+                    for (let key in instance.events) {
+                        let event = instance.events[key];
+                        addChart($chartBox, domain, instance, event);
                     }
                 }
                 for (let key in instance.logs) {
@@ -439,12 +447,9 @@ function FrontBuilder() {
             .addClass("available")
             .attr("data-domain-index", domainInfo.index)
             .attr("data-instance-name", instanceInfo.name);
-        if (domains.length > 1) {
-            $newBox.addClass("large-6");
-        }
         $newBox.find(".status-bar h4")
             .text(domainInfo.title);
-        return $newBox.insertAfter($displayBox.last());
+        return $newBox.insertBefore($(".console-box").eq(0));
     };
 
     const addTrackBox = function ($displayBox, domainInfo, instanceInfo, eventInfo) {
@@ -467,6 +472,26 @@ function FrontBuilder() {
         return $newBox.insertAfter($sessionsBox.last()).show();
     };
 
+    const addChartBox = function (domainInfo, instanceInfo) {
+        let $chartBox = $(".chart-box");
+        let $newBox = $chartBox.eq(0).hide().clone()
+            .addClass("available")
+            .attr("data-domain-index", domainInfo.index)
+            .attr("data-instance-name", instanceInfo.name);
+        return $newBox.insertBefore($(".console-box").eq(0)).show();
+    };
+
+    const addChart = function ($chartBox, domainInfo, instanceInfo, eventInfo) {
+        let $chart = $chartBox.find(".chart");
+        let $newBox = $chart.eq(0).hide().clone()
+            .addClass("available large-6")
+            .attr("data-domain-index", domainInfo.index)
+            .attr("data-instance-name", instanceInfo.name)
+            .attr("data-event-name", eventInfo.name);
+        $newBox.find(".chart-title").text("chart: " + domainInfo.name + "-" + instanceInfo.name + "-" + eventInfo.name);
+        return $newBox.appendTo($chartBox).show();
+    }
+
     const addConsoleBox = function (domainInfo, instanceInfo, logInfo) {
         let $consoleBox = $(".console-box");
         let $newBox = $consoleBox.eq(0).hide().clone()
@@ -478,15 +503,4 @@ function FrontBuilder() {
             .text(domainInfo.title + " ›› " + logInfo.file);
         return $newBox.insertAfter($consoleBox.last());
     };
-
-    const addChartBox = function ($displayBox, domainInfo, instanceInfo, eventInfo) {
-        let $chartBox = $displayBox.find(".chart-box");
-        let $newBox = $chartBox.eq(0).hide().clone()
-            .addClass("available")
-            .attr("data-domain-index", domainInfo.index)
-            .attr("data-instance-name", instanceInfo.name)
-            .attr("data-event-name", eventInfo.name);
-        $("<canvas class='chart'></canvas>").appendTo($newBox);
-        return $newBox.insertAfter($chartBox.last());
-    }
 }

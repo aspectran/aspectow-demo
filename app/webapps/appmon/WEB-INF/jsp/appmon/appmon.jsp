@@ -22,7 +22,7 @@
             <span class="title"> </span> <span class="indicator fi-loop"></span></a>
         </dd>
     </dl>
-    <div class="cell display-box">
+    <div class="cell display-box large-6">
         <div class="grid-x">
             <div class="cell status-bar">
                 <h4 class="ellipses"></h4>
@@ -32,9 +32,9 @@
             </div>
             <div class="cell sessions-box">
                 <div class="grid-x">
-                    <div class="cell small-12 medium-6 large-4">
+                    <div class="cell small-12 medium-4">
                         <div class="panel">
-                            <dl class="session-statistics">
+                            <dl class="session-stats">
                                 <dt title="The number of active sessions">Current Active Sessions</dt>
                                 <dd><span class="number numberOfActives">0</span></dd>
                                 <dt title="The highest number of sessions that have been active at a single time">Highest Active Sessions</dt>
@@ -51,7 +51,7 @@
                             <p class="text-right"><i>Elapsed <span class="elapsed"></span></i></p>
                         </div>
                     </div>
-                    <div class="cell small-12 medium-6 large-8">
+                    <div class="cell small-12 medium-8">
                         <div class="panel">
                             <ul class="sessions">
                             </ul>
@@ -59,8 +59,11 @@
                     </div>
                 </div>
             </div>
-            <div class="cell chart-box">
-            </div>
+        </div>
+    </div>
+    <div class="cell chart-box large-6">
+        <div class="chart">
+            <div class="chart-title"></div>
         </div>
     </div>
     <div class="cell console-box">

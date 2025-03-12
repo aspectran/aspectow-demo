@@ -107,7 +107,12 @@ function FrontViewer() {
         switch (type) {
             case "event":
                 if (text.length) {
-                    processEventData(instance, type, label, name, JSON.parse(text));
+                    let data = JSON.parse(text);
+                    if (data.activities || data.sessionId) {
+                        processEventData(instance, type, label, name, data);
+                    } else if (data.graph) {
+                        processGraphData(instance, type, label, name, data);
+                    }
                 }
                 break;
             case "log":
@@ -332,6 +337,15 @@ function FrontViewer() {
                 $count.addClass("counting");
             }
             $li.stop().hide().fadeIn(250);
+        }
+    }
+
+    const processGraphData = function (instance, type, label, name, data) {
+        switch (label) {
+            case "activity":
+                break;
+            case "session":
+                break;
         }
     }
 

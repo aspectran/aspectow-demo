@@ -246,6 +246,20 @@
     font-size: .85em;
     background-color: #e6e8e6;
 }
+.sessions-box ul.sessions li .detail {
+    display: none;
+    line-height: .9;
+    border-top: 1px solid #ccc;
+}
+.sessions-box ul.sessions li.designated .detail {
+    display: block;
+}
+.sessions-box ul.sessions li .detail p {
+    padding: 0;
+    margin: 0;
+    font-size: .8em;
+    text-align: right;
+}
 
 .console-box .status-bar {
     background-color: #677278;

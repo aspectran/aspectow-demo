@@ -194,7 +194,7 @@
 }
 .sessions-box ul.sessions li {
     list-style-type: none;
-    display: inline-block;
+    display: inline-table;
     padding: 0;
     margin-right: 10px;
     margin-bottom: 5px;

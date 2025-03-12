@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
 <link rel="stylesheet" href="<aspectran:url value="/assets/appmon/css/appmon.css?20250311"/>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://aspectran.com/assets/countries/countries.js"></script>
 <script src="<aspectran:url value="/assets/appmon/js/front-builder.js?20250310"/>"></script>
 <script src="<aspectran:url value="/assets/appmon/js/front-viewer.js?20250311"/>"></script>
@@ -58,9 +59,10 @@
                     </div>
                 </div>
             </div>
+            <div class="cell chart-box">
+            </div>
         </div>
     </div>
-    <div class="cell"></div>
     <div class="cell console-box">
         <div class="status-bar">
             <h4 class="ellipses"></h4>

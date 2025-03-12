@@ -334,4 +334,33 @@ function FrontViewer() {
             $li.stop().hide().fadeIn(250);
         }
     }
+
+    const drawChart = function (ctx) {
+        new Chart(
+            ctx,
+            {
+                type: 'bar',
+                options: {
+                    animation: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    }
+                },
+                data: {
+                    labels: ['2020', '2021', '2022', '2023'],
+                    datasets: [
+                        {
+                            label: 'Dataset',
+                            data: [10,20,30,40],
+                        }
+                    ]
+                },
+            }
+        );
+    }
 }

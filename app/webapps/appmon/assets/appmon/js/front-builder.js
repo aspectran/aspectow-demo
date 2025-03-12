@@ -385,6 +385,7 @@ function FrontBuilder() {
                             let $sessionsBox = addSessionsBox($displayBox, domain, instance, event);
                             viewers[domain.index].putDisplay(instance.name, event.name, $sessionsBox);
                         }
+                        addChartBox($displayBox, domain, instance, event);
                     }
                 }
                 for (let key in instance.logs) {
@@ -477,4 +478,15 @@ function FrontBuilder() {
             .text(domainInfo.title + " ›› " + logInfo.file);
         return $newBox.insertAfter($consoleBox.last());
     };
+
+    const addChartBox = function ($displayBox, domainInfo, instanceInfo, eventInfo) {
+        let $chartBox = $displayBox.find(".chart-box");
+        let $newBox = $chartBox.eq(0).hide().clone()
+            .addClass("available")
+            .attr("data-domain-index", domainInfo.index)
+            .attr("data-instance-name", instanceInfo.name)
+            .attr("data-event-name", eventInfo.name);
+        $("<canvas class='chart'></canvas>").appendTo($newBox);
+        return $newBox.insertAfter($chartBox.last());
+    }
 }

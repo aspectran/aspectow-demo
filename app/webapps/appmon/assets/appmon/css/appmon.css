@@ -145,6 +145,13 @@
     font-size: .7em;
 }
 
+.chart-box {
+    display: none;
+}
+.chart-box .chart {
+    background-color: #ccc;
+}
+
 .sessions-box {
     display: none;
 }

@@ -117,10 +117,10 @@ function FrontViewer() {
             case "event":
                 if (text.length) {
                     let data = JSON.parse(text);
-                    if (data.activities || data.sessionId) {
-                        processEventData(instance, type, label, name, data);
-                    } else if (data.chartData) {
+                    if (data.chartData) {
                         processVisualData(instance, type, label, name, data.chartData);
+                    } else {
+                        processEventData(instance, type, label, name, data);
                     }
                 }
                 break;

@@ -271,6 +271,10 @@
     margin: 0;
     font-size: .8em;
     text-align: right;
+    line-height: 1;
+}
+.session-box ul.sessions li .detail p:first-child {
+    font-size: .74em;
 }
 
 .console-box .status-bar {

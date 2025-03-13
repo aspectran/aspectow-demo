@@ -1,5 +1,6 @@
 function FrontViewer() {
     let $displays = {};
+    let $visuals = {};
     let $consoles = {};
     let $indicators = {};
     let visible = false;
@@ -8,6 +9,10 @@ function FrontViewer() {
 
     this.putDisplay = function (instance, label, $display) {
         $displays[instance + ":event:" + label] = $display;
+    };
+
+    this.putVisual = function (instance, label, $visual) {
+        $visuals[instance + ":event:" + label] = $visual;
     };
 
     this.putConsole = function (instance, label, $console) {
@@ -20,6 +25,10 @@ function FrontViewer() {
 
     const getDisplay = function (name) {
         return ($displays && name ? $displays[name] : null);
+    };
+
+    const getVisual = function (name) {
+        return ($visuals && name ? $visuals[name] : null);
     };
 
     const getConsole = function (name) {
@@ -110,8 +119,8 @@ function FrontViewer() {
                     let data = JSON.parse(text);
                     if (data.activities || data.sessionId) {
                         processEventData(instance, type, label, name, data);
-                    } else if (data.graph) {
-                        processGraphData(instance, type, label, name, data);
+                    } else if (data.chartData) {
+                        processVisualData(instance, type, label, name, data.chartData);
                     }
                 }
                 break;
@@ -340,21 +349,47 @@ function FrontViewer() {
         }
     }
 
-    const processGraphData = function (instance, type, label, name, data) {
-        switch (label) {
-            case "activity":
-                break;
-            case "session":
-                break;
+    const processVisualData = function (instance, type, label, name, chartData) {
+        let $visual = getVisual(name);
+        if ($visual) {
+            switch (label) {
+                case "activity":
+                    drawActivityChart($visual, chartData);
+                    break;
+                case "session":
+                    drawActivityChart($visual, chartData);
+                    break;
+            }
         }
     }
 
-    const drawChart = function (ctx) {
-        new Chart(
+    const drawActivityChart = function ($visual, chartData) {
+        let chart = $visual.data("chart");
+        if (chart) {
+            chart.data.labels.push(...chartData.labels);
+            chart.data.datasets.forEach((dataset) => {
+                dataset.data.push(...chartData.data);
+            });
+            chart.update();
+        } else {
+            let $canvas = $visual.find("canvas");
+            if (!$canvas.length) {
+                $canvas = $("<canvas/>");
+                $canvas.appendTo($visual);
+            }
+            let chart = drawChart($canvas[0], chartData.labels, chartData.data);
+            $visual.data("chart", chart);
+        }
+    }
+
+    const drawChart = function (ctx, labels, data) {
+        return new Chart(
             ctx,
             {
-                type: 'bar',
+                type: 'line',
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     animation: false,
                     plugins: {
                         legend: {
@@ -366,11 +401,11 @@ function FrontViewer() {
                     }
                 },
                 data: {
-                    labels: ['2020', '2021', '2022', '2023'],
+                    labels: labels,
                     datasets: [
                         {
                             label: 'Dataset',
-                            data: [10,20,30,40],
+                            data: data,
                         }
                     ]
                 },

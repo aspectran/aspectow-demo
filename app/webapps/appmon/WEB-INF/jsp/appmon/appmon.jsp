@@ -8,7 +8,7 @@
 <script src="<aspectran:url value="/assets/appmon/js/front-viewer.js?20250311"/>"></script>
 <script src="<aspectran:url value="/assets/appmon/js/websocket-client.js?20250303"/>"></script>
 <script src="<aspectran:url value="/assets/appmon/js/polling-client.js?20250303"/>"></script>
-<div class="grid-x domain-box compact">
+<div class="grid-x">
     <div class="cell options t10 b5">
         <ul class="speed-options">
             <li class="fi-fast-forward fast" title="Set to poll every second. Turn this option on only when absolutely necessary."></li>
@@ -22,7 +22,7 @@
             <span class="title"> </span> <span class="indicator fi-loop"></span></a>
         </dd>
     </dl>
-    <div class="cell display-box large-6">
+    <div class="cell event-box large-6">
         <div class="grid-x">
             <div class="cell status-bar">
                 <h4 class="ellipses"></h4>
@@ -30,7 +30,7 @@
             <div class="cell track-box">
                 <div class="track-stack"><div class="activities"><p class="current"></p><p class="total"></p></div></div>
             </div>
-            <div class="cell sessions-box">
+            <div class="cell session-box">
                 <div class="grid-x">
                     <div class="cell small-12 medium-4">
                         <div class="panel">
@@ -61,9 +61,11 @@
             </div>
         </div>
     </div>
-    <div class="cell chart-box large-6">
-        <div class="chart">
+    <div class="cell visual-box large-6">
+        <div class="chart-box">
             <div class="chart-title"></div>
+            <div class="chart">
+            </div>
         </div>
     </div>
     <div class="cell console-box">

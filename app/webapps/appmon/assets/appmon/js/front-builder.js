@@ -168,8 +168,8 @@ function FrontBuilder() {
             for (let key in instances) {
                 let instance = instances[key];
                 if (instance.active) {
-                    $(".display-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").show();
-                    $(".chart-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").show();
+                    $(".event-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").show();
+                    $(".visual-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").show();
                     $(".console-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").show();
                 }
             }
@@ -180,8 +180,8 @@ function FrontBuilder() {
             for (let key in instances) {
                 let instance = instances[key];
                 if (instance.active) {
-                    $(".display-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").hide();
-                    $(".chart-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").hide();
+                    $(".event-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").hide();
+                    $(".visual-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").hide();
                     $(".console-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").hide();
                 }
             }
@@ -235,10 +235,10 @@ function FrontBuilder() {
             let domain = domains[key];
             if (domain.active) {
                 $(".track-box[data-domain-index=" + domain.index + "] .bullet").remove();
-                $(".display-box[data-domain-index=" + domain.index + "][data-instance-name!=" + instanceName + "]").hide();
-                $(".display-box[data-domain-index=" + domain.index + "][data-instance-name=" + instanceName + "]").show();
-                $(".chart-box[data-domain-index=" + domain.index + "][data-instance-name!=" + instanceName + "]").hide();
-                $(".chart-box[data-domain-index=" + domain.index + "][data-instance-name=" + instanceName + "]").show();
+                $(".event-box[data-domain-index=" + domain.index + "][data-instance-name!=" + instanceName + "]").hide();
+                $(".event-box[data-domain-index=" + domain.index + "][data-instance-name=" + instanceName + "]").show();
+                $(".visual-box[data-domain-index=" + domain.index + "][data-instance-name!=" + instanceName + "]").hide();
+                $(".visual-box[data-domain-index=" + domain.index + "][data-instance-name=" + instanceName + "]").show();
                 $(".console-box[data-domain-index=" + domain.index + "][data-instance-name!=" + instanceName + "]").hide();
                 $(".console-box[data-domain-index=" + domain.index + "][data-instance-name=" + instanceName + "]").show().each(function () {
                     let $console = $(this).find(".console");
@@ -273,15 +273,15 @@ function FrontBuilder() {
             if (!$li.hasClass("on")) {
                 if ($li.hasClass("compact")) {
                     $li.addClass("on");
-                    $(".display-box.available").addClass("large-6");
-                    $(".chart-box.available").addClass("large-6");
+                    $(".event-box.available").addClass("large-6");
+                    $(".visual-box.available").addClass("large-6");
                     $(".console-box.available").addClass("large-6");
                 }
             } else {
                 if ($li.hasClass("compact")) {
                     $li.removeClass("on");
-                    $(".display-box.available").removeClass("large-6");
-                    $(".chart-box.available").removeClass("large-6");
+                    $(".event-box.available").removeClass("large-6");
+                    $(".visual-box.available").removeClass("large-6");
                     $(".console-box.available").removeClass("large-6");
                 }
             }
@@ -313,8 +313,8 @@ function FrontBuilder() {
             let instanceName = $(this).closest(".tabs-title").data("instance-name");
             changeInstance(instanceName);
         });
-        $(document).off("click", ".display-box ul.sessions li")
-            .on("click", ".display-box ul.sessions li", function() {
+        $(document).off("click", ".event-box ul.sessions li")
+            .on("click", ".event-box ul.sessions li", function() {
                 $(this).toggleClass("designated");
         });
         $(".console-box .tailing-switch").off("click").on("click", function() {
@@ -353,7 +353,7 @@ function FrontBuilder() {
         $(".domain.tabs .tabs-title").show();
         $(".instance.tabs .tabs-title.available").remove();
         $(".instance.tabs .tabs-title").show();
-        $(".display-box.available").remove();
+        $(".event-box.available").remove();
         $(".console-box.available").remove();
         $(".console-box").show();
     };
@@ -377,23 +377,24 @@ function FrontBuilder() {
                 let domain = domains[key];
                 viewers[domain.index].putIndicator("instance", "event", instance.name, $instanceIndicator);
                 if (instance.events && instance.events.length) {
-                    let $displayBox = addDisplayBox(domain, instance);
+                    let $eventBox = addEventBox(domain, instance);
                     for (let key in instance.events) {
                         let event = instance.events[key];
                         if (event.name === "activity") {
-                            let $trackBox = addTrackBox($displayBox, domain, instance, event);
+                            let $trackBox = addTrackBox($eventBox, domain, instance, event);
                             let $activities = $trackBox.find(".activities");
                             viewers[domain.index].putDisplay(instance.name, event.name, $trackBox);
                             viewers[domain.index].putIndicator(instance.name, "event", event.name, $activities);
                         } else if (event.name === "session") {
-                            let $sessionsBox = addSessionsBox($displayBox, domain, instance, event);
-                            viewers[domain.index].putDisplay(instance.name, event.name, $sessionsBox);
+                            let $sessionBox = addSessionBox($eventBox, domain, instance, event);
+                            viewers[domain.index].putDisplay(instance.name, event.name, $sessionBox);
                         }
                     }
-                    let $chartBox = addChartBox(domain, instance);
+                    let $visualBox = addVisualBox(domain, instance);
                     for (let key in instance.events) {
                         let event = instance.events[key];
-                        addChart($chartBox, domain, instance, event);
+                        let $chartBox = addChartBox($visualBox, domain, instance, event);
+                        viewers[domain.index].putVisual(instance.name, event.name, $chartBox.find(".chart"));
                     }
                 }
                 for (let key in instance.logs) {
@@ -418,7 +419,7 @@ function FrontBuilder() {
 
     const addDomainTab = function (domainInfo) {
         let $tabs = $(".domain.tabs");
-        let $tab = $tabs.find(".tabs-title").eq(0).hide().clone()
+        let $tab = $tabs.find(".tabs-title").first().hide().clone()
             .addClass("available")
             .attr("data-domain-index", domainInfo.index)
             .attr("data-domain-name", domainInfo.name)
@@ -431,7 +432,7 @@ function FrontBuilder() {
 
     const addInstanceTab = function (instanceInfo) {
         let $tabs = $(".instance.tabs");
-        let $tab0 = $tabs.find(".tabs-title").eq(0);
+        let $tab0 = $tabs.find(".tabs-title").first();
         let $tab = $tab0.hide().clone()
             .addClass("available")
             .attr("data-instance-name", instanceInfo.name)
@@ -441,20 +442,20 @@ function FrontBuilder() {
         return $tab;
     };
 
-    const addDisplayBox = function (domainInfo, instanceInfo) {
-        let $displayBox = $(".display-box");
-        let $newBox = $displayBox.eq(0).hide().clone()
+    const addEventBox = function (domainInfo, instanceInfo) {
+        let $eventBox = $(".event-box");
+        let $newBox = $eventBox.first().hide().clone()
             .addClass("available")
             .attr("data-domain-index", domainInfo.index)
             .attr("data-instance-name", instanceInfo.name);
         $newBox.find(".status-bar h4")
             .text(domainInfo.title);
-        return $newBox.insertBefore($(".console-box").eq(0));
+        return $newBox.insertBefore($(".console-box").first());
     };
 
-    const addTrackBox = function ($displayBox, domainInfo, instanceInfo, eventInfo) {
-        let $trackBox = $displayBox.find(".track-box");
-        let $newBox = $trackBox.eq(0).hide().clone()
+    const addTrackBox = function ($eventBox, domainInfo, instanceInfo, eventInfo) {
+        let $trackBox = $eventBox.find(".track-box");
+        let $newBox = $trackBox.first().hide().clone()
             .addClass("available")
             .attr("data-domain-index", domainInfo.index)
             .attr("data-instance-name", instanceInfo.name)
@@ -462,39 +463,40 @@ function FrontBuilder() {
         return $newBox.insertAfter($trackBox.last()).show();
     };
 
-    const addSessionsBox = function ($displayBox, domainInfo, instanceInfo, eventInfo) {
-        let $sessionsBox = $displayBox.find(".sessions-box");
-        let $newBox = $sessionsBox.eq(0).hide().clone()
+    const addSessionBox = function ($eventBox, domainInfo, instanceInfo, eventInfo) {
+        let $sessionBox = $eventBox.find(".session-box");
+        let $newBox = $sessionBox.first().hide().clone()
             .addClass("available")
             .attr("data-domain-index", domainInfo.index)
             .attr("data-instance-name", instanceInfo.name)
             .attr("data-event-name", eventInfo.name);
-        return $newBox.insertAfter($sessionsBox.last()).show();
+        return $newBox.insertAfter($sessionBox.last()).show();
     };
 
-    const addChartBox = function (domainInfo, instanceInfo) {
-        let $chartBox = $(".chart-box");
-        let $newBox = $chartBox.eq(0).hide().clone()
+    const addVisualBox = function (domainInfo, instanceInfo) {
+        let $visualBox = $(".visual-box");
+        let $newBox = $visualBox.first().hide().clone()
             .addClass("available")
             .attr("data-domain-index", domainInfo.index)
             .attr("data-instance-name", instanceInfo.name);
-        return $newBox.insertBefore($(".console-box").eq(0)).show();
+        return $newBox.insertBefore($(".console-box").first()).show();
     };
 
-    const addChart = function ($chartBox, domainInfo, instanceInfo, eventInfo) {
-        let $chart = $chartBox.find(".chart");
-        let $newBox = $chart.eq(0).hide().clone()
+    const addChartBox = function ($visualBox, domainInfo, instanceInfo, eventInfo) {
+        let $chartBox = $visualBox.find(".chart-box");
+        let $newBox = $chartBox.first().hide().clone()
             .addClass("available large-6")
             .attr("data-domain-index", domainInfo.index)
             .attr("data-instance-name", instanceInfo.name)
             .attr("data-event-name", eventInfo.name);
-        $newBox.find(".chart-title").text("chart: " + domainInfo.name + "-" + instanceInfo.name + "-" + eventInfo.name);
-        return $newBox.appendTo($chartBox).show();
+        $newBox.find(".chart-title")
+            .text("chart: " + domainInfo.name + "-" + instanceInfo.name + "-" + eventInfo.name);
+        return $newBox.appendTo($visualBox).show();
     }
 
     const addConsoleBox = function (domainInfo, instanceInfo, logInfo) {
         let $consoleBox = $(".console-box");
-        let $newBox = $consoleBox.eq(0).hide().clone()
+        let $newBox = $consoleBox.first().hide().clone()
             .addClass("available large-6")
             .attr("data-domain-index", domainInfo.index)
             .attr("data-instance-name", instanceInfo.name)

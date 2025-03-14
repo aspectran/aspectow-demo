@@ -238,6 +238,7 @@ function FrontViewer() {
     const printActivities = function (name, data) {
         let $activities = $indicators[name];
         if ($activities) {
+            $activities.find(".tally").text(data.tally);
             $activities.find(".total").text(data.total);
         }
     }
@@ -354,37 +355,60 @@ function FrontViewer() {
         if ($visual) {
             switch (label) {
                 case "activity":
-                    drawActivityChart($visual, chartData);
+                    drawActivityChart($visual, chartData, "Activities");
                     break;
                 case "session":
-                    drawActivityChart($visual, chartData);
+                    drawActivityChart($visual, chartData, "Sessions");
                     break;
             }
         }
     }
 
-    const drawActivityChart = function ($visual, chartData) {
+    const drawActivityChart = function ($visual, chartData, dataLabel) {
+        let labels = [];
+        let prevYmd = $visual.data("prevYmd");
+        chartData.labels.forEach(label => {
+            let ymd = label.substring(0, 8);
+            let mm = label.substring(4, 6);
+            let hh = label.substring(6, 8);
+            if (ymd === prevYmd) {
+                labels.push(hh + ":" + mm);
+            } else {
+                let month = parseInt(ymd.substring(4, 6));
+                let day = parseInt(ymd.substring(6, 8));
+                labels.push(month + "/" + day + " " + hh + ":" + mm);
+            }
+            prevYmd = ymd;
+        });
+        $visual.data("prevYmd", prevYmd);
+
         let chart = $visual.data("chart");
         if (chart) {
-            chart.data.labels.push(...chartData.labels);
-            chart.data.datasets.forEach((dataset) => {
-                dataset.data.push(...chartData.data);
-            });
-            chart.update();
+            updateChart(chart, labels, chartData.data);
         } else {
             let $canvas = $visual.find("canvas");
             if (!$canvas.length) {
                 $canvas = $("<canvas/>");
                 $canvas.appendTo($visual);
             }
-            let chart = drawChart($canvas[0], chartData.labels, chartData.data);
+            let chart = drawChart($canvas[0], labels, chartData.data, dataLabel);
             $visual.data("chart", chart);
         }
     }
 
-    const drawChart = function (ctx, labels, data) {
+    const updateChart = function (chart, labels, data) {
+        if (chart.data.labels.length >= labels.length) {
+            chart.data.labels.splice(0, labels.length);
+            chart.data.datasets[0].data.splice(0, labels.length);
+        }
+        chart.data.labels.push(...labels);
+        chart.data.datasets[0].data.push(...data);
+        chart.update();
+    }
+
+    const drawChart = function (canvas, labels, data, dataLabel) {
         return new Chart(
-            ctx,
+            canvas,
             {
                 type: 'line',
                 options: {
@@ -396,7 +420,7 @@ function FrontViewer() {
                             display: false
                         },
                         tooltip: {
-                            enabled: false
+                            enabled: true
                         }
                     }
                 },
@@ -404,7 +428,7 @@ function FrontViewer() {
                     labels: labels,
                     datasets: [
                         {
-                            label: 'Dataset',
+                            label: dataLabel,
                             data: data,
                         }
                     ]

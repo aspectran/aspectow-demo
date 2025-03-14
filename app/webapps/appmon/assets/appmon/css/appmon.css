@@ -124,12 +124,12 @@
 }
 .track-stack .activities {
     position: absolute;
-    top: 10px;
+    top: 5px;
     left: 0;
     right: 0;
     bottom: 0;
     color: #a5aecf;
-    font-size: 3.4em;
+    font-size: 3em;
     text-align: center;
     z-index: 11;
 }
@@ -141,8 +141,12 @@
 .track-stack .activities p.current {
     font-weight: bold;
 }
-.track-stack .activities p.total {
+.track-stack .activities p.tally {
     font-size: .7em;
+}
+.track-stack .activities p.total {
+    padding-top: 5px;
+    font-size: .35em;
 }
 
 .visual-box {

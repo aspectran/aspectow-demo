@@ -490,7 +490,7 @@ function FrontBuilder() {
             .attr("data-instance-name", instanceInfo.name)
             .attr("data-event-name", eventInfo.name);
         $newBox.find(".chart-title")
-            .text("chart: " + domainInfo.name + "-" + instanceInfo.name + "-" + eventInfo.name);
+            .text(eventInfo.name);
         return $newBox.appendTo($visualBox).show();
     }
 

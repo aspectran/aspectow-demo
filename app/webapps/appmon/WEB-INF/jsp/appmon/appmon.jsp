@@ -28,7 +28,12 @@
                 <h4 class="ellipses"></h4>
             </div>
             <div class="cell track-box">
-                <div class="track-stack"><div class="activities"><p class="current"></p><p class="total"></p></div></div>
+                <div class="track-stack"><div class="activities">
+                    <p class="current" title="Current activities"></p>
+                    <p class="tally" title="Activities tallied during the sampling period"></p>
+                    <p class="total" title="Total activities recorded"></p>
+                </div>
+                </div>
             </div>
             <div class="cell session-box">
                 <div class="grid-x">

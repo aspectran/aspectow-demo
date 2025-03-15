@@ -394,7 +394,7 @@ function FrontBuilder() {
                     for (let key in instance.events) {
                         let event = instance.events[key];
                         let $chartBox = addChartBox($visualBox, domain, instance, event);
-                        viewers[domain.index].putVisual(instance.name, event.name, $chartBox.find(".chart"));
+                        viewers[domain.index].putChart(instance.name, event.name, $chartBox.find(".chart"));
                     }
                 }
                 for (let key in instance.logs) {

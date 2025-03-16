@@ -180,6 +180,9 @@
     padding: .5em;
     overflow-y: auto;
 }
+.session-box .panel.ground {
+    background-color: #e9f1f8;
+}
 .session-box .panel p {
     margin: 0;
 }

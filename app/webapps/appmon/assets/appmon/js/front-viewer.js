@@ -370,18 +370,10 @@ function FrontViewer() {
             return;
         }
 
-        let dataLabel;
-        switch (eventName) {
-            case "activity":
-                dataLabel = "Activities";
-                resetActivityTally(messagePrefix);
-                break;
-            case "session":
-                dataLabel = "Sessions";
-                break;
-            default:
-                dataLabel = "";
+        if (eventName === "activity") {
+            resetActivityTally(messagePrefix);
         }
+
         let labels = [];
         let prevYmd = $chart.data("prevYmd");
         chartData.labels.forEach(label => {
@@ -409,7 +401,7 @@ function FrontViewer() {
                 $canvas.appendTo($chart);
             }
             adjustLabelCount(eventName, labels, chartData.data);
-            let chart = drawChart($canvas[0], labels, chartData.data, dataLabel);
+            let chart = drawChart(eventName, $canvas[0], labels, chartData.data);
             $chart.data("chart", chart);
         }
     }
@@ -443,7 +435,24 @@ function FrontViewer() {
         }
     }
 
-    const drawChart = function (canvas, labels, data, dataLabel) {
+    const drawChart = function (eventName, canvas, labels, data) {
+        let dataLabel;
+        let borderColor;
+        let backgroundColor;
+        switch (eventName) {
+            case "activity":
+                dataLabel = "Activities";
+                borderColor = "#713f5c";
+                backgroundColor = "#c1cffb";
+                break;
+            case "session":
+                dataLabel = "Sessions";
+                borderColor = "#476b80";
+                backgroundColor = "#c7e0f1";
+                break;
+            default:
+                dataLabel = "";
+        }
         return new Chart(
             canvas,
             {
@@ -484,9 +493,9 @@ function FrontViewer() {
                             label: dataLabel,
                             data: data,
                             fill: true,
-                            borderColor: "#627c8a",
-                            backgroundColor: "#b9d5e8",
-                            borderWidth: 1,
+                            borderColor: borderColor,
+                            backgroundColor: backgroundColor,
+                            borderWidth: 1.2,
                             tension: 0.1,
                             pointStyle: false,
 

@@ -179,9 +179,10 @@
     height: 200px;
     padding: .5em;
     overflow-y: auto;
+    background-color: #d9e9f4;
 }
 .session-box .panel.ground {
-    background-color: #e9f1f8;
+    background-color: #eff5fa;
 }
 .session-box .panel p {
     margin: 0;
@@ -227,9 +228,11 @@
     margin-bottom: 5px;
     height: 25px;
     line-height: 25px;
+    border-radius: 5px;
+    background-color: #fff;
 }
 .session-box ul.sessions li.inactive {
-    opacity: .4;
+    opacity: .525;
 }
 .session-box ul.sessions li.hidden {
     display: none;
@@ -276,7 +279,13 @@
 .session-box ul.sessions li .detail {
     display: none;
     line-height: .9;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #638499;
+    padding-left: 2px;
+}
+.session-box ul.sessions li.designated {
+    padding: 0 3px 3px 0;
+    border-radius: 5px;
+    background-color: #fff;
 }
 .session-box ul.sessions li.designated .detail {
     display: block;
@@ -286,7 +295,7 @@
     margin: 0;
     font-size: .8em;
     text-align: right;
-    line-height: 1;
+    line-height: 1.1;
 }
 .session-box ul.sessions li .detail p:first-child {
     font-size: .74em;

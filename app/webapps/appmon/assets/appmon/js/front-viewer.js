@@ -245,7 +245,7 @@ function FrontViewer() {
     const printActivities = function (messagePrefix, activities) {
         let $activities = getIndicator(messagePrefix);
         if ($activities) {
-            $activities.find(".tally").text(activities.tally);
+            $activities.find(".tally").text(activities.tally > 0 ? "+" + activities.tally : "-");
             $activities.find(".total").text(activities.total);
         }
     }
@@ -381,7 +381,8 @@ function FrontViewer() {
             let hh = label.substring(8, 10);
             let mm = label.substring(10, 12);
             if (ymd === prevYmd) {
-                labels.push(hh + ":" + mm);
+                let star = chartData.labels.length === 1 ? "*" : "";
+                labels.push(star + hh + ":" + mm);
             } else {
                 let month = parseInt(ymd.substring(4, 6));
                 let day = parseInt(ymd.substring(6, 8));
@@ -407,6 +408,10 @@ function FrontViewer() {
     }
 
     const updateChart = function (eventName, chart, labels, data) {
+        if (chart.data.labels.length > 0 && labels.length > 1) {
+            chart.data.labels.length = 0;
+            chart.data.datasets[0].data.length = 0;
+        }
         chart.data.labels.push(...labels);
         chart.data.datasets[0].data.push(...data);
         adjustLabelCount(eventName, chart.data.labels, chart.data.datasets[0].data);
@@ -482,6 +487,7 @@ function FrontViewer() {
                                 display: true,
                                 text: dataLabel
                             },
+                            suggestedMin: 0,
                             suggestedMax: 5,
                         }
                     }

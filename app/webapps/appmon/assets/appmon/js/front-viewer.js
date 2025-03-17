@@ -340,7 +340,7 @@ function FrontViewer() {
         }
         let $detail = $("<div class='detail'/>")
             .append($("<p/>").text(session.sessionId))
-            .append($("<p/>").text(session.createAt));
+            .append($("<p/>").text(moment(session.createAt).local().format("LLL")));
         if (session.ipAddress) {
             $detail.append($("<p/>").text(session.ipAddress));
         }

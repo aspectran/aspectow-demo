@@ -374,43 +374,36 @@ function FrontViewer() {
             resetActivityTally(messagePrefix);
         }
 
-        let labels = [];
-        let prevYmd = $chart.data("prevYmd");
-        chartData.labels.forEach(label => {
-            let ymd = label.substring(0, 8);
-            let hh = label.substring(8, 10);
-            let mm = label.substring(10, 12);
-            if (ymd === prevYmd) {
-                let star = chartData.labels.length === 1 ? "*" : "";
-                labels.push(star + hh + ":" + mm);
-            } else {
-                let month = parseInt(ymd.substring(4, 6));
-                let day = parseInt(ymd.substring(6, 8));
-                labels.push(month + "/" + day + " " + hh + ":" + mm);
-            }
-            prevYmd = ymd;
-        });
-        $chart.data("prevYmd", prevYmd);
-
         let chart = $chart.data("chart");
         if (chart) {
-            updateChart(eventName, chart, labels, chartData.data);
+            updateChart(eventName, chart, chartData.labels, chartData.data);
         } else {
             let $canvas = $chart.find("canvas");
             if (!$canvas.length) {
                 $canvas = $("<canvas/>");
                 $canvas.appendTo($chart);
             }
-            adjustLabelCount(eventName, labels, chartData.data);
-            let chart = drawChart(eventName, $canvas[0], labels, chartData.data);
+            let maxLabels = adjustLabelCount(eventName, chartData.labels, chartData.data);
+            let autoSkip = (maxLabels === 0);
+            console.log( chartData.labels);
+            console.log( chartData.data);
+            let chart = drawChart(eventName, $canvas[0], chartData.labels, chartData.data, autoSkip);
             $chart.data("chart", chart);
         }
     }
 
     const updateChart = function (eventName, chart, labels, data) {
-        if (chart.data.labels.length > 0 && labels.length > 1) {
-            chart.data.labels.length = 0;
-            chart.data.datasets[0].data.length = 0;
+        if (chart.data.labels.length > 0) {
+            if (labels.length > 1) {
+                chart.data.labels.length = 0;
+                chart.data.datasets[0].data.length = 0;
+            } else if (labels.length === 1) {
+                let lastIndex = chart.data.labels.length - 1;
+                if (chart.data.labels[lastIndex] >= labels[0]) {
+                    chart.data.labels.splice(lastIndex, 1);
+                    chart.data.datasets[0].data.splice(lastIndex, 1);
+                }
+            }
         }
         chart.data.labels.push(...labels);
         chart.data.datasets[0].data.push(...data);
@@ -432,15 +425,16 @@ function FrontViewer() {
                 }
             }
         }
-        let maxLabels = (canvasWidth > 0 ? Math.floor(canvasWidth / 25) : 50);
-        if (labels.length > maxLabels) {
-            let cnt = maxLabels - labels.length;
+        let maxLabels = (canvasWidth > 0 ? Math.floor(canvasWidth / 22) : 0);
+        if (maxLabels > 0 && labels.length > maxLabels) {
+            let cnt = labels.length - maxLabels;
             labels.splice(0, cnt);
             data.splice(0, cnt);
         }
+        return maxLabels;
     }
 
-    const drawChart = function (eventName, canvas, labels, data) {
+    const drawChart = function (eventName, canvas, labels, data, autoSkip) {
         let dataLabel;
         let borderColor;
         let backgroundColor;
@@ -471,7 +465,13 @@ function FrontViewer() {
                             display: false
                         },
                         tooltip: {
-                            enabled: true
+                            enabled: true,
+                            callbacks: {
+                                title: function (tooltip) {
+                                    let label = tooltip[0].label;
+                                    return moment.utc(label, "YYYYMMDDhhmm").local().format("LLL");
+                                }
+                            }
                         }
                     },
                     scales: {
@@ -479,6 +479,20 @@ function FrontViewer() {
                             display: true,
                             title: {
                                 display: false
+                            },
+                            ticks: {
+                                autoSkip: autoSkip,
+                                callback: function (value, index) {
+                                    let label = labels[index];
+                                    let ymd = label.substring(0, 8);
+                                    let prevYmd = (index > 0 ? labels[index - 1].substring(0, 8) : "");
+                                    let datetime = moment.utc(label, "YYYYMMDDhhmm").local();
+                                    if (ymd !== prevYmd) {
+                                        return datetime.format("M/D hh:mm");
+                                    } else {
+                                        return datetime.format("hh:mm");
+                                    }
+                                }
                             }
                         },
                         y: {
@@ -488,7 +502,7 @@ function FrontViewer() {
                                 text: dataLabel
                             },
                             suggestedMin: 0,
-                            suggestedMax: 5,
+                            suggestedMax: 5
                         }
                     }
                 },
@@ -504,10 +518,9 @@ function FrontViewer() {
                             borderWidth: 1.2,
                             tension: 0.1,
                             pointStyle: false,
-
                         }
                     ]
-                },
+                }
             }
         );
     }

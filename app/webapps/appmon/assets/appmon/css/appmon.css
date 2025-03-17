@@ -154,19 +154,15 @@
 }
 .visual-box .chart-box {
     height: 174px;
-    padding: 0 5px;
-    box-shadow: 0 8px 15px -10px rgba(50,50,50,0.33);
-}
-.visual-box .chart-box .chart-title {
-    height: 22px;
-    padding: 0 5px;
-    font-size: .9em;
-    line-height: 22px;
-    display: none;
+    padding: 4px 5px 0;
+    box-shadow: 0 8px 15px -10px rgba(50, 50, 50, 0.33);
 }
 .visual-box .chart-box .chart {
     width: 100%;
-    height: 174px;
+    height: 170px;
+}
+.visual-box .chart-box .chart canvas {
+    width: 100%;
 }
 
 .session-box {

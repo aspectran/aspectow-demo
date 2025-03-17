@@ -385,8 +385,6 @@ function FrontViewer() {
             }
             let maxLabels = adjustLabelCount(eventName, chartData.labels, chartData.data);
             let autoSkip = (maxLabels === 0);
-            console.log( chartData.labels);
-            console.log( chartData.data);
             let chart = drawChart(eventName, $canvas[0], chartData.labels, chartData.data, autoSkip);
             $chart.data("chart", chart);
         }

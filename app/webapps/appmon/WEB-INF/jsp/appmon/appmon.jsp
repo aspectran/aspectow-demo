@@ -3,7 +3,7 @@
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
 <link rel="stylesheet" href="<aspectran:url value="/assets/appmon/css/appmon.css?20250317"/>">
 <script src="<aspectran:url value="/assets/appmon/js/front-builder.js?20250316"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/front-viewer.js?20250317-2"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/front-viewer.js?20250317-3"/>"></script>
 <script src="<aspectran:url value="/assets/appmon/js/websocket-client.js?20250316"/>"></script>
 <script src="<aspectran:url value="/assets/appmon/js/polling-client.js?20250316"/>"></script>
 <div class="grid-x">

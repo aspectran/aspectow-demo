@@ -467,7 +467,7 @@ function FrontViewer() {
                             callbacks: {
                                 title: function (tooltip) {
                                     let label = tooltip[0].label;
-                                    return moment.utc(label, "YYYYMMDDhhmm").local().format("LLL");
+                                    return moment.utc(label, "YYYYMMDDHHmm").local().format("LLL");
                                 }
                             }
                         }
@@ -484,11 +484,11 @@ function FrontViewer() {
                                     let label = labels[index];
                                     let ymd = label.substring(0, 8);
                                     let prevYmd = (index > 0 ? labels[index - 1].substring(0, 8) : "");
-                                    let datetime = moment.utc(label, "YYYYMMDDhhmm").local();
+                                    let datetime = moment.utc(label, "YYYYMMDDHHmm").local();
                                     if (ymd !== prevYmd) {
-                                        return datetime.format("M/D hh:mm");
+                                        return datetime.format("M/D HH:mm");
                                     } else {
-                                        return datetime.format("hh:mm");
+                                        return datetime.format("HH:mm");
                                     }
                                 }
                             }

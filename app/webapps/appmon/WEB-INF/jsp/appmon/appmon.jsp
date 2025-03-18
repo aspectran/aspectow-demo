@@ -56,8 +56,7 @@
                     </div>
                     <div class="cell small-12 medium-8">
                         <div class="panel ground">
-                            <ul class="sessions">
-                            </ul>
+                            <ul class="sessions"></ul>
                         </div>
                     </div>
                 </div>

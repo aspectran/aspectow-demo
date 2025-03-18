@@ -173,7 +173,7 @@
     border-bottom: 2px solid #ccc;
     border-radius: 0;
     height: 200px;
-    padding: .5em;
+    padding: 5px;
     overflow-y: auto;
     background-color: #d9e9f4;
 }
@@ -220,7 +220,7 @@
     list-style-type: none;
     display: inline-table;
     padding: 0;
-    margin-right: 10px;
+    margin-right: 5px;
     margin-bottom: 5px;
     height: 25px;
     line-height: 25px;

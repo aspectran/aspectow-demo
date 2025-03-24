@@ -19,7 +19,6 @@ import com.aspectran.core.activity.Translet;
 import com.aspectran.core.component.bean.annotation.Action;
 import com.aspectran.core.component.bean.annotation.Aspect;
 import com.aspectran.core.component.bean.annotation.Autowired;
-import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Before;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.core.component.bean.annotation.ExceptionThrown;

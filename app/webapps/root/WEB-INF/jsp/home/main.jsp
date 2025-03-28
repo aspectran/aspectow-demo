@@ -58,6 +58,18 @@
         }, 100);
         $(this).fadeIn(300);
       });
+    }).on("mousedown", function () {
+      const timer = setTimeout(function () {
+        $(this).fadeOut(300, function () {
+          setTimeout(function () {
+            location.href = "/monitoring/appmon";
+          }, 100);
+          $(this).fadeIn(300);
+        });
+      }, 1500);
+      $(".undercon").off("mouseup").on("mouseup", function () {
+        clearTimeout(timer);
+      });
     });
   });
 </script>

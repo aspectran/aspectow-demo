@@ -58,7 +58,7 @@
         }, 100);
         $(this).fadeIn(300);
       });
-    }).on("mousedown", function () {
+    }).on("dblclick", function () {
       const timer = setTimeout(function () {
         $(this).fadeOut(300, function () {
           setTimeout(function () {

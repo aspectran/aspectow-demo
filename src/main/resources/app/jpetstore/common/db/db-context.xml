@@ -13,6 +13,16 @@
                 <value>classpath:app/jpetstore/common/db/jpetstore.db-h2.properties</value>
             </item>
         </properties>
+        <properties profile="mariadb">
+            <item name="locations" type="array">
+                <value>classpath:app/jpetstore/common/db/jpetstore.db-mariadb.properties</value>
+            </item>
+        </properties>
+        <properties profile="mysql">
+            <item name="locations" type="array">
+                <value>classpath:app/jpetstore/common/db/jpetstore.db-mysql.properties</value>
+            </item>
+        </properties>
         <properties profile="oracle">
             <item name="locations" type="array">
                 <value>classpath:app/jpetstore/common/db/jpetstore.db-oracle.properties</value>

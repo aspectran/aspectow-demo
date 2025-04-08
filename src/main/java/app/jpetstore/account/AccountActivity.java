@@ -24,7 +24,6 @@ import app.jpetstore.user.UserSession;
 import app.jpetstore.user.UserSessionManager;
 import com.aspectran.core.activity.Translet;
 import com.aspectran.core.component.bean.annotation.Autowired;
-import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.core.component.bean.annotation.Dispatch;
 import com.aspectran.core.component.bean.annotation.Redirect;
@@ -34,6 +33,7 @@ import com.aspectran.utils.StringUtils;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The Class AccountActivity.
@@ -79,7 +79,14 @@ public class AccountActivity {
             return;
         }
 
-        accountService.insertAccount(account);
+        try {
+            translet.setAttribute("account", account);
+            translet.setAttribute("errors", Map.of(
+                    "usernameDuplicated", translet.getMessage("common.validation.usernameDuplicated.message")));
+            accountService.insertAccount(account);
+        } catch (Exception e) {
+            translet.forward("/account/newAccountForm");
+        }
     }
 
     /**

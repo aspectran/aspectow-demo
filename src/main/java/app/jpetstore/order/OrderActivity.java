@@ -67,7 +67,9 @@ public class OrderActivity {
     @Action("orderList")
     public List<Order> listOrders() {
         Account account = sessionManager.get().getAccount();
-        return orderService.getOrdersByUsername(account.getUsername());
+
+        throw new RuntimeException("test");
+//        return orderService.getOrdersByUsername(account.getUsername());
     }
 
     /**

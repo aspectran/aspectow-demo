@@ -255,15 +255,20 @@ function FrontViewer() {
     const printActivities = function (messagePrefix, activities) {
         let $activities = getIndicator(messagePrefix);
         if ($activities) {
-            $activities.find(".tallied").text(activities.tallied > 0 ? "+" + activities.tallied : "-");
+            let separator = (activities.errors > 0 ? "/" : (activities.interim > 0 ? "+" : "-"));
+            $activities.find(".interim .separator").text(separator);
+            $activities.find(".interim .count").text(activities.interim > 0 ? activities.interim : "");
+            $activities.find(".interim .errors").text(activities.errors > 0 ? activities.errors : "");
             $activities.find(".total").text(activities.total);
         }
     }
 
-    const resetTalliedActivities = function (messagePrefix) {
+    const resetInterimActivities = function (messagePrefix) {
         let $activities = getIndicator(messagePrefix);
         if ($activities) {
-            $activities.find(".tallied").text(0);
+            $activities.find(".interim .separator").text("");
+            $activities.find(".interim .count").text(0);
+            $activities.find(".interim .errors").text("");
         }
     }
 
@@ -388,7 +393,7 @@ function FrontViewer() {
             return;
         }
         if (eventName === "activity" && chartData.rolledUp) {
-            resetTalliedActivities(instanceName + ":event:" + eventName);
+            resetInterimActivities(instanceName + ":event:" + eventName);
         }
         let labels = chartData.labels;
         let data1 = chartData.data1;

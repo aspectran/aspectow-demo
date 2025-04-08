@@ -28,7 +28,7 @@
             <div class="cell track-box">
                 <div class="track-stack"><div class="activities">
                     <p class="current" title="Current activities"></p>
-                    <p class="tallied" title="Activities tallied during the sampling period">-</p>
+                    <p class="interim" title="Activities tallied during the sampling period"><span class="errors"></span><span class="separator">-</span><span class="count"></span></p>
                     <p class="total" title="Total activities recorded"></p>
                 </div>
                 </div>

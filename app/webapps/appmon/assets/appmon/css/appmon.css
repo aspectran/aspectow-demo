@@ -148,8 +148,15 @@
 .track-stack .activities p.current {
     font-weight: bold;
 }
-.track-stack .activities p.tallied {
-    font-size: .7em;
+.track-stack .activities p.interim {
+    font-size: .65em;
+}
+.track-stack .activities p.interim .errors {
+    color: #d11653;
+}
+.track-stack .activities p.interim .separator {
+    color: #685160;
+    padding: 0 3px;
 }
 .track-stack .activities p.total {
     padding-top: 5px;

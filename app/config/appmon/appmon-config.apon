@@ -10,15 +10,17 @@ domain: {
         mode: auto
         url: /appmon/backend
     }
+    sampleInterval: 5
 }
-#domain: {
-#    name: backend2
-#    title: Localhost(Polling)
-#    endpoint: {
-#        mode: auto
-#        url: /appmon/backend
-#    }
-#}
+domain: {
+    name: backend2
+    title: Localhost(Polling)
+    endpoint: {
+        mode: auto
+        url: /appmon/backend
+    }
+    sampleInterval: 5
+}
 instance: {
     name: jpetstore
     title: JPetStore

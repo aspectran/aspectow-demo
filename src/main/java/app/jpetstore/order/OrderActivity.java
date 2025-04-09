@@ -25,7 +25,6 @@ import app.jpetstore.user.UserSessionManager;
 import com.aspectran.core.activity.Translet;
 import com.aspectran.core.component.bean.annotation.Action;
 import com.aspectran.core.component.bean.annotation.Autowired;
-import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.core.component.bean.annotation.Dispatch;
 import com.aspectran.core.component.bean.annotation.ParamItem;
@@ -67,9 +66,7 @@ public class OrderActivity {
     @Action("orderList")
     public List<Order> listOrders() {
         Account account = sessionManager.get().getAccount();
-
-        throw new RuntimeException("test");
-//        return orderService.getOrdersByUsername(account.getUsername());
+        return orderService.getOrdersByUsername(account.getUsername());
     }
 
     /**

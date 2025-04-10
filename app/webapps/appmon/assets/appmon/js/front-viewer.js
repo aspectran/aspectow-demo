@@ -10,6 +10,7 @@ function FrontViewer(sampleInterval) {
     let visible = false;
     let prevPosition = 0;
     let currentActivityCounts = {};
+    let dateUnit = "";
 
     this.putDisplay = function (instanceName, eventName, $display) {
         $displays[instanceName + ":event:" + eventName] = $display;
@@ -427,9 +428,15 @@ function FrontViewer(sampleInterval) {
         let data1 = chartData.data1;
         let data2 = chartData.data2.map(n => (eventName === "activity" ? n : null));
         let chart = $chart.data("chart");
-        if (chart) {
+        let dateUnit = $chart.data("dateUnit");
+        let unitChanged = (dateUnit !== chartData.dateUnit);
+        dateUnit = chartData.dateUnit;
+        if (chart && !unitChanged) {
             updateChart(eventName, chart, toDatetime(labels), data1, data2);
         } else {
+            if (chart) {
+                chart.destroy();
+            }
             let $canvas = $chart.find("canvas");
             if (!$canvas.length) {
                 $canvas = $("<canvas/>");
@@ -437,8 +444,9 @@ function FrontViewer(sampleInterval) {
             }
             let maxLabels = adjustLabelCount(eventName, labels, data1, data2);
             let autoSkip = (maxLabels === 0);
-            let chart = drawChart(eventName, $canvas[0], toDatetime(labels), data1, data2, autoSkip);
-            $chart.data("chart", chart);
+            let newChart = drawChart(eventName, $canvas[0], dateUnit, toDatetime(labels), data1, data2, autoSkip);
+            $chart.data("chart", newChart);
+            $chart.data("dateUnit", dateUnit);
         }
     };
 
@@ -496,28 +504,29 @@ function FrontViewer(sampleInterval) {
         return arr;
     };
 
-    const drawChart = function (eventName, canvas, labels, data1, data2, autoSkip) {
+    const drawChart = function (eventName, canvas, dateUnit, labels, data1, data2, autoSkip) {
         let dataLabel1;
         let borderColor1;
         let backgroundColor1;
         switch (eventName) {
             case "activity":
                 dataLabel1 = "Activities";
-                borderColor1 = "#5267d1";
-                backgroundColor1 = "#ccd7fa";
+                borderColor1 = "#36a2eb";
+                backgroundColor1 = "#cce0fa";
                 break;
             case "session":
                 dataLabel1 = "Sessions";
-                borderColor1 = "#476b80";
+                borderColor1 = "#7794a5";
                 backgroundColor1 = "#cbe3f4";
                 break;
             default:
                 dataLabel1 = "";
         }
+        let chartType = (!dateUnit || dateUnit === "hour" ? "line" : "bar");
         return new Chart(
             canvas,
             {
-                type: 'line',
+                type: chartType,
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -547,21 +556,41 @@ function FrontViewer(sampleInterval) {
                                 callback: function (value, index) {
                                     let datetime = labels[index];
                                     let datetime2 = (index > 0 ? labels[index - 1] : null);
-                                    if (datetime.isAfter(datetime2, 'day')) {
-                                        return datetime.format("M/D HH:mm");
-                                    } else {
-                                        return datetime.format("HH:mm");
+                                    switch (dateUnit) {
+                                        case "hour":
+                                            if (datetime2 && datetime.isAfter(datetime2, 'day')) {
+                                                return datetime.format("M/D HH:mm");
+                                            } else {
+                                                return datetime.format("HH:mm");
+                                            }
+                                        case "day":
+                                            if (datetime2 && datetime.isAfter(datetime2, 'month')) {
+                                                return datetime.format("YYYY M/D");
+                                            } else {
+                                                return datetime.format("M/D");
+                                            }
+                                        case "month":
+                                            return datetime.format("YYYY/M");
+                                        case "year":
+                                            return datetime.format("YYYY");
+                                        default:
+                                            if (datetime2 && datetime.isAfter(datetime2, 'day')) {
+                                                return datetime.format("M/D HH:mm");
+                                            } else {
+                                                return datetime.format("HH:mm");
+                                            }
                                     }
                                 }
                             },
                             tooltip: {
                                 enabled: true,
                             },
-                            grid: {
+                            stacked: true,
+                            grid: chartType === "line" ? {
                                 color: function (context) {
-                                    return (data2[context.tick.value] > 0 ? "#ef79d8" : "#e4e4e4");
-                                },
-                            }
+                                    return (data2[context.tick.value] > 0 ? "#ff6384" : "#e4e4e4");
+                                }
+                            } : {}
                         },
                         y: {
                             display: true,
@@ -571,6 +600,7 @@ function FrontViewer(sampleInterval) {
                             },
                             suggestedMin: 0,
                             suggestedMax: 5,
+                            stacked: true,
                             grid: {
                                 color: "#e4e4e4"
                             }
@@ -580,7 +610,7 @@ function FrontViewer(sampleInterval) {
                 data: {
                     labels: labels,
                     datasets: [
-                        {
+                        chartType === "line" ? {
                             label: dataLabel1,
                             data: data1,
                             fill: true,
@@ -590,13 +620,19 @@ function FrontViewer(sampleInterval) {
                             tension: 0.1,
                             pointStyle: false,
                             order: 2
+                        } : {
+                            label: dataLabel1,
+                            data: data1,
+                            fill: true,
+                            backgroundColor: borderColor1,
+                            order: 2
                         },
                         {
                             label: "Errors",
                             data: data2,
-                            type: "line",
+                            type: chartType,
                             fill: true,
-                            backgroundColor: "#fc2184",
+                            backgroundColor: "#ff6384",
                             borderWidth: 0,
                             tension: 0.1,
                             pointStyle: false,

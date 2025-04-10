@@ -17,7 +17,7 @@
         </div>
         <div class="date-unit-options button-group tiny align-right">
             <span class="fi-graph-bar"></span>
-            <a class="button default on">Default</a><a class="button day" data-unit="day">Day</a><a class="button month" data-unit="month">Month</a><a class="button year" data-unit="year">Year</a>
+            <a class="button default on">Default</a><a class="button hour" data-unit="hour">Hour</a><a class="button day" data-unit="day">Day</a><a class="button month" data-unit="month">Month</a><a class="button year" data-unit="year">Year</a>
         </div>
     </div>
     <dl class="cell instance tabs b0">

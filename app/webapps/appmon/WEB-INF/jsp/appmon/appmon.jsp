@@ -8,12 +8,17 @@
 <script src="<aspectran:url value="/assets/appmon/js/polling-client.js?20250409"/>"></script>
 <div class="grid-x">
     <div class="cell options t10 b5">
-        <ul class="speed-options">
-            <li class="fi-fast-forward fast" title="Set to poll every second. Turn this option on only when absolutely necessary."></li>
-        </ul>
-        <ul class="layout-options show-for-large">
-            <li class="fi-layout compact on"><a> Compact</a></li>
-        </ul>
+        <div class="speed-options button-group tiny align-right hide">
+            <a class="button fi-fast-forward faster" title="Set to poll every second. Turn this option on only when absolutely necessary."> Faster</a>
+        </div>
+        <div class="layout-options button-group tiny align-right show-for-large">
+            <span class="fi-layout"></span>
+            <a class="button compact on"> Compact</a>
+        </div>
+        <div class="date-unit-options button-group tiny align-right">
+            <span class="fi-graph-bar"></span>
+            <a class="button default on">Default</a><a class="button day" data-unit="day">Day</a><a class="button month" data-unit="month">Month</a><a class="button year" data-unit="year">Year</a>
+        </div>
     </div>
     <dl class="cell instance tabs b0">
         <dd class="tabs-title"><a><span class="bullet fi-list-bullet"></span>
@@ -54,6 +59,7 @@
                                 <dd><span class="number numberOfRejected">0</span></dd>
                             </dl>
                             <p class="since"><i>Since <span class="startTime"></span></i></p>
+                            <div class="knob"></div>
                         </div>
                     </div>
                     <div class="cell small-12 medium-8">

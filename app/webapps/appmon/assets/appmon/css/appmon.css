@@ -8,46 +8,21 @@
     font-size: 90%;
     text-align: right;
 }
-.options ul.layout-options {
-    float: right;
-    list-style-type: none;
+.options .button-group {
+    display: inline;
     margin: 0;
 }
-.options ul.layout-options li {
-    float: left;
-    margin-left: .3em;
-    border: 1px solid #ccc;
-    padding: 0 .5em;
-    border-radius: 5px;
-    color: #777;
+.options .button-group span {
+    color: #305f7e;
 }
-.options ul.layout-options li a {
-    color: #777;
-}
-.options ul.layout-options li.on {
-    background-color: #748fa0;
+.options .button-group .button {
+    padding: 3px 8px;
+    font-size: .9em;
+    background-color: #a6a8a9;
     color: #fff;
 }
-.options ul.layout-options li.on a {
-    color: #fff;
-}
-.options ul.speed-options {
-    float: right;
-    list-style-type: none;
-    margin: 0;
-    display: none;
-}
-.options ul.speed-options li {
-    float: left;
-    margin-left: .3em;
-    border: 1px solid #ccc;
-    padding: 0 .5em;
-    border-radius: 5px;
-    color: #777;
-    cursor: pointer;
-}
-.options ul.speed-options li.on {
-    background-color: #748fa0;
+.options .button-group .button.on {
+    background-color: #30607f;
     color: #fff;
 }
 
@@ -202,12 +177,32 @@
     padding: 5px;
     overflow-y: auto;
     background-color: #d9e9f4;
+    position: relative;
+}
+.session-box .panel.status .knob {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -25px;
+    width: 50px;
+    height: 5px;
+    background-color: #69899c;
+    display: none;
 }
 @media screen and (max-width: 39.9988em) {
     .session-box .panel.status {
         height: 34px;
         overflow-y: hidden;
         border-bottom: none;
+    }
+    .session-box .panel.status.expanded {
+        height: 200px;
+    }
+    .session-box .panel.status .knob {
+        display: block;
+    }
+    .session-box .panel.status .knob:hover {
+        background-color: #3eaceb;
     }
 }
 .session-box .panel.ground {

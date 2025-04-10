@@ -559,10 +559,9 @@ function FrontViewer(sampleInterval) {
                             },
                             grid: {
                                 color: function (context) {
-                                    return (data2[context.tick.value] > 0 ? "#fd5b5b" : "#e4e4e4");
+                                    return (data2[context.tick.value] > 0 ? "#ef79d8" : "#e4e4e4");
                                 },
-                            },
-
+                            }
                         },
                         y: {
                             display: true,
@@ -597,7 +596,7 @@ function FrontViewer(sampleInterval) {
                             data: data2,
                             type: "line",
                             fill: true,
-                            backgroundColor: "#f83636",
+                            backgroundColor: "#fc2184",
                             borderWidth: 0,
                             tension: 0.1,
                             pointStyle: false,

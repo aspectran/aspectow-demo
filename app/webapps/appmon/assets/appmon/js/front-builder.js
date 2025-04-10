@@ -258,7 +258,7 @@ function FrontBuilder() {
     };
 
     const initView = function () {
-        $("ul.speed-options").hide();
+        $(".speed-options").addClass("hide");
         let pollingMode = false;
         for (let key in domains) {
             let domain = domains[key];
@@ -268,9 +268,7 @@ function FrontBuilder() {
             }
         }
         if (pollingMode) {
-            $("ul.speed-options").show();
-        } else {
-            $("ul.speed-options").hide();
+            $(".speed-options").removeClass("hide");
         }
         for (let key in instances) {
             let instance = instances[key];
@@ -289,37 +287,36 @@ function FrontBuilder() {
     };
 
     const bindEvents = function () {
-        $(".layout-options li a").off().on("click", function() {
-            let $li = $(this).parent();
-            if (!$li.hasClass("on")) {
-                if ($li.hasClass("compact")) {
-                    $li.addClass("on");
+        $(".layout-options .button").off().on("click", function() {
+            if (!$(this).hasClass("on")) {
+                if ($(this).hasClass("compact")) {
+                    $(this).addClass("on");
                     $(".event-box.available:not(.fixed-layout)").addClass("large-6");
                     $(".visual-box.available:not(.fixed-layout)").addClass("large-6");
                     $(".console-box.available").addClass("large-6");
                 }
             } else {
-                if ($li.hasClass("compact")) {
-                    $li.removeClass("on");
+                if ($(this).hasClass("compact")) {
+                    $(this).removeClass("on");
                     $(".event-box.available:not(.fixed-layout)").removeClass("large-6");
                     $(".visual-box.available:not(.fixed-layout)").removeClass("large-6");
                     $(".console-box.available").removeClass("large-6");
                 }
             }
-            setTimeout(function () {
-                for (let key in domains) {
-                    let domain = domains[key];
-                    clients[domain.index].refresh();
-                }
-            }, 50);
+            refreshData();
         });
-        $(".speed-options li").off().on("click", function() {
-            let $liFast = $(".speed-options li.fast");
-            let faster = !$liFast.hasClass("on");
-            if (!faster) {
-                $liFast.removeClass("on");
+        $(".date-unit-options .button").off().on("click", function() {
+            let unit = $(this).data("unit")||"";
+            $(this).parent().data("unit", unit).find(".button").removeClass("on");
+            $(this).addClass("on");
+            refreshData();
+        });
+        $(".speed-options .button").off().on("click", function() {
+            let faster = !$(this).hasClass("on");
+            if (faster) {
+                $(this).addClass("on");
             } else {
-                $liFast.addClass("on");
+                $(this).removeClass("on");
             }
             for (let key in domains) {
                 let domain = domains[key];
@@ -340,8 +337,15 @@ function FrontBuilder() {
             let instanceName = $(this).closest(".tabs-title").data("instance-name");
             changeInstance(instanceName);
         });
-        $(document).off("click", ".event-box ul.sessions li")
-            .on("click", ".event-box ul.sessions li", function() {
+        $(document).off("click", ".session-box .panel.status .knob")
+            .on("click", ".session-box .panel.status .knob", function() {
+                if ($("#navigation .title-bar").is(":visible")) {
+                    console.log($(this).height());
+                    $(this).parent().toggleClass("expanded")
+                }
+        });
+        $(document).off("click", ".session-box ul.sessions li")
+            .on("click", ".session-box ul.sessions li", function() {
                 $(this).toggleClass("designated");
         });
         $(".console-box .tailing-switch").off("click").on("click", function() {
@@ -374,6 +378,17 @@ function FrontBuilder() {
             viewers[domainIndex].clearConsole($console);
         });
     };
+
+    const refreshData = function () {
+        let dateUnit = $(".date-unit-options").data("unit");
+        let options = (dateUnit ? "dateUnit:" + dateUnit : "");
+        setTimeout(function () {
+            for (let key in domains) {
+                let domain = domains[key];
+                clients[domain.index].refresh(options);
+            }
+        }, 50);
+    }
 
     const clearView = function () {
         $(".domain.tabs .tabs-title.available").remove();

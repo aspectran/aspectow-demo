@@ -114,6 +114,7 @@ function FrontBuilder() {
         } else {
             client = new WebsocketClient(domain, viewer, onJoined, onEstablished, onClosed, onFailed);
         }
+        viewer.setClient(client);
         clients[domainIndex] = client;
         client.start(specificInstances);
     };

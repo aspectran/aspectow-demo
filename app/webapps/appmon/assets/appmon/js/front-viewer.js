@@ -2,6 +2,7 @@ function FrontViewer(sampleInterval) {
     const FLAGS_URL = "https://aspectran.com/assets/countries/flags/";
     const TEMP_RESIDENT_INACTIVE_SECS = 30;
 
+    let client = null;
     let $displays = {};
     let $charts = {};
     let $consoles = {};
@@ -10,7 +11,10 @@ function FrontViewer(sampleInterval) {
     let visible = false;
     let prevPosition = 0;
     let currentActivityCounts = {};
-    let dateUnit = "";
+
+    this.setClient = function (newClient) {
+        client = newClient;
+    }
 
     this.putDisplay = function (instanceName, eventName, $display) {
         $displays[instanceName + ":event:" + eventName] = $display;
@@ -269,15 +273,19 @@ function FrontViewer(sampleInterval) {
         }
     }
 
-    const resetInterimActivityStatus = function (messagePrefix, rolledUp) {
+    const resetInterimActivityStatus = function (messagePrefix) {
         let $activityStatus = getIndicator(messagePrefix);
         if ($activityStatus) {
-            if (rolledUp) {
-                $activityStatus.find(".interim .separator").text("");
-                $activityStatus.find(".interim .total").text(0);
-                $activityStatus.find(".interim .errors").text("");
-            }
-            if (sampleInterval) {
+            $activityStatus.find(".interim .separator").text("");
+            $activityStatus.find(".interim .total").text(0);
+            $activityStatus.find(".interim .errors").text("");
+        }
+    }
+
+    const resetInterimTimer = function (messagePrefix) {
+        if (sampleInterval) {
+            let $activityStatus = getIndicator(messagePrefix);
+            if ($activityStatus) {
                 let $samplingTimer = $activityStatus.find(".sampling-timer");
                 if ($samplingTimer.length) {
                     let timer = $samplingTimer.data("timer");
@@ -421,19 +429,20 @@ function FrontViewer(sampleInterval) {
         if (!$chart) {
             return;
         }
+        let chart = $chart.data("chart");
         if (eventName === "activity") {
-            resetInterimActivityStatus(instanceName + ":event:" + eventName, chartData.rolledUp);
+            if (!chart) {
+                resetInterimTimer(instanceName + ":event:" + eventName);
+            } else if (chartData.rolledUp) {
+                resetInterimTimer(instanceName + ":event:" + eventName);
+                resetInterimActivityStatus(instanceName + ":event:" + eventName, chartData.rolledUp);
+            }
         }
+        let dateUnit = (chartData.rolledUp ? $chart.data("dateUnit") : chartData.dateUnit);
         let labels = chartData.labels;
         let data1 = chartData.data1;
         let data2 = chartData.data2.map(n => (eventName === "activity" ? n : null));
-        let chart = $chart.data("chart");
-        let dateUnit = $chart.data("dateUnit");
-        let unitChanged = (dateUnit !== chartData.dateUnit);
-        dateUnit = chartData.dateUnit;
-        if (chart && !unitChanged) {
-            updateChart(eventName, chart, toDatetime(labels), data1, data2);
-        } else {
+        if (!chart || !chartData.rolledUp) {
             if (chart) {
                 chart.destroy();
             }
@@ -444,25 +453,31 @@ function FrontViewer(sampleInterval) {
             }
             let maxLabels = adjustLabelCount(eventName, labels, data1, data2);
             let autoSkip = (maxLabels === 0);
-            let newChart = drawChart(eventName, $canvas[0], dateUnit, toDatetime(labels), data1, data2, autoSkip);
-            $chart.data("chart", newChart);
-            $chart.data("dateUnit", dateUnit);
+            let newChart = drawChart(eventName, $canvas[0], dateUnit, labels, data1, data2, autoSkip);
+            $chart.data("chart", newChart).data("dateUnit", dateUnit);
+            if (dateUnit) {
+                $chart.data("dateUnit", dateUnit);
+            } else {
+                $chart.removeData("dateUnit");
+            }
+        } else {
+            if (!dateUnit) {
+                updateChart(eventName, chart, labels, data1, data2);
+            } else if (client) {
+                setTimeout(function () {
+                    client.refresh("dateUnit:" + dateUnit);
+                }, 900);
+            }
         }
     };
 
     const updateChart = function (eventName, chart, labels, data1, data2) {
         if (chart.data.labels.length > 0) {
-            if (labels.length > 1) {
-                chart.data.labels.length = 0;
-                chart.data.datasets[0].data.length = 0;
-                chart.data.datasets[1].data.length = 0;
-            } else if (labels.length === 1) {
-                let lastIndex = chart.data.labels.length - 1;
-                if (chart.data.labels[lastIndex] >= labels[0]) {
-                    chart.data.labels.splice(lastIndex, 1);
-                    chart.data.datasets[0].data.splice(lastIndex, 1);
-                    chart.data.datasets[1].data.splice(lastIndex, 1);
-                }
+            let lastIndex = chart.data.labels.length - 1;
+            if (chart.data.labels[lastIndex] >= labels[0]) {
+                chart.data.labels.splice(0, lastIndex);
+                chart.data.datasets[0].data.splice(0, lastIndex);
+                chart.data.datasets[1].data.splice(0, lastIndex);
             }
         }
         chart.data.labels.push(...labels);
@@ -496,12 +511,19 @@ function FrontViewer(sampleInterval) {
         return maxLabels;
     };
 
-    const toDatetime = function (labels) {
-        let arr = []
-        labels.forEach(label => {
-            arr.push(dayjs.utc(label, "YYYYMMDDHHmm").local());
-        });
-        return arr;
+    const toDatetime = function (label, dateUnit) {
+        switch (dateUnit) {
+            case "hour":
+                return dayjs.utc(label.substring(0, 10), "YYYYMMDDHH").local();
+            case "day":
+                return dayjs.utc(label.substring(0, 8), "YYYYMMDD").local();
+            case "month":
+                return dayjs.utc(label.substring(0, 6), "YYYYMM").local();
+            case "year":
+                return dayjs.utc(label.substring(0, 4), "YYYY").local();
+            default:
+                return dayjs.utc(label, "YYYYMMDDHHmm").local();
+        }
     };
 
     const drawChart = function (eventName, canvas, dateUnit, labels, data1, data2, autoSkip) {
@@ -540,10 +562,13 @@ function FrontViewer(sampleInterval) {
                             reverse: true,
                             callbacks: {
                                 title: function (tooltip) {
-                                    return labels[tooltip[0].dataIndex].format("LLL");
+                                    return toDatetime(labels[tooltip[0].dataIndex], dateUnit).format("LLL");
                                 }
                             },
-                        }
+                        },
+                        datalabels: {
+                            display: true,
+                        },
                     },
                     scales: {
                         x: {
@@ -554,15 +579,9 @@ function FrontViewer(sampleInterval) {
                             ticks: {
                                 autoSkip: autoSkip,
                                 callback: function (value, index) {
-                                    let datetime = labels[index];
-                                    let datetime2 = (index > 0 ? labels[index - 1] : null);
+                                    let datetime = toDatetime(labels[index], dateUnit);
+                                    let datetime2 = (index > 0 ? toDatetime(labels[index - 1], dateUnit) : null);
                                     switch (dateUnit) {
-                                        case "hour":
-                                            if (datetime2 && datetime.isAfter(datetime2, 'day')) {
-                                                return datetime.format("M/D HH:mm");
-                                            } else {
-                                                return datetime.format("HH:mm");
-                                            }
                                         case "day":
                                             if (datetime2 && datetime.isAfter(datetime2, 'month')) {
                                                 return datetime.format("YYYY M/D");
@@ -583,12 +602,12 @@ function FrontViewer(sampleInterval) {
                                 }
                             },
                             tooltip: {
-                                enabled: true,
+                                enabled: true
                             },
                             stacked: true,
                             grid: chartType === "line" ? {
-                                color: function (context) {
-                                    return (data2[context.tick.value] > 0 ? "#ff6384" : "#e4e4e4");
+                                color: function (ctx) {
+                                    return (data2[ctx.tick.value] > 0 ? "#ff6384" : "#e4e4e4");
                                 }
                             } : {}
                         },
@@ -633,8 +652,7 @@ function FrontViewer(sampleInterval) {
                             type: chartType,
                             fill: true,
                             backgroundColor: "#ff6384",
-                            borderWidth: 0,
-                            tension: 0.1,
+                            showLine: false,
                             pointStyle: false,
                             order: 1
                         }

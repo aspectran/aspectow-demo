@@ -3,18 +3,29 @@ function FrontViewer(sampleInterval) {
     const TEMP_RESIDENT_INACTIVE_SECS = 30;
 
     let client = null;
+    let enable = false;
+    let visible = false;
     let $displays = {};
     let $charts = {};
     let $consoles = {};
     let $indicators = {};
-    let enable = false;
-    let visible = false;
     let prevPosition = 0;
     let currentActivityCounts = {};
 
     this.setClient = function (newClient) {
         client = newClient;
     }
+
+    this.setEnable = function (flag) {
+        enable = !!flag;
+    };
+
+    this.setVisible = function (flag) {
+        visible = !!flag;
+        if (!visible) {
+            clearBullets();
+        }
+    };
 
     this.putDisplay = function (instanceName, eventName, $display) {
         $displays[instanceName + ":event:" + eventName] = $display;
@@ -79,21 +90,6 @@ function FrontViewer(sampleInterval) {
                 }
             }, 300);
             $console.data("timer", timer);
-        }
-    };
-
-    this.setEnable = function (flag) {
-        enable = !!flag;
-    };
-
-    this.setVisible = function (flag) {
-        visible = !!flag;
-        if (!visible) {
-            for (let key in $displays) {
-                if ($displays[key].hasClass("track-box")) {
-                    $displays[key].find(".bullet").remove();
-                }
-            }
         }
     };
 
@@ -236,6 +232,14 @@ function FrontViewer(sampleInterval) {
         }
     };
 
+    const clearBullets = function () {
+        for (let key in $displays) {
+            if ($displays[key].hasClass("track-box")) {
+                $displays[key].find(".bullet").remove();
+            }
+        }
+    }
+
     const generateRandom = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
@@ -286,24 +290,27 @@ function FrontViewer(sampleInterval) {
         if (sampleInterval) {
             let $activityStatus = getIndicator(messagePrefix);
             if ($activityStatus) {
-                let $samplingTimer = $activityStatus.find(".sampling-timer");
-                if ($samplingTimer.length) {
-                    let timer = $samplingTimer.data("timer");
+                let $samplingTimerBar = $activityStatus.find(".sampling-timer-bar");
+                let $samplingTimerStatus = $activityStatus.find(".sampling-timer-status");
+                if ($samplingTimerBar.length) {
+                    let timer = $samplingTimerBar.data("timer");
                     if (timer) {
                         clearInterval(timer);
                     }
-                    $samplingTimer.animate({height: "0"}, 1000);
-                    let seconds = 0;
+                    let second = (dayjs().minute() * 60 + dayjs().second()) % sampleInterval;
+                    $samplingTimerBar.animate({height: 0}, 600);
+                    $samplingTimerBar.animate({height: (second++ / sampleInterval * 100).toFixed(2) + "%"}, 400);
+                    $samplingTimerStatus.text(second + "/" + sampleInterval);
                     timer = setInterval(function () {
                         if (!enable) {
                             clearInterval(timer);
                             return;
                         }
-                        let percent = seconds++ / sampleInterval * 100;
-                        $samplingTimer.css("height", percent.toFixed(2) + "%")
-                            .attr("title", seconds + "/" + sampleInterval);
+                        let percent = second++ / sampleInterval * 100;
+                        $samplingTimerBar.css("height", percent.toFixed(2) + "%");
+                        $samplingTimerStatus.text(second + "/" + sampleInterval);
                     }, 1000);
-                    $samplingTimer.data("timer", timer);
+                    $samplingTimerBar.data("timer", timer);
                 }
             }
         }
@@ -439,6 +446,7 @@ function FrontViewer(sampleInterval) {
             }
         }
         let dateUnit = (chartData.rolledUp ? $chart.data("dateUnit") : chartData.dateUnit);
+        let dateOffset = (chartData.rolledUp ? $chart.data("dateOffset") : chartData.dateOffset);
         let labels = chartData.labels;
         let data1 = chartData.data1;
         let data2 = chartData.data2.map(n => (eventName === "activity" ? n : null));
@@ -454,15 +462,20 @@ function FrontViewer(sampleInterval) {
             let maxLabels = adjustLabelCount(eventName, labels, data1, data2);
             let autoSkip = (maxLabels === 0);
             let newChart = drawChart(eventName, $canvas[0], dateUnit, labels, data1, data2, autoSkip);
-            $chart.data("chart", newChart).data("dateUnit", dateUnit);
+            $chart.data("chart", newChart);
             if (dateUnit) {
                 $chart.data("dateUnit", dateUnit);
             } else {
                 $chart.removeData("dateUnit");
             }
-        } else {
+            if (dateOffset) {
+                $chart.data("dateOffset", dateOffset);
+            } else {
+                $chart.removeData("dateOffset");
+            }
+        } else if (!dateOffset) {
             if (!dateUnit) {
-                updateChart(eventName, chart, labels, data1, data2);
+                updateChartAfterRolledUp(eventName, chart, labels, data1, data2);
             } else if (client) {
                 setTimeout(function () {
                     client.refresh("dateUnit:" + dateUnit);
@@ -471,7 +484,7 @@ function FrontViewer(sampleInterval) {
         }
     };
 
-    const updateChart = function (eventName, chart, labels, data1, data2) {
+    const updateChartAfterRolledUp = function (eventName, chart, labels, data1, data2) {
         if (chart.data.labels.length > 0) {
             let lastIndex = chart.data.labels.length - 1;
             if (chart.data.labels[lastIndex] >= labels[0]) {
@@ -510,6 +523,23 @@ function FrontViewer(sampleInterval) {
         }
         return maxLabels;
     };
+
+    this.getMaxStartDatetime = function () {
+        let result = "";
+        for (let key in $charts) {
+            let $chart = $charts[key];
+            let chart = $chart.data("chart");
+            if (chart) {
+                let data1 = chart.data.datasets[0].data;
+                if (data1.length) {
+                    if (data1[0] > result) {
+                        result = data1[0];
+                    }
+                }
+            }
+        }
+        return result;
+    }
 
     const toDatetime = function (label, dateUnit) {
         switch (dateUnit) {
@@ -565,10 +595,7 @@ function FrontViewer(sampleInterval) {
                                     return toDatetime(labels[tooltip[0].dataIndex], dateUnit).format("LLL");
                                 }
                             }
-                        },
-                        datalabels: {
-                            display: true
-                        },
+                        }
                     },
                     scales: {
                         x: {

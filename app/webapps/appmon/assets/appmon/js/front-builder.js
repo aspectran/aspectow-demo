@@ -312,6 +312,16 @@ function FrontBuilder() {
             $(this).addClass("on");
             refreshData();
         });
+        $(".date-offset-options .button").off().on("click", function() {
+            let offset = $(this).data("offset")||"";
+            if (offset !== "current") {
+                $(this).parent().find(".button.current").addClass("on");
+            } else {
+                $(this).parent().find(".button.current").removeClass("on");
+            }
+            $(this).parent().data("offset", offset);
+            refreshData(offset);
+        });
         $(".speed-options .button").off().on("click", function() {
             let faster = !$(this).hasClass("on");
             if (faster) {
@@ -380,13 +390,29 @@ function FrontBuilder() {
         });
     };
 
-    const refreshData = function () {
+    const refreshData = function (dateOffset) {
         let dateUnit = $(".date-unit-options").data("unit");
-        let options = (dateUnit ? "dateUnit:" + dateUnit : "");
+        let options = [];
+        if (dateUnit) {
+            options.push("dateUnit:" + dateUnit);
+        }
+        if (dateOffset && dateOffset === "previous") {
+            let maxStartDate = "";
+            for (let key in viewers) {
+                let viewer = viewers[key];
+                let startDate = viewer.getMaxStartDatetime();
+                if (startDate > maxStartDate) {
+                    maxStartDate = startDate;
+                }
+            }
+            if (maxStartDate) {
+                options.push("dateOffset:" + dateOffset);
+            }
+        }
         setTimeout(function () {
             for (let key in domains) {
                 let domain = domains[key];
-                clients[domain.index].refresh(options);
+                clients[domain.index].refresh(options.join(";"));
             }
         }, 50);
     }

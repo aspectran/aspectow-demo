@@ -21,6 +21,9 @@
     background-color: #a6a8a9;
     color: #fff;
 }
+.options .button-group .button span {
+    color: #fff;
+}
 .options .button-group .button.on {
     background-color: #30607f;
     color: #fff;
@@ -111,7 +114,6 @@
     right: 0;
     bottom: 0;
     color: #a5aecf;
-    font-size: 3em;
     text-align: center;
     z-index: 11;
 }
@@ -121,11 +123,12 @@
     line-height: 1;
 }
 .track-stack .activity-status p.current {
+    font-size: 3em;
     font-weight: bold;
     padding-top: 4px;
 }
 .track-stack .activity-status p.interim {
-    font-size: .65em;
+    font-size: 2em;
     color: #35e771;
     line-height: 1.1;
 }
@@ -138,15 +141,25 @@
 }
 .track-stack .activity-status p.cumulative {
     padding-top: 5px;
-    font-size: .4em;
+    font-size: 1em;
 }
-.track-stack .activity-status .sampling-timer {
+.track-stack .activity-status .sampling-timer-bar {
     position: absolute;
     right: 0;
     bottom: 0;
     width: 5px;
     height: 100%;
     background-color: #b989a6;
+}
+.track-stack .activity-status .sampling-timer-status {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 20px;
+    text-align: right;
+    font-size: .6em;
+    padding: 2px 8px;
 }
 
 .visual-box {
@@ -187,9 +200,10 @@
     width: 50px;
     height: 5px;
     background-color: #69899c;
+    border-radius: 10px 10px 0 0;
     display: none;
 }
-@media screen and (max-width: 39.9988em) {
+@media screen and (max-width: 40em) {
     .session-box .panel.status {
         height: 34px;
         overflow-y: hidden;

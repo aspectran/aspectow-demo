@@ -530,10 +530,10 @@ function FrontViewer(sampleInterval) {
             let $chart = $charts[key];
             let chart = $chart.data("chart");
             if (chart) {
-                let data1 = chart.data.datasets[0].data;
-                if (data1.length) {
-                    if (data1[0] > result) {
-                        result = data1[0];
+                let labels = chart.data.labels;
+                if (labels.length) {
+                    if (labels[0] > result) {
+                        result = labels[0];
                     }
                 }
             }

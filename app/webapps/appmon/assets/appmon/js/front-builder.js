@@ -310,6 +310,8 @@ function FrontBuilder() {
             let unit = $(this).data("unit")||"";
             $(this).parent().data("unit", unit).find(".button").removeClass("on");
             $(this).addClass("on");
+            $(".date-offset-options").data("offset", "");
+            $(".date-offset-options .button.current").removeClass("on");
             refreshData();
         });
         $(".date-offset-options .button").off().on("click", function() {
@@ -396,7 +398,7 @@ function FrontBuilder() {
         if (dateUnit) {
             options.push("dateUnit:" + dateUnit);
         }
-        if (dateOffset && dateOffset === "previous") {
+        if (dateOffset === "previous") {
             let maxStartDate = "";
             for (let key in viewers) {
                 let viewer = viewers[key];
@@ -406,7 +408,7 @@ function FrontBuilder() {
                 }
             }
             if (maxStartDate) {
-                options.push("dateOffset:" + dateOffset);
+                options.push("dateOffset:" + maxStartDate);
             }
         }
         setTimeout(function () {

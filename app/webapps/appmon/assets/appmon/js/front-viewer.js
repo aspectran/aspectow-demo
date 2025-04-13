@@ -564,10 +564,10 @@ function FrontViewer(sampleInterval) {
                                 title: function (tooltip) {
                                     return toDatetime(labels[tooltip[0].dataIndex], dateUnit).format("LLL");
                                 }
-                            },
+                            }
                         },
                         datalabels: {
-                            display: true,
+                            display: true
                         },
                     },
                     scales: {
@@ -583,7 +583,7 @@ function FrontViewer(sampleInterval) {
                                     let datetime2 = (index > 0 ? toDatetime(labels[index - 1], dateUnit) : null);
                                     switch (dateUnit) {
                                         case "day":
-                                            if (datetime2 && datetime.isAfter(datetime2, 'month')) {
+                                            if (datetime2 && datetime.isAfter(datetime2, "month")) {
                                                 return datetime.format("YYYY M/D");
                                             } else {
                                                 return datetime.format("M/D");
@@ -593,7 +593,7 @@ function FrontViewer(sampleInterval) {
                                         case "year":
                                             return datetime.format("YYYY");
                                         default:
-                                            if (datetime2 && datetime.isAfter(datetime2, 'day')) {
+                                            if (datetime2 && datetime.isAfter(datetime2, "day")) {
                                                 return datetime.format("M/D HH:mm");
                                             } else {
                                                 return datetime.format("HH:mm");

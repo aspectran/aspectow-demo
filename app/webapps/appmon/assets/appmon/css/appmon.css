@@ -4,55 +4,53 @@
 .domain.tabs .tabs-title .indicator.error {
     color: #a01f27;
 }
-.options {
-    font-size: 90%;
+
+.control-bar {
+    background-color: #677278;
+    color: #eee;
+    padding : 5px;
+    box-shadow: 0 6px 10px -10px rgba(50, 50, 50, 0.45);
     text-align: right;
 }
-.options .button-group {
+.control-bar .options .button-group {
     display: inline;
     margin: 0;
 }
-.options .button-group span {
-    color: #305f7e;
+.control-bar .options .button-group span {
+    color: #d6e5e4;
 }
-.options .button-group .button {
+.control-bar .options .button-group .button {
     padding: 3px 8px;
     font-size: .9em;
-    background-color: #a6a8a9;
+    background-color: #545a5d;
     color: #fff;
 }
-.options .button-group .button span {
+.control-bar-bar .options .button-group .button span {
     color: #fff;
 }
-.options .button-group .button.on {
-    background-color: #30607f;
-    color: #fff;
+.control-bar .options .button-group .button.on {
+    background-color: #2a4959;
 }
 
 .event-box {
     display: none;
 }
-.event-box .status-bar {
+.event-box .title-bar {
     background-color: #242c43;
     color: #eee;
-    overflow: auto;
     padding : 0 7px 0 10px;
     height: 29px;
     box-shadow: inset -20px 20px 20px -20px #394e59;
 }
-.event-box .status-bar.on {
+.event-box .title-bar.on {
     background-color: #709185;
 }
-.event-box .status-bar h4 {
-    float: left;
-    width: 70%;
-    height: 29px;
+.event-box .title-bar h4 {
     line-height: 29px;
     font-size: .9em;
     font-weight: normal;
     margin: 0;
 }
-
 .track-box {
     position: relative;
     height: 120px;

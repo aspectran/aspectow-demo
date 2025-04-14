@@ -296,6 +296,7 @@ function FrontViewer(sampleInterval) {
                     let timer = $samplingTimerBar.data("timer");
                     if (timer) {
                         clearInterval(timer);
+                        $samplingTimerBar.removeData("timer");
                     }
                     let second = (dayjs().minute() * 60 + dayjs().second()) % sampleInterval;
                     $samplingTimerBar.animate({height: 0}, 600);
@@ -304,11 +305,17 @@ function FrontViewer(sampleInterval) {
                     timer = setInterval(function () {
                         if (!enable) {
                             clearInterval(timer);
+                            $samplingTimerBar.removeData("timer");
                             return;
                         }
                         let percent = second++ / sampleInterval * 100;
                         $samplingTimerBar.css("height", percent.toFixed(2) + "%");
                         $samplingTimerStatus.text(second + "/" + sampleInterval);
+                        if (second > 300) {
+                            second = 0;
+                        } else if (second % 10 === 0) {
+                            second = (dayjs().minute() * 60 + dayjs().second()) % sampleInterval;
+                        }
                     }, 1000);
                     $samplingTimerBar.data("timer", timer);
                 }
@@ -524,16 +531,18 @@ function FrontViewer(sampleInterval) {
         return maxLabels;
     };
 
-    this.getMaxStartDatetime = function () {
+    this.getMaxStartDatetime = function (instanceName) {
         let result = "";
         for (let key in $charts) {
-            let $chart = $charts[key];
-            let chart = $chart.data("chart");
-            if (chart) {
-                let labels = chart.data.labels;
-                if (labels.length) {
-                    if (labels[0] > result) {
-                        result = labels[0];
+            if (key.startsWith(instanceName + ":")) {
+                let $chart = $charts[key];
+                let chart = $chart.data("chart");
+                if (chart) {
+                    let labels = chart.data.labels;
+                    if (labels.length) {
+                        if (labels[0] > result) {
+                            result = labels[0];
+                        }
                     }
                 }
             }

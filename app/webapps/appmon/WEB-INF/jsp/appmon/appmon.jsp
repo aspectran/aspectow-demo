@@ -1,36 +1,38 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
-<link rel="stylesheet" href="<aspectran:url value="/assets/appmon/css/appmon.css?20250414"/>">
-<script src="<aspectran:url value="/assets/appmon/js/front-builder.js?20250414"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/front-viewer.js?20250414"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/websocket-client.js?20250414"/>"></script>
-<script src="<aspectran:url value="/assets/appmon/js/polling-client.js?20250414"/>"></script>
+<link rel="stylesheet" href="<aspectran:url value="/assets/appmon/css/appmon.css?20250414-2"/>">
+<script src="<aspectran:url value="/assets/appmon/js/front-builder.js?20250414-2"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/front-viewer.js?20250414-2"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/websocket-client.js?20250414-2"/>"></script>
+<script src="<aspectran:url value="/assets/appmon/js/polling-client.js?20250414-2"/>"></script>
 <div class="grid-x">
-    <div class="cell options t10 b5">
-        <div class="speed-options button-group tiny align-right hide">
-            <a class="button fi-fast-forward faster" title="Set to poll every second. Turn this option on only when absolutely necessary."> Faster</a>
-        </div>
-        <div class="layout-options button-group tiny align-right show-for-large">
-            <span class="fi-layout"></span>
-            <a class="button compact on"> Compact</a>
-        </div>
-        <div class="date-unit-options button-group tiny align-right">
-            <span class="fi-graph-bar"></span>
-            <a class="button default on">Default</a><a class="button hour" data-unit="hour">Hour</a><a class="button day" data-unit="day">Day</a><a class="button month" data-unit="month">Month</a><a class="button year" data-unit="year">Year</a>
-        </div>
-        <div class="date-offset-options button-group tiny align-right">
-            <a class="button previous on" data-offset="previous" title="Previous"><span class="fi-previous"></span></a><a class="button current" data-offset="current" title="Next"><span class="fi-next"></span></a>
-        </div>
-    </div>
-    <dl class="cell instance tabs b0">
+    <dl class="cell instance tabs t10 b0">
         <dd class="tabs-title"><a><span class="bullet fi-list-bullet"></span>
             <span class="title"> </span> <span class="indicator fi-loop"></span></a>
         </dd>
     </dl>
+    <div class="cell control-bar">
+        <div class="options">
+            <div class="layout-options button-group tiny show-for-large">
+                <span class="fi-layout"></span>
+                <a class="button compact on"> Compact</a>
+            </div>
+            <div class="date-unit-options button-group tin">
+                <span class="fi-graph-bar"></span>
+                <a class="button default on">Default</a><a class="button hour" data-unit="hour">Hour</a><a class="button day" data-unit="day">Day</a><a class="button month" data-unit="month">Month</a><a class="button year" data-unit="year">Year</a>
+            </div>
+            <div class="date-offset-options button-group tiny">
+                <a class="button previous on" data-offset="previous" title="Previous"><span class="fi-previous"></span></a><a class="button current" data-offset="current" title="Next"><span class="fi-next"></span></a>
+            </div>
+            <div class="speed-options button-group tiny hide">
+                <a class="button fi-fast-forward faster" title="Set to poll every second. Turn this option on only when absolutely necessary."> Faster polling interval</a>
+            </div>
+        </div>
+    </div>
     <div class="cell event-box large-6">
         <div class="grid-x">
-            <div class="cell status-bar">
+            <div class="cell title-bar">
                 <h4 class="ellipses"></h4>
             </div>
             <div class="cell track-box">

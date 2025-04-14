@@ -485,7 +485,10 @@ function FrontViewer(sampleInterval) {
                 updateChartAfterRolledUp(eventName, chart, labels, data1, data2);
             } else if (client) {
                 setTimeout(function () {
-                    client.refresh("dateUnit:" + dateUnit);
+                    let options = [];
+                    options.push("instance:" + instanceName);
+                    options.push("dateUnit:" + dateUnit);
+                    client.refresh(options.join(";"));
                 }, 900);
             }
         }

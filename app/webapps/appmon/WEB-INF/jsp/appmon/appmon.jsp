@@ -8,24 +8,24 @@
 <script src="<aspectran:url value="/assets/appmon/js/polling-client.js?20250414-2"/>"></script>
 <div class="grid-x">
     <dl class="cell instance tabs t10 b0">
-        <dd class="tabs-title"><a><span class="bullet fi-list-bullet"></span>
+        <dd class="tabs-title"><a><span class="bullet fi-marker"></span>
             <span class="title"> </span> <span class="indicator fi-loop"></span></a>
         </dd>
     </dl>
     <div class="cell control-bar">
         <div class="options">
-            <div class="layout-options button-group tiny show-for-large">
+            <div class="layout-options button-group tiny show-for-large" title="Layout options">
                 <span class="fi-layout"></span>
                 <a class="button compact on"> Compact</a>
             </div>
-            <div class="date-unit-options button-group tin">
+            <div class="date-unit-options button-group tiny" title="Date unit options">
                 <span class="fi-graph-bar"></span>
                 <a class="button default on">Default</a><a class="button hour" data-unit="hour">Hour</a><a class="button day" data-unit="day">Day</a><a class="button month" data-unit="month">Month</a><a class="button year" data-unit="year">Year</a>
             </div>
-            <div class="date-offset-options button-group tiny">
+            <div class="date-offset-options button-group tiny" title="Date offset options">
                 <a class="button previous on" data-offset="previous" title="Previous"><span class="fi-previous"></span></a><a class="button current" data-offset="current" title="Next"><span class="fi-next"></span></a>
             </div>
-            <div class="speed-options button-group tiny hide">
+            <div class="speed-options button-group tiny hide" title="Speed options">
                 <a class="button fi-fast-forward faster" title="Set to poll every second. Turn this option on only when absolutely necessary."> Faster polling interval</a>
             </div>
         </div>
@@ -37,6 +37,10 @@
             </div>
             <div class="cell track-box">
                 <div class="track-stack">
+                    <div class="activity-status-plate">
+                        <div class="bottom-plate-left"></div>
+                        <div class="bottom-plate-right"></div>
+                    </div>
                     <div class="activity-status">
                         <p class="current" title="Current activities"><span class="total"></span></p>
                         <p class="interim" title="Activities tallied during the sampling period"><span class="errors"></span><span class="separator">-</span><span class="total"></span></p>
@@ -65,7 +69,7 @@
                                 <dd><span class="number numberOfRejected">0</span></dd>
                             </dl>
                             <p class="since"><i>Since <span class="startTime"></span></i></p>
-                            <div class="knob"></div>
+                            <div class="knob-bar"><div class="knob"></div></div>
                         </div>
                     </div>
                     <div class="cell small-12 medium-8">

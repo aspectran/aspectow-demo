@@ -11,8 +11,8 @@ function WebsocketClient(domain, viewer, onJoined, onEstablished, onClosed, onFa
     let pendingMessages = [];
     let established = false;
 
-    this.start = function (specificInstances) {
-        openSocket(specificInstances);
+    this.start = function (instancesToJoin) {
+        openSocket(instancesToJoin);
     };
 
     this.stop = function () {
@@ -21,11 +21,11 @@ function WebsocketClient(domain, viewer, onJoined, onEstablished, onClosed, onFa
 
     this.refresh = function (options) {
         if (socket) {
-            socket.send("refresh:" + options||"");
+            socket.send("command:refresh;" + (options ? options.join(";") : ""));
         }
     };
 
-    const openSocket = function (specificInstances) {
+    const openSocket = function (instancesToJoin) {
         closeSocket(false);
         let url = new URL(domain.endpoint.url + "/" + domain.endpoint.token + "/websocket", location.href);
         url.protocol = url.protocol.replace("https:", "wss:");
@@ -34,7 +34,7 @@ function WebsocketClient(domain, viewer, onJoined, onEstablished, onClosed, onFa
         socket.onopen = function () {
             console.log(domain.name, "socket connected:", domain.endpoint.url);
             pendingMessages.push("Socket connection successful");
-            socket.send("join:" + (specificInstances||""));
+            socket.send("join:" + (instancesToJoin ? "instancesToJoin:" + instancesToJoin : ""));
             heartbeatPing();
             retryCount = 0;
         };
@@ -77,7 +77,7 @@ function WebsocketClient(domain, viewer, onJoined, onEstablished, onClosed, onFa
                         console.log(domain.name, "trying to reconnect", status);
                         viewer.printMessage("Trying to reconnect... " + status);
                         setTimeout(function () {
-                            openSocket(specificInstances);
+                            openSocket(instancesToJoin);
                         }, retryInterval);
                     } else {
                         console.log(domain.name, "abort reconnect attempt");

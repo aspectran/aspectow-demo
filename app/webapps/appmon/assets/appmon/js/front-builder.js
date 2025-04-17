@@ -5,14 +5,14 @@ function FrontBuilder() {
     const viewers = [];
     const clients = [];
 
-    this.build = function (basePath, token, specificInstances) {
+    this.build = function (basePath, token, instancesToJoin) {
         clearView();
         $.ajax({
             url: basePath + "/backend/" + token + "/config",
             type: "get",
             dataType: "json",
             data: {
-                instances: specificInstances
+                instances: instancesToJoin
             },
             success: function (data) {
                 if (data) {
@@ -45,7 +45,7 @@ function FrontBuilder() {
                     buildView();
                     bindEvents();
                     if (domains.length) {
-                        establish(0, specificInstances);
+                        establish(0, instancesToJoin);
                     }
                 }
             }
@@ -56,7 +56,7 @@ function FrontBuilder() {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    const establish = function (domainIndex, specificInstances) {
+    const establish = function (domainIndex, instancesToJoin) {
         function onJoined(domain, payload) {
             clearConsole(domain.index);
             if (payload) {
@@ -85,7 +85,7 @@ function FrontBuilder() {
                 clearSessions(domain.index);
             }
             if (domain.client.establishCount + domain.index < domains.length) {
-                establish(domain.index + 1, specificInstances);
+                establish(domain.index + 1, instancesToJoin);
             }
         }
         function onClosed(domain) {
@@ -100,7 +100,7 @@ function FrontBuilder() {
                 setTimeout(function () {
                     let client = new PollingClient(domain, viewers[domain.index], onJoined, onEstablished, onClosed, onFailed);
                     clients[domain.index] = client;
-                    client.start(specificInstances);
+                    client.start(instancesToJoin);
                 }, (domain.index - 1) * 1000);
             }
         }
@@ -116,7 +116,7 @@ function FrontBuilder() {
         }
         viewer.setClient(client);
         clients[domainIndex] = client;
-        client.start(specificInstances);
+        client.start(instancesToJoin);
     };
 
     const changeDomain = function (domainIndex) {
@@ -402,6 +402,7 @@ function FrontBuilder() {
     const refreshData = function (instanceName, dateOffset) {
         let options = [];
         options.push("instance:" + instanceName);
+        options.push("timeZone:" + Intl.DateTimeFormat().resolvedOptions().timeZone);
         let dateUnit = $(".control-bar[data-instance-name=" + instanceName + "] .date-unit-options").data("unit");
         if (dateUnit) {
             options.push("dateUnit:" + dateUnit);
@@ -425,7 +426,7 @@ function FrontBuilder() {
         setTimeout(function () {
             for (let key in domains) {
                 let domain = domains[key];
-                clients[domain.index].refresh(options.join(";"));
+                clients[domain.index].refresh(options);
             }
         }, 50);
     }

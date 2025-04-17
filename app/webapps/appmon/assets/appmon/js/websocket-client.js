@@ -34,7 +34,12 @@ function WebsocketClient(domain, viewer, onJoined, onEstablished, onClosed, onFa
         socket.onopen = function () {
             console.log(domain.name, "socket connected:", domain.endpoint.url);
             pendingMessages.push("Socket connection successful");
-            socket.send("join:" + (instancesToJoin ? "instancesToJoin:" + instancesToJoin : ""));
+            let options = [];
+            options.push("timeZone:" + Intl.DateTimeFormat().resolvedOptions().timeZone);
+            if (instancesToJoin) {
+                options.push("instancesToJoin:" + instancesToJoin);
+            }
+            socket.send("join:" + options.join(";"));
             heartbeatPing();
             retryCount = 0;
         };

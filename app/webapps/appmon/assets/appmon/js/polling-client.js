@@ -36,6 +36,7 @@ function PollingClient(domain, viewer, onJoined, onEstablished, onClosed, onFail
             type: "post",
             dataType: "json",
             data: {
+                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
                 instances: instancesToJoin
             },
             success: function (data) {

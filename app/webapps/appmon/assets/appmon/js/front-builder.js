@@ -402,7 +402,6 @@ function FrontBuilder() {
     const refreshData = function (instanceName, dateOffset) {
         let options = [];
         options.push("instance:" + instanceName);
-        options.push("timeZone:" + Intl.DateTimeFormat().resolvedOptions().timeZone);
         let dateUnit = $(".control-bar[data-instance-name=" + instanceName + "] .date-unit-options").data("unit");
         if (dateUnit) {
             options.push("dateUnit:" + dateUnit);

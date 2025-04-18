@@ -35,11 +35,12 @@ function WebsocketClient(domain, viewer, onJoined, onEstablished, onClosed, onFa
             console.log(domain.name, "socket connected:", domain.endpoint.url);
             pendingMessages.push("Socket connection successful");
             let options = [];
+            options.push("command:join");
             options.push("timeZone:" + Intl.DateTimeFormat().resolvedOptions().timeZone);
             if (instancesToJoin) {
                 options.push("instancesToJoin:" + instancesToJoin);
             }
-            socket.send("join:" + options.join(";"));
+            socket.send(options.join(";"));
             heartbeatPing();
             retryCount = 0;
         };
@@ -130,7 +131,7 @@ function WebsocketClient(domain, viewer, onJoined, onEstablished, onClosed, onFa
             viewer.printMessage(pendingMessages.shift());
         }
         established = true;
-        socket.send("established:");
+        socket.send("command:established");
     };
 
     const heartbeatPing = function () {
@@ -139,7 +140,7 @@ function WebsocketClient(domain, viewer, onJoined, onEstablished, onClosed, onFa
         }
         heartbeatTimer = setTimeout(function () {
             if (socket) {
-                socket.send("ping:");
+                socket.send("command:ping");
             }
         }, HEARTBEAT_INTERVAL);
     };

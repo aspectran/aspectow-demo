@@ -15,7 +15,6 @@
  */
 package app.jpetstore.common.db;
 
-import com.aspectran.appmon.persist.db.tx.SimpleSqlSession;
 import com.aspectran.core.activity.InstantActivitySupport;
 import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;

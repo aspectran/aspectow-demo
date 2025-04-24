@@ -15,22 +15,26 @@
  */
 package app.jpetstore.common.db;
 
+import com.aspectran.core.component.bean.annotation.AvoidAdvice;
 import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
+import com.aspectran.core.component.bean.annotation.Initialize;
 import com.aspectran.mybatis.SqlSessionAgent;
+import org.apache.ibatis.session.ExecutorType;
 
-/**
- * Advice to handle database transactions in reuse mode.
- * <ul>
- * <li>PreparedStatements will be reused.
- * </ul>
- */
 @Component
-@Bean(id = "batchSqlSession", lazyDestroy = true)
+@Bean(id = "batchSqlSession", lazyDestroy = true, proxied = true)
 public class BatchSqlSession extends SqlSessionAgent {
 
     public BatchSqlSession() {
         super("batchTxAspect");
+    }
+
+    @Initialize
+    @AvoidAdvice
+    public void registerSqlSessionTxAdvice() {
+        setExecutorType(ExecutorType.BATCH);
+        super.registerSqlSessionTxAdvice();
     }
 
 }

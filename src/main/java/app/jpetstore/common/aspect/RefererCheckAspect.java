@@ -18,7 +18,6 @@ package app.jpetstore.common.aspect;
 import com.aspectran.core.activity.Translet;
 import com.aspectran.core.activity.response.ResponseTemplate;
 import com.aspectran.core.component.bean.annotation.Aspect;
-import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Before;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.core.component.bean.annotation.Joinpoint;

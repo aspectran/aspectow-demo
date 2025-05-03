@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.common.db.mapper;
+package app.jpetstore.common.mybatis.mapper;
 
-import app.jpetstore.order.domain.Item;
+import app.jpetstore.order.domain.LineItem;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.mybatis.SqlMapperProvider;
@@ -23,50 +23,35 @@ import com.aspectran.mybatis.SqlMapperAccess;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * The Interface ItemMapper.
+ * The Interface LineItemMapper.
  *
  * @author Juho Jeong
  */
 @Mapper
-public interface ItemMapper {
+public interface LineItemMapper {
 
-    void updateInventoryQuantity(Map<String, Object> params);
+    List<LineItem> getLineItemsByOrderId(int orderId);
 
-    int getInventoryQuantity(String itemId);
-
-    List<Item> getItemListByProduct(String productId);
-
-    Item getItem(String itemId);
+    void insertLineItem(LineItem lineItem);
 
     @Component
-    class Dao extends SqlMapperAccess<ItemMapper> implements ItemMapper {
+    class Dao extends SqlMapperAccess<LineItemMapper> implements LineItemMapper {
 
         @Autowired
         public Dao(SqlMapperProvider sqlMapperProvider) {
-            super(sqlMapperProvider, ItemMapper.class);
+            super(sqlMapperProvider, LineItemMapper.class);
         }
 
         @Override
-        public void updateInventoryQuantity(Map<String, Object> params) {
-            simple().updateInventoryQuantity(params);
+        public List<LineItem> getLineItemsByOrderId(int orderId) {
+            return simple().getLineItemsByOrderId(orderId);
         }
 
         @Override
-        public int getInventoryQuantity(String itemId) {
-            return simple().getInventoryQuantity(itemId);
-        }
-
-        @Override
-        public List<Item> getItemListByProduct(String productId) {
-            return simple().getItemListByProduct(productId);
-        }
-
-        @Override
-        public Item getItem(String itemId) {
-            return simple().getItem(itemId);
+        public void insertLineItem(LineItem lineItem) {
+            simple().insertLineItem(lineItem);
         }
 
     }

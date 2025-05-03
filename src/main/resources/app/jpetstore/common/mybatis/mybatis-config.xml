@@ -35,7 +35,7 @@
     </databaseIdProvider>
 
     <mappers>
-        <package name="app/jpetstore/common/db/mapper"/>
+        <package name="app/jpetstore/common/mybatis/mapper"/>
     </mappers>
 
 </configuration>

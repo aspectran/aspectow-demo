@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.common.db;
+package app.jpetstore.common.mybatis;
 
 import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.mybatis.SqlSessionAgent;
 
 @Component
-@Bean(id = "simpleSqlSession", lazyDestroy = true, proxied = true)
+@Bean(id = "simpleSqlSession", lazyDestroy = true)
 public class SimpleSqlSession extends SqlSessionAgent {
 
     public SimpleSqlSession() {

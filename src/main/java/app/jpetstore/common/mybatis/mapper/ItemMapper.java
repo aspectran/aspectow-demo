@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.common.db.mapper;
+package app.jpetstore.common.mybatis.mapper;
 
-import app.jpetstore.catalog.domain.Product;
+import app.jpetstore.order.domain.Item;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.mybatis.SqlMapperProvider;
@@ -23,41 +23,50 @@ import com.aspectran.mybatis.SqlMapperAccess;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * The Interface ProductMapper.
+ * The Interface ItemMapper.
  *
  * @author Juho Jeong
  */
 @Mapper
-public interface ProductMapper {
+public interface ItemMapper {
 
-    List<Product> getProductListByCategory(String categoryId);
+    void updateInventoryQuantity(Map<String, Object> params);
 
-    Product getProduct(String productId);
+    int getInventoryQuantity(String itemId);
 
-    List<Product> searchProductList(String keywords);
+    List<Item> getItemListByProduct(String productId);
+
+    Item getItem(String itemId);
 
     @Component
-    class Dao extends SqlMapperAccess<ProductMapper> implements ProductMapper {
+    class Dao extends SqlMapperAccess<ItemMapper> implements ItemMapper {
 
         @Autowired
         public Dao(SqlMapperProvider sqlMapperProvider) {
-            super(sqlMapperProvider, ProductMapper.class);
-        }
-        @Override
-        public List<Product> getProductListByCategory(String categoryId) {
-            return simple().getProductListByCategory(categoryId);
+            super(sqlMapperProvider, ItemMapper.class);
         }
 
         @Override
-        public Product getProduct(String productId) {
-            return simple().getProduct(productId);
+        public void updateInventoryQuantity(Map<String, Object> params) {
+            simple().updateInventoryQuantity(params);
         }
 
         @Override
-        public List<Product> searchProductList(String keywords) {
-            return simple().searchProductList(keywords);
+        public int getInventoryQuantity(String itemId) {
+            return simple().getInventoryQuantity(itemId);
+        }
+
+        @Override
+        public List<Item> getItemListByProduct(String productId) {
+            return simple().getItemListByProduct(productId);
+        }
+
+        @Override
+        public Item getItem(String itemId) {
+            return simple().getItem(itemId);
         }
 
     }

@@ -15,6 +15,7 @@
  */
 package app.jpetstore.common.validation;
 
+import com.aspectran.core.component.bean.ablility.DisposableBean;
 import com.aspectran.core.component.bean.ablility.InitializableFactoryBean;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Bean;
@@ -24,13 +25,16 @@ import com.aspectran.core.support.i18n.message.MessageSourceResourceBundle;
 import jakarta.validation.MessageInterpolator;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 
 @Component
 @Bean
-public class ValidatorFactoryBean implements InitializableFactoryBean<Validator> {
+public class ValidatorFactoryBean implements InitializableFactoryBean<Validator>, DisposableBean {
 
     private final MessageSource messageSource;
+
+    private ValidatorFactory validatorFactory;
 
     private Validator validator;
 
@@ -47,17 +51,27 @@ public class ValidatorFactoryBean implements InitializableFactoryBean<Validator>
                 messageInterpolator = new ResourceBundleMessageInterpolator(locale ->
                         new MessageSourceResourceBundle(messageSource, locale));
             }
-            validator = Validation.byDefaultProvider()
+            validatorFactory = Validation.byDefaultProvider()
                     .configure()
                     .messageInterpolator(messageInterpolator)
-                    .buildValidatorFactory()
-                    .getValidator();
+                    .buildValidatorFactory();
+            validator = validatorFactory.getValidator();
         }
     }
 
     @Override
     public Validator getObject() {
         return validator;
+    }
+
+
+    @Override
+    public void destroy() throws Exception {
+        if (validatorFactory != null) {
+            validatorFactory.close();
+            validatorFactory = null;
+            validator = null;
+        }
     }
 
 }

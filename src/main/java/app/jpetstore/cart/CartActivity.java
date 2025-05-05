@@ -47,7 +47,7 @@ public class CartActivity {
     }
 
     /**
-     * Adds the item to cart.
+     * Adds the item to the cart.
      */
     @Request("/cart/addItemToCart")
     @Redirect("/cart/viewCart")
@@ -58,7 +58,7 @@ public class CartActivity {
     }
 
     /**
-     * Removes the item from cart.
+     * Removes the item from the cart.
      */
     @RequestToPost("/cart/removeItemFromCart")
     @Dispatch(name = "cart/Cart", dispatcher = "jspView")

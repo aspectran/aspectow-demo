@@ -15,17 +15,15 @@
  */
 package app.jpetstore.common.validation;
 
-import com.aspectran.core.activity.Translet;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.core.component.bean.annotation.Scope;
 import com.aspectran.core.context.rule.type.ScopeType;
-import com.aspectran.web.support.http.HttpStatusSetter;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,17 +41,16 @@ public class BeanValidator {
         this.validator = validator;
     }
 
-    @SuppressWarnings("rawtypes")
-    public <T> Map<String, String> validate(Translet translet, T model, Class<?>... groups) {
-        Set<ConstraintViolation<T>> constraintViolations = validator.validate(model, groups);
-        if (!constraintViolations.isEmpty()) {
-            for (ConstraintViolation violation : constraintViolations) {
+    public <T> boolean validate(T model, Class<?>... groups) {
+        Set<ConstraintViolation<T>> violations = validator.validate(model, groups);
+        if (!violations.isEmpty()) {
+            for (ConstraintViolation<T> violation : violations) {
                 touchErrors().put(violation.getPropertyPath().toString(), violation.getMessage());
             }
-            HttpStatusSetter.badRequest(translet);
-            return getErrors();
+            return true;
+        } else {
+            return false;
         }
-        return null;
     }
 
     public boolean hasErrors() {
@@ -69,12 +66,13 @@ public class BeanValidator {
     }
 
     public void clearErrors() {
+        errors.clear();
         errors = null;
     }
 
     private Map<String, String> touchErrors() {
         if (errors == null) {
-            errors = new HashMap<>();
+            errors = new LinkedHashMap<>();
         }
         return errors;
     }

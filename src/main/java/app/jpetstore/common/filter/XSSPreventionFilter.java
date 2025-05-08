@@ -17,7 +17,6 @@ package app.jpetstore.common.filter;
 
 import com.aspectran.core.activity.Translet;
 import com.aspectran.core.adapter.RequestAdapter;
-import com.aspectran.core.component.bean.annotation.AvoidAdvice;
 import com.aspectran.utils.apon.ArrayParameters;
 import org.owasp.esapi.Encoder;
 import org.owasp.esapi.reference.DefaultEncoder;
@@ -32,7 +31,6 @@ import java.util.regex.Pattern;
  * A Filter to prevent Cross-site Scripting (XSS).
  * This filter escapes all parameters and headers of a HttpServletRequest.
  */
-@AvoidAdvice
 public class XSSPreventionFilter {
 
     private boolean canonicalize;

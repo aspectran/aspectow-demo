@@ -15,13 +15,11 @@
  */
 package app.jpetstore.common.listener;
 
-import com.aspectran.core.component.bean.annotation.AvoidAdvice;
 import com.aspectran.core.component.bean.annotation.Component;
 
 /**
  * <p>Created: 2024-12-13</p>
  */
 @Component
-@AvoidAdvice
 public class UserTrackingListener extends app.root.common.listener.UserTrackingListener {
 }

@@ -21,7 +21,6 @@ import app.jpetstore.catalog.service.CatalogService;
 import app.jpetstore.order.domain.Item;
 import app.jpetstore.user.UserSessionManager;
 import com.aspectran.core.component.bean.annotation.Autowired;
-import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
 
 import java.util.Iterator;

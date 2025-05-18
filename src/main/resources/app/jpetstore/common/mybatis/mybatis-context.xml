@@ -37,7 +37,7 @@
         <properties>
             <item name="configLocation" value="classpath:app/jpetstore/common/mybatis/mybatis-config.xml"/>
             <item name="environment" value="default"/>
-            <item name="properties" type="properties">
+            <item name="variables" type="properties">
                 <entry name="driver">#{jpetstoreDBProperties^driver}</entry>
                 <entry name="url">#{jpetstoreDBProperties^url}</entry>
                 <entry name="username">#{jpetstoreDBProperties^username}</entry>

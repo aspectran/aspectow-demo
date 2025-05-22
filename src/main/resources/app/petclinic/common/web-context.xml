@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 8.0//EN"
+        "https://aspectran.com/dtd/aspectran-8.dtd">
+<aspectran>
+
+    <description>
+        Aspectran configuration to configure the web environment.
+        Note that names of translets that match the request URI always start with a forward slash (/).
+    </description>
+
+    <bean id="thymeleaf" class="com.aspectran.thymeleaf.ThymeleafTemplateEngine">
+        <arguments>
+            <item>
+                <bean class="com.aspectran.thymeleaf.TemplateEngineFactoryBean">
+                    <properties>
+                        <item name="templateResolvers" type="set">
+                            <bean class="com.aspectran.thymeleaf.template.FileTemplateResolver">
+                                <properties>
+                                    <item name="prefix">#{basePath}/webapps/petclinic/WEB-INF/thymeleaf/</item>
+                                    <item name="suffix">.html</item>
+<!--                                    <item name="resolvablePatterns" type="set">-->
+<!--                                        <value>*.html</value>-->
+<!--                                    </item>-->
+                                    <item name="templateMode">HTML</item>
+                                    <item name="cacheable" valueType="boolean">false</item>
+                                </properties>
+                            </bean>
+                        </item>
+                    </properties>
+                </bean>
+            </item>
+        </arguments>
+    </bean>
+
+    <bean id="thymeleafViewDispatcher" class="com.aspectran.thymeleaf.view.ThymeleafViewDispatcher">
+        <description>
+            Register a Thymeleaf View Dispatcher.
+        </description>
+        <arguments>
+            <item>#{thymeleaf}</item>
+        </arguments>
+    </bean>
+
+    <aspect id="webTransletSettings">
+        <description>
+            This aspect is for injecting default settings into translets running in the web environment.
+        </description>
+        <joinpoint>
+            pointcut: {
+                +: /**
+            }
+        </joinpoint>
+        <settings>
+            <setting name="characterEncoding" value="utf-8"/>
+            <setting name="viewDispatcher" value="thymeleafViewDispatcher"/>
+            <setting name="proxyProtocolAware" value="true"/>
+        </settings>
+    </aspect>
+
+</aspectran>

@@ -1,0 +1,32 @@
+<html>
+<head>
+
+</head>
+<body>
+
+<div th:if="${flashMap != null && flashMap['message']}" class="alert alert-success" id="success-message">
+    <span th:text="${flashMap['message']}"></span>
+</div>
+<div th:if="${flashMap != null && flashMap['error']}" class="alert alert-danger" id="error-message">
+    <span th:text="${flashMap['error']}"></span>
+</div>
+
+<script th:if="${flashMap != null}">
+    // Function to hide the success and error messages after 3 seconds
+    function hideMessages() {
+        setTimeout(function () {
+            if (document.getElementById("success-message")) {
+                document.getElementById("success-message").style.display = "none";
+            }
+            if (document.getElementById("error-message")) {
+                document.getElementById("error-message").style.display = "none";
+            }
+        }, 3000); // 3000 milliseconds (3 seconds)
+    }
+
+    // Call the function to hide messages
+    hideMessages();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+context: {
+    name: petclinic
+    rules: classpath:app/petclinic/petclinic-context.xml
+    scan: [
+        app.petclinic
+    ]
+    profiles: {
+        base: [
+            h2
+        ]
+        default: [
+            dev
+        ]
+    }
+}

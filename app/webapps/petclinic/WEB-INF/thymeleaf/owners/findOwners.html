@@ -1,0 +1,24 @@
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+<body>
+
+<h2>Find Owners</h2>
+
+<form th:action="@{/owners}" method="get" class="form-horizontal" id="search-owner-form">
+    <div class="form-group">
+        <div class="control-group" id="lastNameGroup">
+            <input th:replace="~{fragments/inputField :: input ('text', 'Last Name', 'lastName', ${owner.lastName})}"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-primary">Find Owner</button>
+        </div>
+    </div>
+
+    <a class="btn btn-primary" th:href="@{/owners/new}">Add Owner</a>
+
+</form>
+
+</body>
+</html>

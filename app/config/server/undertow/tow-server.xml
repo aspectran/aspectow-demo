@@ -120,6 +120,10 @@
                     +: /jpetstore
                     +: /jpetstore/**
                 </entry>
+                <entry name="petclinic">
+                    +: /petclinic
+                    +: /petclinic/**
+                </entry>
                 <entry name="demo">
                     +: /demo
                     +: /demo/**
@@ -138,6 +142,10 @@
                 <entry name="jpetstore">
                     +: /jpetstore
                     +: /jpetstore/**
+                </entry>
+                <entry name="petclinic">
+                    +: /petclinic
+                    +: /petclinic/**
                 </entry>
                 <entry name="demo">
                     +: /demo

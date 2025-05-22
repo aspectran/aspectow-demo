@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'error')}">
+
+<body>
+
+<div class="row">
+    <div class="col">
+        <img src="images/pets.png" th:src="@{/images/pets.png}"/>
+        <h2>Something happened...</h2>
+        <pre th:if="${message != null}" th:text="${message}" class="error">Exception message</pre>
+    </div>
+</div>
+
+</body>
+</html>

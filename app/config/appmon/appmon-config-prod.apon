@@ -51,6 +51,35 @@ instance: {
     }
 }
 instance: {
+    name: petclinic
+    title: PetClinic
+    event: {
+        name: activity
+        target: petclinic
+        parameters: {
+            +: /**
+        }
+    }
+    event: {
+        name: session
+        target: tow.server/petclinic
+    }
+    log: {
+        name: app
+        title: PetClinic App
+        file: /logs/petclinic.log
+        lastLines: 1000
+        sampleInterval: 300
+    }
+    log: {
+        name: access
+        title: PetClinic Access
+        file: /logs/petclinic-access.log
+        lastLines: 1000
+        sampleInterval: 300
+    }
+}
+instance: {
     name: demo
     title: Demo
     event: {

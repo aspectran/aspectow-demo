@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'vets')}">
+<body>
+
+<h2>Veterinarians</h2>
+
+<table id="vets" class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Specialties</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="vet : ${listVets}">
+        <td th:text="${vet.firstName + ' ' + vet.lastName}"></td>
+        <td><span th:each="specialty : ${vet.specialties}"
+                  th:text="${specialty.name + ' '}"/> <span
+                th:if="${vet.nrOfSpecialties == 0}">none</span></td>
+    </tr>
+    </tbody>
+</table>
+<p class="text-end">Total: <span th:text="${pageInfo.totalElements}"></span></p>
+<nav th:if="${pageInfo.totalPages > 1}" aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a th:if="${pageInfo.number > 1}" th:href="@{'/vets.html?page=1'}" title="First"
+               class="page-link">First</a>
+            <span th:unless="${pageInfo.number > 1}" title="First" class="page-link disabled">First</span>
+        </li>
+        <li class="page-item">
+            <a th:if="${pageInfo.number > 1}" th:href="@{'/vets.html?page=__${pageInfo.number - 1}__'}" title="Previous"
+               class="page-link">&laquo;</a>
+            <span th:unless="${pageInfo.number > 1}" title="Previous" class="page-link disabled">&laquo;</span>
+        </li>
+        <li class="page-item"
+            th:each="i: ${#numbers.sequence(pageInfo.number - (pageInfo.number + 1) % 10, pageInfo.number - (pageInfo.number + 1) % 10 + 1)}">
+            <a th:if="${pageInfo.number != i && i <= pageInfo.totalElements / 10}" th:href="@{'/vets.html?page=__${i}__'}"
+               th:text="${i}" class="page-link"></a>
+            <span th:unless="${pageInfo.number != i}" th:text="${i}" class="page-link active"></span>
+        </li>
+        <li class="page-item">
+            <a th:if="${pageInfo.number < pageInfo.totalPages}" th:href="@{'/vets.html?page=__${pageInfo.number + 1}__'}"
+               title="Next" class="page-link">&raquo;</a>
+            <span th:unless="${pageInfo.number < pageInfo.totalPages}" title="Next" class="page-link disabled">&raquo;</span>
+        </li>
+        <li class="page-item">
+            <a th:if="${pageInfo.number < pageInfo.totalPages}" th:href="@{'/vets.html?page=__${pageInfo.totalPages}__'}"
+               title="Last" class="page-link">Last</a>
+            <span th:unless="${pageInfo.number < pageInfo.totalPages}" title="Last" class="page-link disabled">Last</span>
+        </li>
+    </ul>
+</nav>
+
+</body>
+</html>

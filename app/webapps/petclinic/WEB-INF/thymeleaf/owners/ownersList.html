@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+
+<body>
+
+<h2>Owners</h2>
+
+<table id="owners" class="table table-striped">
+    <thead>
+    <tr>
+        <th style="width: 150px;">Name</th>
+        <th style="width: 200px;">Address</th>
+        <th>City</th>
+        <th style="width: 120px">Telephone</th>
+        <th>Pets</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="owner : ${listOwners}">
+        <td>
+            <a th:href="@{/owners/__${owner.id}__(page=${param.page} ?: '1')}" th:text="${owner.firstName + ' ' + owner.lastName}"></a>
+        </td>
+        <td th:text="${owner.address}"/>
+        <td th:text="${owner.city}"/>
+        <td th:text="${owner.telephone}"/>
+        <td><span th:text="${#strings.listJoin(owner.pets, ', ')}"/></td>
+    </tr>
+    </tbody>
+</table>
+<div class="row mb-3">
+    <div class="col-6">
+        <a class="btn btn-secondary btn-sm" th:href="@{/owners/new(page=${param.page} ?: '1')}">Add Owner</a>
+    </div>
+    <div class="col-6">
+        <p class="text-end">Total: <span th:text="${pageInfo.totalElements}"></span></p>
+    </div>
+</div>
+<nav th:if="${pageInfo.totalPages > 1}" aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a th:if="${pageInfo.number > 1}" th:href="@{'/owners?page=1'}" title="First"
+               class="page-link">First</a>
+            <span th:unless="${pageInfo.number > 1}" title="First" class="page-link disabled">First</span>
+        </li>
+        <li class="page-item">
+            <a th:if="${pageInfo.number > 1}" th:href="@{'/owners?page=__${pageInfo.number - 1}__'}" title="Previous"
+               class="page-link">&laquo;</a>
+            <span th:unless="${pageInfo.number > 1}" title="Previous" class="page-link disabled">&laquo;</span>
+        </li>
+        <li class="page-item"
+            th:each="i: ${#numbers.sequence(pageInfo.number - (pageInfo.number + 1) % 10, pageInfo.number - (pageInfo.number + 1) % 10 + 1)}">
+            <a th:if="${pageInfo.number != i && i <= pageInfo.totalElements / 10}" th:href="@{'/owners?page=__${i}__'}"
+               th:text="${i}" class="page-link"></a>
+            <span th:unless="${pageInfo.number != i}" th:text="${i}" class="page-link active"></span>
+        </li>
+        <li class="page-item">
+            <a th:if="${pageInfo.number < pageInfo.totalPages}" th:href="@{'/owners?page=__${pageInfo.number + 1}__'}"
+               title="Next" class="page-link">&raquo;</a>
+            <span th:unless="${pageInfo.number < pageInfo.totalPages}" title="Next" class="page-link disabled">&raquo;</span>
+        </li>
+        <li class="page-item">
+            <a th:if="${pageInfo.number < pageInfo.totalPages}" th:href="@{'/owners?page=__${pageInfo.totalPages}__'}"
+               title="Last" class="page-link">Last</a>
+            <span th:unless="${pageInfo.number < pageInfo.totalPages}" title="Last" class="page-link disabled">Last</span>
+        </li>
+    </ul>
+</nav>
+
+</body>
+</html>
+

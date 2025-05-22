@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 8.0//EN"
+        "https://aspectran.com/dtd/aspectran-8.dtd">
+<aspectran>
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" lazyDestroy="true">
+        <arguments>
+            <item>
+                <bean class="com.zaxxer.hikari.HikariConfig">
+                    <arguments>
+                        <item>
+                            <bean class="com.aspectran.core.support.PropertiesFactoryBean">
+                                <properties>
+                                    <item name="ignoreInvalidResource" valueType="boolean">true</item>
+                                </properties>
+                                <properties profile="h2">
+                                    <item name="locations" type="array">
+                                        <value>classpath:app/petclinic/common/db/h2/db.properties</value>
+                                        <value>classpath:app/petclinic/common/db/h2/db.system.properties</value>
+                                        <value>/config/db-h2.properties</value>
+                                    </item>
+                                </properties>
+                                <properties profile="mariadb">
+                                    <item name="locations" type="array">
+                                        <value>classpath:app/petclinic/common/db/mariadb/db.properties</value>
+                                        <value>classpath:app/petclinic/common/db/mariadb/db.system.properties</value>
+                                        <value>/config/db-mariadb.properties</value>
+                                    </item>
+                                </properties>
+                                <properties profile="oracle">
+                                    <item name="locations" type="array">
+                                        <value>classpath:app/petclinic/common/db/oracle/db.properties</value>
+                                        <value>classpath:app/petclinic/common/db/oracle/db.system.properties</value>
+                                        <value>/config/db-oracle.properties</value>
+                                    </item>
+                                </properties>
+                            </bean>
+                        </item>
+                    </arguments>
+                    <properties>
+                        <item name="poolName">petclinic</item>
+                    </properties>
+                </bean>
+            </item>
+        </arguments>
+    </bean>
+
+</aspectran>

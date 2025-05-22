@@ -1,0 +1,27 @@
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+<body>
+
+<h2>Owner</h2>
+
+<form class="form-horizontal" id="add-owner-form" method="post">
+    <div class="form-group has-feedback">
+        <input th:replace="~{fragments/inputField :: input ('text', 'First Name', 'firstName', ${owner.firstName})}"/>
+        <input th:replace="~{fragments/inputField :: input ('text', 'Last Name', 'lastName', ${owner.lastName})}"/>
+        <input th:replace="~{fragments/inputField :: input ('text', 'Address', 'address', ${owner.address})}"/>
+        <input th:replace="~{fragments/inputField :: input ('text', 'City', 'city', ${owner.city})}"/>
+        <input th:replace="~{fragments/inputField :: input ('text', 'Telephone', 'telephone', ${owner.telephone})}"/>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button th:with="text=${owner['new']} ? 'Add Owner' : 'Update Owner'"
+                    class="btn btn-primary" type="submit" th:text="${text}">Add Owner
+            </button>
+            <a th:if="${!param.page}" class="btn btn-primary" onclick="history.back();">Cancel</a>
+            <a th:if="${param.page}" class="btn btn-primary" th:href="@{/owners(page=${param.page})}">Cancel</a>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

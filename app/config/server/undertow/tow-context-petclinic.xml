@@ -64,24 +64,6 @@
                     </properties>
                 </bean>
             </item>
-            <item name="servletContainerInitializers" type="array">
-                <bean class="com.aspectran.undertow.server.servlet.TowJasperInitializer">
-                    <properties>
-                        <item name="tldResources" type="array">
-                            <value>classpath:com/aspectran/web/support/tags/aspectran.tld</value>
-                            <value>/webapps/%{tow.context.petclinic.name}/WEB-INF/taglibs</value>
-                        </item>
-                    </properties>
-                </bean>
-            </item>
-            <item name="webSocketServerContainerInitializer">
-                <bean class="com.aspectran.undertow.server.servlet.TowWebSocketServerContainerInitializer">
-                    <properties>
-                        <item name="directBuffers" valueType="boolean">false</item>
-                        <item name="bufferSize" valueType="int">1024</item>
-                    </properties>
-                </bean>
-            </item>
         </properties>
     </bean>
 

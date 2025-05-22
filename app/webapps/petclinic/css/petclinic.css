@@ -9296,7 +9296,8 @@ code {
 
 .xd-container {
   margin-top: 40px;
-  margin-bottom: 100px; }
+  /*margin-bottom: 100px; */
+}
 
 h1, .h1 {
   margin-bottom: 15px; }
@@ -9402,11 +9403,11 @@ pre.error {
   font-weight: normal;
   font-style: normal; }
 
-body, h1, .h1, h2, .h2, h3, .h3, p, input {
-  margin: 0;
-  font-weight: 400;
-  font-family: "varela_roundregular", sans-serif;
-  color: #34302d; }
+/*body, h1, .h1, h2, .h2, h3, .h3, p, input {*/
+/*  margin: 0;*/
+/*  font-weight: 400;*/
+/*  font-family: "varela_roundregular", sans-serif;*/
+/*  color: #34302d; }*/
 
 h1, .h1 {
   font-size: 24px;

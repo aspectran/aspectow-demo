@@ -59,10 +59,12 @@
                             <aspectran:profile expression="prod">
                                 <li><a href="https://demo.aspectran.com">Aspectran Demo</a></li>
                                 <li><a href="https://jpetstore.aspectran.com">JPetStore Demo</a></li>
+                                <li><a href="https://petclinic.aspectran.com">PetClinic Demo</a></li>
                             </aspectran:profile>
                             <aspectran:profile expression="!prod">
                                 <li><a href="<aspectran:url value="/../demo/"/>">Aspectran Demo</a></li>
                                 <li><a href="<aspectran:url value="/../jpetstore/"/>">JPetStore Demo</a></li>
+                                <li><a href="<aspectran:url value="/../petclinic/"/>">PetClinic Demo</a></li>
                             </aspectran:profile>
                         </ul>
                     </li>

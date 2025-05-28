@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+      th:replace="~{fragments/layout :: layout(~{::body}, 'owners')}">
 <body>
 
 <h2>Owner Information</h2>
@@ -9,6 +9,10 @@
 
 <th:block th:if="${owner != null}">
 <table class="table table-striped">
+    <colgroup>
+        <col style="width: 30%;">
+        <col>
+    </colgroup>
     <tr>
         <th>Name</th>
         <td><b th:text="${owner.firstName + ' ' + owner.lastName}"></b></td>
@@ -35,7 +39,11 @@
 
 <h2 class="mt-4">Pets and Visits</h2>
 
-<table th:if="${!owner.pets.isEmpty()}" class="table table-striped">
+<table th:if="${!owner.pets.isEmpty()}" class="table table-striped table-responsive">
+    <colgroup>
+        <col style="width: 30%;">
+        <col>
+    </colgroup>
     <tr th:each="pet : ${owner.pets}">
         <td>
             <dl class="dl-horizontal mb-0">
@@ -49,25 +57,21 @@
             <a class="btn btn-primary btn-sm" th:href="@{__${owner.id}__/pets/__${pet.id}__/edit}">Edit Pet</a>
             <a class="btn btn-primary btn-sm" th:href="@{__${owner.id}__/pets/__${pet.id}__/visits/new}">Add Visit</a>
         </td>
-        <td>
-            <div>
-                <table class="table-condensed" style="width:100%;">
-                    <tbody th:if="${!pet.visits.isEmpty()}" style="display: block;overflow:auto;height:185px;">
-                    <tr th:each="visit : ${pet.visits}">
-                        <td th:text="${'[' + #temporals.format(visit.date, 'yyyy-MM-dd') + ']'}"></td>
-                        <td th:text="${visit.description}"></td>
-                    </tr>
+        <td class="align-top" style="">
+            <div style="width:100%;overflow:auto;max-height:210px;">
+                <table class="table table-sm caption-top mb-0">
+                    <caption th:if="${!pet.visits.isEmpty()}">[[${pet.visits.size()}]] visits</caption>
+                    <caption th:if="${pet.visits.isEmpty()}">No visits</caption>
+                    <colgroup>
+                        <col style="width: 100px;">
+                        <col>
+                    </colgroup>
+                    <tbody th:if="${!pet.visits.isEmpty()}">
+                        <tr th:each="visit : ${pet.visits}">
+                            <td th:text="${'[' + #temporals.format(visit.date, 'yyyy-MM-dd') + ']'}"></td>
+                            <td th:text="${visit.description}"></td>
+                        </tr>
                     </tbody>
-                    <tbody th:if="${pet.visits.isEmpty()}">
-                    <tr>
-                        <th colspan="2">No visits</th>
-                    </tr>
-                    </tbody>
-                    <tfoot th:if="${!pet.visits.isEmpty()}">
-                    <tr>
-                        <th colspan="2">[[${pet.visits.size()}]] visits</th>
-                    </tr>
-                    </tfoot>
                 </table>
             </div>
         </td>

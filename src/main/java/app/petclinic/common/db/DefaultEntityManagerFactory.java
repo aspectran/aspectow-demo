@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-present-present the original author or authors.
+ * Copyright (c) 2012-present the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@ import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.core.component.bean.annotation.Initialize;
 import com.aspectran.jpa.EntityManagerFactoryBean;
-import com.aspectran.jpa.eclipselink.logging.Slf4jSessionLogger;
 import jakarta.persistence.PersistenceConfiguration;
 import jakarta.persistence.PersistenceUnitTransactionType;
-import org.eclipse.persistence.config.PersistenceUnitProperties;
-import org.eclipse.persistence.logging.SessionLog;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.cfg.JdbcSettings;
+import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.hibernate.tool.schema.Action;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -44,44 +45,27 @@ public class DefaultEntityManagerFactory extends EntityManagerFactoryBean {
         this.dataSource = dataSource;
     }
 
-//    @Override
-//    protected PersistenceConfiguration configuration() {
-//        return new HibernatePersistenceConfiguration("petclinic")
-////                .provider(HibernatePersistenceProvider.class.getName())
-//                .transactionType(PersistenceUnitTransactionType.RESOURCE_LOCAL)
-//                .property(JdbcSettings.JAKARTA_NON_JTA_DATASOURCE, dataSource)
-//                .property(JdbcSettings.SHOW_SQL, false)
-//                .property(JdbcSettings.FORMAT_SQL, false)
-//                .property(JdbcSettings.USE_SQL_COMMENTS, false);
-//    }
-
     @Override
     protected void preConfigure(Map<String, Object> properties) {
         super.preConfigure(properties);
-//        properties.put(JdbcSettings.JAKARTA_NON_JTA_DATASOURCE, dataSource);
-//        properties.put(JdbcSettings.SHOW_SQL, false);
-//        properties.put(JdbcSettings.FORMAT_SQL, false);
-//        properties.put(JdbcSettings.USE_SQL_COMMENTS, false);
-
-        properties.put(PersistenceUnitProperties.NON_JTA_DATASOURCE, dataSource);
-        properties.put(PersistenceUnitProperties.LOGGING_LOGGER, Slf4jSessionLogger.class.getName());
-
-        properties.put(PersistenceUnitProperties.DDL_GENERATION, PersistenceUnitProperties.CREATE_ONLY);
-        properties.put(PersistenceUnitProperties.DDL_GENERATION_MODE, PersistenceUnitProperties.DDL_BOTH_GENERATION);
     }
 
     @Override
     protected void preConfigure(PersistenceConfiguration configuration) {
         super.preConfigure(configuration);
-//        configuration.provider(HibernatePersistenceProvider.class.getName());
+        configuration.provider(HibernatePersistenceProvider.class.getName());
         configuration.transactionType(PersistenceUnitTransactionType.RESOURCE_LOCAL);
+        configuration.property(JdbcSettings.JAKARTA_NON_JTA_DATASOURCE, dataSource);
     }
 
     @Initialize(profile = "!prod")
-    public void init() {
-        setProperty(PersistenceUnitProperties.LOGGING_LEVEL, "FINE");
-        setProperty(PersistenceUnitProperties.LOGGING_PARAMETERS, "true");
-        setProperty(PersistenceUnitProperties.CATEGORY_LOGGING_LEVEL_ + SessionLog.SQL, "FINE");
+    public void initInDevMode() {
+        setProperty(AvailableSettings.HBM2DDL_AUTO, Action.ACTION_NONE);
+    }
+
+    @Initialize(profile = "prod")
+    public void initInProdMode() {
+        setProperty(AvailableSettings.HBM2DDL_AUTO, Action.ACTION_NONE);
     }
 
 }

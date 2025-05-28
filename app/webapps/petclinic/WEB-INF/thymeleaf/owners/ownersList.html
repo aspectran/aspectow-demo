@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-
-<html xmlns:th="https://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
-
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::body}, 'owners')}">
 <body>
 
 <h2>Owners</h2>
@@ -30,7 +29,7 @@
 </table>
 <div class="row mb-3">
     <div class="col-6">
-        <a class="btn btn-secondary btn-sm" th:href="@{/owners/new(page=${param.page} ?: '1')}">Add Owner</a>
+        <a class="btn btn-primary btn-sm m-0" th:href="@{/owners/new(page=${param.page} ?: '1')}">Add Owner</a>
     </div>
     <div class="col-6">
         <p class="text-end">Total: <span th:text="${pageInfo.totalElements}"></span></p>
@@ -49,8 +48,8 @@
             <span th:unless="${pageInfo.number > 1}" title="Previous" class="page-link disabled">&laquo;</span>
         </li>
         <li class="page-item"
-            th:each="i: ${#numbers.sequence(pageInfo.number - (pageInfo.number + 1) % 10, pageInfo.number - (pageInfo.number + 1) % 10 + 1)}">
-            <a th:if="${pageInfo.number != i && i <= pageInfo.totalElements / 10}" th:href="@{'/owners?page=__${i}__'}"
+            th:each="i: ${#numbers.sequence(pageInfo.number - (pageInfo.number + 1) % 2, pageInfo.number - (pageInfo.number + 1) % 2 + 1)}">
+            <a th:if="${pageInfo.number != i && i <= pageInfo.totalElements / 2}" th:href="@{'/owners?page=__${i}__'}"
                th:text="${i}" class="page-link"></a>
             <span th:unless="${pageInfo.number != i}" th:text="${i}" class="page-link active"></span>
         </li>
@@ -69,4 +68,3 @@
 
 </body>
 </html>
-

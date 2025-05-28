@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=initial-scale=1.0, user-scalable=no"/>
     <meta name="google" content="notranslate">
     <title>JPetStore Demo</title>
-    <meta name="description" content="JPetStore is a full web application built on top of MyBatis 3, Aspectran 8."/>
+    <meta name="description" content="JPetStore is a full-stack sample web application built on top of MyBatis 3, Aspectran 8."/>
     <link rel="stylesheet" type="text/css" href="https://assets.aspectran.com/foundation/css/aspectran.css"/>
     <link rel="stylesheet" type="text/css" href="<aspectran:url value="/css/jpetstore.css?20250227"/>"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap">
@@ -79,6 +79,12 @@
                             <aspectran:profile expression="!prod">
                                 <li><a href="<aspectran:url value="/../demo/"/>">Aspectran Demo</a></li>
                             </aspectran:profile>
+                            <aspectran:profile expression="prod">
+                                <li><a href="https://petclinic.aspectran.com/">PetClinic Demo</a></li>
+                            </aspectran:profile>
+                            <aspectran:profile expression="!prod">
+                                <li><a href="<aspectran:url value="/../petclinic/"/>">PetClinic Demo</a></li>
+                            </aspectran:profile>
                         </ul>
                     </li>
                 </ul>
@@ -109,12 +115,17 @@
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
                         <aspectran:profile expression="prod">
-                            <li><a href="<aspectran:url value="https://public.aspectran.com/"/>">Sample Apps</a></li>
+                            <li><a href="https://public.aspectran.com/">Sample Apps</a></li>
                         </aspectran:profile>
                         <aspectran:profile expression="!prod">
                             <li><a href="<aspectran:url value="/../"/>">Sample Apps</a></li>
                         </aspectran:profile>
-                        <li><a href="<aspectran:url value="/"/>">JPetStore Demo</a></li>
+                        <aspectran:profile expression="prod">
+                            <li><a href="https://jpetstore.aspectran.com/">JPetStore Demo</a></li>
+                        </aspectran:profile>
+                        <aspectran:profile expression="!prod">
+                            <li><a href="<aspectran:url value="/"/>">JPetStore Demo</a></li>
+                        </aspectran:profile>
                     </ul>
                 </nav>
             </div>
@@ -131,7 +142,8 @@
                             A full-stack sample web application built on top of Aspectran 8 and MyBatis 3</p>
                         <h1 itemprop="headline">JPetStore Demo</h1>
                         <p class="teaser" itemprop="description">
-                            The goal of the JPetStore Demo App is to provide a fully functional web application that leverages Aspectran and MyBatis.
+                            The goal of the JPetStore Demo App is to provide
+                            and demonstrate a sample web application that leverages Aspectran and MyBatis.
                         </p>
                     </header>
                     <div class="hexagons">

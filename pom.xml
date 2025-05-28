@@ -134,11 +134,11 @@
             <version>6.11</version>
             <classifier>jakarta</classifier>
         </dependency>
-        <!-- EclipseLink dependencies -->
+        <!-- Hibernate ORM dependencies -->
         <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>5.0.0-B07</version>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>7.0.0.Final</version>
         </dependency>
         <dependency>
             <groupId>jakarta.xml.bind</groupId>

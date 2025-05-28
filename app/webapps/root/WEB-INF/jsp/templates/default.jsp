@@ -33,7 +33,7 @@
 </head>
 <body id="top-of-page" class="${page.style}" itemscope itemtype="https://schema.org/WebPage">
 <nav id="navigation" class="no-js">
-    <div class="title-bar" data-responsive-toggle="gnb-menu" data-hide-for="large" style="display:none">
+    <div class="title-bar" data-responsive-toggle="gnb-menu" data-hide-for="large">
         <div class="title-bar-left">
             <a class="logo" href="<aspectran:url value="/"/>" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
         </div>
@@ -44,7 +44,7 @@
             <a class="menu-icon" title="Menu"></a>
         </div>
     </div>
-    <div class="top-bar" id="gnb-menu" style="display:none">
+    <div class="top-bar" id="gnb-menu">
         <div class="grid-container ${page.style}">
             <div class="top-bar-logo">
                 <div class="circle">
@@ -199,7 +199,7 @@
         </div>
     </div>
 </footer>
-<script src="https://assets.aspectran.com/js/foundation.min.js"></script>
+<script src="https://assets.aspectran.com/foundation/js/foundation.min.js"></script>
 <script>
     $(document).foundation();
     $(function() {

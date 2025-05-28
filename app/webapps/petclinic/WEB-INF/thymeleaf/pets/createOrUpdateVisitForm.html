@@ -1,5 +1,6 @@
+<!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+      th:replace="~{fragments/layout :: layout(~{::body}, 'owners')}">
 <body>
 
 <h2>
@@ -8,6 +9,7 @@
 </h2>
 
 <b>Pet</b>
+<div class="table-responsive">
 <table class="table table-striped">
     <thead>
     <tr>
@@ -24,6 +26,7 @@
         <td th:text="${owner.firstName + ' ' + owner.lastName}"></td>
     </tr>
 </table>
+</div>
 
 <form class="form-horizontal" method="post">
     <div class="form-group has-feedback">
@@ -41,6 +44,10 @@
 <br/>
 <b>Previous Visits</b>
 <table class="table table-striped">
+    <colgroup>
+        <col style="width: 150px;">
+        <col>
+    </colgroup>
     <tr>
         <th>Date</th>
         <th>Description</th>

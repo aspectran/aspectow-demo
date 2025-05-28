@@ -18,9 +18,6 @@
                                 <properties>
                                     <item name="prefix">#{basePath}/webapps/petclinic/WEB-INF/thymeleaf/</item>
                                     <item name="suffix">.html</item>
-<!--                                    <item name="resolvablePatterns" type="set">-->
-<!--                                        <value>*.html</value>-->
-<!--                                    </item>-->
                                     <item name="templateMode">HTML</item>
                                     <item name="cacheable" valueType="boolean">false</item>
                                 </properties>

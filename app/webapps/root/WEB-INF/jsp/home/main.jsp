@@ -23,7 +23,7 @@
       </div>
       <div class="cell small-12 medium-6 large-3 text-center card">
         <div class="card-section">
-          <a href="<aspectran:url value="/monitoring/"/>" title="View logs with AppMon"><img src="https://assets.aspectran.com/demo/appmon.png"/></a>
+          <a href="<aspectran:url value="/monitoring/"/>" title="View logs with AppMon"><img src="https://assets.aspectran.com/img/demo/appmon.png"/></a>
           <p><a href="<aspectran:url value="/monitoring/"/>">Aspectran AppMon</a></p>
         </div>
       </div>

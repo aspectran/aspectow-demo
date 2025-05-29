@@ -19,7 +19,12 @@
                                     <item name="prefix">#{basePath}/webapps/petclinic/WEB-INF/thymeleaf/</item>
                                     <item name="suffix">.html</item>
                                     <item name="templateMode">HTML</item>
+                                </properties>
+                                <properties profile="!prod">
                                     <item name="cacheable" valueType="boolean">false</item>
+                                </properties>
+                                <properties profile="prod">
+                                    <item name="cacheable" valueType="boolean">true</item>
                                 </properties>
                             </bean>
                         </item>

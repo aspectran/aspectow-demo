@@ -62,6 +62,18 @@
                     </arguments>
                 </bean>
             </item>
+            <item name="databaseIdProvider">
+                <bean class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
+                    <properties>
+                        <item name="properties" type="properties">
+                            <entry name="H2" value="h2"/>
+                            <entry name="MariaDB" value="mysql"/>
+                            <entry name="MySQL" value="mysql"/>
+                            <entry name="Oracle" value="oracle"/>
+                        </item>
+                    </properties>
+                </bean>
+            </item>
         </properties>
     </bean>
 

@@ -19,7 +19,7 @@ CREATE TABLE vets (
     first_name VARCHAR2(30),
     last_name  VARCHAR2(30)
 );
-CREATE INDEX vets_last_name ON vets (UPPER(last_name));
+CREATE INDEX vets_last_name ON vets (last_name);
 
 CREATE TABLE specialties (
     id   NUMBER CONSTRAINT pk_specialties PRIMARY KEY,
@@ -48,7 +48,7 @@ CREATE TABLE owners (
     city       VARCHAR2(80),
     telephone  VARCHAR2(20)
 );
-CREATE INDEX owners_last_name ON owners (UPPER(last_name));
+CREATE INDEX owners_last_name ON owners (last_name);
 
 CREATE TABLE pets (
     id         NUMBER CONSTRAINT pk_pets PRIMARY KEY,
@@ -59,7 +59,7 @@ CREATE TABLE pets (
 );
 ALTER TABLE pets ADD CONSTRAINT fk_pets_owners FOREIGN KEY (owner_id) REFERENCES owners (id);
 ALTER TABLE pets ADD CONSTRAINT fk_pets_types FOREIGN KEY (type_id) REFERENCES types (id);
-CREATE INDEX pets_name ON pets (UPPER(name));
+CREATE INDEX pets_name ON pets (name);
 
 CREATE TABLE visits (
     id          NUMBER CONSTRAINT pk_visits PRIMARY KEY,

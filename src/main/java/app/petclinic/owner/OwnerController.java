@@ -63,14 +63,16 @@ public class OwnerController {
     @Dispatch("owners/ownersList")
 	public void processFindForm(@NonNull Translet translet, String lastName) {
 		// find owners by last name
-        PageInfo pageInfo = PageInfo.of(translet, 5);
+        PageInfo pageInfo = PageInfo.of(translet);
         List<Owner> listOwners = ownerDao.findByLastName(StringUtils.nullToEmpty(lastName), pageInfo);
 		if (listOwners.isEmpty()) {
 			// no owners found
+            Owner owner = new Owner();
+            owner.setLastName(lastName);
             ValidationResult result = new ValidationResult();
             result.putError("lastName", translet.getMessage("notFound", "Not found"));
             translet.setAttribute("errors", result.getErrors());
-            translet.setAttribute("owner", new Owner());
+            translet.setAttribute("owner", owner);
             translet.dispatch("owners/findOwners");
 			return;
 		}

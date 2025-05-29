@@ -211,10 +211,8 @@
   -o-transition: all 0.15s;
   -ms-transition: all 0.15s;
 }
-.petclinic .navbar .navbar-nav.show {
-  padding-bottom: 20px;
-}
-.petclinic .navbar .navbar-collapse.show .nav-link {
+.petclinic .navbar .navbar-collapse.show .nav-link,
+.petclinic .navbar .navbar-collapse.collapsing .nav-link {
   padding: 10px 0 10px 20px;
 }
 .petclinic .navbar li > a {

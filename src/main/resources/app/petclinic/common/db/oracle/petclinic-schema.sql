@@ -1,3 +1,19 @@
+DROP SEQUENCE base_entity_id_seq;
+DROP TABLE vet_specialties;
+DROP TABLE vets;
+DROP TABLE specialties;
+DROP TABLE visits;
+DROP TABLE pets;
+DROP TABLE types;
+DROP TABLE owners;
+
+
+CREATE SEQUENCE base_entity_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    MINVALUE 1
+    NOMAXVALUE;
+
 CREATE TABLE vets (
     id         NUMBER CONSTRAINT pk_vets PRIMARY KEY,
     first_name VARCHAR2(30),

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 8.0//EN"
+        "https://aspectran.com/dtd/aspectran-8.dtd">
+<aspectran>
+
+    <description>
+        Configuration for database transactions
+    </description>
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" lazyDestroy="true">
+        <arguments>
+            <item>
+                <bean class="com.zaxxer.hikari.HikariConfig">
+                    <arguments>
+                        <item>
+                            <bean class="com.aspectran.core.support.PropertiesFactoryBean">
+                                <properties profile="h2">
+                                    <item name="locations" type="array">
+                                        <value>classpath:app/jpetstore/common/db/h2/db.properties</value>
+                                    </item>
+                                </properties>
+                                <properties profile="mariadb">
+                                    <item name="locations" type="array">
+                                        <value>classpath:app/jpetstore/common/db/mariadb/db.properties</value>
+                                    </item>
+                                </properties>
+                                <properties profile="mysql">
+                                    <item name="locations" type="array">
+                                        <value>classpath:app/jpetstore/common/db/mysql/db.properties</value>
+                                    </item>
+                                </properties>
+                                <properties profile="oracle">
+                                    <item name="locations" type="array">
+                                        <value>classpath:app/jpetstore/common/db/oracle/db.properties</value>
+                                    </item>
+                                </properties>
+                            </bean>
+                        </item>
+                    </arguments>
+                    <properties>
+                        <item name="poolName">jpetstore</item>
+                    </properties>
+                </bean>
+            </item>
+        </arguments>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="com.aspectran.mybatis.SqlSessionFactoryBean" lazyDestroy="true">
+        <description>
+            FactoryBean that creates an MyBatis SqlSessionFactory using default MyBatis Configuration.
+        </description>
+        <properties>
+            <item name="configLocation" value="classpath:app/jpetstore/common/mybatis/mybatis-config.xml"/>
+            <item name="environment">
+                <bean class="org.apache.ibatis.mapping.Environment">
+                    <arguments>
+                        <item>default</item>
+                        <item>
+                            <bean class="org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory"/>
+                        </item>
+                        <item>#{dataSource}</item>
+                    </arguments>
+                </bean>
+            </item>
+        </properties>
+    </bean>
+
+</aspectran>

@@ -34,8 +34,8 @@
     </aspect>
 
     <append resource="app/petclinic/common/web-context.xml"/>
-    <append resource="app/petclinic/common/filter/xss-prevent.xml"/>
     <append resource="app/petclinic/common/db/datasource.xml"/>
+    <append resource="app/petclinic/common/filter/xss-prevent.xml"/>
     <append resource="app/petclinic/common/i18n/i18n-context.xml"/>
 
 </aspectran>

@@ -48,8 +48,8 @@
             <span th:unless="${pageInfo.number > 1}" title="Previous" class="page-link disabled">&laquo;</span>
         </li>
         <li class="page-item"
-            th:each="i: ${#numbers.sequence(pageInfo.number - pageInfo.number % 5 + 1, pageInfo.number - pageInfo.number % 5 + 5)}">
-            <a th:if="${pageInfo.number != i && i <= pageInfo.totalElements / 5 + 1}" th:href="@{'/owners?page=__${i}__'}"
+            th:each="i: ${#numbers.sequence(pageInfo.number - (pageInfo.number - 1) % 5, pageInfo.number - (pageInfo.number - 1) % 5 + 4)}">
+            <a th:if="${pageInfo.number != i && i <= (pageInfo.totalElements - 1) / 5 + 1}" th:href="@{'/owners?page=__${i}__'}"
                th:text="${i}" class="page-link"></a>
             <span th:if="${pageInfo.number == i}" th:text="${i}" class="page-link active"></span>
         </li>

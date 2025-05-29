@@ -63,7 +63,7 @@ public class PageInfo {
 
     public void setTotalElements(long totalElements) {
         this.totalElements = totalElements;
-        this.totalPages = (int)(totalElements / size);
+        this.totalPages = (totalElements > 0 ? (int)((totalElements - 1) / size + 1) : 0);
     }
 
     public void setTotalElements(int actualPageSize, LongSupplier totalSupplier) {

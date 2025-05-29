@@ -98,7 +98,7 @@
             <div class="grid-container ${page.style}">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <li><a href="<aspectran:url value="/"/>">Aspectow Demo</a></li>
+                        <li><a href="<aspectran:url value="/"/>">Sample Apps</a></li>
                     </ul>
                 </nav>
             </div>
@@ -140,7 +140,7 @@
             <div class="cell">
                 <nav role="navigation" aria-label="You are here:">
                     <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <li><a href="<aspectran:url value="/"/>">Aspectow Demo</a></li>
+                        <li><a href="<aspectran:url value="/"/>">Sample Apps</a></li>
                     </ul>
                 </nav>
             </div>

@@ -8,7 +8,7 @@
     <meta name="google" content="notranslate">
     <title>PetClinic Demo</title>
     <meta name="description" content="PetClinic is a full-stack sample web application built on top Aspectran 8."/>
-    <link rel="stylesheet" type="text/css" href="https://assets.aspectran.com/bootstrap/css/aspectran.css"/>
+    <link rel="stylesheet" type="text/css" href="http://localhost:8090/assets/bootstrap/css/aspectran.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap">
     <script src="https://assets.aspectran.com/js/modernizr-custom.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -66,10 +66,10 @@
                         <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                             title="Sample applications built on Aspectran">More Sample Apps</a>
                         <ul class="dropdown-menu">
-                            <li><a th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" class="dropdown-item" href="https://demo.aspectran.com/">Aspectran Demo</a></li>
-                            <li><a th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" class="dropdown-item" th:href="@{/../demo/}">Aspectran Demo</a></li>
-                            <li><a th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" class="dropdown-item" href="https://jpetstore.aspectran.com/">JPetStore Demo</a></li>
-                            <li><a th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" class="dropdown-item" th:href="@{/../jpetstore/}">JPetStore Demo</a></li>
+                            <li th:if="${#{currentEnvironment}.acceptsProfiles('prod')}"><a class="dropdown-item" href="https://demo.aspectran.com/">Aspectran Demo</a></li>
+                            <li th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}"><a class="dropdown-item" th:href="@{/../demo/}">Aspectran Demo</a></li>
+                            <li th:if="${#{currentEnvironment}.acceptsProfiles('prod')}"><a class="dropdown-item" href="https://jpetstore.aspectran.com/">JPetStore Demo</a></li>
+                            <li th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}"><a class="dropdown-item" th:href="@{/../jpetstore/}">JPetStore Demo</a></li>
                         </ul>
                     </li>
                 </ul>

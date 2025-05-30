@@ -2,11 +2,6 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <h2>Welcome</h2>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
       <div class="undercon" style="text-align:center;font-size:100px;font-weight:bold;color:#ccc;padding:50px 0 20px;">
         <svg xmlns="http://www.w3.org/2000/svg"
              version="1.1"

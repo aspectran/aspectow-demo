@@ -120,21 +120,6 @@
                 </div>
             </div>
         </div>
-        <div class="breadcrumbs-bar" style="display:none" data-hide-for="medium down">
-            <div class="grid-container ${page.style}">
-                <nav role="navigation" aria-label="You are here:">
-                    <ul class="breadcrumbs" itemprop="breadcrumb">
-                        <aspectran:profile expression="prod">
-                            <li><a href="<aspectran:url value="https://public.aspectran.com/"/>">Sample Apps</a></li>
-                        </aspectran:profile>
-                        <aspectran:profile expression="!prod">
-                            <li><a href="<aspectran:url value="/../"/>">Sample Apps</a></li>
-                        </aspectran:profile>
-                        <li><a href="<aspectran:url value="/"/>">Aspectran Demo</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
     </div>
 </nav>
 <section itemscope itemtype="https://schema.org/Article">

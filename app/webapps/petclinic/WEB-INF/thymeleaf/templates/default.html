@@ -36,7 +36,8 @@
 <nav id="navigation" class="navbar navbar-expand-lg navbar-dark">
     <div class="title-bar">
         <div class="title-bar-left">
-            <a class="navbar-brand logo" th:href="@{/}" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+            <a class="navbar-brand logo" th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" href="https://public.aspectran.com/" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+            <a class="navbar-brand logo" th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" th:href="@{/../}" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
         </div>
         <div class="title-bar-center">
             <a href="#top-of-page">Aspectran</a>

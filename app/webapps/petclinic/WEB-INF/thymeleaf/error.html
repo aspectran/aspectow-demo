@@ -3,11 +3,12 @@
       th:replace="~{fragments/layout :: layout(~{::body}, 'error')}">
 <body>
 
+<h2 class="bi bi-patch-question"> Something happened...</h2>
+
 <div class="row">
     <div class="col">
         <img th:src="@{/images/pets.png}"/>
-        <h2>Something happened...</h2>
-        <pre th:if="${message != null}" th:text="${message}" class="error">Exception message</pre>
+        <pre th:if="${message != null}" th:text="${message}" class="error mt-1">Exception message</pre>
     </div>
 </div>
 

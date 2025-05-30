@@ -30,6 +30,7 @@
     <meta name="msapplication-TileColor" content="#4B555A"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    <link th:href="@{/css/petclinic.css}" rel="stylesheet"/>
 </head>
 <body id="top-of-page" th:class="${pageStyle}" itemscope itemtype="https://schema.org/WebPage">
 <nav id="navigation" class="navbar navbar-expand-lg navbar-dark">
@@ -56,10 +57,10 @@
             </div>
             <div class="top-bar-left me-auto">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/aspectran/aspectran-petclinic">Get Involved</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Get Involved</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="https://github.com/aspectran/aspectow-assets">GitHub</a></li>
+                            <li><a class="dropdown-item" href="https://github.com/aspectran/aspectran-petclinic">GitHub</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -88,14 +89,6 @@
                     </form>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="breadcrumb-bar" style="display:none" data-hide-for="medium down">
-        <div class="container">
-            <nav aria-label="You are here:">
-                <ol class="breadcrumb" itemprop="breadcrumb">
-                </ol>
-            </nav>
         </div>
     </div>
 </nav>

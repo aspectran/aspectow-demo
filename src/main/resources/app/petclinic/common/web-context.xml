@@ -26,7 +26,7 @@
                                 <properties profile="prod">
                                     <item name="cacheable" valueType="boolean">true</item>
                                     <!-- Set template cache TTL to 1 hour -->
-                                    <item name="cacheTTLMs">3600000</item>
+                                    <item name="cacheTTLMs" valueType="long">3600000</item>
                                 </properties>
                             </bean>
                         </item>

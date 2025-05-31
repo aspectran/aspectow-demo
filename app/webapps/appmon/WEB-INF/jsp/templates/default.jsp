@@ -44,7 +44,12 @@
 <nav id="navigation" class="navbar navbar-expand-lg navbar-dark">
     <div class="title-bar">
         <div class="title-bar-left">
-            <a class="logo" href="<aspectran:url value="/"/>" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+            <aspectran:profile expression="prod">
+                <a class="logo" href="https://public.aspectran.com/" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+            </aspectran:profile>
+            <aspectran:profile expression="!prod">
+                <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+            </aspectran:profile>
         </div>
         <div class="title-bar-center">
             <a href="#top-of-page">AppMon</a>
@@ -59,7 +64,12 @@
         <div class="container collapse navbar-collapse" id="navbarSupportedContent">
             <div class="top-bar-logo">
                 <div class="circle">
-                    <a class="navbar-brand logo" href="<aspectran:url value="/"/>" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                    <aspectran:profile expression="prod">
+                        <a class="navbar-brand logo" href="https://public.aspectran.com/" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                    </aspectran:profile>
+                    <aspectran:profile expression="!prod">
+                        <a class="navbar-brand logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                    </aspectran:profile>
                 </div>
             </div>
             <div class="top-bar-left me-auto">

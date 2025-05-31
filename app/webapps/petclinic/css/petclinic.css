@@ -52,7 +52,8 @@
   font-size: 80%;
 }
 .petclinic .xd-container {
-  margin-top: 40px;
+  margin-top: 20px;
+  position: relative;
 }
 .petclinic h1 {
   margin-bottom: 15px;
@@ -211,6 +212,10 @@
   -o-transition: all 0.15s;
   -ms-transition: all 0.15s;
 }
+.petclinic .navbar .navbar-collapse.show .navbar-nav {
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
 .petclinic .navbar .navbar-collapse.show .nav-link,
 .petclinic .navbar .navbar-collapse.collapsing .nav-link {
   padding: 10px 0 10px 20px;
@@ -254,9 +259,6 @@
   }
   .petclinic .navbar {
     border-top-width: 0;
-  }
-  .petclinic .xd-container {
-    margin-top: 20px;
   }
   .petclinic .index-page--subtitle {
     margin-top: 10px;

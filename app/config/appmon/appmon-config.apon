@@ -35,15 +35,15 @@ instance: {
         name: session
         target: tow.server/jpetstore
     }
-#    event: {
-#        name: hikariPool
-#        reader: com.aspectran.appmon.exporter.event.mbean.jdbc.HikariPoolEventReader
-#        target: jpetstore
-#        parameters: {
-#            poolName: jpetstore
-#        }
-#        sampleInterval: 500
-#    }
+    event: {
+        name: hikariPool
+        reader: com.aspectran.appmon.exporter.event.mbean.jdbc.HikariPoolEventReader
+        target: jpetstore
+        parameters: {
+            poolName: jpetstore
+        }
+        sampleInterval: 500
+    }
     log: {
         name: app
         title: JPetStore App

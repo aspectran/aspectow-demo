@@ -7,7 +7,7 @@
         Configuration for database transactions
     </description>
 
-    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" lazyDestroy="true">
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroyMethod="close" lazyDestroy="true">
         <arguments>
             <item>
                 <bean class="com.zaxxer.hikari.HikariConfig">

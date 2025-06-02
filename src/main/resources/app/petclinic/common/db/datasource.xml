@@ -3,7 +3,7 @@
         "https://aspectran.com/dtd/aspectran-8.dtd">
 <aspectran>
 
-    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" lazyDestroy="true">
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroyMethod="close" lazyDestroy="true">
         <arguments>
             <item>
                 <bean class="com.zaxxer.hikari.HikariConfig">

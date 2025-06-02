@@ -39,6 +39,7 @@
                     </arguments>
                     <properties>
                         <item name="poolName">jpetstore</item>
+                        <item name="registerMbeans" valueType="boolean">true</item>
                     </properties>
                 </bean>
             </item>

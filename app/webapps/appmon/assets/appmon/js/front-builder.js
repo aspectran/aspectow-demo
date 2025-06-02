@@ -484,8 +484,10 @@ function FrontBuilder() {
                     let $visualBox = addVisualBox(domain, instance);
                     for (let key in instance.events) {
                         let event = instance.events[key];
-                        let $chartBox = addChartBox($visualBox, domain, instance, event);
-                        viewers[domain.index].putChart(instance.name, event.name, $chartBox.find(".chart"));
+                        if (event.name === "activity" || event.name === "session") {
+                            let $chartBox = addChartBox($visualBox, domain, instance, event);
+                            viewers[domain.index].putChart(instance.name, event.name, $chartBox.find(".chart"));
+                        }
                     }
                 }
                 for (let key in instance.logs) {

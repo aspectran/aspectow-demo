@@ -141,6 +141,9 @@ function FrontViewer(sampleInterval) {
                     }
                 }
                 break;
+            case "mbean":
+                console.log(message);
+                break;
             case "log":
                 printLogMessage(instanceName, messageType, nameOfEventOrLog, messagePrefix, messageText);
                 break;

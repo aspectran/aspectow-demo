@@ -57,7 +57,7 @@ create table orders (
     shipcity varchar2(80) not null,
     shipstate varchar2(80) not null,
     shipzip varchar2(20) not null,
-    shipcountry varchar2(20) not null,
+    shipcountry varchar2(30) not null,
     billaddr1 varchar2(80) not null,
     billaddr2 varchar2(80)  null,
     billcity varchar2(80) not null,

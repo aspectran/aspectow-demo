@@ -34,6 +34,7 @@
         </settings>
     </aspect>
 
+    <append resource="app/root/common/cdn/cdn-assets.xml"/>
     <append resource="app/root/web/home/main.xml"/>
     <append resource="app/root/web/home/monitoring.xml"/>
 

@@ -10,25 +10,25 @@
     <meta name="google" content="notranslate">
     <title>${empty page.title ? "Aspectran Demo" : page.title}</title>
     <meta name="description" content="${empty page.description ? "Welcome to the Aspectran Demo Site" : page.description}">
-    <link rel="stylesheet" href="https://assets.aspectran.com/foundation/css/aspectran.css">
+    <link rel="stylesheet" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/foundation/css/aspectran.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap">
-    <script src="https://assets.aspectran.com/js/modernizr-custom.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <link rel="mask-icon" href="https://assets.aspectran.com/img/aspectran-logo.svg" color="#4B555A">
-    <link rel="apple-touch-icon" sizes="57x57" href="https://assets.aspectran.com/img/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="https://assets.aspectran.com/img/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="https://assets.aspectran.com/img/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="https://assets.aspectran.com/img/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="https://assets.aspectran.com/img/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="https://assets.aspectran.com/img/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="https://assets.aspectran.com/img/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="https://assets.aspectran.com/img/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://assets.aspectran.com/img/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="https://assets.aspectran.com/img/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://assets.aspectran.com/img/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://assets.aspectran.com/img/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="https://assets.aspectran.com/img/favicon-96x96.png">
-    <meta name="msapplication-TileImage" content="https://assets.aspectran.com/img/ms-icon-144x144.png">
+    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/modernizr-custom.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="mask-icon" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-logo.svg" color="#4B555A">
+    <link rel="apple-touch-icon" sizes="57x57" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/favicon-96x96.png">
+    <meta name="msapplication-TileImage" content="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/ms-icon-144x144.png">
     <meta name="msapplication-TileColor" content="#4B555A">
 </head>
 <body id="top-of-page" class="${page.style}" itemscope itemtype="https://schema.org/WebPage">
@@ -36,10 +36,10 @@
     <div class="title-bar" data-responsive-toggle="gnb-menu" data-hide-for="large" style="display:none">
         <div class="title-bar-left">
             <aspectran:profile expression="prod">
-                <a class="logo" href="https://public.aspectran.com" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                <a class="logo" href="https://public.aspectran.com" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-site-logo.png" alt="Aspectran"/></a>
             </aspectran:profile>
             <aspectran:profile expression="!prod">
-                <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-site-logo.png" alt="Aspectran"/></a>
             </aspectran:profile>
         </div>
         <div class="title-bar-center">
@@ -54,10 +54,10 @@
             <div class="top-bar-logo">
                 <div class="circle">
                     <aspectran:profile expression="prod">
-                        <a class="logo" href="https://public.aspectran.com" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                        <a class="logo" href="https://public.aspectran.com" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-site-logo.png" alt="Aspectran"/></a>
                     </aspectran:profile>
                     <aspectran:profile expression="!prod">
-                        <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                        <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-site-logo.png" alt="Aspectran"/></a>
                     </aspectran:profile>
                 </div>
             </div>
@@ -187,7 +187,7 @@
         <div class="grid-container">
             <div class="grid-x grid-padding-x">
                 <div class="medium-2 large-1 cell hide-for-small-only t5">
-                    <h5><a class="logo" href="https://aspectran.com/en/aspectran/" title="Aspectran"><img src="https://assets.aspectran.com/img/aspectran-logo-grey-x100.png" width="100" height="100" alt="Aspectran" title="Aspectran"/></a></h5>
+                    <h5><a class="logo" href="https://aspectran.com/en/aspectran/" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-logo-grey-x100.png" width="100" height="100" alt="Aspectran" title="Aspectran"/></a></h5>
                 </div>
                 <div class="medium-4 large-4 cell">
                     <a href="https://aspectran.com/en/aspectran/"><h5>About Aspectran</h5></a>
@@ -222,7 +222,7 @@
         </div>
     </div>
 </footer>
-<script src="https://assets.aspectran.com/foundation/js/foundation.min.js"></script>
+<script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/foundation/js/foundation.min.js"></script>
 <script>
     $(document).foundation();
     $(function() {

@@ -63,7 +63,7 @@ create table orders (
     billcity varchar2(80) not null,
     billstate varchar2(80) not null,
     billzip varchar2(20) not null,
-    billcountry varchar2(20) not null,
+    billcountry varchar2(30) not null,
     courier varchar2(80) not null,
     totalprice decimal(10,2) not null,
     billtofirstname varchar2(80) not null,
@@ -76,6 +76,8 @@ create table orders (
     locale varchar2(80) not null,
     constraint pk_orders primary key (orderid)
 );
+
+create index ordersByUser on orders (userid, orderdate desc);
 
 create table orderstatus (
     orderid NUMBER(15) not null,

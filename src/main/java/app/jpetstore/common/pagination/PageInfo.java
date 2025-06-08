@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.petclinic.common.pagination;
+package app.jpetstore.common.pagination;
 
 import com.aspectran.core.activity.Translet;
 import com.aspectran.utils.Assert;
 import com.aspectran.utils.StringUtils;
 import com.aspectran.utils.annotation.jsr305.NonNull;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.LongSupplier;
 
 /**
@@ -38,6 +40,8 @@ public class PageInfo {
     private long totalElements;
 
     private int totalPages;
+
+    private Map<String, Object> params;
 
     public PageInfo(int number, int size) {
         this.number = number;
@@ -97,6 +101,22 @@ public class PageInfo {
 
     public boolean hasPreviousPage() {
         return (number > 1);
+    }
+
+    public Map<String, Object> putParam(String name, Object value) {
+        touchParams().put(name, value);
+        return params;
+    }
+
+    public Object getParams() {
+        return touchParams();
+    }
+
+    private Map<String, Object> touchParams() {
+        if (params == null) {
+            params = new HashMap<>();
+        }
+        return params;
     }
 
     @NonNull

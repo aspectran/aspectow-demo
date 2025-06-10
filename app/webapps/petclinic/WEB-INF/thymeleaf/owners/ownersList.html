@@ -43,9 +43,9 @@
             <span th:unless="${pageInfo.number > 1}" title="First" class="page-link disabled">First</span>
         </li>
         <li class="page-item">
-            <a th:if="${pageInfo.number > 5 and pageInfo.number % 5 == 1}" th:href="@{'/owners?page=__${pageInfo.number - 5}__'}" title="Previous"
+            <a th:if="${pageInfo.number > 5 and pageInfo.number % 5 == 1}" th:href="@{'/owners?page=__${pageInfo.number - 1}__'}" title="Previous"
                class="page-link">&laquo;</a>
-            <a th:if="${pageInfo.number > 5 and pageInfo.number % 5 > 1}" th:href="@{'/owners?page=__${pageInfo.number - 5}__'}" title="Previous"
+            <a th:if="${pageInfo.number > 5 and pageInfo.number % 5 != 1}" th:href="@{'/owners?page=__${pageInfo.number - 5}__'}" title="Previous"
                class="page-link">&laquo;</a>
             <span th:unless="${pageInfo.number > 5}" title="Previous" class="page-link disabled">&laquo;</span>
         </li>
@@ -57,9 +57,9 @@
             <span th:if="${pageInfo.number == i}" th:text="${i}" class="page-link active"></span>
         </li>
         <li class="page-item">
-            <a th:if="${pageInfo.number < pageInfo.totalPages - 5 and pageInfo.number % 5 == 0}" th:href="@{'/owners?page=__${pageInfo.number + 5}__'}"
+            <a th:if="${pageInfo.number < pageInfo.totalPages - 5 and pageInfo.number % 5 == 0}" th:href="@{'/owners?page=__${pageInfo.number + 1}__'}"
                title="Next" class="page-link">&raquo;</a>
-            <a th:if="${pageInfo.number < pageInfo.totalPages - 5 and pageInfo.number % 5 > 0}" th:href="@{'/owners?page=__${pageInfo.number + 5}__'}"
+            <a th:if="${pageInfo.number < pageInfo.totalPages - 5 and pageInfo.number % 5 != 0}" th:href="@{'/owners?page=__${pageInfo.number + 5}__'}"
                title="Next" class="page-link">&raquo;</a>
             <a th:if="${pageInfo.totalPages > 5 && pageInfo.number >= pageInfo.totalPages - 5}" th:href="@{'/owners?page=__${pageInfo.totalPages}__'}"
                title="Next" class="page-link">&raquo;</a>

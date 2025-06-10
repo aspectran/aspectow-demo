@@ -125,13 +125,13 @@
         <dependency>
             <groupId>io.github.openfeign.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
-            <version>6.11</version>
+            <version>7.0</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>io.github.openfeign.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
-            <version>6.11</version>
+            <version>7.0</version>
             <classifier>jakarta</classifier>
         </dependency>
         <!-- Hibernate ORM dependencies -->

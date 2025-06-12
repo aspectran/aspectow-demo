@@ -126,7 +126,6 @@
             <groupId>io.github.openfeign.querydsl</groupId>
             <artifactId>querydsl-jpa</artifactId>
             <version>7.0</version>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>io.github.openfeign.querydsl</groupId>
@@ -163,11 +162,11 @@
             <artifactId>mariadb-java-client</artifactId>
             <version>3.5.3</version>
         </dependency>
-        <dependency>
-            <groupId>jakarta.el</groupId>
-            <artifactId>jakarta.el-api</artifactId>
-            <version>6.0.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>jakarta.el</groupId>-->
+<!--            <artifactId>jakarta.el-api</artifactId>-->
+<!--            <version>6.0.1</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>

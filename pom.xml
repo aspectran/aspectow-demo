@@ -132,6 +132,7 @@
             <artifactId>querydsl-apt</artifactId>
             <version>7.0</version>
             <classifier>jakarta</classifier>
+            <scope>provided</scope>
         </dependency>
         <!-- Hibernate ORM dependencies -->
         <dependency>

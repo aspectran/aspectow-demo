@@ -45,14 +45,12 @@
     </contributors>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <aspectran.version>8.5.0</aspectran.version>
+        <maven.compiler.release>17</maven.compiler.release>
+
+        <aspectran.version>8.5.1-SNAPSHOT</aspectran.version>
         <aspectow.appmon.version>1.0.0-SNAPSHOT</aspectow.appmon.version>
     </properties>
 
@@ -210,8 +208,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.14.0</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
                     <compilerArgs>
                         <arg>-Xlint:-try,-path,-options</arg>
                     </compilerArgs>

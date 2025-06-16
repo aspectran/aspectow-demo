@@ -132,7 +132,6 @@
             <artifactId>querydsl-apt</artifactId>
             <version>7.0</version>
             <classifier>jakarta</classifier>
-            <scope>provided</scope>
         </dependency>
         <!-- Hibernate ORM dependencies -->
         <dependency>
@@ -211,10 +210,13 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.14.0</version>
                 <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                     <compilerArgs>
                         <arg>-Xlint:-try,-path,-options</arg>
                     </compilerArgs>
                     <parameters>true</parameters>
+                    <proc>full</proc>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                     <excludes>

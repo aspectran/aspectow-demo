@@ -11,3 +11,4 @@ fi
 
 echo "Restore specific web application files after deployment ..."
 [ -d "$RESTORE_DIR/webapps" ] && cp -pRf "$RESTORE_DIR"/webapps/* "$DEPLOY_DIR/webapps"
+

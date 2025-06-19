@@ -61,8 +61,8 @@
                title="Next" class="page-link">&raquo;</a>
             <a th:if="${pageInfo.number < pageInfo.totalPages - 5 and pageInfo.number % 5 != 0}" th:href="@{'/owners?page=__${pageInfo.number + 5}__'}"
                title="Next" class="page-link">&raquo;</a>
-            <a th:if="${pageInfo.number > 5 && pageInfo.number >= pageInfo.totalPages - 5}" th:href="@{'/owners?page=__${pageInfo.totalPages}__'}"
-               title="Next" class="page-link">&raquo;</a>
+            <a th:if="${pageInfo.number >= pageInfo.totalPages - 5 and pageInfo.number < pageInfo.totalPages - (pageInfo.totalPages - 1) % 5}"
+               th:href="@{'/owners?page=__${pageInfo.totalPages}__'}" title="Next" class="page-link">&raquo;</a>
             <span th:if="${pageInfo.number >= pageInfo.totalPages - (pageInfo.totalPages - 1) % 5}" title="Next" class="page-link disabled">&raquo;</span>
         </li>
         <li class="page-item">

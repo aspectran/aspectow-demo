@@ -36,8 +36,9 @@ instance: {
         target: tow.server/jpetstore
     }
     event: {
-        name: hikariPool
-        reader: com.aspectran.appmon.exporter.event.mbean.jdbc.HikariPoolEventReader
+        name: mbean1
+        title: Hikari CP
+        reader: com.aspectran.appmon.exporter.event.mbean.jdbc.HikariPoolMBeanReader
         target: jpetstore
         parameters: {
             poolName: jpetstore

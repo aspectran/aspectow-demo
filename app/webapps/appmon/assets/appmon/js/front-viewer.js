@@ -6,6 +6,7 @@ function FrontViewer(sampleInterval) {
     let enable = false;
     let visible = false;
     let $displays = {};
+    let $statuses = {};
     let $charts = {};
     let $consoles = {};
     let $indicators = {};
@@ -31,6 +32,10 @@ function FrontViewer(sampleInterval) {
         $displays[instanceName + ":event:" + eventName] = $display;
     };
 
+    this.putStatus = function (instanceName, eventName, $status) {
+        $statuses[instanceName + ":status:" + eventName] = $status;
+    };
+
     this.putChart = function (instanceName, eventName, $chart) {
         $charts[instanceName + ":data:" + eventName] = $chart;
     };
@@ -45,6 +50,10 @@ function FrontViewer(sampleInterval) {
 
     const getDisplay = function (key) {
         return ($displays && key ? $displays[key] : null);
+    };
+
+    const getStatus = function (key) {
+        return ($statuses && key ? $statuses[key] : null);
     };
 
     const getChart = function (key) {
@@ -141,8 +150,12 @@ function FrontViewer(sampleInterval) {
                     }
                 }
                 break;
-            case "mbean":
+            case "status":
                 console.log(message);
+                if (messageText.length) {
+                    let statusData = JSON.parse(messageText);
+                    processStatusData(instanceName, messageType, nameOfEventOrLog, messagePrefix, statusData);
+                }
                 break;
             case "log":
                 printLogMessage(instanceName, messageType, nameOfEventOrLog, messagePrefix, messageText);
@@ -195,6 +208,14 @@ function FrontViewer(sampleInterval) {
             case "session":
                 printSessionEventData(messagePrefix, eventData);
                 break;
+        }
+    }
+
+    const processStatusData = function (instanceName, messageType, eventName, messagePrefix, statusData) {
+        let $status = getStatus(messagePrefix);
+        console.log(messagePrefix, statusData.value);
+        if ($status) {
+            $status.find("dd").text(statusData.value);
         }
     }
 

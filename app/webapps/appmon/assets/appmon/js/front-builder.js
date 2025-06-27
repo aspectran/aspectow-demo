@@ -479,6 +479,9 @@ function FrontBuilder() {
                         } else if (event.name === "session") {
                             let $sessionBox = addSessionBox($eventBox, domain, instance, event);
                             viewers[domain.index].putDisplay(instance.name, event.name, $sessionBox);
+                        } else if (event.name.startsWith("mbean")) {
+                            let $status = addStatus($eventBox, domain, instance, event);
+                            viewers[domain.index].putStatus(instance.name, event.name, $status);
                         }
                     }
                     let $visualBox = addVisualBox(domain, instance);
@@ -563,6 +566,18 @@ function FrontBuilder() {
             .attr("data-instance-name", instanceInfo.name)
             .attr("data-event-name", eventInfo.name);
         return $newBox.insertAfter($trackBox.last()).show();
+    };
+
+    const addStatus = function ($eventBox, domainInfo, instanceInfo, eventInfo) {
+        let $statusBar = $eventBox.find(".status-bar").show();
+        let $status = $statusBar.find(".status").first().hide().clone()
+            .addClass("available")
+            .attr("data-domain-index", domainInfo.index)
+            .attr("data-instance-name", instanceInfo.name)
+            .attr("data-event-name", eventInfo.name);
+        $status.find("dt").text(eventInfo.title);
+        $status.find("dd").text("N/A");
+        return $status.appendTo($statusBar).show();
     };
 
     const addSessionBox = function ($eventBox, domainInfo, instanceInfo, eventInfo) {

@@ -53,7 +53,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col session-box">
+            <div class="status-bar">
+                <div class="status">
+                    <dl>
+                        <dt>Hikari CP</dt>
+                        <dd>1/10</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="session-box">
                 <div class="row g-0">
                     <div class="col-sm-12 col-md-4">
                         <div class="panel status">

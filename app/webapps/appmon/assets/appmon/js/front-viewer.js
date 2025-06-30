@@ -213,9 +213,8 @@ function FrontViewer(sampleInterval) {
 
     const processStatusData = function (instanceName, messageType, eventName, messagePrefix, statusData) {
         let $status = getStatus(messagePrefix);
-        console.log(messagePrefix, statusData.value);
         if ($status) {
-            $status.find("dd").text(statusData.value);
+            $status.find("dd").text(statusData.value).attr("title", JSON.stringify(statusData, null, 2));
         }
     }
 

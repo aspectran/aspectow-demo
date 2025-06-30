@@ -213,6 +213,7 @@
 .status-bar {
     background-color: #d3d3d3;
     height: 28px;
+    text-align: center;
 }
 .status-bar .status {
     display: inline-block;

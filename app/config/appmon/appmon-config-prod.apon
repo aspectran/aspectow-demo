@@ -35,6 +35,16 @@ instance: {
         name: session
         target: tow.server/jpetstore
     }
+    event: {
+        name: mbean1
+        title: Hikari CP
+        reader: com.aspectran.appmon.exporter.event.jmx.jdbc.HikariPoolMBeanReader
+        target: jpetstore
+        parameters: {
+            poolName: jpetstore
+        }
+        sampleInterval: 500
+    }
     log: {
         name: app
         title: JPetStore App
@@ -63,6 +73,16 @@ instance: {
     event: {
         name: session
         target: tow.server/petclinic
+    }
+    event: {
+        name: mbean1
+        title: Hikari CP
+        reader: com.aspectran.appmon.exporter.event.jmx.jdbc.HikariPoolMBeanReader
+        target: petclinic
+        parameters: {
+            poolName: petclinic
+        }
+        sampleInterval: 500
     }
     log: {
         name: app
@@ -121,6 +141,12 @@ instance: {
     event: {
         name: session
         target: tow.server/root
+    }
+    event: {
+        name: mbean1
+        title: Heap
+        reader: com.aspectran.appmon.exporter.event.jmx.jvm.HeapMemoryUsageReader
+        sampleInterval: 500
     }
     log: {
         name: app

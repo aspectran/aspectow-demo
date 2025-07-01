@@ -183,6 +183,7 @@ function FrontBuilder() {
             }
             viewers[domain.index].setVisible(true);
             viewers[domain.index].refreshConsole();
+            $(".domain.status-bar[data-domain-index=" + domain.index + "]").show();
         } else {
             viewers[domain.index].setVisible(false);
             for (let key in instances) {
@@ -193,6 +194,7 @@ function FrontBuilder() {
                     $(".console-box[data-domain-index=" + domain.index + "][data-instance-name=" + instance.name + "]").hide();
                 }
             }
+            $(".domain.status-bar[data-domain-index=" + domain.index + "]").hide();
         }
     }
 
@@ -435,6 +437,9 @@ function FrontBuilder() {
         $(".domain.tabs .tabs-title").show();
         $(".instance.tabs .tabs-title.available").remove();
         $(".instance.tabs .tabs-title").show();
+        $(".domain.status-bar.available").remove();
+        $(".instance.status-bar.available").remove();
+        $(".instance.status-bar").show();
         $(".event-box.available").remove();
         $(".visual-box.available").remove();
         $(".chart-box.available").remove();
@@ -458,6 +463,7 @@ function FrontBuilder() {
             let $domainIndicator = $titleTab.find(".indicator");
             viewers[domain.index].putIndicator("domain", "event", "", $domainIndicator);
             sampleInterval = Math.max(domain.sampleInterval, sampleInterval);
+            addDomainStatusBar(domain);
         }
         for (let key in instances) {
             let instance = instances[key];
@@ -479,9 +485,14 @@ function FrontBuilder() {
                         } else if (event.name === "session") {
                             let $sessionBox = addSessionBox($eventBox, domain, instance, event);
                             viewers[domain.index].putDisplay(instance.name, event.name, $sessionBox);
-                        } else if (event.name.startsWith("mbean")) {
-                            let $status = addStatus($eventBox, domain, instance, event);
-                            viewers[domain.index].putStatus(instance.name, event.name, $status);
+                        } else if (event.name.startsWith("status")) {
+                            if (event.typical) {
+                                let $status = addDomainStatus(domain, event);
+                                viewers[domain.index].putStatus(instance.name, event.name, $status);
+                            } else {
+                                let $status = addInstanceStatus($eventBox, domain, instance, event);
+                                viewers[domain.index].putStatus(instance.name, event.name, $status);
+                            }
                         }
                     }
                     let $visualBox = addVisualBox(domain, instance);
@@ -522,6 +533,9 @@ function FrontBuilder() {
             .attr("data-domain-title", domainInfo.title)
             .attr("data-domain-url", domainInfo.url);
         $tab.find("a .title").text(" " + domainInfo.title + " ");
+        if (domains.length > 1) {
+            $tab.find(".number").text(" " + (domainInfo.index + 1));
+        }
         $tab.show().appendTo($tabs);
         return $tab;
     };
@@ -536,6 +550,26 @@ function FrontBuilder() {
         $tab.find("a .title").text(" " + instanceInfo.title + " ");
         $tab.show().appendTo($tabs);
         return $tab;
+    };
+
+    const addDomainStatusBar = function (domainInfo) {
+        let $statusBar = $(".domain.status-bar");
+        let $newStatusBar = $statusBar.first().hide().clone()
+            .addClass("available")
+            .attr("data-domain-index", domainInfo.index)
+        if (domains.length > 1) {
+            $newStatusBar.find(".number").text(" " + (domainInfo.index + 1));
+        }
+        return $newStatusBar.insertAfter($statusBar.last());
+    };
+
+    const addDomainStatus = function (domainInfo, eventInfo) {
+        let $statusBar = $(".domain.status-bar[data-domain-index=" + domainInfo.index + "]").show();
+        let $status = $statusBar.find(".status").first().hide().clone()
+            .addClass("available")
+        $status.find("dt").text(eventInfo.title);
+        $status.find("dd").text("");
+        return $status.appendTo($statusBar).show();
     };
 
     const addControlBar = function (instanceInfo, sampleInterval) {
@@ -553,8 +587,11 @@ function FrontBuilder() {
             .addClass("available")
             .attr("data-domain-index", domainInfo.index)
             .attr("data-instance-name", instanceInfo.name);
-        $newBox.find(".title-bar h4")
-            .text(domainInfo.title);
+        let $titleBar = $newBox.find(".title-bar");
+        $titleBar.find("h4").text(domainInfo.title);
+        if (domains.length > 1) {
+            $titleBar.find(".number").text(" " + (domainInfo.index + 1));
+        }
         return $newBox.insertBefore($(".console-box").first());
     };
 
@@ -568,7 +605,7 @@ function FrontBuilder() {
         return $newBox.insertAfter($trackBox.last()).show();
     };
 
-    const addStatus = function ($eventBox, domainInfo, instanceInfo, eventInfo) {
+    const addInstanceStatus = function ($eventBox, domainInfo, instanceInfo, eventInfo) {
         let $statusBar = $eventBox.find(".status-bar").show();
         let $status = $statusBar.find(".status").first().hide().clone()
             .addClass("available")

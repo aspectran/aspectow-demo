@@ -39,7 +39,7 @@ instance: {
         name: status1
         title: Hikari CP-jpetstore
         reader: com.aspectran.appmon.exporter.event.status.jdbc.HikariPoolMBeanReader
-        typical: true
+        leading: true
         parameters: {
             poolName: jpetstore
         }
@@ -78,7 +78,7 @@ instance: {
         name: status1
         title: Hikari CP-petclinic
         reader: com.aspectran.appmon.exporter.event.status.jdbc.HikariPoolMBeanReader
-        typical: true
+        leading: true
         parameters: {
             poolName: petclinic
         }
@@ -146,7 +146,7 @@ instance: {
         name: status1
         title: Heap
         reader: com.aspectran.appmon.exporter.event.status.jvm.HeapMemoryUsageReader
-        typical: true
+        leading: true
         sampleInterval: 500
     }
     log: {

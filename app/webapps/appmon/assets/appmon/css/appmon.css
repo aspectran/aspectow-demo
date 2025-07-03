@@ -11,6 +11,7 @@
 .status-bar {
     background-color: #d3d3d3;
     height: 28px;
+    text-align: center;
 }
 .status-bar .status {
     display: inline-block;
@@ -44,8 +45,8 @@
     border-bottom: 1px solid #ccc;
     background-color: unset;
     box-shadow: 0 6px 15px -10px rgba(50, 50, 50, .33);
-    @media screen and (max-width: 576px) {
-        text-align: center;
+    @media screen and (min-width: 576px) {
+        text-align: left;
     }
     @media (min-width: 992px) {
         flex: 0 0 auto;

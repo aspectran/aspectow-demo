@@ -37,7 +37,8 @@ instance: {
     }
     event: {
         name: status1
-        title: Hikari CP-jpetstore
+        title: CP-jpetstore
+        description: Shows the JDBC connection pool usage status
         reader: com.aspectran.appmon.exporter.event.status.jdbc.HikariPoolMBeanReader
         leading: true
         parameters: {
@@ -76,7 +77,8 @@ instance: {
     }
     event: {
         name: status1
-        title: Hikari CP-petclinic
+        title: CP-petclinic
+        description: Shows the JDBC connection pool usage status
         reader: com.aspectran.appmon.exporter.event.status.jdbc.HikariPoolMBeanReader
         leading: true
         parameters: {
@@ -145,6 +147,7 @@ instance: {
     event: {
         name: status1
         title: Heap
+        description: Shows JVM Heap memory usage status
         reader: com.aspectran.appmon.exporter.event.status.jvm.HeapMemoryUsageReader
         leading: true
         sampleInterval: 500
@@ -178,6 +181,14 @@ instance: {
     event: {
         name: session
         target: tow.server/appmon
+    }
+    event: {
+        name: status1
+        title: Heap
+        description: Shows JVM Heap memory usage status
+        reader: com.aspectran.appmon.exporter.event.status.jvm.HeapMemoryUsageReader
+        leading: true
+        sampleInterval: 500
     }
     log: {
         name: appmon

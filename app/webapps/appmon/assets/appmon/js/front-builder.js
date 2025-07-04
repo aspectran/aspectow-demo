@@ -562,7 +562,7 @@ function FrontBuilder() {
         let $statusBar = $(".domain.status-bar");
         let $newStatusBar = $statusBar.first().hide().clone()
             .addClass("available")
-            .attr("data-domain-index", domainInfo.index)
+            .attr("data-domain-index", domainInfo.index);
         if (domains.length > 1) {
             $newStatusBar.find(".number").text(" " + (domainInfo.index + 1));
         } else {
@@ -575,6 +575,7 @@ function FrontBuilder() {
         let $statusBar = $(".domain.status-bar[data-domain-index=" + domainInfo.index + "]").show();
         let $status = $statusBar.find(".status").first().hide().clone()
             .addClass("available")
+            .attr("title", eventInfo.description);
         $status.find("dt").text(eventInfo.title);
         $status.find("dd").text("");
         return $status.appendTo($statusBar).show();
@@ -619,7 +620,8 @@ function FrontBuilder() {
             .addClass("available")
             .attr("data-domain-index", domainInfo.index)
             .attr("data-instance-name", instanceInfo.name)
-            .attr("data-event-name", eventInfo.name);
+            .attr("data-event-name", eventInfo.name)
+            .attr("title", eventInfo.description);
         $status.find("dt").text(eventInfo.title);
         $status.find("dd").text("N/A");
         return $status.appendTo($statusBar).show();

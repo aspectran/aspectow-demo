@@ -146,6 +146,15 @@ instance: {
     }
     event: {
         name: status1
+        title: Undertow TP
+        description: Metrics of Undertow thread pool resources
+        reader: com.aspectran.appmon.exporter.event.status.undertow.NioWorkerMetricsReader
+        target: tow.server
+        heading: true
+        sampleInterval: 500
+    }
+    event: {
+        name: status2
         title: Heap
         description: Shows JVM Heap memory usage status
         reader: com.aspectran.appmon.exporter.event.status.jvm.HeapMemoryUsageReader

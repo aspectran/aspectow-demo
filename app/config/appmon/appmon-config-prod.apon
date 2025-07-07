@@ -40,7 +40,7 @@ instance: {
         title: CP-jpetstore
         description: Shows the JDBC connection pool usage status
         reader: com.aspectran.appmon.exporter.event.status.jdbc.HikariPoolMBeanReader
-        leading: true
+        heading: true
         parameters: {
             poolName: jpetstore
         }
@@ -80,7 +80,7 @@ instance: {
         title: CP-petclinic
         description: Shows the JDBC connection pool usage status
         reader: com.aspectran.appmon.exporter.event.status.jdbc.HikariPoolMBeanReader
-        leading: true
+        heading: true
         parameters: {
             poolName: petclinic
         }
@@ -149,7 +149,7 @@ instance: {
         title: Heap
         description: Shows JVM Heap memory usage status
         reader: com.aspectran.appmon.exporter.event.status.jvm.HeapMemoryUsageReader
-        leading: true
+        heading: true
         sampleInterval: 500
     }
     log: {
@@ -187,7 +187,7 @@ instance: {
         title: Heap
         description: Shows JVM Heap memory usage status
         reader: com.aspectran.appmon.exporter.event.status.jvm.HeapMemoryUsageReader
-        leading: true
+        heading: true
         sampleInterval: 500
     }
     log: {

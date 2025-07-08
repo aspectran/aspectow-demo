@@ -35,11 +35,11 @@ instance: {
         name: session
         target: tow.server/jpetstore
     }
-    event: {
-        name: status1
+    metric: {
+        name: cp-jpetstore
         title: CP-jpetstore
         description: Shows the JDBC connection pool usage status
-        reader: com.aspectran.appmon.exporter.event.status.jdbc.HikariPoolMBeanReader
+        reader: com.aspectran.appmon.exporter.metric.jdbc.HikariPoolMBeanReader
         parameters: {
             poolName: jpetstore
         }
@@ -74,11 +74,11 @@ instance: {
         name: session
         target: tow.server/petclinic
     }
-    event: {
-        name: status1
+    metric: {
+        name: cp-petclinic
         title: CP-petclinic
         description: Shows the JDBC connection pool usage status
-        reader: com.aspectran.appmon.exporter.event.status.jdbc.HikariPoolMBeanReader
+        reader: com.aspectran.appmon.exporter.metric.jdbc.HikariPoolMBeanReader
         parameters: {
             poolName: petclinic
         }
@@ -172,22 +172,22 @@ instance: {
         name: session
         target: tow.server/root
     }
-    event: {
-        name: status1
+    metric: {
+        name: heap
         title: Heap
         description: Shows JVM Heap memory usage status
-        reader: com.aspectran.appmon.exporter.event.status.jvm.HeapMemoryUsageReader
-        heading: true
+        reader: com.aspectran.appmon.exporter.metric.jvm.HeapMemoryUsageReader
         sampleInterval: 500
+        heading: true
     }
-    event: {
-        name: status2
+    metric: {
+        name: undertow-tp
         title: Undertow TP
         description: Metrics of Undertow thread pool resources
-        reader: com.aspectran.appmon.exporter.event.status.undertow.NioWorkerMetricsReader
+        reader: com.aspectran.appmon.exporter.metric.undertow.NioWorkerMetricsReader
         target: tow.server
-        heading: true
         sampleInterval: 500
+        heading: true
     }
     log: {
         name: app
@@ -219,13 +219,13 @@ instance: {
         name: session
         target: tow.server/appmon
     }
-    event: {
-        name: status1
+    metric: {
+        name: heap
         title: Heap
         description: Shows JVM Heap memory usage status
-        reader: com.aspectran.appmon.exporter.event.status.jvm.HeapMemoryUsageReader
-        heading: true
+        reader: com.aspectran.appmon.exporter.metric.jvm.HeapMemoryUsageReader
         sampleInterval: 500
+        heading: true
     }
     log: {
         name: appmon

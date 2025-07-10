@@ -186,7 +186,8 @@ instance: {
         description: Metrics of Undertow thread pool resources
         reader: com.aspectran.appmon.exporter.metric.undertow.NioWorkerMetricsReader
         target: tow.server
-        sampleInterval: 500
+        sampleInterval: 50
+        exportInterval: 500
         heading: true
     }
     log: {

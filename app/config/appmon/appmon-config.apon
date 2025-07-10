@@ -43,7 +43,8 @@ instance: {
         parameters: {
             poolName: jpetstore
         }
-        sampleInterval: 500
+        sampleInterval: 50
+        exportInterval: 900
     }
     log: {
         name: app
@@ -82,7 +83,8 @@ instance: {
         parameters: {
             poolName: petclinic
         }
-        sampleInterval: 500
+        sampleInterval: 50
+        exportInterval: 900
     }
     log: {
         name: app
@@ -187,7 +189,7 @@ instance: {
         reader: com.aspectran.appmon.exporter.metric.undertow.NioWorkerMetricsReader
         target: tow.server
         sampleInterval: 50
-        exportInterval: 500
+        exportInterval: 900
         heading: true
     }
     log: {

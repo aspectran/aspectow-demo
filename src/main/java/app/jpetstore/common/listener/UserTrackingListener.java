@@ -15,6 +15,8 @@
  */
 package app.jpetstore.common.listener;
 
+import app.root.common.IPToCountryLookup;
+import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
 
 /**
@@ -22,4 +24,10 @@ import com.aspectran.core.component.bean.annotation.Component;
  */
 @Component
 public class UserTrackingListener extends app.root.common.listener.UserTrackingListener {
+
+    @Autowired
+    public UserTrackingListener(IPToCountryLookup ipToCountryLookup) {
+        super(ipToCountryLookup);
+    }
+
 }

@@ -15,11 +15,12 @@
  */
 package app.root.common.listener;
 
-import app.root.util.IPToCountryLookup;
+import app.root.common.IPToCountryLookup;
 import app.root.util.TransletUtils;
 import com.aspectran.core.activity.Activity;
 import com.aspectran.core.activity.InstantActivitySupport;
 import com.aspectran.core.component.bean.ablility.InitializableBean;
+import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.core.component.session.Session;
 import com.aspectran.core.component.session.SessionListener;
@@ -40,6 +41,13 @@ import static com.aspectran.appmon.exporter.event.session.SessionEventReader.USE
 @Component
 public class UserTrackingListener extends InstantActivitySupport implements SessionListener, InitializableBean {
 
+    private final IPToCountryLookup ipToCountryLookup;
+
+    @Autowired
+    public UserTrackingListener(IPToCountryLookup ipToCountryLookup) {
+        this.ipToCountryLookup = ipToCountryLookup;
+    }
+
     @Override
     public void sessionCreated(@NonNull Session session) {
         Activity activity = getCurrentActivity();
@@ -47,7 +55,7 @@ public class UserTrackingListener extends InstantActivitySupport implements Sess
         if (!StringUtils.isEmpty(ipAddress)) {
             session.setAttribute(USER_IP_ADDRESS, ipAddress);
             Locale locale = activity.getTranslet().getRequestAdapter().getLocale();
-            String countryCode = IPToCountryLookup.getInstance().getCountryCode(ipAddress, locale);
+            String countryCode = ipToCountryLookup.getCountryCode(ipAddress, locale);
             if (StringUtils.hasLength(countryCode)) {
                 session.setAttribute(USER_COUNTRY_CODE, countryCode);
             }

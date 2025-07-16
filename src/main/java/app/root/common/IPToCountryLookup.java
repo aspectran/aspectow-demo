@@ -13,9 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.root.util;
+package app.root.common;
 
+import app.root.util.IPv6Util;
+import app.root.util.TransletUtils;
 import com.aspectran.core.activity.Translet;
+import com.aspectran.core.component.bean.ablility.DisposableBean;
+import com.aspectran.core.component.bean.annotation.Bean;
+import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.utils.Assert;
 import com.aspectran.utils.SystemUtils;
 import com.aspectran.utils.apon.JsonToParameters;
@@ -47,7 +52,9 @@ import java.util.Locale;
  *
  * <p>Created: 2020/06/29</p>
  */
-public class IPToCountryLookup {
+@Component
+@Bean("ipToCountryLookup")
+public class IPToCountryLookup implements DisposableBean {
 
     private static final Logger logger = LoggerFactory.getLogger(IPToCountryLookup.class);
 
@@ -57,18 +64,16 @@ public class IPToCountryLookup {
 
     private static final String FAILED = "(failed)";
 
-    private static final Cache<String, String> cache =
-            new ConcurrentLruCache<>(64, IPToCountryLookup::getCountryCode);
-
     private static final List<String> iso2CountryCodes;
 
     private static final List<String> lookupAvoidedList;
 
     private static final String apiUrl;
 
-    private static final CloseableHttpClient httpClient;
+    private final Cache<String, String> cache =
+            new ConcurrentLruCache<>(128, this::getCountryCode);
 
-    private static final IPToCountryLookup instance;
+    private final CloseableHttpClient httpClient;
 
     static {
         iso2CountryCodes = List.of(Locale.getISOCountries());
@@ -80,7 +85,9 @@ public class IPToCountryLookup {
         );
 
         apiUrl = SystemUtils.getProperty("ipascc.api.url");
+    }
 
+    public IPToCountryLookup() {
         ConnectionConfig connectionConfig = ConnectionConfig.custom()
                 .setConnectTimeout(Timeout.ofMilliseconds(TIMEOUT))
                 .setSocketTimeout(Timeout.ofMilliseconds(TIMEOUT))
@@ -101,11 +108,12 @@ public class IPToCountryLookup {
                 .setConnectionManager(connectionManager)
                 .setDefaultRequestConfig(requestConfig)
                 .build();
-
-        instance = new IPToCountryLookup();
     }
 
-    private IPToCountryLookup() {
+    @Override
+    public void destroy() throws Exception {
+        httpClient.close();
+        cache.clear();
     }
 
     public String getCountryCode(Translet translet) {
@@ -135,7 +143,7 @@ public class IPToCountryLookup {
         return countryCode;
     }
 
-    private static String getCountryCode(String ipAddress) {
+    private String getCountryCode(String ipAddress) {
         ClassicRequestBuilder requestBuilder = ClassicRequestBuilder
                 .get()
                 .setCharset(StandardCharsets.UTF_8)
@@ -175,15 +183,13 @@ public class IPToCountryLookup {
         return (locale != null ? locale.getCountry() : null);
     }
 
-    public static IPToCountryLookup getInstance() {
-        return instance;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(getInstance().getCountryCode("103.99.216.86", Locale.KOREA));
-        System.out.println(getInstance().getCountryCode("103.99.216.999", Locale.KOREA));
-        System.out.println(getInstance().getCountryCode("0:0:0:0:0:0:0:1", Locale.KOREA));
-        System.out.println(getInstance().getCountryCode("2a01:6502:a56:4735::1", Locale.KOREA));
+    public static void main(String[] args) throws Exception {
+        IPToCountryLookup ipToCountryLookup = new IPToCountryLookup();
+        System.out.println(ipToCountryLookup.getCountryCode("103.99.216.86", Locale.KOREA));
+        System.out.println(ipToCountryLookup.getCountryCode("103.99.216.999", Locale.KOREA));
+        System.out.println(ipToCountryLookup.getCountryCode("0:0:0:0:0:0:0:1", Locale.KOREA));
+        System.out.println(ipToCountryLookup.getCountryCode("2a01:6502:a56:4735::1", Locale.KOREA));
+        ipToCountryLookup.destroy();
     }
 
 }

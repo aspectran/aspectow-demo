@@ -22,17 +22,21 @@ import com.aspectran.utils.apon.JsonToParameters;
 import com.aspectran.utils.apon.Parameters;
 import com.aspectran.utils.cache.Cache;
 import com.aspectran.utils.cache.ConcurrentLruCache;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.config.ConnectionConfig;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.support.ClassicRequestBuilder;
+import org.apache.hc.core5.util.Timeout;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
 
@@ -64,8 +68,6 @@ public class IPToCountryLookup {
 
     private static final CloseableHttpClient httpClient;
 
-    private static final RequestConfig requestConfig;
-
     private static final IPToCountryLookup instance;
 
     static {
@@ -79,11 +81,25 @@ public class IPToCountryLookup {
 
         apiUrl = SystemUtils.getProperty("ipascc.api.url");
 
-        httpClient = HttpClients.createDefault();
-        requestConfig = RequestConfig.custom()
-                .setSocketTimeout(TIMEOUT)
-                .setConnectTimeout(TIMEOUT)
-                .setConnectionRequestTimeout(TIMEOUT)
+        ConnectionConfig connectionConfig = ConnectionConfig.custom()
+                .setConnectTimeout(Timeout.ofMilliseconds(TIMEOUT))
+                .setSocketTimeout(Timeout.ofMilliseconds(TIMEOUT))
+                .build();
+
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectionRequestTimeout(Timeout.ofMilliseconds(TIMEOUT))
+                .setResponseTimeout(Timeout.ofMilliseconds(TIMEOUT))
+                .build();
+
+        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+        connectionManager.setDefaultMaxPerRoute(5);
+        connectionManager.setMaxTotal(5);
+        connectionManager.setDefaultConnectionConfig(connectionConfig);
+        connectionManager.getTotalStats();
+
+        httpClient = HttpClientBuilder.create()
+                .setConnectionManager(connectionManager)
+                .setDefaultRequestConfig(requestConfig)
                 .build();
 
         instance = new IPToCountryLookup();
@@ -120,31 +136,39 @@ public class IPToCountryLookup {
     }
 
     private static String getCountryCode(String ipAddress) {
-        HttpGet request = new HttpGet(apiUrl + ipAddress);
-        request.setConfig(requestConfig);
-        try (CloseableHttpResponse response = httpClient.execute(request)) {
-            int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode != 200) {
-                throw new IOException("Failed with HTTP error code : " + statusCode);
-            }
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                String result = EntityUtils.toString(entity);
-                Parameters parameters = JsonToParameters.from(result);
-                Parameters whois = parameters.getParameters("whois");
-                String countryCode = whois.getString("countryCode");
-                if (countryCode == null || !iso2CountryCodes.contains(countryCode)) {
-                    countryCode = NONE;
-                }
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Country code of IP address {} is {}", ipAddress, countryCode);
-                }
-                return countryCode;
-            }
+        ClassicRequestBuilder requestBuilder = ClassicRequestBuilder
+                .get()
+                .setCharset(StandardCharsets.UTF_8)
+                .setUri(apiUrl + ipAddress);
+
+        ClassicHttpRequest request = requestBuilder.build();
+
+        try {
+            return httpClient.execute(request, response -> {
+                        int statusCode = response.getCode();
+                        if (statusCode != 200) {
+                            throw new IOException("Failed with HTTP error code : " + statusCode);
+                        }
+                        HttpEntity entity = response.getEntity();
+                        if (entity != null) {
+                            String result = EntityUtils.toString(entity);
+                            Parameters parameters = JsonToParameters.from(result);
+                            Parameters whois = parameters.getParameters("whois");
+                            String countryCode = whois.getString("countryCode");
+                            if (countryCode == null || !iso2CountryCodes.contains(countryCode)) {
+                                countryCode = NONE;
+                            }
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("Country code of IP address {} is {}", ipAddress, countryCode);
+                            }
+                            return countryCode;
+                        }
+                        return FAILED;
+                    });
         } catch (IOException e) {
             logger.error("IP address lookup failed: {}", ipAddress, e);
+            return FAILED;
         }
-        return FAILED;
     }
 
     private String getCountryCode(Locale locale) {

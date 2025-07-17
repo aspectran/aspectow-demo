@@ -102,7 +102,6 @@ public class IPToCountryLookup implements DisposableBean {
         connectionManager.setDefaultMaxPerRoute(5);
         connectionManager.setMaxTotal(5);
         connectionManager.setDefaultConnectionConfig(connectionConfig);
-        connectionManager.getTotalStats();
 
         httpClient = HttpClientBuilder.create()
                 .setConnectionManager(connectionManager)

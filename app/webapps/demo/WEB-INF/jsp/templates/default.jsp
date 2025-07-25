@@ -222,7 +222,7 @@
         </div>
     </div>
 </footer>
-<script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/foundation/js/foundation.min.js"></script>
+<script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/foundation@6.9.0/js/foundation.min.js"></script>
 <script>
     $(document).foundation();
     $(function() {

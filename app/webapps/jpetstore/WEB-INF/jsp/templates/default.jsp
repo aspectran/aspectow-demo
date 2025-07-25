@@ -9,7 +9,7 @@
     <meta name="google" content="notranslate">
     <title>JPetStore Demo</title>
     <meta name="description" content="JPetStore is a full-stack sample web application built on top of MyBatis 3, Aspectran 8."/>
-    <link rel="stylesheet" type="text/css" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/foundation/css/aspectran.css"/>
+    <link rel="stylesheet" type="text/css" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/foundation@6.9.0/css/aspectran.css"/>
     <link rel="stylesheet" type="text/css" href="<aspectran:url value="/css/jpetstore.css?20250227"/>"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap">
     <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/modernizr-custom.js"></script>

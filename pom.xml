@@ -50,7 +50,7 @@
 
         <maven.compiler.release>17</maven.compiler.release>
 
-        <aspectran.version>8.5.3</aspectran.version>
+        <aspectran.version>8.5.4-SNAPSHOT</aspectran.version>
         <aspectow.appmon.version>1.0.0</aspectow.appmon.version>
     </properties>
 
@@ -118,7 +118,7 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>7.0.0</version>
+            <version>7.0.1</version>
         </dependency>
         <!-- Querydsl dependencies -->
         <dependency>

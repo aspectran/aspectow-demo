@@ -21,7 +21,7 @@ import com.aspectran.mybatis.SqlSessionAgent;
 import org.apache.ibatis.session.ExecutorType;
 
 @Component
-@Bean(id = "reuseSqlSession",lazyDestroy = true)
+@Bean(id = "reuseSqlSession", lazyDestroy = true)
 public class ReuseSqlSession extends SqlSessionAgent {
 
     public ReuseSqlSession() {

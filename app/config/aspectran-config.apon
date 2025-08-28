@@ -50,10 +50,10 @@ shell: {
         |{{gray}}=========== /_/ ====================================================
         |{{MAGENTA}}:: Built with Aspectran :: {{reset}}#{class:com.aspectran.core.AboutMe^version}
         |
-        |{{gray}}If you want a list of all supported built-in commands, type '{{GREEN,bold}}help{{gray}}'.
-        |{{gray}}To get help on a specific command, type '{{GREEN,bold}}command_name -h{{gray}}'.
-        |{{gray}}If you want a list of all available translets, type '{{CYAN,bold}}translet -l{{gray}}'.
-        |{{gray}}To run a translet, type '{{CYAN,bold}}translet <translet_name>{{gray}}' or '{{CYAN,bold}}translet_name{{gray}}'.
+        |{{gray}}To see a list of all built-in commands, type {{GREEN,bold}}help{{gray}}.
+        |{{gray}}To get help for a specific command, type {{GREEN,bold}}command_name -h{{gray}}.
+        |{{gray}}To list all available translets, type {{CYAN,bold}}translet -l{{gray}}.
+        |{{gray}}To run a translet, type {{CYAN,bold}}translet <translet_name>{{gray}} or just {{CYAN,bold}}translet_name{{gray}}.
         |{{reset}}
     )
     prompt: "{{green}}aspectow-demo>{{reset}} "

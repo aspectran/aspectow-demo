@@ -3,12 +3,20 @@
       th:replace="~{fragments/layout :: layout(~{::body}, 'error')}">
 <body>
 
-<h2 class="bi bi-patch-question"> Something happened...</h2>
+<h2 class="bi bi-exclamation-triangle-fill text-danger"> Oops! An Error Occurred</h2>
 
 <div class="row">
-    <div class="col">
-        <img th:src="@{/images/pets.png}"/>
-        <pre th:if="${message != null}" th:text="${message}" class="error mt-1">Exception message</pre>
+    <div class="col-md-6">
+        <img th:src="@{/images/pets.png}" class="img-fluid"/>
+    </div>
+    <div class="col-md-6">
+        <p class="lead">We're sorry, but the page you are looking for has encountered an unexpected error.</p>
+        <p>You can return to the <a th:href="@{/}">homepage</a> or contact support if the problem persists.</p>
+
+        <div th:if="${message != null}" class="mt-4">
+            <h5>Technical Details:</h5>
+            <pre class="error" th:text="${message}">Exception message</pre>
+        </div>
     </div>
 </div>
 

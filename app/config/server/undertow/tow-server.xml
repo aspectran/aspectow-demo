@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 8.0//EN"
-        "https://aspectran.com/dtd/aspectran-8.dtd">
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 9.0//EN"
+        "https://aspectran.com/dtd/aspectran-9.dtd">
 <aspectran>
 
     <description>
@@ -37,44 +37,34 @@
     </environment>
 
     <bean id="tow.server" class="com.aspectran.undertow.server.DefaultTowServer">
-        <properties>
-            <item name="httpListeners" type="array">
-                <bean class="com.aspectran.undertow.server.HttpListenerConfig">
-                    <properties>
-                        <item name="port" valueType="int">%{tow.server.listener.http.port}</item>
-                        <item name="host">%{tow.server.listener.http.host}</item>
-                    </properties>
-                </bean>
-            </item>
-            <item name="serverOptions">
-                <bean class="com.aspectran.undertow.server.TowOptions">
-                    <properties>
-                        <item name="decodeUrl" valueType="boolean">true</item>
-                        <item name="urlCharset">UTF-8</item>
-                    </properties>
-                </bean>
-            </item>
-            <item name="workerOptions">
-                <bean class="com.aspectran.undertow.server.TowOptions">
-                    <properties>
-                        <item name="workerName">TOW</item>
-                        <item name="workerIoThreads">%{tow.server.workerIoThreads}</item>
-                        <item name="workerTaskMaxThreads">%{tow.server.workerTaskMaxThreads}</item>
-                    </properties>
-                </bean>
-            </item>
-            <item name="requestHandlerFactory">
-                <bean class="com.aspectran.undertow.server.handler.ServletRequestHandlerFactory">
-                    <properties>
-                        <item name="handlerChainWrappers" type="array">
-                            <value>#{tow.server.handler.encodingHandlerWrapper}</value>
-                            <value>#{tow.server.handler.accessLogHandlerWrapper}</value>
-                            <value>#{tow.server.handler.loggingGroupHandlerWrapper}</value>
-                        </item>
-                    </properties>
-                </bean>
-            </item>
-        </properties>
+        <property name="httpListeners" type="array">
+            <bean class="com.aspectran.undertow.server.HttpListenerConfig">
+                <property name="port" valueType="int">%{tow.server.listener.http.port}</property>
+                <property name="host">%{tow.server.listener.http.host}</property>
+            </bean>
+        </property>
+        <property name="serverOptions">
+            <bean class="com.aspectran.undertow.server.TowOptions">
+                <property name="decodeUrl" valueType="boolean">true</property>
+                <property name="urlCharset">UTF-8</property>
+            </bean>
+        </property>
+        <property name="workerOptions">
+            <bean class="com.aspectran.undertow.server.TowOptions">
+                <property name="workerName">TOW</property>
+                <property name="workerIoThreads">%{tow.server.workerIoThreads}</property>
+                <property name="workerTaskMaxThreads">%{tow.server.workerTaskMaxThreads}</property>
+            </bean>
+        </property>
+        <property name="requestHandlerFactory">
+            <bean class="com.aspectran.undertow.server.handler.ServletRequestHandlerFactory">
+                <property name="handlerChainWrappers" type="array">
+                    <value>#{tow.server.handler.encodingHandlerWrapper}</value>
+                    <value>#{tow.server.handler.accessLogHandlerWrapper}</value>
+                    <value>#{tow.server.handler.loggingGroupHandlerWrapper}</value>
+                </property>
+            </bean>
+        </property>
     </bean>
 
     <bean id="tow.server.handler.encodingHandlerWrapper"

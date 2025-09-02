@@ -43,12 +43,12 @@ shell: {
     greetings: (
         |
         |{{WHITE,bold}}     ___                         __
-        |{{CYAN}}    /   |  ___  ____  ___  ___  / /____   ___  ____
-        |{{GREEN}}   / /| | / __|/ __ |/ _ |/ __|/ __/ __|/ __ |/ __ |
-        |{{YELLOW}}  / ___ |(__  ) /_/ /  __/ /  / / / /  / /_/ / / / /
-        |{{RED}} /_/  |_|____/ .___/|___/|___/|__/_/   |__(_(_/ /_/   {{WHITE,bold}}ASPECTOW-DEMO
-        |{{gray}}=========== /_/ ====================================================
-        |{{MAGENTA}}:: Built with Aspectran :: {{reset}}#{class:com.aspectran.core.AboutMe^version}
+        |{{CYAN      }}    /   |  ___  ____  ___  ___  / /____   ___  ____
+        |{{GREEN     }}   / /| | / __|/ __ |/ _ |/ __|/ __/ __|/ __ |/ __ |
+        |{{YELLOW    }}  / ___ |(__  ) /_/ /  __/ /  / / / /  / /_/ / / / /
+        |{{RED       }} /_/  |_|____/ .___/|___/|___/|__/_/   |__(_(_/ /_/   {{WHITE,bold}}ASPECTOW-DEMO
+        |{{gray      }}=========== /_/ ====================================================
+        |{{MAGENTA   }}:: Built with Aspectran :: {{reset}}#{class:com.aspectran.core.AboutMe^version}
         |
         |{{gray}}To see a list of all built-in commands, type {{GREEN,bold}}help{{gray}}.
         |{{gray}}To get help for a specific command, type {{GREEN,bold}}command_name -h{{gray}}.

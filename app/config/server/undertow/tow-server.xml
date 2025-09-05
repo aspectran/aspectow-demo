@@ -8,10 +8,8 @@
     </description>
 
     <environment>
-        <properties>
-            <item name="tow.server.listener.http.port" valueType="int">8080</item>
-            <item name="tow.server.listener.http.host">0.0.0.0</item>
-        </properties>
+        <property name="tow.server.listener.http.port" valueType="int">8080</property>
+        <property name="tow.server.listener.http.host">0.0.0.0</property>
     </environment>
 
     <environment>
@@ -145,9 +143,7 @@
     <bean id="tow.server.handler.accessLogHandlerWrapper"
           class="com.aspectran.undertow.server.handler.accesslog.AccessLogHandlerWrapper"
           scope="prototype">
-        <properties>
-            <item name="category">io.undertow.accesslog</item>
-        </properties>
+        <property name="category">io.undertow.accesslog</property>
         <properties profile="prod">
             <item name="formatString" tokenize="false">%t %{i,X-Forwarded-For} %{c,JSESSIONID} "%r" %s %b "%{i,Referer}" "%{i,User-Agent}"</item>
         </properties>

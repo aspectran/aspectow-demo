@@ -44,7 +44,7 @@
     <script>dayjs.extend(window.dayjs_plugin_localizedFormat)</script>
 </head>
 <body id="top-of-page" class="${page.style}" itemscope itemtype="https://schema.org/WebPage">
-<nav id="navigation" class="navbar navbar-expand-lg navbar-dark">
+<nav id="navigation" class="navbar navbar-expand-lg" data-bs-theme="dark">
     <div class="title-bar">
         <div class="title-bar-left">
             <aspectran:profile expression="prod">

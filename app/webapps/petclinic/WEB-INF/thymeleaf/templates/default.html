@@ -33,7 +33,7 @@
     <link th:href="@{/css/petclinic.css}" rel="stylesheet"/>
 </head>
 <body id="top-of-page" th:class="${pageStyle}" itemscope itemtype="https://schema.org/WebPage">
-<nav id="navigation" class="navbar navbar-expand-lg navbar-dark">
+<nav id="navigation" class="navbar navbar-expand-lg" data-bs-theme="dark">
     <div class="title-bar">
         <div class="title-bar-left">
             <a class="navbar-brand logo" th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" href="https://public.aspectran.com/" title="Aspectran"><img th:src="@{|${#{cdnAssets}.url}/img/aspectran-site-logo.png|}" alt="Aspectran"/></a>

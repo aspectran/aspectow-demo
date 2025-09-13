@@ -63,7 +63,7 @@
 <aspectran:profile expression="!prod">
   const BASE_PATH = "${pageContext.request.contextPath}/examples";
 </aspectran:profile>
-  $(function() {
+  $(function () {
     $("select[name=customerList]").change(function() {
       $("#details form, #cust-no").stop(true).fadeOut(300);
       getCustomer($(this).val());

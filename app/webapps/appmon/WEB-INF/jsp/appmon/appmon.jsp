@@ -16,7 +16,7 @@
     }
 </script>
 <div class="container">
-    <div class="row g-0">
+    <div class="row">
         <div class="domain metrics-bar">
             <div class="title">
                 <i class="bi bi-pc-display-horizontal"></i><span class="number"></span>

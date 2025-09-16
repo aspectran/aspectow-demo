@@ -8,7 +8,7 @@
     <meta name="google" content="notranslate">
     <title>PetClinic Demo</title>
     <meta name="description" content="PetClinic is a full-stack sample web application built on top Aspectran 8."/>
-    <link rel="stylesheet" type="text/css" th:href="@{|${#{cdnAssets}.url}/bootstrap@5.3.7/css/aspectran.css|}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{|${#{cdnAssets}.url}/bootstrap@5.3.8/css/aspectran.css|}"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap">
     <script th:src="@{|${#{cdnAssets}.url}/js/modernizr-custom.js|}"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -29,7 +29,7 @@
     <meta name="msapplication-TileImage" content="https://assets.aspectran.com/img/ms-icon-144x144.png"/>
     <meta name="msapplication-TileColor" content="#4B555A"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" integrity="sha256-pdY4ejLKO67E0CM2tbPtq1DJ3VGDVVdqAR6j3ZwdiE4=" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <link th:href="@{/css/petclinic.css}" rel="stylesheet"/>
 </head>
 <body id="top-of-page" th:class="${pageStyle}" itemscope itemtype="https://schema.org/WebPage">
@@ -76,17 +76,19 @@
                     </li>
                 </ul>
             </div>
-            <div class="top-bar-right">
+            <div class="top-bar-right d-lg-flex align-items-center gap-3">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" class="nav-link" href="https://public.aspectran.com/monitoring/#petclinic">Monitoring</a>
                         <a th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" class="nav-link" th:href="@{/../monitoring/#petclinic}">Monitoring</a>
                     </li>
                 </ul>
-                <div class="quick-search-box">
-                    <form class="d-flex input-group" role="search" name="google_quick_search">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="keyword">
-                        <button class="btn" type="submit"><i class="bi bi-search"></i></button>
+                <div class="quick-search-box quick-search-box mx-3 my-2 m-lg-0">
+                    <form name="google_quick_search" role="search">
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="keyword" placeholder="Search" aria-label="Search" aria-describedby="top-bar-quick-search-btn">
+                            <button class="btn btn-outline-primary text-white" type="button" id="top-bar-quick-search-btn"><i class="bi bi-search"></i></button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -125,7 +127,7 @@
             </nav>
         </div>
     </div>
-    <div class="container contour">
+    <div class="container contour petclinic p-0">
         <th:block th:insert="${pageContent}"/>
     </div>
 </section>

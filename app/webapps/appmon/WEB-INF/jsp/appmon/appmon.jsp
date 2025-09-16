@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
 <link rel="stylesheet" href="<aspectran:token type='bean' expression='appmonAssets^url'/>/css/appmon.css?<aspectran:token type='bean' expression='appmonAssets^cacheBustingVersion'/>">
+<link rel="stylesheet" href="<aspectran:token type='bean' expression='appmonAssets^url'/>/css/appmon-dark.css?<aspectran:token type='bean' expression='appmonAssets^cacheBustingVersion'/>">
 <script src="<aspectran:token type='bean' expression='appmonAssets^url'/>/js/front-builder.js?<aspectran:token type='bean' expression='appmonAssets^cacheBustingVersion'/>"></script>
 <script src="<aspectran:token type='bean' expression='appmonAssets^url'/>/js/front-viewer.js?<aspectran:token type='bean' expression='appmonAssets^cacheBustingVersion'/>"></script>
 <script src="<aspectran:token type='bean' expression='appmonAssets^url'/>/js/websocket-client.js?<aspectran:token type='bean' expression='appmonAssets^cacheBustingVersion'/>"></script>

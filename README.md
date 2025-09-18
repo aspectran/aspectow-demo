@@ -1,6 +1,6 @@
 # Aspectow Demo Site: A Comprehensive Reference Application
 
-This repository hosts the Aspectow Demo Site, a collection of reference applications designed to illustrate best practices and common use cases for developing applications with the Aspectran framework. It showcases various features of Aspectran, including web application development, RESTful API creation, and integration with other technologies.
+This repository contains the source code for the Aspectow Demo Site, a collection of reference applications designed to illustrate best practices and common use cases for developing applications with the Aspectran framework. It showcases various features of Aspectran, including web application development, RESTful API creation, and integration with other technologies.
 
 ## Web Applications Demonstrated
 

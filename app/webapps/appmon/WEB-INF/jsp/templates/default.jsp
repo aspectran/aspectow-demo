@@ -45,7 +45,7 @@
     <link rel="icon" type="image/png" sizes="96x96" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/favicon-96x96.png"/>
     <meta name="msapplication-TileImage" content="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/ms-icon-144x144.png"/>
     <meta name="msapplication-TileColor" content="#4B555A"/>
-    <link rel="stylesheet" type="text/css" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/bootstrap@5.3.8/css/aspectran.css?20250917"/>
+    <link rel="stylesheet" type="text/css" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/bootstrap@5.3.8/css/aspectran.css?20250918"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap">
     <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/modernizr-custom.js"></script>
     <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/countries/countries.js"></script>
@@ -325,114 +325,6 @@
         $("form[name=google_quick_search]").submit(function (event) {
             window.open("https://www.google.com/search?q=" + this.keyword.value + "+site:https%3A%2F%2Faspectran.com");
             event.preventDefault();
-        });
-    });
-</script>
-<script>
-    $(function () {
-        $("#masthead h1, article h1, article h2, article h3").each(function (index, item) {
-            let tagn = item.localName;
-            let anchor = "top-of-page";
-            if (tagn !== "h1") {
-                anchor = "anchor-" + (index + 1);
-                $(this).before("<a class='toc-anchor " + anchor + "' id='" + anchor + "' name='" + anchor + "'></a>");
-            }
-            $("<li class='toc-" + tagn + "'></li>")
-                .append($("<a anchor='" + anchor + "' href='#" + anchor + "'/>").text($(item).text()))
-                .appendTo("#toc ul");
-        });
-    });
-</script>
-<script>
-    $(function () {
-        $(".lazy-sticky").each(function () {
-            const $win = $(window);
-            const $this = $(this);
-            const baseOffsetTop = $this.offset().top;
-            const upToTopHeight = $("#up-to-top").height() + 30 + 60;
-            let footerHeight = $("#footer-content").height() + upToTopHeight;
-            let offsetTop = 0;
-            let thisHeight = $this.height();
-            let winHeight = $win.height();
-            let scrollTimer = null;
-            let immediate = false;
-            $this.find("#toc ul a").click(function () {
-                immediate = true;
-                let anchor = $(this).attr("anchor");
-                if (anchor !== "top-of-page") {
-                    $("#navigation").addClass("immediate");
-                }
-            });
-            $win.scroll(function () {
-                let scrollTop = $win.scrollTop();
-                if (scrollTop < baseOffsetTop) {
-                    if (scrollTimer) {
-                        clearInterval(scrollTimer);
-                        scrollTimer = null;
-                    }
-                    scrollTimer = setInterval(function () {
-                        if (offsetTop !== 0) {
-                            $this.css({
-                                top: 0
-                            });
-                        }
-                        offsetTop = 0;
-                        clearInterval(scrollTimer);
-                        scrollTimer = null;
-                        immediate = false;
-                    }, immediate ? 250 : 500);
-                } else {
-                    let topBarHeight = $("#navigation.fixed .top-bar").height()||0;
-                    if (immediate || (scrollTop > baseOffsetTop + topBarHeight + offsetTop + thisHeight - 20) ||
-                        (scrollTop < baseOffsetTop + topBarHeight + offsetTop)) {
-                        if ($this.offset().left >= 15 && $this.width() < 500) {
-                            if (scrollTimer) {
-                                clearInterval(scrollTimer);
-                                scrollTimer = null;
-                            }
-                            scrollTimer = setInterval(function () {
-                                topBarHeight = $("#navigation.fixed .top-bar").height()||0;
-                                scrollTop = $win.scrollTop();
-                                if (scrollTop < baseOffsetTop + topBarHeight) {
-                                    scrollTop = 0;
-                                } else {
-                                    scrollTop = scrollTop - baseOffsetTop + topBarHeight + 30;
-                                }
-                                if (scrollTop > $(document).height() - footerHeight - thisHeight - baseOffsetTop + topBarHeight) {
-                                    scrollTop = $(document).height() - footerHeight - thisHeight - baseOffsetTop + topBarHeight;
-                                }
-                                offsetTop = scrollTop;
-                                $this.css({
-                                    position: "relative"
-                                });
-                                $this.animate({
-                                    top: scrollTop + "px"
-                                }, 300);
-                                clearInterval(scrollTimer);
-                                scrollTimer = null;
-                                winHeight = $win.height();
-                                thisHeight = $this.height();
-                                footerHeight = $("#footer-content").height() + upToTopHeight;
-                                immediate = false;
-                            }, immediate ? 250 : 500);
-                        }
-                    }
-                }
-            });
-            $win.resize(function () {
-                if ($this.offset().left < 15 || $this.width() >= 500) {
-                    clearInterval(scrollTimer);
-                    $this.css("top", 0);
-                } else {
-                    $win.scroll();
-                }
-            });
-            setTimeout(function () {
-                if ($win.scrollTop() > baseOffsetTop) {
-                    offsetTop = $win.scrollTop();
-                    $win.scroll();
-                }
-            }, 150);
         });
     });
 </script>

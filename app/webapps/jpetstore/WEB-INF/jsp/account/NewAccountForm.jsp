@@ -24,7 +24,7 @@
 	<form method="post" action="<aspectran:url value="/account/newAccount"/>">
 
 		<h3>User Information</h3>
-		<table>
+		<table class="table table-striped">
 			<colgroup>
 				<col style="width: 25%"/>
 				<col/>

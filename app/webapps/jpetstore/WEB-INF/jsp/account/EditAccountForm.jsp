@@ -31,7 +31,7 @@
 	<form method="post" action="<aspectran:url value="/account/editAccount"/>">
 
 		<h3>User Information</h3>
-		<table>
+        <table class="table table-striped">
 			<colgroup>
 				<col style="width: 25%"/>
 				<col/>
@@ -59,7 +59,7 @@
 		<%@ include file="IncludeAccountFields.jsp" %>
 
 		<div class="button-bar">
-			<button type="submit" class="button">Save Account Information</button>
+			<button type="submit" class="btn btn-primary">Save Account Information</button>
 		</div>
 
 	</form>

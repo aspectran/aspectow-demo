@@ -17,7 +17,7 @@
         document.write('<script src="https://appmon-assets.aspectran.com/appmon/js/polling-client.js?<aspectran:token type='bean' expression='appmonAssets^cacheBustingVersion'/>">\x3C/script>');
     }
 </script>
-<div class="container">
+<div class="container g-1">
     <div class="row">
         <div class="domain metrics-bar">
             <div class="title">

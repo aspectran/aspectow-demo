@@ -28,13 +28,13 @@
 </c:if>
 
 <div id="BackLink">
-    <a href="<aspectran:url value="/"/>">Return to Main Menu</a>
+    <a class="btn btn-secondary" href="<aspectran:url value="/"/>">Return to Main Menu</a>
 </div>
 
 <div id="CenterForm">
 
     <h3>Order</h3>
-    <table>
+    <table class="table table-striped">
         <colgroup>
             <col style="width: 25%"/>
             <col/>
@@ -52,7 +52,7 @@
     </table>
 
     <h3>Payment Details</h3>
-    <table>
+    <table class="table table-striped">
         <colgroup>
             <col style="width: 25%"/>
             <col/>
@@ -75,7 +75,7 @@
     </table>
 
     <h3>Billing Address</h3>
-    <table>
+    <table class="table table-striped">
         <colgroup>
             <col style="width: 25%"/>
             <col/>
@@ -115,7 +115,7 @@
     </table>
 
     <h3>Shipping Address</h3>
-    <table>
+    <table class="table table-striped">
         <colgroup>
             <col style="width: 25%"/>
             <col/>
@@ -162,7 +162,8 @@
         </tr>
     </table>
 
-    <table>
+    <table class="table table-striped">
+        <thead>
         <tr>
             <th>Item ID</th>
             <th>Description</th>
@@ -170,6 +171,8 @@
             <th>Price</th>
             <th>Total Cost</th>
         </tr>
+        </thead>
+        <tbody class="table-group-divider">
         <c:forEach var="lineItem" items="${order.lineItems}">
             <tr>
                 <td align="center">
@@ -193,6 +196,8 @@
                 <td align="center"><fmt:formatNumber value="${lineItem.total}" pattern="$#,##0.00"/></td>
             </tr>
         </c:forEach>
+        </tbody>
+        <tfoot class="table-group-divider">
         <tr>
             <th colspan="3"></th>
             <th>Total</th>
@@ -200,10 +205,11 @@
                 <fmt:formatNumber value="${order.totalPrice}" pattern="$#,##0.00"/>
             </th>
         </tr>
+        </tfoot>
     </table>
 
     <div class="button-bar">
-        <button type="button" class="button"
+        <button type="button" class="btn btn-warning"
                 onclick="location.href='<aspectran:url value="/order/deleteOrder/${order.orderId}"/>';">Delete Order
         </button>
     </div>

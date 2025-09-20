@@ -22,14 +22,15 @@
 <%@ include file="../common/IncludeTop.jsp"%>
 
 <div id="BackLink">
-	<a href="<aspectran:url value="/categories/${product.categoryId}"/>">Return to ${product.categoryId}</a>
+	<a class="btn btn-secondary" href="<aspectran:url value="/categories/${product.categoryId}"/>">Return to ${product.categoryId}</a>
 </div>
 
 <div id="Catalog">
 
 	<h3>${product.name}</h3>
 
-	<table>
+    <table class="table table-striped">
+        <thead>
 		<tr>
 			<th>Item ID</th>
 			<th>Product ID</th>
@@ -37,6 +38,8 @@
 			<th>List Price</th>
 			<th>&nbsp;</th>
 		</tr>
+        </thead>
+        <tbody class="table-group-divider">
 		<c:forEach var="item" items="${itemList}">
 			<tr>
 				<td>
@@ -49,10 +52,11 @@
 				</td>
 				<td><fmt:formatNumber value="${item.listPrice}" pattern="$#,##0.00"/></td>
 				<td>
-					<a class="button" href="<aspectran:url value="/cart/addItemToCart?itemId=${item.itemId}"/>">Add to Cart</a>
+					<a class="btn btn-primary" href="<aspectran:url value="/cart/addItemToCart?itemId=${item.itemId}"/>">Add to Cart</a>
 				</td>
 			</tr>
 		</c:forEach>
+        </tbody>
 	</table>
 
 </div>

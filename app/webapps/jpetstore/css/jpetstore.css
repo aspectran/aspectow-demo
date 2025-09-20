@@ -13,12 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-#Header {
+.jpetstore #Header {
     background-color: #333;
     color: #eaac00;
 }
 
-#Logo {
+.jpetstore #Logo {
     width: 33%;
     height: 9ex;
     margin: 0;
@@ -28,15 +28,15 @@
     line-height: 9ex;
 }
 
-#Logo img {
+.jpetstore #Logo img {
     max-width: none;
 }
 
-body > #Logo {
+.jpetstore > #Logo {
     height: 9ex;
 }
 
-#Menu {
+.jpetstore #Menu {
     clear: both;
     margin: 0 auto 15px;
     padding: 0;
@@ -47,39 +47,39 @@ body > #Logo {
     text-align: center;
 }
 
-#Menu .separator {
+.jpetstore #Menu .separator {
     color: #677278;
     font-weight: normal;
 }
 
-#Menu i {
+.jpetstore #Menu i {
     color: #02b502;
 }
 
-#Menu, #Menu a, #Menu a:link, #Menu a:visited, #Menu a:hover {
+.jpetstore #Menu, .jpetstore #Menu a, .jpetstore #Menu a:link, .jpetstore #Menu a:visited, .jpetstore #Menu a:hover {
     color: #eaac00;
     text-decoration: none;
     font-family: helvetica, tahoma, arial, verdana, sans-serif;
 }
 
-.MenuContent {
+.jpetstore .MenuContent {
     padding: 2px 6px;
     border-bottom: 1px solid #677278;
     width: fit-content;
     margin: auto;
 }
 
-.MenuContent.Submenu {
+.jpetstore .MenuContent.Submenu {
     border: none;
     font-size: .85em;
     padding-top: 6px;
 }
 
-body > #Menu {
+.jpetstore  > #Menu {
     height: 9ex;
 }
 
-#Search {
+.jpetstore #Search {
     margin: 0;
     padding: 15px 15px 0 15px;
     float: right;
@@ -88,33 +88,33 @@ body > #Menu {
     line-height: 9ex;
 }
 
-#Search button {
+.jpetstore #Search button {
     background-color: #588519;
 }
 
-#QuickLinks {
+.jpetstore #QuickLinks {
     text-align: center;
     background-color: #ccc;
     width: 100%;
     clear: both;
     padding: 4px 4px;
 }
-#QuickLinks a {
+.jpetstore #QuickLinks a {
     padding: 0 10px;
     color: #333;
 }
-#QuickLinks a:hover {
+.jpetstore #QuickLinks a:hover {
     color: #43921a;
 }
 
-#Footer {
+.jpetstore #Footer {
     background-color: #333;
     color: #fff;
     overflow: auto;
     border-radius: 0 0 10px 10px;
 }
 
-#PoweredBy {
+.jpetstore #PoweredBy {
     width: 50%;
     height: 9ex;
     margin: 0;
@@ -122,11 +122,11 @@ body > #Menu {
     float: left;
 }
 
-body > #PoweredBy {
+.jpetstore > #PoweredBy {
     height: 9ex;
 }
 
-#Banner {
+.jpetstore #Banner {
     width: 30%;
     height: 9ex;
     margin: 0;
@@ -136,11 +136,11 @@ body > #PoweredBy {
     text-align: center;
 }
 
-body > #Banner {
+.jpetstore  > #Banner {
     height: 9ex;
 }
 
-#Content {
+.jpetstore #Content {
     padding: 15px;
     width: 100%;
     min-height: 200px;
@@ -150,75 +150,57 @@ body > #Banner {
     background-color: #fff;
 }
 
-#Content h3 {
+.jpetstore #Content h3 {
     text-align: left;
+    margin-bottom: .5em;
 }
 
-#Content table {
-    border-collapse: collapse;
-    border-spacing: 0;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#Content table td {
-    vertical-align: middle;
-}
-
-#Content table td .button {
-    margin: 0;
-}
-
-#Content table td input, #Content table td select {
-    margin: 0;
-}
-
-#Content #CenterForm {
+.jpetstore #Content #CenterForm {
     width: 60%;
     min-width: 680px;
     margin: 0 auto;
 }
 
-#Separator {
+.jpetstore #Separator {
     clear: both;
     margin: 0;
     height: 0;
 }
 
-#Main {
+.jpetstore #Main {
     margin: 0;
 }
 
-#Welcome {
+.jpetstore #Welcome {
     text-align: center;
     padding-bottom: 10px;
 }
 
-#Sidebar {
+.jpetstore #Sidebar {
     float: left;
     width: 30%;
     line-height: 160%;
 }
-#Sidebar hr {
+.jpetstore #Sidebar hr {
     margin: 3px 0;
 }
 
-#RightSidebar {
+.jpetstore #RightSidebar {
     float: left;
     width: 30%;
 }
-#RightSidebar #MyList {
+.jpetstore #RightSidebar #MyList {
     margin-left: 15px;
     width: auto;
 }
 
-#MainImage {
+.jpetstore #MainImage {
     float: left;
     background: inherit;
     text-align: center;
     width: 40%;
 }
-#MainImageContent {
+.jpetstore #MainImageContent {
     border: 1px solid #ccc;
     background-color: #fff;
     margin-bottom: 15px;
@@ -226,75 +208,75 @@ body > #Banner {
 }
 
 @media (max-width: 700px) {
-    #Sidebar, #MainImage, #RightSidebar {
+    .jpetstore #Sidebar, .jpetstore #MainImage, .jpetstore #RightSidebar {
         clear: both;
         width: auto;
         float: none;
     }
-    #RightSidebar #MyList {
+    .jpetstore #RightSidebar #MyList {
         width: auto;
         float: none;
         margin: 0;
     }
-    #MainImage {
+    .jpetstore #MainImage {
         margin-top: 15px;
     }
 }
 
-#Catalog {
+.jpetstore #Catalog {
     background: inherit;
     text-align: center;
 }
 
-#BackLink {
+.jpetstore #BackLink {
     position: absolute;
     right: 0;
     top: 0;
-    padding: 25px;
+    padding: 1rem;
 }
 
-#Cart {
+.jpetstore #Cart {
     width: 100%;
 }
 
-#MyList {
+.jpetstore #MyList {
     width: 30%;
     float: left;
     text-align: left;
 }
 
-#Signon .panel {
+.jpetstore #Signon .panel {
     max-width: 450px;
     margin: 0 auto;
     overflow: auto;
 }
 
-#Signon .panel.register {
+.jpetstore #Signon .panel.register {
     margin-top: 10px;
     background-color: #FFFFFF;
 }
 
-#Signon .panel.failed {
+.jpetstore #Signon .panel.failed {
     background-color: red;
     color: white;
     border: none;
 }
 
-.button-bar {
+.jpetstore .button-bar {
     text-align: center;
 }
 
-#MessageBar {
+.jpetstore #MessageBar {
     padding: 10px;
     margin-bottom: 10px;
     background-color: #eaac00;
     text-align: center;
     border-radius: 10px;
 }
-#MessageBar p {
+.jpetstore #MessageBar p {
     margin: 0;
 }
 
-.error-msg {
+.jpetstore .error-msg {
     color: red;
 }

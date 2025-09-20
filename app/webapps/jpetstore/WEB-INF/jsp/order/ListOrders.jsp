@@ -24,7 +24,9 @@
 <div id="Catalog">
 
 	<h3>My Orders (<fmt:formatNumber value="${pageInfo.totalElements}"/>)</h3>
-	<table>
+
+    <table class="table table-striped">
+        <thead>
 		<tr>
 			<th>Order ID</th>
 			<th>Date</th>
@@ -32,6 +34,8 @@
 			<th>Courier</th>
 			<th>Status</th>
 		</tr>
+        </thead>
+        <tbody class="table-group-divider">
 		<c:forEach var="order" items="${orderList}">
 			<tr>
 				<td>
@@ -50,6 +54,7 @@
 				</td>
 			</tr>
 		</c:if>
+        </tbody>
 	</table>
 
 	<c:if test="${pageInfo.totalPages > 1}">

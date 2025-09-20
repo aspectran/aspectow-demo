@@ -29,7 +29,7 @@
 
 	<h3>${product.name}</h3>
 
-	<table>
+    <table class="table table-bordered table-striped">
 		<tr>
 			<td>
 				<img src="<aspectran:url value="${product.image}"/>"/>
@@ -56,7 +56,7 @@
 		</tr>
 	</table>
 	<div class="button-bar">
-		<a class="button" href="<aspectran:url value="/cart/addItemToCart?itemId=${item.itemId}"/>">Add to Cart</a>
+		<a class="btn btn-primary" href="<aspectran:url value="/cart/addItemToCart?itemId=${item.itemId}"/>">Add to Cart</a>
 	</div>
 
 </div>

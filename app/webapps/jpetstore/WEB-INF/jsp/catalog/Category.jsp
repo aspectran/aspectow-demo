@@ -21,18 +21,21 @@
 <%@ include file="../common/IncludeTop.jsp"%>
 
 <div id="BackLink">
-	<a href="<aspectran:url value="/"/>">Return to Main Menu</a>
+	<a class="btn btn-secondary" href="<aspectran:url value="/"/>">Return to Main Menu</a>
 </div>
 
 <div id="Catalog">
 
 	<h3>${category.name}</h3>
 
-	<table>
+	<table class="table table-striped">
+        <thead>
 		<tr>
 			<th>Product ID</th>
 			<th>Name</th>
 		</tr>
+        </thead>
+        <tbody class="table-group-divider">
 		<c:forEach var="product" items="${productList}">
 			<tr>
 				<td>
@@ -41,6 +44,7 @@
 				<td>${product.name}</td>
 			</tr>
 		</c:forEach>
+        </tbody>
 	</table>
 
 </div>

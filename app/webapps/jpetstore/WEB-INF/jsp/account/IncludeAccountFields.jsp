@@ -18,7 +18,7 @@
 
 --%>
 <h3>Account Information</h3>
-<table>
+<table class="table table-striped">
 	<colgroup>
 		<col style="width: 25%"/>
 		<col/>
@@ -96,7 +96,7 @@
 </table>
 
 <h3>Profile Information</h3>
-<table>
+<table class="table table-striped">
 	<colgroup>
 		<col style="width: 25%"/>
 		<col/>

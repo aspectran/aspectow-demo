@@ -7,15 +7,21 @@
         margin: 0;
         padding: 0;
     }
-
-    #file-upload-list .card img {
+    #file-upload-list .card img, #file-upload-list .card canvas {
         border-radius: 0;
+        width: 100px;
+        height: 100px;
     }
-
+    #file-upload-list .card canvas.link:hover, #file-upload-list .card img.link:hover {
+        cursor: pointer;
+    }
+    #file-upload-list .card img.blank {
+        background: #ccc url("https://assets.aspectran.com/img/aspectran-site-logo.png") no-repeat;
+        background-size: cover;
+    }
     #file-upload-list .card-body {
         padding: 0.5rem;
     }
-
     #file-upload-list .file-info p {
         margin: 0;
         font-size: 0.9em;
@@ -23,19 +29,20 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
     #file-upload-list .delete-btn {
         position: absolute;
         top: 5px;
         right: 5px;
     }
-
     #file-upload-list .progress {
-        height: 5px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
     }
 </style>
-<div class="row gx-3">
-    <div class="col-12 mt-3">
+<div class="row gx-3 pt-4">
+    <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Demo Notes</h3>
@@ -61,11 +68,11 @@
     <div class="col-12 mt-3 text-end">
         <form id="file-upload-form" action="<aspectran:url value="/examples/file-upload/files"/>" method="POST"
               enctype="multipart/form-data">
-            <div id="file-upload-list" class="panel mb-1 text-center"><i class="bi bi-box-arrow-in-down display-1"></i>
-                <p>Drop files here to upload</p>
-            </div>
             <label for="file-adds-input" class="btn btn-success">Add files...</label>
             <input type="file" name="file" id="file-adds-input" class="visually-hidden" multiple>
+            <div class="panel mt-1 text-center"><i class="bi bi-box-arrow-in-down display-1"></i>
+                <p>Drop files here to upload</p>
+            </div>
         </form>
     </div>
     <div class="col-12 mt-3">
@@ -73,16 +80,15 @@
         <div id="file-upload-list">
             <ul class="row g-2">
                 <c:forEach items="${files}" var="file">
-                    <li class="col-md-4 mb-3">
+                    <li class="col-md-4">
                         <div class="card">
                             <div class="row g-0">
-                                <div class="col-4">
+                                <div class="col-auto">
                                     <a href="<aspectran:url value="files/${file.key}"/>" target="_blank">
-                                        <img src="<aspectran:url value="files/${file.key}"/>"
-                                             class="img-fluid rounded-start" alt="${file.fileName}">
+                                        <img src="<aspectran:url value="files/${file.key}"/>" alt="${file.fileName}">
                                     </a>
                                 </div>
-                                <div class="col-8">
+                                <div class="col">
                                     <div class="card-body file-info">
                                         <p><a href="<aspectran:url value="files/${file.key}"/>"
                                               download="${file.fileName}" target="_blank">${file.fileName}</a></p>
@@ -150,16 +156,15 @@
                 ul = $('<ul/>').addClass('row');
                 $('#file-upload-list').html(ul);
             }
-            data.context = $('<li/>').addClass('col-md-4 mb-3');
+            data.context = $('<li/>').addClass('col-md-4');
             let card = $('<div/>').addClass('card');
             let row = $('<div/>').addClass('row g-0');
-            let col4 = $('<div/>').addClass('col-4');
-            let col8 = $('<div/>').addClass('col-8');
+            let col4 = $('<div/>').addClass('col-auto');
+            let col8 = $('<div/>').addClass('col');
             let cardBody = $('<div/>').addClass('card-body file-info');
             row.append(col4).append(col8.append(cardBody));
             card.append(row);
             data.context.append(card);
-
             if (data.files) {
                 $.each(data.files, function (index, file) {
                     let node = cardBody;
@@ -185,9 +190,9 @@
                 file = data.files[index],
                 node = $(data.context);
             if (file.preview) {
-                node.find('.col-4').append(file.preview);
+                node.find('.col-auto').append(file.preview);
             } else {
-                node.find('.col-4').append($('<img/>').addClass('img-fluid rounded-start blank'));
+                node.find('.col').append($('<img/>').addClass('blank'));
             }
             if (file.error) {
                 node.find(".file-info").append($('<div class="alert alert-danger p-1 m-0 mt-1"/>').text(file.error));
@@ -208,7 +213,11 @@
                     let link = $('<a>')
                         .attr('href', "files/" + file.key)
                         .attr('target', '_blank');
-                    node.find(".col-4").wrap(link);
+                    node.find(".col-auto canvas")
+                        .addClass("link")
+                        .click(function() {
+                            window.open(file.url);
+                        }).wrap(link);
                     let fileLink = $('<a>')
                         .attr('href', "files/" + file.key)
                         .attr('target', '_blank')
@@ -242,11 +251,11 @@
                     node.find('.file-info').append(error);
                 }
                 setTimeout(function () {
-                    node.find(".progress").fadeOut();
+                    // node.find(".progress").fadeOut();
                 }, 500);
             });
         }).on('fileuploadfail', function (e, data) {
-            $.each(data.files, function (index) {
+            $.each(data.files, function () {
                 let node = $(data.context);
                 let error = $('<div class="alert alert-danger p-1 m-0 mt-1"/>').text('File upload failed.');
                 node.find('.file-info').append(error);

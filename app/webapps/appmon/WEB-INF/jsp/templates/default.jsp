@@ -142,7 +142,7 @@
     </div>
 </nav>
 <section itemscope itemtype="https://schema.org/Article">
-    <div id="masthead" class="<c:if test="${fn:contains(page.style, 'compact')}">masthead-compact</c:if><c:if test="${not empty page.headimageinclude}">masthead-with-image</c:if>">
+    <div id="masthead">
         <div class="container">
         <c:if test="${not empty page.headline}">
             <header>

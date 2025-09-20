@@ -22,7 +22,7 @@
 <%@ include file="../common/IncludeTop.jsp"%>
 
 <div id="BackLink">
-	<a href="<aspectran:url value="/"/>">Return to Main Menu</a>
+	<a class="btn btn-secondary" href="<aspectran:url value="/"/>">Return to Main Menu</a>
 </div>
 
 <div id="Catalog">
@@ -32,8 +32,9 @@
 		<h3>Shopping Cart</h3>
 
 		<form method="post" hx-post="<aspectran:url value="/cart/updateCartQuantities"/>" hx-target="#window">
-			<table>
-				<tr>
+            <table class="table table-striped">
+                <thead>
+                <tr>
 					<th><b>Item ID</b></th>
 					<th><b>Product ID</b></th>
 					<th><b>Description</b></th>
@@ -43,6 +44,8 @@
 					<th><b>Total Cost</b></th>
 					<th>&nbsp;</th>
 				</tr>
+                </thead>
+                <tbody class="table-group-divider">
 				<c:if test="${cart.numberOfItems eq 0}">
 					<tr>
 						<td colspan="8">Your cart is empty.</td>
@@ -68,6 +71,8 @@
 						</td>
 					</tr>
 				</c:forEach>
+                </tbody>
+                <tfoot class="table-group-divider">
 				<tr>
 					<td colspan="4"></td>
 					<td>
@@ -83,6 +88,7 @@
 						</c:if>
 					</td>
 				</tr>
+                </tfoot>
 			</table>
 
 		</form>

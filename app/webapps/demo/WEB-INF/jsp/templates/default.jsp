@@ -6,6 +6,25 @@
 <html class="no-js" lang="en">
 <head>
     <meta charset="utf-8">
+    <script>
+        (() => {
+            const getStoredTheme = () => localStorage.getItem('theme');
+            const getPreferredTheme = () => {
+                const storedTheme = getStoredTheme();
+                if (storedTheme) {
+                    return storedTheme;
+                }
+                return 'auto';
+            };
+            const setTheme = theme => {
+                const newTheme = theme === 'auto'
+                    ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+                    : theme;
+                document.documentElement.setAttribute('data-bs-theme', newTheme);
+            };
+            setTheme(getPreferredTheme());
+        })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google" content="notranslate">
     <title>${empty page.title ? "Aspectran Demo" : page.title}</title>
@@ -27,7 +46,6 @@
     <meta name="msapplication-TileImage" content="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/ms-icon-144x144.png">
     <meta name="msapplication-TileColor" content="#4B555A">
     <link rel="stylesheet" type="text/css" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/bootstrap@5.3.8/css/aspectran.css?v=20250920a"/>
-<%--    <link rel="stylesheet" type="text/css" href="http://localhost:8090/assets/bootstrap@5.3.8/css/aspectran.css?v=20250920a"/>--%>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap">
     <script src="https://assets.aspectran.com/js/modernizr-custom.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -147,18 +165,10 @@
             </div>
         </div>
     </div>
-    <div class="breadcrumb-bar" style="display:none" data-hide-for="medium down">
-        <div class="container">
-            <nav aria-label="You are here:">
-                <ol class="breadcrumb" itemprop="breadcrumb">
-                </ol>
-            </nav>
-        </div>
-    </div>
 </nav>
 <section itemscope itemtype="https://schema.org/Article">
-    <div id="masthead" class="<c:if test="${fn:contains(page.style, 'compact')}">masthead-compact</c:if><c:if test="${not empty page.headimageinclude}">masthead-with-image</c:if>">
-        <div class="container ${page.style}">
+    <div id="masthead">
+        <div class="container">
         <c:if test="${not empty page.headline}">
             <header>
                 <c:if test="${not empty page.subheadline}">

@@ -1,22 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
-<div class="row gx-3">
-    <div class="col contour">
-        <div id="skylark-term"></div>
+<div class="row">
+    <div class="col">
+        <div id="skylark-terminal"></div>
     </div>
 </div>
 <style>
-    body.plate .cell.contour {
+    body.plate .contour > .row {
         background-color: #000;
-    }
-    #skylark-term {
-        padding: 15px 0 0 0;
-    }
-    .terminal-wrapper textarea {
-        box-shadow: none;
-        min-height: initial;
-        min-width: initial;
     }
 </style>
 <script src="https://unpkg.com/jquery.terminal/js/jquery.terminal.min.js"></script>
@@ -24,7 +16,7 @@
 <script>
     const backend = "<aspectran:url value="/"/>";
     $(function () {
-        $('#skylark-term').terminal(function(command, term) {
+        $('#skylark-terminal').terminal(function(command, term) {
             if (command !== '') {
                 term.pause();
                 $.ajax({

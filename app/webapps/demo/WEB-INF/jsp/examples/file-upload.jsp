@@ -2,113 +2,100 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
 <style>
-  .files {
-    padding: 20px;
-    background-color: #f5f5f5;
-  }
-  .files ul {
-    list-style-type: none;
-    margin: 0;
-    overflow: auto;
-  }
-  .files li {
-    float: left;
-    width: 30%;
-    min-width: 300px;
-    height: 102px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    position: relative;
-    background-color: #fff;
-  }
-  .files li:hover {
-    border: 1px solid #aaa;
-    box-shadow: 0 3px 4px 0 rgba(0,0,0,0.2),0 3px 3px -2px rgba(0,0,0,0.14),0 1px 8px 0 rgba(0,0,0,0.12);
-  }
-  .files li canvas, .files li img {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    border-radius: 0;
-  }
-  .files li canvas.link:hover, .files li img.link:hover {
-    cursor: pointer;
-  }
-  .files li img.blank {
-    background: #ccc url("https://assets.aspectran.com/img/aspectran-site-logo.png") no-repeat;
-    background-size: cover;
-  }
-  .files li div.info {
-    padding-left: 110px;
-    height: 100px;
-    overflow: auto;
-  }
-  .files li div.info p {
-    margin: 0;
-  }
-  .files li button.delete {
-    border: 0;
-    background-color: #ccc;
-    color: #fff;
-    padding: 6px 8px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    border-radius: 0 0 0 4px;
-  }
-  .files li button.delete:hover {
-    background: indianred;
-  }
-  .files li div.progress {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 8px;
-    width: 100px;
-    margin: 0;
-  }
+    #file-upload-list ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #file-upload-list .card img {
+        border-radius: 0;
+    }
+
+    #file-upload-list .card-body {
+        padding: 0.5rem;
+    }
+
+    #file-upload-list .file-info p {
+        margin: 0;
+        font-size: 0.9em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #file-upload-list .delete-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+
+    #file-upload-list .progress {
+        height: 5px;
+    }
 </style>
 <div class="row gx-3">
-  <div class="col contour">
-    <div class="t30 b20">
-      <form id="fileupload" action="<aspectran:url value="/examples/file-upload/files"/>" method="POST" enctype="multipart/form-data">
-        <label for="fileAdds" class="btn btn-success">Add files...</label>
-        <input type="file" name="file" id="fileAdds" class="visually-hidden" multiple>
-        <div id="files" class="files">Drop files here to upload</div>
-      </form>
-      <br>
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Demo Notes</h3>
-        </div>
-        <div class="card-body">
-          <ul>
-            <li>The maximum file size for uploads in this demo is <strong>500KB</strong>.</li>
-            <li>Only image files (<strong>JPG, GIF, PNG</strong>) are allowed in this demo.</li>
-            <li>Up to 30 files will be stored in the memory, and older files will be deleted.</li>
-            <li>You can <strong>drag &amp; drop</strong> files from your desktop on this webpage (see <a href="https://github.com/blueimp/jQuery-File-Upload/wiki/Browser-support">Browser support</a>).</li>
-            <li>Please refer to the <a href="https://github.com/blueimp/jQuery-File-Upload">project website</a> and <a href="https://github.com/blueimp/jQuery-File-Upload/wiki">documentation</a> for more information about jQuery File Upload Plugin.</li>
-            <li>Built with the <a href="https://getbootstrap.com/">Bootstrap</a> CSS framework.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <h2>Recently Uploaded Files</h2>
-    <div class="files">
-      <ul>
-        <c:forEach items="${files}" var="file">
-          <li>
-            <a href="<aspectran:url value="files/${file.key}"/>" target="_blank"><img src="<aspectran:url value="files/${file.key}"/>"></a>
-            <div class="info">
-              <p><a href="<aspectran:url value="files/${file.key}"/>" download="${file.fileName}" target="_blank">${file.fileName}</a></p>
-              <p>${file.humanFileSize}</p>
+    <div class="col-12 mt-3">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Demo Notes</h3>
             </div>
-          </li>
-        </c:forEach>
-      </ul>
+            <div class="card-body">
+                <ul>
+                    <li>The maximum file size for uploads in this demo is <strong>500KB</strong>.</li>
+                    <li>Only image files (<strong>JPG, GIF, PNG</strong>) are allowed in this demo.</li>
+                    <li>Up to 30 files will be stored in the memory, and older files will be deleted.</li>
+                    <li>You can <strong>drag &amp; drop</strong> files from your desktop on this webpage (see <a
+                            href="https://github.com/blueimp/jQuery-File-Upload/wiki/Browser-support">Browser
+                        support</a>).
+                    </li>
+                    <li>Please refer to the <a href="https://github.com/blueimp/jQuery-File-Upload">project website</a>
+                        and <a href="https://github.com/blueimp/jQuery-File-Upload/wiki">documentation</a> for more
+                        information about jQuery File Upload Plugin.
+                    </li>
+                    <li>Built with the <a href="https://getbootstrap.com/">Bootstrap</a> CSS framework.</li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
+    <div class="col-12 mt-3 text-end">
+        <form id="file-upload-form" action="<aspectran:url value="/examples/file-upload/files"/>" method="POST"
+              enctype="multipart/form-data">
+            <div id="file-upload-list" class="panel mb-1 text-center"><i class="bi bi-box-arrow-in-down display-1"></i>
+                <p>Drop files here to upload</p>
+            </div>
+            <label for="file-adds-input" class="btn btn-success">Add files...</label>
+            <input type="file" name="file" id="file-adds-input" class="visually-hidden" multiple>
+        </form>
+    </div>
+    <div class="col-12 mt-3">
+        <h2 >Recently Uploaded Files</h2>
+        <div id="file-upload-list">
+            <ul class="row g-2">
+                <c:forEach items="${files}" var="file">
+                    <li class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-4">
+                                    <a href="<aspectran:url value="files/${file.key}"/>" target="_blank">
+                                        <img src="<aspectran:url value="files/${file.key}"/>"
+                                             class="img-fluid rounded-start" alt="${file.fileName}">
+                                    </a>
+                                </div>
+                                <div class="col-8">
+                                    <div class="card-body file-info">
+                                        <p><a href="<aspectran:url value="files/${file.key}"/>"
+                                              download="${file.fileName}" target="_blank">${file.fileName}</a></p>
+                                        <p class="card-text"><small class="text-muted">${file.humanFileSize}</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+    </div>
 </div>
 <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
 <script src="<aspectran:url value="/assets/js/vendor/jquery.ui.widget.js"/>"></script>
@@ -131,174 +118,157 @@
 <!-- The File Upload validation plugin -->
 <script src="<aspectran:url value="/assets/js/jquery.fileupload-validate.js"/>"></script>
 <script>
-  $(function () {
-    'use strict';
-    // Change this to the location of your server-side upload handler:
-    let url = "<aspectran:url value="/examples/file-upload/files"/>";
-    let uploadButton = $('<button/>')
-      .attr("type", "button")
-      .addClass('upload button small success')
-      .prop('disabled', true)
-      .text('Upload')
-      .on('click', function () {
-          let that = $(this), data = that.data();
-          that.off('click')
-            .text('Abort')
-            .on('click', function () {
-              that.remove();
-              data.abort();
-            });
-          data.submit().always(function () {
-            that.remove();
-          });
-          $("#progress").removeClass("alert").addClass("success");
-      });
-    let deleteButton = $('<button/>')
-      .attr("type", "button")
-      .addClass('button delete')
-      .prop('disabled', true)
-      .text('X')
-      .on('click', function() {
-        let that = $(this);
-        let fileKey = that.data("file-key");
-        if(fileKey) {
-          $.ajax({
-            url: url + "/" + fileKey,
-            type: 'delete',
-            success: function() {
-              that.parent().fadeOut();
-              setTimeout(function () {
-                that.parent().remove();
-              }, 500)
-            }
-          });
-        } else {
-          that.parent().remove();
-        }
-      });
-    let progressBar = $('<div/>')
-        .addClass('success progress')
-        .append($('<div/>')
-        .addClass('progress-meter'));
-    $('#fileupload').fileupload({
-      url: url,
-      dataType: 'json',
-      autoUpload: true,
-      acceptFileTypes: /([.\/])(gif|jpe?g|png)$/i,
-      maxFileSize: 1000000,
-      // Enable image resizing, except for Android and Opera,
-      // which actually support image resizing, but fail to
-      // send Blob objects via XHR requests:
-      disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
-      previewMaxWidth: 100,
-      previewMaxHeight: 100,
-      previewCrop: true
-    }).on('fileuploadadd', function(e, data) {
-      let ul = $('#files ul');
-      if (ul.length === 0) {
-        ul = $('<ul/>');
-        $('#files').html(ul);
-      }
-      data.context = $('<li/>');
-      if (data.files) {
-        $.each(data.files, function (index, file) {
-          let node = $('<div/>').addClass('info').hide()
-                  .append($('<p/>').addClass('filename').text(file.name))
-                  .append($('<p/>').text(humanFileSize(file.size, true)));
-          if (!index) {
-            // node.append(uploadButton.clone(true).data(data));
-            data.context.append(deleteButton.clone(true).data(data));
-            data.context.append(progressBar.clone(true));
-          }
-          node.appendTo(data.context).fadeIn();
-        });
-      }
-      if (ul.find('li').length >= ${page.maxFiles}) {
-        ul.find('li:eq(0)').fadeOut(400);
-        setTimeout(function () {
-          ul.find('li:eq(0)').remove();
-          data.context.appendTo(ul);
-        }, 400);
-      } else {
-        data.context.appendTo(ul);
-      }
-    }).on('fileuploadprocessalways', function (e, data) {
-      let index = data.index,
-          file = data.files[index],
-          node = $(data.context[index]);
-      if (file.preview) {
-        node.prepend(file.preview);
-      } else {
-        node.prepend('<img class="blank"/>');
-      }
-      if (file.error) {
-        node.find("div.info").append($('<span class="label alert"/>').text(file.error));
-        node.find("button.upload").hide();
-        node.find("button.delete").prop('disabled', false);
-        node.find('.progress').fadeOut();
-        return;
-      }
-      if (index + 1 === data.files.length) {
-        $(data.context[index]).find('button.upload')
-          .prop('disabled', !!data.files.error);
-      }
-    }).on('fileuploadprogress', function (e, data) {
-      let node = $(data.context);
-      let progress = Math.floor(data.loaded / data.total * 100);
-      node.find('.progress-meter').css(
-        'width',
-        progress + '%'
-      );
-    }).on('fileuploaddone', function (e, data) {
-      $.each(data.result.files, function (index, file) {
-        if (file.fileName) {
-          $(data.context[index]).find("canvas")
-                  .addClass("link")
-                  .click(function () {
-                    window.open("files/" + file.key);
-                  });
-          let link = $('<a>')
-                  .attr('href', "files/" + file.key)
-                  .attr('target', '_blank')
-                  .attr('download', '');
-          $(data.context[index]).find("p.filename").wrap(link);
-          $(data.context[index]).find("button.upload").remove();
-          $(data.context[index]).find("button.delete")
-                  .data("file-key", file.key)
-                  .prop("disabled", false);
-        } else if (file.error) {
-          let error = $('<span class="label alert"/>').text(file.error);
-          $(data.context[index]).find('div.info').append(error);
-        }
-        setTimeout(function () {
-          $(data.context[index]).find(".progress").fadeOut();
-        }, 500);
-      });
-    }).on('fileuploadfail', function (e, data) {
-      $.each(data.files, function (index) {
-        let error = $('<span class="label alert"/>').text('File upload failed.');
-        $(data.context[index]).find("button.upload").remove();
-        $(data.context[index]).find('div.info').append(error);
-        $(data.context[index]).find('.progress').removeClass('success').addClass('alert');
-        $(data.context[index]).find('.progress-meter').css("width", "100%");
-      });
-    }).prop('disabled', !$.support.fileInput)
-      .parent().addClass($.support.fileInput ? undefined : 'disabled');
-  });
+    $(function () {
+        'use strict';
+        // Change this to the location of your server-side upload handler:
+        let url = "<aspectran:url value="/examples/file-upload/files"/>";
+        let deleteButton = $('<button/>')
+            .attr("type", "button")
+            .addClass('btn btn-danger btn-sm delete-btn')
+            .append($('<i/>').addClass('bi bi-x-lg'));
+        let progressBar = $('<div/>')
+            .addClass('progress')
+            .append($('<div/>')
+                .addClass('progress-bar progress-bar-striped progress-bar-animated'));
 
-  function humanFileSize(bytes, si) {
-    let thresh = si ? 1000 : 1024;
-    if(Math.abs(bytes) < thresh) {
-      return bytes + ' B';
+        $('#file-upload-form').fileupload({
+            url: url,
+            dataType: 'json',
+            autoUpload: true,
+            acceptFileTypes: /([.\/])(gif|jpe?g|png)$/i,
+            maxFileSize: 1000000,
+            // Enable image resizing, except for Android and Opera,
+            // which actually support image resizing, but fail to
+            // send Blob objects via XHR requests:
+            disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator.userAgent),
+            previewMaxWidth: 100,
+            previewMaxHeight: 100,
+            previewCrop: true
+        }).on('fileuploadadd', function (e, data) {
+            let ul = $('#file-upload-list ul');
+            if (ul.length === 0) {
+                ul = $('<ul/>').addClass('row');
+                $('#file-upload-list').html(ul);
+            }
+            data.context = $('<li/>').addClass('col-md-4 mb-3');
+            let card = $('<div/>').addClass('card');
+            let row = $('<div/>').addClass('row g-0');
+            let col4 = $('<div/>').addClass('col-4');
+            let col8 = $('<div/>').addClass('col-8');
+            let cardBody = $('<div/>').addClass('card-body file-info');
+            row.append(col4).append(col8.append(cardBody));
+            card.append(row);
+            data.context.append(card);
+
+            if (data.files) {
+                $.each(data.files, function (index, file) {
+                    let node = cardBody;
+                    node.append($('<p/>').append($('<a/>').addClass('filename').text(file.name)));
+                    node.append($('<p/>').addClass('card-text').append($('<small/>').addClass('text-muted').text(humanFileSize(file.size, true))));
+                    if (!index) {
+                        card.append(deleteButton.clone(true).data(data));
+                        card.append(progressBar.clone(true));
+                    }
+                });
+            }
+            if (ul.find('li').length >= ${page.maxFiles}) {
+                ul.find('li:eq(0)').fadeOut(400);
+                setTimeout(function () {
+                    ul.find('li:eq(0)').remove();
+                    data.context.appendTo(ul);
+                }, 400);
+            } else {
+                data.context.appendTo(ul);
+            }
+        }).on('fileuploadprocessalways', function (e, data) {
+            let index = data.index,
+                file = data.files[index],
+                node = $(data.context);
+            if (file.preview) {
+                node.find('.col-4').append(file.preview);
+            } else {
+                node.find('.col-4').append($('<img/>').addClass('img-fluid rounded-start blank'));
+            }
+            if (file.error) {
+                node.find(".file-info").append($('<div class="alert alert-danger p-1 m-0 mt-1"/>').text(file.error));
+                node.find("button.delete-btn").prop('disabled', false).fadeOut(1000);
+                node.find('.progress').fadeOut();
+            }
+        }).on('fileuploadprogress', function (e, data) {
+            let node = $(data.context);
+            let progress = Math.floor(data.loaded / data.total * 100);
+            node.find('.progress-bar').css(
+                'width',
+                progress + '%'
+            ).attr('aria-valuenow', progress).text(progress + '%');
+        }).on('fileuploaddone', function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                let node = $(data.context);
+                if (file.fileName) {
+                    let link = $('<a>')
+                        .attr('href', "files/" + file.key)
+                        .attr('target', '_blank');
+                    node.find(".col-4").wrap(link);
+                    let fileLink = $('<a>')
+                        .attr('href', "files/" + file.key)
+                        .attr('target', '_blank')
+                        .attr('download', file.fileName)
+                        .text(file.fileName);
+                    node.find("p a.filename").replaceWith(fileLink);
+                    node.find("button.delete-btn")
+                        .data("file-key", file.key)
+                        .prop("disabled", false)
+                        .on('click', function () {
+                            let that = $(this);
+                            let fileKey = that.data("file-key");
+                            console.log("fileKey: ", fileKey);
+                            if (fileKey) {
+                                $.ajax({
+                                    url: url + "/" + fileKey,
+                                    type: 'delete',
+                                    success: function () {
+                                        that.closest('li').fadeOut();
+                                        setTimeout(function () {
+                                            that.closest('li').remove();
+                                        }, 500)
+                                    }
+                                });
+                            } else {
+                                that.closest('li').remove();
+                            }
+                        });
+                } else if (file.error) {
+                    let error = $('<div class="alert alert-danger p-1 m-0 mt-1"/>').text(file.error);
+                    node.find('.file-info').append(error);
+                }
+                setTimeout(function () {
+                    node.find(".progress").fadeOut();
+                }, 500);
+            });
+        }).on('fileuploadfail', function (e, data) {
+            $.each(data.files, function (index) {
+                let node = $(data.context);
+                let error = $('<div class="alert alert-danger p-1 m-0 mt-1"/>').text('File upload failed.');
+                node.find('.file-info').append(error);
+                node.find('.progress-bar').removeClass('bg-success').addClass('bg-danger');
+            });
+        }).prop('disabled', !$.support.fileInput)
+            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    });
+
+    function humanFileSize(bytes, si) {
+        let thresh = si ? 1000 : 1024;
+        if (Math.abs(bytes) < thresh) {
+            return bytes + ' B';
+        }
+        let units = si
+            ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+            : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+        let u = -1;
+        do {
+            bytes /= thresh;
+            ++u;
+        } while (Math.abs(bytes) >= thresh && u < units.length - 1);
+        return bytes.toFixed() + ' ' + units[u];
     }
-    let units = si
-        ? ['kB','MB','GB','TB','PB','EB','ZB','YB']
-        : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
-    let u = -1;
-    do {
-      bytes /= thresh;
-      ++u;
-    } while(Math.abs(bytes) >= thresh && u < units.length - 1);
-    return bytes.toFixed() + ' ' + units[u];
-  }
 </script>

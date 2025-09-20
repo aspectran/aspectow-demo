@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout(~{::body}, 'home')}">
-<body>
+      th:replace="~{fragments/layout :: layout(~{::content}, 'home')}">
 
-<h2 th:text="' ' + #{welcome}" class="bi bi-chat-heart">Welcome</h2>
-<p th:each="profile : ${#{currentEnvironment}.getCurrentProfiles()}" style="position: absolute; top: -15px; right: 10px;">
-    <span class="badge bg-secondary" th:text="${profile}"></span>
-</p>
+<th:block th:fragment="content">
+    <h2 th:text="' ' + #{welcome}" class="bi bi-chat-heart">Welcome</h2>
+    <p th:each="profile : ${#{currentEnvironment}.getCurrentProfiles()}" style="position: absolute; top: -15px; right: 10px;">
+        <span class="badge bg-secondary" th:text="${profile}"></span>
+    </p>
 
-<div class="row">
-    <div class="col text-center text-sm-start">
-        <img class="img-responsive" th:src="@{/images/pets.png}"/>
-    </div>
-    <div class="col">
-        <div class="row mt-5 mt-sm-0">
-            <div class="col-12 col-sm-auto text-center">
-                <a href="https://jpetstore.aspectran.com/" title="Buy pets online from our pet store.">
-                    <img src="https://jpetstore.aspectran.com/images/splash.gif" height="170" alt="JPetStore Demo"/>
-                </a>
-            </div>
-            <div class="col-md-12 col-lg-6">
-                <h3><a href="https://jpetstore.aspectran.com/" title="Buy pets online from our pet store.">JPetStore Demo</a></h3>
-                Buy pets online from our pet store. Of course, it's just for demonstration purposes.
+    <div class="row">
+        <div class="col text-center text-sm-start">
+            <img class="img-responsive" th:src="@{/images/pets.png}"/>
+        </div>
+        <div class="col">
+            <div class="row mt-5 mt-sm-0">
+                <div class="col-12 col-sm-auto text-center">
+                    <a href="https://jpetstore.aspectran.com/" title="Buy pets online from our pet store.">
+                        <img src="https://jpetstore.aspectran.com/images/splash.gif" height="170" alt="JPetStore Demo"/>
+                    </a>
+                </div>
+                <div class="col-md-12 col-lg-6">
+                    <h3><a href="https://jpetstore.aspectran.com/" title="Buy pets online from our pet store.">JPetStore Demo</a></h3>
+                    Buy pets online from our pet store. Of course, it's just for demonstration purposes.
+                </div>
             </div>
         </div>
     </div>
-</div>
+</th:block>
 
-</body>
 </html>

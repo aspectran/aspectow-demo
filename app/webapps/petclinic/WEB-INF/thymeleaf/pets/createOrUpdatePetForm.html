@@ -1,33 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout(~{::body}, 'owners')}">
-<body>
+      th:replace="~{fragments/layout :: layout(~{::content}, 'owners')}">
 
-<h2>
-    <th:block th:if="${pet['new']}">New</th:block> Pet
-</h2>
-<form class="form-horizontal" method="post">
-    <input th:if="${pet.id != null}" type="hidden" name="id" th:value="${pet.id}"/>
-    <div class="form-group has-feedback">
+<th:block th:fragment="content">
+    <h2>
+        <th:block th:if="${pet[\'new\']}">New</th:block> Pet
+    </h2>
+    <form class="form-horizontal" method="post">
+        <input th:if="${pet.id != null}" type="hidden" name="id" th:value="${pet.id}"/>
+        <div class="form-group has-feedback">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Owner</label>
+                <div class="col-sm-10">
+                    <span th:text="${owner.firstName + ' ' + owner.lastName}"/>
+                </div>
+            </div>
+            <input th:replace="~{fragments/inputField :: input ('text', 'Name', 'name', ${pet.name})}"/>
+            <input th:replace="~{fragments/inputField :: input ('date', 'Birth Date', 'birthDate', ${pet.birthDate})}"/>
+            <input th:replace="~{fragments/selectField :: select ('Type', 'typeId', ${types}, ${pet.type.id})}"/>
+        </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">Owner</label>
-            <div class="col-sm-10">
-                <span th:text="${owner.firstName + ' ' + owner.lastName}"/>
+            <div class="col-sm-offset-2 col-sm-10">
+                <button th:with="text=${pet[\'new\']} ? 'Add Pet' : 'Update Pet'"
+                        class="btn btn-primary" type="submit" th:text="${text}">Add Pet
+                </button>
+                <button class="btn btn-primary" type="button" onclick="history.back();">Cancel</button>
             </div>
         </div>
-        <input th:replace="~{fragments/inputField :: input ('text', 'Name', 'name', ${pet.name})}"/>
-        <input th:replace="~{fragments/inputField :: input ('date', 'Birth Date', 'birthDate', ${pet.birthDate})}"/>
-        <input th:replace="~{fragments/selectField :: select ('Type', 'typeId', ${types}, ${pet.type.id})}"/>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button th:with="text=${pet['new']} ? 'Add Pet' : 'Update Pet'"
-                    class="btn btn-primary" type="submit" th:text="${text}">Add Pet
-            </button>
-            <button class="btn btn-primary" type="button" onclick="history.back();">Cancel</button>
-        </div>
-    </div>
-</form>
+    </form>
+</th:block>
 
-</body>
 </html>

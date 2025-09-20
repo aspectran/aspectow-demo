@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout(~{::body}, 'error')}">
-<body>
+      th:replace="~{fragments/layout :: layout(~{::content}, 'error')}">
 
-<h2 class="bi bi-exclamation-triangle-fill text-danger"> Oops! An Error Occurred</h2>
+<th:block th:fragment="content">
+    <h2 class="bi bi-exclamation-triangle-fill text-danger"> Oops! An Error Occurred</h2>
 
-<div class="row">
-    <div class="col-md-6">
-        <img th:src="@{/images/pets.png}" class="img-fluid"/>
-    </div>
-    <div class="col-md-6">
-        <p class="lead">We're sorry, but the page you are looking for has encountered an unexpected error.</p>
-        <p>You can return to the <a th:href="@{/}">homepage</a> or contact support if the problem persists.</p>
+    <div class="row">
+        <div class="col-md-6">
+            <img th:src="@{/images/pets.png}" class="img-fluid"/>
+        </div>
+        <div class="col-md-6">
+            <p class="lead">We're sorry, but the page you are looking for has encountered an unexpected error.</p>
+            <p>You can return to the <a th:href="@{/}">homepage</a> or contact support if the problem persists.</p>
 
-        <div th:if="${message != null}" class="mt-4">
-            <h5>Technical Details:</h5>
-            <pre class="error" th:text="${message}">Exception message</pre>
+            <div th:if="${message != null}" class="mt-4">
+                <h5>Technical Details:</h5>
+                <pre class="error" th:text="${message}">Exception message</pre>
+            </div>
         </div>
     </div>
-</div>
+</th:block>
 
-</body>
 </html>

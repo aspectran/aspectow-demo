@@ -1,56 +1,63 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
-<div class="grid-x grid-padding-x">
-  <div class="cell contour">
-    <div class="grid-x grid-padding-x">
-      <div class="cell large-4 t20" style="position:relative;">
-        <h2 style="margin:0;">Customer List</h2>
-        <span id="total" class="float-right warning badge" style="font-size:2em;position:absolute;top:0;right:20px;">0</span>
-        <div id="customer-list-board" style="clear:both;border-radius:3px;margin-bottom:.5em;">
-          <select name="customerList" size="15" style="height:auto;background-image:none;margin:0;">
+<div class="row g-3 pt-3">
+  <div class="col">
+    <div class="row g-3">
+      <div class="col-lg-4" style="position:relative;">
+        <h2>Customer List</h2>
+        <span id="total" class="float-end badge bg-warning" style="font-size:2em;position:absolute;top:0;right:10px;border-radius:50%;">0</span>
+        <div id="customer-list-board">
+          <select name="customerList" class="form-select" size="13">
           </select>
         </div>
-        <div class="float-left">
-          <button id="refresh" type="button" class="button warning">Refresh</button>
+        <div class="float-start mt-2">
+          <button type="button" class="btn btn-warning refresh-customers">Refresh</button>
         </div>
-        <div class="float-right">
-          <button id="add" type="button" class="button">Add</button>
-          <button id="delete" type="button" class="button alert">Delete</button>
+        <div class="float-end mt-2">
+          <button type="button" class="btn btn-primary add-customer">Add</button>
+          <button type="button" class="btn btn-danger delete-customer">Delete</button>
         </div>
       </div>
-      <div class="cell large-8 t20" style="position:relative;">
-        <h2 style="margin:0;">Customer Details</h2>
-        <span id="cust-no" class="float-right success badge" style="font-size:2em;position:absolute;top:0;right:0;border-radius:50% 0 0 50%;">0</span>
-        <div id="details" class="panel radius">
-          <form>
-            <label>No.
-              <input type="text" name="id" disabled="disabled"/>
-            </label>
-            <label>Name
-              <input type="text" name="name" maxlength="30"/>
-            </label>
-            <label>Age
-              <input type="number" name="age" min="1" max="199" maxlength="3" oninput="if (this.value.length >= this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
-            </label>
+      <div class="col-lg-8" style="position:relative;">
+        <h2>Customer Details</h2>
+        <span id="cust-no" class="float-end badge bg-success" style="font-size:2em;position:absolute;top:0;right:10px;border-radius:50%;z-index:1;">0</span>
+        <form>
+        <div id="details" class="card card-body">
+            <div class="mb-3">
+              <label class="form-label">No.</label>
+              <input type="text" name="id" class="form-control" disabled="disabled"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input type="text" name="name" class="form-control" maxlength="30"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Age</label>
+              <input type="number" name="age" class="form-control" min="1" max="199" maxlength="3" oninput="if (this.value.length >= this.maxLength) this.value = this.value.slice(0, this.maxLength);"/>
+            </div>
             <fieldset>
               <legend>Approval State</legend>
-              <input type="radio" name="approved" id="approved" value="Y" required><label for="approved">Approved</label>
-              <input type="radio" name="approved" id="denied" value="N" required><label for="denied">Denied</label>
+              <div class="form-check form-check-inline">
+                <input type="radio" name="approved" id="approved" value="Y" class="form-check-input" required><label for="approved" class="form-check-label">Approved</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input type="radio" name="approved" id="denied" value="N" class="form-check-input" required><label for="denied" class="form-check-label">Denied</label>
+              </div>
             </fieldset>
-          </form>
         </div>
-        <div class="float-right t10">
-          <button id="save" type="button" class="success button">Save</button>
+        <div class="float-end mt-2">
+          <button type="button" class="btn btn-success save-customer">Save</button>
         </div>
+        </form>
       </div>
-      <div class="cell">
+      <div class="col-12">
         <div id="describe" class="input-group">
-          <span class="input-group-label" style="white-space:nowrap;"></span>
-          <input class="input-group-field" type="text" value="" readonly>
+          <span class="input-group-text" style="white-space:nowrap;"></span>
+          <input class="form-control" type="text" value="" readonly>
         </div>
       </div>
-      <div class="cell" style="position:relative;">
-        <span id="response-status-code" class="float-left badge" style="font-size:2em;position:absolute;top:0;right:0;border-radius:0 0 0 50%;">200</span>
+      <div class="col-12" style="position:relative;">
+        <span id="response-status-code" class="float-start badge bg-secondary" style="font-size:2em;position:absolute;top:-30px;right:10px;border-radius:50%;">200</span>
         <pre id="response-text" style="min-height:100px;max-height:300px;"></pre>
       </div>
     </div>
@@ -69,20 +76,20 @@
       getCustomer($(this).val());
       $("#details form, #cust-no").fadeIn(200);
     });
-    $("button#refresh").click(function() {
+    $("button.refresh-customers").click(function() {
       $("#customer-list-board, #total").stop(true).fadeOut(300);
       getCustomerList();
       $("#customer-list-board, #total").fadeIn(200);
     });
-    $("button#add").click(function() {
+    $("button.add-customer").click(function() {
       $("select[name=customerList] option:selected").removeAttr("selected");
       clearForm();
       $("input[name=name]").focus();
     });
-    $("button#save").click(function() {
+    $("button.save-customer").click(function() {
       saveCustomer();
     });
-    $("button#delete").click(function() {
+    $("button.delete-customer").click(function() {
       deleteCustomer();
     });
     $("input[name=approved]").click(function() {
@@ -179,7 +186,7 @@
           $("#total").text($("select[name=customerList] option").length);
           $("#total").fadeIn(200);
         }
-        $("select[name=customerList] option:selected").css("color", "blue");
+        $("select[name=customerList] option:selected").css("color", "orange");
       },
       error: function(xhr, status, error) {
         if (xhr.status === 403) {

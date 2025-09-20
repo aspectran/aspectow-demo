@@ -1,25 +1,23 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
-<div class="grid-x grid-padding-x">
-    <div id="title" class="cell small-12">
+<div class="row gx-3">
+    <div id="title" class="col-12">
         <h2>Chat <span id="totalPeople"></span></h2>
         <a class="leave" onclick="leaveRoom();">Leave</a>
     </div>
-    <div id="contacts" class="columns medium-4 large-3 hide-for-small-only"></div>
-    <div id="room" class="cell small-12 medium-8 large-9">
+    <div id="contacts" class="col-md-4 col-lg-3 d-none d-md-block"></div>
+    <div id="room" class="col-12 col-md-8 col-lg-9">
         <form id="signin" onsubmit="return false;">
             <h3>Type your username</h3>
-            <input type="text" id="username" maxlength="50" placeholder="Username" autocomplete="off" autofocus/>
-            <button class="button" onclick="signIn()">Start Chatting</button>
+            <input type="text" id="username" class="form-control" maxlength="50" placeholder="Username" autocomplete="off" autofocus/>
+            <button class="btn btn-primary" onclick="signIn()">Start Chatting</button>
         </form>
         <div id="messages"></div>
         <form id="chat-controls">
             <div class="input-group">
-                <input class="input-group-field" type="text" id="message" placeholder="Type a message..."/>
-                <div class="input-group-button">
-                    <button type="submit" class="button">Send</button>
-                </div>
+                <input class="form-control" type="text" id="message" placeholder="Type a message..."/>
+                <button type="submit" class="btn btn-primary">Send</button>
             </div>
         </form>
     </div>

@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
-<div class="grid-x grid-padding-x">
-    <div class="cell contour">
+<div class="row gx-3">
+    <div class="col contour">
         <div id="term-demo"></div>
     </div>
 </div>

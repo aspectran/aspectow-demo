@@ -100,10 +100,10 @@
             <div class="top-bar-right d-lg-flex align-items-center gap-3">
                 <ul class="navbar-nav">
                     <aspectran:profile expression="prod">
-                        <li class="nav-item"><a href="https://public.aspectran.com/monitoring/#demo" target="_blank">Monitoring</a></li>
+                        <li class="nav-item"><a class="nav-link" href="https://public.aspectran.com/monitoring/#demo" target="_blank">Monitoring</a></li>
                     </aspectran:profile>
                     <aspectran:profile expression="!prod">
-                        <li class="nav-item"><a href="<aspectran:url value="/../monitoring/#demo"/>" target="_blank">Monitoring</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<aspectran:url value="/../monitoring/#demo"/>" target="_blank">Monitoring</a></li>
                     </aspectran:profile>
                 </ul>
                 <div class="quick-search-box quick-search-box mx-3 my-2 m-lg-0">

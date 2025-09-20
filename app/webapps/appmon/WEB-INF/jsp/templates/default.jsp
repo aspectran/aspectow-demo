@@ -182,7 +182,7 @@
             </nav>
         </div>
     </div>
-    <div class="container contour">
+    <div class="container page-content">
     <c:if test="${not empty page.include}">
         <jsp:include page="/WEB-INF/jsp/${page.include}.jsp"/>
     </c:if>

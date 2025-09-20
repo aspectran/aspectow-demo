@@ -26,8 +26,8 @@
     <link rel="icon" type="image/png" sizes="96x96" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/favicon-96x96.png">
     <meta name="msapplication-TileImage" content="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/ms-icon-144x144.png">
     <meta name="msapplication-TileColor" content="#4B555A">
-    <link rel="stylesheet" type="text/css" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/bootstrap@5.3.8/css/aspectran.css?v=20250920"/>
-<%--    <link rel="stylesheet" type="text/css" href="http://localhost:8090/assets/bootstrap@5.3.8/css/aspectran.css?v=20250920"/>--%>
+    <link rel="stylesheet" type="text/css" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/bootstrap@5.3.8/css/aspectran.css?v=20250920a"/>
+<%--    <link rel="stylesheet" type="text/css" href="http://localhost:8090/assets/bootstrap@5.3.8/css/aspectran.css?v=20250920a"/>--%>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap">
     <script src="https://assets.aspectran.com/js/modernizr-custom.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -196,7 +196,7 @@
             </nav>
         </div>
     </div>
-    <div class="container contour">
+    <div class="container page-content">
     <c:if test="${not empty page.include}">
         <jsp:include page="/WEB-INF/jsp/${page.include}.jsp"/>
     </c:if>

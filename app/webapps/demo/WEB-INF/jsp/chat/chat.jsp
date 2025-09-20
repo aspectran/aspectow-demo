@@ -4,51 +4,51 @@
 <div class="row">
     <div id="chat-title" class="col-12">
         <h2>Chat <span id="totalPeople"></span></h2>
-        <a class="leave" onclick="leaveRoom();">Leave</a>
+        <a class="btn btn-outline-secondary leave" onclick="leaveRoom();"><i class="bi bi-box-arrow-left"></i> Leave</a>
     </div>
     <div id="chat-contacts" class="col-md-4 col-lg-3 d-none d-md-block"></div>
     <div id="chat-room" class="col-12 col-md-8 col-lg-9">
         <form id="chat-signin" onsubmit="return false;">
             <h3>Type your username</h3>
             <input type="text" id="chat-username" class="form-control" maxlength="50" placeholder="Username" autocomplete="off" autofocus/>
-            <button class="btn btn-primary" onclick="signIn()">Start Chatting</button>
+            <button class="btn btn-primary" onclick="signIn()">Start Chatting <i class="bi bi-box-arrow-right ms-2"></i></button>
         </form>
         <div id="chat-messages"></div>
         <form id="chat-controls-form">
             <div class="input-group">
                 <input class="form-control" type="text" id="chat-message" placeholder="Type a message..."/>
-                <button type="submit" class="btn btn-primary">Send</button>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-send-fill"></i> Send</button>
             </div>
         </form>
     </div>
 </div>
 <style>
     #chat-title {
-        background-color: #35505B;
+        background-color: var(--bs-primary);
         padding: 10px 20px 10px 20px;
-        color: #fff;
+        color: var(--bs-light);
     }
     #chat-title h2 {
         float: left;
         font-size: 28px;
+        color: var(--bs-light);
     }
     #chat-title a {
         float: right;
-        line-height: 38px;
-        vertical-align: bottom;
         display: none;
+        color: var(--bs-light);
     }
 
     #chat-room {
-        background-color: #f5f5f5;
+        background-color: var(--bs-tertiary-bg);
         height: 580px;
     }
     #chat-signin {
         padding: 180px 0 0 0;
-        background-color: #f5f5f5;
+        background-color: var(--bs-tertiary-bg);
+        text-align: center;
     }
     #chat-signin * {
-        display: block;
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 20px;
@@ -64,12 +64,12 @@
     #chat-contacts {
         float: left;
         padding: 15px;
-        background-color: #bbedfe;
+        background-color: var(--bs-secondary-bg);
         height: 580px;
         overflow: auto;
     }
     #chat-contacts .contact .status {
-        background-color: #13CF13;
+        background-color: var(--bs-success);
         width: 20px;
         height: 20px;
         border-radius: 50%;
@@ -95,7 +95,7 @@
         display: table;
     }
     #chat-messages .message.event .content {
-        background-color: #bbedfe;
+        background-color: var(--bs-info-bg-subtle);
         padding: 7px 20px;
         border-radius: 6px;
         width: 100%;
@@ -105,28 +105,28 @@
         font-weight: bold;
     }
     #chat-messages .message.event.error .content {
-        background-color: palevioletred;
-        color: yellow;
+        background-color: var(--bs-danger);
+        color: var(--bs-light);
     }
     #chat-messages .message.received {
         left: 0;
         text-align: left;
     }
     #chat-messages .message.received .content {
-        background-color: #0084FF;
-        color: #fff;
+        background-color: var(--bs-primary);
+        color: var(--bs-light);
         border-radius: 0 20px 20px;
     }
     #chat-messages .message.received .sender {
         font-weight: bold;
-        color: #0084FF;
+        color: var(--bs-primary);
     }
     #chat-messages .message.sent {
         right: 0;
         text-align: right;
     }
     #chat-messages .message.sent .content {
-        background-color: #ccc;
+        background-color: var(--bs-secondary-bg);
         margin-left: auto;
         margin-right: 0;
         text-align: right;

@@ -29,5 +29,5 @@
 				</li>
 			</c:forEach>
 		</ul>
-	</div>
+    </div>
 </c:if>

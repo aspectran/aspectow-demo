@@ -21,13 +21,12 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div id="BackLink">
-	<a href="<aspectran:url value="/products/${not empty product ? product.productId : productId}"/>">Return to ${not empty product ? product.productId : productId}</a>
-</div>
-
 <div id="CenterForm">
 
-	<h3>${product.name}</h3>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>${product.name}</h3>
+        <a class="btn btn-secondary" href="<aspectran:url value="/products/${not empty product ? product.productId : productId}"/>">Return to ${not empty product ? product.productId : productId}</a>
+    </div>
 
     <table class="table table-bordered table-striped">
 		<tr>
@@ -55,7 +54,7 @@
 			<td><fmt:formatNumber value="${item.listPrice}" pattern="$#,##0.00"/></td>
 		</tr>
 	</table>
-	<div class="button-bar">
+	<div class="text-center">
 		<a class="btn btn-primary" href="<aspectran:url value="/cart/addItemToCart?itemId=${item.itemId}"/>">Add to Cart</a>
 	</div>
 

@@ -21,17 +21,16 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div id="BackLink">
-	<a class="btn btn-secondary" href="<aspectran:url value="/"/>">Return to Main Menu</a>
-</div>
-
 <div id="Catalog">
 
 	<div id="Cart">
 
-		<h3>Shopping Cart</h3>
+		<div class="d-flex justify-content-between align-items-center mb-3">
+			<h3>Shopping Cart</h3>
+			<a class="btn btn-secondary" href="<aspectran:url value="/"/>">Return to Main Menu</a>
+		</div>
 
-		<form method="post" hx-post="<aspectran:url value="/cart/updateCartQuantities"/>" hx-target="#window">
+		<form method="post" hx-post="<aspectran:url value="/cart/updateCartQuantities"/>" hx-target=".jpetstore.page-content">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -67,7 +66,7 @@
 						<td><fmt:formatNumber value="${cartItem.item.listPrice}" pattern="$#,##0.00"/></td>
 						<td><fmt:formatNumber value="${cartItem.total}" pattern="$#,##0.00"/></td>
 						<td>
-							<a class="button" hx-post="<aspectran:url value="/cart/removeItemFromCart?cartItem=${cartItem.item.itemId}"/>" hx-target="#window">Remove</a>
+							<a class="btn btn-danger" hx-post="<aspectran:url value="/cart/removeItemFromCart?cartItem=${cartItem.item.itemId}"/>" hx-target=".jpetstore.page-content">Remove</a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -77,14 +76,14 @@
 					<td colspan="4"></td>
 					<td>
 						<c:if test="${cart.numberOfItems gt 0}">
-							<button class="button" type="submit">Update Cart</button>
+							<button class="btn btn-primary" type="submit">Update Cart</button>
 						</c:if>
 					</td>
 					<td><strong>Sub Total:</strong></td>
 					<td><strong><fmt:formatNumber value="${cart.subTotal}" pattern="$#,##0.00"/></strong></td>
 					<td>
 						<c:if test="${cart.numberOfItems gt 0}">
-							<a class="button" hx-post="<aspectran:url value="/cart/removeAllItemsFromCart"/>" hx-target="#window">Remove All</a>
+							<a class="btn btn-danger" hx-post="<aspectran:url value="/cart/removeAllItemsFromCart"/>" hx-target=".jpetstore.page-content">Remove All</a>
 						</c:if>
 					</td>
 				</tr>
@@ -94,11 +93,13 @@
 		</form>
 
 		<c:if test="${cart.numberOfItems gt 0}">
-			<a href="<aspectran:url value="/order/newOrderForm"/>" class="button">Proceed to Checkout</a>
+            <div class="text-center">
+			    <a class="btn btn-success" href="<aspectran:url value="/order/newOrderForm"/>">Proceed to Checkout</a>
+            </div>
 		</c:if>
 	</div>
 
-	<div id="MyList">
+	<div id="MyList" class="mt-3">
 		<c:if test="${not empty user.account}">
 			<c:if test="${!empty user.account.listOption}">
 				<%@ include file="IncludeMyList.jsp"%>

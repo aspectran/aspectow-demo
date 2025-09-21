@@ -17,16 +17,18 @@
 --%>
 </div>
 
-<div id="Footer">
-	<div id="PoweredBy">
-		<a href="https://aspectran.com/">aspectran.com</a><br/>
-		<a href="https://www.mybatis.org">mybatis.org</a>
-	</div>
-	<div id="Banner">
-		<c:if test="${not empty user.account}">
-			<c:if test="${user.account.bannerOption}">
-				<img src="<aspectran:url value="${user.account.bannerName}"/>"/>
-			</c:if>
-		</c:if>
-	</div>
+<div id="Footer" class="container bg-dark p-3">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center">
+        <div class="col-md-4 align-items-center">
+            <p class="m-0"><a href="https://aspectran.com/" class="mb-3 me-2 mb-md-0 text-decoration-none lh-1">aspectran.com</a></p>
+            <p class="m-0"><a href="https://www.mybatis.org" class="mb-3 me-2 mb-md-0 text-decoration-none lh-1">mybatis.org</a></p>
+        </div>
+        <div class="col-md-4 justify-content-end d-flex">
+            <c:if test="${not empty user.account}">
+                <c:if test="${user.account.bannerOption}">
+                    <img src="<aspectran:url value="${user.account.bannerName}"/>"/>
+                </c:if>
+            </c:if>
+        </div>
+    </footer>
 </div>

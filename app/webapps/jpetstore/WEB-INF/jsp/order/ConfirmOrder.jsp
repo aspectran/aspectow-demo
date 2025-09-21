@@ -21,118 +21,117 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div id="MessageBar">
+<div class="alert alert-info">
 	<p>Please confirm the information below and then press continue...</p>
 </div>
 
-<div id="BackLink">
-	<a href="<aspectran:url value="/"/>">Return to Main Menu</a>
-</div>
-
-<div id="CenterForm">
-	<form method="post" action="<aspectran:url value="/order/submitOrder"/>">
-		<input type="hidden" name="confirmed" value="true"/>
-
-		<h3>Order</h3>
-		<table>
-			<colgroup>
-				<col style="width: 25%"/>
-				<col/>
-			</colgroup>
-			<tr>
-				<td>Order Date</td>
-				<td>
-					<fmt:formatDate value="${user.order.orderDate}" pattern="yyyy/MM/dd hh:mm:ss"/>
-				</td>
-			</tr>
-		</table>
-
-		<h3>Billing Address</h3>
-		<table>
-			<colgroup>
-				<col style="width: 25%;"/>
-				<col/>
-			</colgroup>
-			<tr>
-				<td>First name:</td>
-				<td><c:out value="${user.order.billToFirstName}"/></td>
-			</tr>
-			<tr>
-				<td>Last name:</td>
-				<td><c:out value="${user.order.billToLastName}"/></td>
-			</tr>
-			<tr>
-				<td>Address 1:</td>
-				<td><c:out value="${user.order.billAddress1}"/></td>
-			</tr>
-			<tr>
-				<td>Address 2:</td>
-				<td><c:out value="${user.order.billAddress2}"/></td>
-			</tr>
-			<tr>
-				<td>City:</td>
-				<td><c:out value="${user.order.billCity}"/></td>
-			</tr>
-			<tr>
-				<td>State:</td>
-				<td><c:out value="${user.order.billState}"/></td>
-			</tr>
-			<tr>
-				<td>Zip:</td>
-				<td><c:out value="${user.order.billZip}"/></td>
-			</tr>
-			<tr>
-				<td>Country:</td>
-				<td><c:out value="${user.order.billCountry}"/></td>
-			</tr>
-		</table>
-
-		<h3>Shipping Address</h3>
-		<table>
-			<colgroup>
-				<col style="width: 25%;"/>
-				<col/>
-			</colgroup>
-			<tr>
-				<td>First name:</td>
-				<td><c:out value="${user.order.shipToFirstName}"/></td>
-			</tr>
-			<tr>
-				<td>Last name:</td>
-				<td><c:out value="${user.order.shipToLastName}"/></td>
-			</tr>
-			<tr>
-				<td>Address 1:</td>
-				<td><c:out value="${user.order.shipAddress1}"/></td>
-			</tr>
-			<tr>
-				<td>Address 2:</td>
-				<td><c:out value="${user.order.shipAddress2}"/></td>
-			</tr>
-			<tr>
-				<td>City:</td>
-				<td><c:out value="${user.order.shipCity}"/></td>
-			</tr>
-			<tr>
-				<td>State:</td>
-				<td><c:out value="${user.order.shipState}"/></td>
-			</tr>
-			<tr>
-				<td>Zip:</td>
-				<td><c:out value="${user.order.shipZip}"/></td>
-			</tr>
-			<tr>
-				<td>Country:</td>
-				<td><c:out value="${user.order.shipCountry}"/></td>
-			</tr>
-		</table>
-
-		<div class="button-bar">
-			<button type="submit" class="button">Confirm</button>
-			<button type="button" class="button" onclick="location.href='/order/newOrderForm';">Back</button>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+		<div class="d-flex justify-content-between align-items-center mb-3">
+			<h3>Order</h3>
+			<a href="<aspectran:url value="/"/>" class="btn btn-secondary">Return to Main Menu</a>
 		</div>
-	</form>
+        <form method="post" action="<aspectran:url value="/order/submitOrder"/>">
+            <input type="hidden" name="confirmed" value="true"/>
+            <table class="table table-striped">
+                <colgroup>
+                    <col style="width: 25%"/>
+                    <col/>
+                </colgroup>
+                <tr>
+                    <td>Order Date</td>
+                    <td>
+                        <fmt:formatDate value="${user.order.orderDate}" pattern="yyyy/MM/dd hh:mm:ss"/>
+                    </td>
+                </tr>
+            </table>
 
+            <h3>Billing Address</h3>
+            <table class="table table-striped">
+                <colgroup>
+                    <col style="width: 25%;"/>
+                    <col/>
+                </colgroup>
+                <tr>
+                    <td>First name:</td>
+                    <td><c:out value="${user.order.billToFirstName}"/></td>
+                </tr>
+                <tr>
+                    <td>Last name:</td>
+                    <td><c:out value="${user.order.billToLastName}"/></td>
+                </tr>
+                <tr>
+                    <td>Address 1:</td>
+                    <td><c:out value="${user.order.billAddress1}"/></td>
+                </tr>
+                <tr>
+                    <td>Address 2:</td>
+                    <td><c:out value="${user.order.billAddress2}"/></td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td><c:out value="${user.order.billCity}"/></td>
+                </tr>
+                <tr>
+                    <td>State:</td>
+                    <td><c:out value="${user.order.billState}"/></td>
+                </tr>
+                <tr>
+                    <td>Zip:</td>
+                    <td><c:out value="${user.order.billZip}"/></td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td><c:out value="${user.order.billCountry}"/></td>
+                </tr>
+            </table>
+
+            <h3>Shipping Address</h3>
+            <table class="table table-striped">
+                <colgroup>
+                    <col style="width: 25%;"/>
+                    <col/>
+                </colgroup>
+                <tr>
+                    <td>First name:</td>
+                    <td><c:out value="${user.order.shipToFirstName}"/></td>
+                </tr>
+                <tr>
+                    <td>Last name:</td>
+                    <td><c:out value="${user.order.shipToLastName}"/></td>
+                </tr>
+                <tr>
+                    <td>Address 1:</td>
+                    <td><c:out value="${user.order.shipAddress1}"/></td>
+                </tr>
+                <tr>
+                    <td>Address 2:</td>
+                    <td><c:out value="${user.order.shipAddress2}"/></td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td><c:out value="${user.order.shipCity}"/></td>
+                </tr>
+                <tr>
+                    <td>State:</td>
+                    <td><c:out value="${user.order.shipState}"/></td>
+                </tr>
+                <tr>
+                    <td>Zip:</td>
+                    <td><c:out value="${user.order.shipZip}"/></td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td><c:out value="${user.order.shipCountry}"/></td>
+                </tr>
+            </table>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">Confirm</button>
+                <a href="/order/newOrderForm" class="btn btn-secondary">Back</a>
+            </div>
+        </form>
+    </div>
 </div>
 
 <%@ include file="../common/IncludeBottom.jsp"%>

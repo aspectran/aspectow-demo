@@ -21,19 +21,19 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div id="BackLink">
-	<a href="javascript:document.referrer ? history.back() : location.href = '<aspectran:url value="/"/>';">Back</a>
-</div>
-
-<div id="CenterForm">
-
-	<h3>Ooops!</h3>
-
-	<div class="panel text-center">
-		<span class="icon fi-alert" style="font-size: 10em;"></span>
-		<p>There are no products.</p>
-	</div>
-
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>Ooops!</h3>
+            <a href="javascript:document.referrer ? history.back() : location.href = '<aspectran:url value="/"/>';" class="btn btn-secondary">Back</a>
+        </div>
+        <div class="card text-center">
+            <div class="card-body">
+                <span class="icon fi-alert" style="font-size: 10em;"></span>
+                <p class="card-text fs-5">There are no products.</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <%@ include file="../common/IncludeBottom.jsp"%>

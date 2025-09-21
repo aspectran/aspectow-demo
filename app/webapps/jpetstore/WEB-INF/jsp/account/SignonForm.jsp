@@ -25,32 +25,39 @@
 	</div>
 </c:if>
 
-<div id="Signon">
-
-	<form method="post" action="<aspectran:url value="/account/signon"/>">
-		<input type="hidden" name="referer" value="${param.referer}"/>
-
-		<div class="panel">
-			<h5>Please enter your username and password.</h5>
-			<label>Username: <input type="text" name="username" value="j2ee"/></label>
-			<label>Password: <input type="password" name="password" value="j2ee"/></label>
-			<div class="button-bar">
-				<button type="submit" class="button">Login</button>
-			</div>
-			<c:if test="${param.retry eq 'true'}">
-				<div class="panel failed">
-					Invalid username or password.  Signon failed.
-				</div>
-			</c:if>
-		</div>
-
-	</form>
-
-	<div class="panel register">
-		Need a username and password?
-		<a href="<aspectran:url value="/account/newAccountForm"/>">Register Now!</a>
-	</div>
-
+<div id="Signon" class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Please enter your username and password.</h5>
+                <form method="post" action="<aspectran:url value="/account/signon"/>">
+                    <input type="hidden" name="referer" value="${param.referer}"/>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username:</label>
+                        <input type="text" id="username" name="username" value="j2ee" class="form-control"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" id="password" name="password" value="j2ee" class="form-control"/>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                    <c:if test="${param.retry eq 'true'}">
+                        <div class="alert alert-danger mt-3">
+                            Invalid username or password.  Signon failed.
+                        </div>
+                    </c:if>
+                </form>
+            </div>
+        </div>
+        <div class="card mt-3">
+            <div class="card-body text-center">
+                Need a username and password?
+                <a href="<aspectran:url value="/account/newAccountForm"/>">Register Now!</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <%@ include file="../common/IncludeBottom.jsp"%>

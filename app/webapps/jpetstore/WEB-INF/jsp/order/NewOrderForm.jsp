@@ -20,107 +20,108 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div id="CenterForm">
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <form method="post" action="<aspectran:url value="/order/newOrder"/>">
+            <input type="hidden" name="paymentForm" value="true"/>
+            <input type="hidden" name="billingForm" value="true"/>
 
-	<form method="post" action="<aspectran:url value="/order/newOrder"/>">
-		<input type="hidden" name="paymentForm" value="true"/>
-		<input type="hidden" name="billingForm" value="true"/>
+            <h3>Payment Details</h3>
+            <table class="table table-striped">
+                <colgroup>
+                    <col style="width: 25%"/>
+                    <col/>
+                </colgroup>
+                <tr>
+                    <td>Card Type:</td>
+                    <td>
+                        <select name="cardType" class="form-select">
+                            <c:forEach items="${staticCodes.creditCardTypes}" var="item">
+                                <option value="${item.key}"<c:if test="${order.cardType eq item.key}"> selected</c:if>>${item.value}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Card Number:</td>
+                    <td>
+                        * Use a fake number!
+                        <input type="text" name="creditCard" value="${order.creditCard}" class="form-control"/>
+                        <span class="text-danger">${errors.creditCard}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Expiry Date (MM/YYYY):</td>
+                    <td><input type="text" name="expiryDate" value="${order.expiryDate}" class="form-control"/>
+                        <span class="text-danger">${errors.expiryDate}</span></td>
+                </tr>
+            </table>
 
-		<h3>Payment Details</h3>
-		<table>
-			<colgroup>
-				<col style="width: 25%"/>
-				<col/>
-			</colgroup>
-			<tr>
-				<td>Card Type:</td>
-				<td>
-					<select name="cardType">
-						<c:forEach items="${staticCodes.creditCardTypes}" var="item">
-							<option value="${item.key}"<c:if test="${order.cardType eq item.key}"> selected</c:if>>${item.value}</option>
-						</c:forEach>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<td>Card Number:</td>
-				<td>
-					* Use a fake number!
-					<input type="text" name="creditCard" value="${order.creditCard}"/>
-					<span class="error-msg">${errors.creditCard}</span>
-				</td>
-			</tr>
-			<tr>
-				<td>Expiry Date (MM/YYYY):</td>
-				<td><input type="text" name="expiryDate" value="${order.expiryDate}"/>
-					<span class="error-msg">${errors.expiryDate}</span></td>
-			</tr>
-		</table>
+            <h3>Billing Address</h3>
+            <table class="table table-striped">
+                <colgroup>
+                    <col style="width: 25%"/>
+                    <col/>
+                </colgroup>
+                <tr>
+                    <td>First name:</td>
+                    <td><input type="text" name="billToFirstName" value="${order.billToFirstName}" class="form-control"/>
+                        <span class="text-danger">${errors.billToFirstName}</span></td>
+                </tr>
+                <tr>
+                    <td>Last name:</td>
+                    <td><input type="text" name="billToLastName" value="${order.billToLastName}" class="form-control"/>
+                        <span class="text-danger">${errors.billToLastName}</span></td>
+                </tr>
+                <tr>
+                    <td>Address 1:</td>
+                    <td><input type="text" name="billAddress1" value="${order.billAddress1}" class="form-control"/>
+                        <span class="text-danger">${errors.billAddress1}</span></td>
+                </tr>
+                <tr>
+                    <td>Address 2:</td>
+                    <td><input type="text" name="billAddress2" value="${order.billAddress2}" class="form-control"/>
+                        <span class="text-danger">${errors.billAddress2}</span></td>
+                </tr>
+                <tr>
+                    <td>City:</td>
+                    <td><input type="text" name="billCity" value="${order.billCity}" class="form-control"/>
+                        <span class="text-danger">${errors.billCity}</span></td>
+                </tr>
+                <tr>
+                    <td>State:</td>
+                    <td><input type="text" name="billState" value="${order.billState}" class="form-control"/>
+                        <span class="text-danger">${errors.billState}</span></td>
+                </tr>
+                <tr>
+                    <td>Zip:</td>
+                    <td><input type="text" name="billZip" value="${order.billZip}" class="form-control"/>
+                        <span class="text-danger">${errors.billZip}</span></td>
+                </tr>
+                <tr>
+                    <td>Country:</td>
+                    <td><input type="text" name="billCountry" value="${order.billCountry}" class="form-control"/>
+                        <span class="text-danger">${errors.billCountry}</span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <div class="form-check">
+                            <input type="checkbox" name="shippingAddressRequired" value="true" <c:if test="${order.shippingAddressRequired}">checked</c:if> class="form-check-input"/>
+                            <label class="form-check-label">Ship to different address...</label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-		<h3>Billing Address</h3>
-		<table>
-			<colgroup>
-				<col style="width: 25%"/>
-				<col/>
-			</colgroup>
-			<tr>
-				<td>First name:</td>
-				<td><input type="text" name="billToFirstName" value="${order.billToFirstName}"/>
-					<span class="error-msg">${errors.billToFirstName}</span></td>
-			</tr>
-			<tr>
-				<td>Last name:</td>
-				<td><input type="text" name="billToLastName" value="${order.billToLastName}"/>
-					<span class="error-msg">${errors.billToLastName}</span></td>
-			</tr>
-			<tr>
-				<td>Address 1:</td>
-				<td><input type="text" name="billAddress1" value="${order.billAddress1}"/>
-					<span class="error-msg">${errors.billAddress1}</span></td>
-			</tr>
-			<tr>
-				<td>Address 2:</td>
-				<td><input type="text" name="billAddress2" value="${order.billAddress2}"/>
-					<span class="error-msg">${errors.billAddress2}</span></td>
-			</tr>
-			<tr>
-				<td>City:</td>
-				<td><input type="text" name="billCity" value="${order.billCity}"/>
-					<span class="error-msg">${errors.billCity}</span></td>
-			</tr>
-			<tr>
-				<td>State:</td>
-				<td><input type="text" name="billState" value="${order.billState}"/>
-					<span class="error-msg">${errors.billState}</span></td>
-			</tr>
-			<tr>
-				<td>Zip:</td>
-				<td><input type="text" name="billZip" value="${order.billZip}"/>
-					<span class="error-msg">${errors.billZip}</span></td>
-			</tr>
-			<tr>
-				<td>Country:</td>
-				<td><input type="text" name="billCountry" value="${order.billCountry}"/>
-					<span class="error-msg">${errors.billCountry}</span></td>
-			</tr>
-			<tr>
-				<td></td>
-				<td>
-					<input type="checkbox" name="shippingAddressRequired" value="true" <c:if test="${order.shippingAddressRequired}">checked</c:if>/>
-					Ship to different address...
-				</td>
-			</tr>
-		</table>
-
-		<c:if test="${not empty order}">
-		<div class="button-bar">
-			<button type="submit" class="button">Continue</button>
-			<button type="button" class="button" onclick="location.href='<aspectran:url value="/cart/viewCart"/>';">Cancel</button>
-		</div>
-		</c:if>
-
-	</form>
-
+            <c:if test="${not empty order}">
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">Continue</button>
+                <a href="<aspectran:url value="/cart/viewCart"/>" class="btn btn-secondary">Cancel</a>
+            </div>
+            </c:if>
+        </form>
+    </div>
 </div>
 
 <c:if test="${empty order}">

@@ -26,71 +26,71 @@
 	<tr>
 		<td>First name:</td>
 		<td>
-			<input type="text" name="firstName" value="<c:out value="${account.firstName}" escapeXml="true"/>"/>
-			<span class="error-msg">${errors.firstName}</span>
+			<input type="text" name="firstName" value="<c:out value="${account.firstName}" escapeXml="true"/>" class="form-control"/>
+			<span class="text-danger">${errors.firstName}</span>
 		</td>
 	</tr>
 	<tr>
 		<td>Last name:</td>
 		<td>
-			<input type="text" name="lastName" value="<c:out value="${account.lastName}" escapeXml="true"/>"/>
-			<span class="error-msg">${errors.lastName}</span>
+			<input type="text" name="lastName" value="<c:out value="${account.lastName}" escapeXml="true"/>" class="form-control"/>
+			<span class="text-danger">${errors.lastName}</span>
 		</td>
 	</tr>
 	<tr>
 		<td>Email:</td>
 		<td>
-			<input type="text" name="email" value="${account.email}"/>
-			<span class="error-msg">${errors.email}</span>
+			<input type="text" name="email" value="${account.email}" class="form-control"/>
+			<span class="text-danger">${errors.email}</span>
 		</td>
 	</tr>
 	<tr>
 		<td>Phone:</td>
 		<td>
-			<input type="text" name="phone" value="${account.phone}"/>
-			<span class="error-msg">${errors.phone}</span>
+			<input type="text" name="phone" value="${account.phone}" class="form-control"/>
+			<span class="text-danger">${errors.phone}</span>
 		</td>
 	</tr>
 	<tr>
 		<td>Address 1:</td>
 		<td>
-			<input type="text" name="address1" value="${account.address1}"/>
-			<span class="error-msg">${errors.address1}</span>
+			<input type="text" name="address1" value="${account.address1}" class="form-control"/>
+			<span class="text-danger">${errors.address1}</span>
 		</td>
 	</tr>
 	<tr>
 		<td>Address 2:</td>
 		<td>
-			<input type="text" name="address2" value="${account.address2}"/>
-			<span class="error-msg">${errors.address2}</span>
+			<input type="text" name="address2" value="${account.address2}" class="form-control"/>
+			<span class="text-danger">${errors.address2}</span>
 		</td>
 	</tr>
 	<tr>
 		<td>City:</td>
 		<td>
-			<input type="text" name="city" value="${account.city}"/>
-			<span class="error-msg">${errors.city}</span>
+			<input type="text" name="city" value="${account.city}" class="form-control"/>
+			<span class="text-danger">${errors.city}</span>
 		</td>
 	</tr>
 	<tr>
 		<td>State:</td>
 		<td>
-			<input type="text" name="state" value="${account.state}"/>
-			<span class="error-msg">${errors.state}</span>
+			<input type="text" name="state" value="${account.state}" class="form-control"/>
+			<span class="text-danger">${errors.state}</span>
 		</td>
 	</tr>
 	<tr>
 		<td>Zip:</td>
 		<td>
-			<input type="text" name="zip" value="${account.zip}"/>
-			<span class="error-msg">${errors.zip}</span>
+			<input type="text" name="zip" value="${account.zip}" class="form-control"/>
+			<span class="text-danger">${errors.zip}</span>
 		</td>
 	</tr>
 	<tr>
 		<td>Country:</td>
 		<td>
-			<input type="text" name="country" value="${account.country}"/>
-			<span class="error-msg">${errors.country}</span>
+			<input type="text" name="country" value="${account.country}" class="form-control"/>
+			<span class="text-danger">${errors.country}</span>
 		</td>
 	</tr>
 </table>
@@ -104,35 +104,35 @@
 	<tr>
 		<td>Language Preference:</td>
 		<td>
-			<select name="languagePreference">
+			<select name="languagePreference" class="form-select">
 				<c:forEach items="${staticCodes.languages}" var="item">
 					<option value="${item.key}"<c:if test="${account.languagePreference eq item.key}"> selected</c:if>>${item.value}</option>
 				</c:forEach>
 			</select>
-			<span class="error-msg">${errors.languagePreference}</span>
+			<span class="text-danger">${errors.languagePreference}</span>
 		</td>
 	</tr>
 	<tr>
 		<td>Favourite Category:</td>
 		<td>
-			<select name="favouriteCategoryId">
+			<select name="favouriteCategoryId" class="form-select">
 				<c:forEach items="${staticCodes.categories}" var="item">
 					<option value="${item.key}"<c:if test="${account.favouriteCategoryId eq item.key}"> selected</c:if>>${item.value}</option>
 				</c:forEach>
 			</select>
-			<span class="error-msg">${errors.favouriteCategoryId}</span>
+			<span class="text-danger">${errors.favouriteCategoryId}</span>
 		</td>
 	</tr>
 	<tr>
 		<td>Enable MyList</td>
 		<td>
-			<input type="checkbox" name="listOption" value="true"<c:if test="${account.listOption}"> checked</c:if>/>
+			<input type="checkbox" name="listOption" value="true"<c:if test="${account.listOption}"> checked</c:if> class="form-check-input"/>
 		</td>
 	</tr>
 	<tr>
 		<td>Enable MyBanner</td>
 		<td>
-			<input type="checkbox" name="bannerOption" value="true"<c:if test="${account.bannerOption}"> checked</c:if>/>
+			<input type="checkbox" name="bannerOption" value="true"<c:if test="${account.bannerOption}"> checked</c:if> class="form-check-input"/>
 		</td>
 	</tr>
 </table>

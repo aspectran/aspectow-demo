@@ -20,13 +20,12 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div id="BackLink">
-	<a class="btn btn-secondary" href="<aspectran:url value="/"/>">Return to Main Menu</a>
-</div>
-
 <div id="Catalog">
 
-	<h3>${category.name}</h3>
+	<div class="d-flex justify-content-between align-items-center mb-3">
+		<h3>${category.name}</h3>
+		<a class="btn btn-secondary" href="<aspectran:url value="/"/>">Return to Main Menu</a>
+	</div>
 
 	<table class="table table-striped">
         <thead>

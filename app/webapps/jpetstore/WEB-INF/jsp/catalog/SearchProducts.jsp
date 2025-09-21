@@ -19,15 +19,14 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div id="BackLink">
-	<a href="<aspectran:url value="/"/>">Return to Main Menu</a>
-</div>
-
 <div id="Catalog">
 
-	<h3>Search Results for "${param.keyword}"</h3>
+	<div class="d-flex justify-content-between align-items-center mb-3">
+		<h3>Search Results for "${param.keyword}"</h3>
+		<a href="<aspectran:url value="/"/>" class="btn btn-secondary">Return to Main Menu</a>
+	</div>
 
-	<table>
+	<table class="table table-striped">
 		<colgroup>
 			<col style="width: 20%"/>
 			<col style="width: 30%"/>

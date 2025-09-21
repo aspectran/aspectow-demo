@@ -26,44 +26,42 @@
 	</div>
 </c:if>
 
-<div id="CenterForm">
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <form method="post" action="<aspectran:url value="/account/editAccount"/>">
+            <h3>User Information</h3>
+            <table class="table table-striped">
+                <colgroup>
+                    <col style="width: 25%"/>
+                    <col/>
+                </colgroup>
+                <tr>
+                    <td>User ID:</td>
+                    <td>${account.username}</td>
+                </tr>
+                <tr>
+                    <td>New password:</td>
+                    <td>
+                        <input type="password" name="password" value="${account.password}" autocomplete="off" class="form-control"/>
+                        <span class="text-danger">${errors.password}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Confirm password:</td>
+                    <td>
+                        <input type="password" name="repeatedPassword" value="${account.repeatedPassword}" autocomplete="off" class="form-control"/>
+                        <span class="text-danger">${errors.repeatedPassword}</span>
+                    </td>
+                </tr>
+            </table>
 
-	<form method="post" action="<aspectran:url value="/account/editAccount"/>">
+            <%@ include file="IncludeAccountFields.jsp" %>
 
-		<h3>User Information</h3>
-        <table class="table table-striped">
-			<colgroup>
-				<col style="width: 25%"/>
-				<col/>
-			</colgroup>
-			<tr>
-				<td>User ID:</td>
-				<td>${account.username}</td>
-			</tr>
-			<tr>
-				<td>New password:</td>
-				<td>
-					<input type="password" name="password" value="${account.password}" autocomplete="off"/>
-					<span class="error-msg">${errors.password}</span>
-				</td>
-			</tr>
-			<tr>
-				<td>Confirm password:</td>
-				<td>
-					<input type="password" name="repeatedPassword" value="${account.repeatedPassword}" autocomplete="off"/>
-					<span class="error-msg">${errors.repeatedPassword}</span>
-				</td>
-			</tr>
-		</table>
-
-		<%@ include file="IncludeAccountFields.jsp" %>
-
-		<div class="button-bar">
-			<button type="submit" class="btn btn-primary">Save Account Information</button>
-		</div>
-
-	</form>
-
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Save Account Information</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <%@ include file="../common/IncludeBottom.jsp"%>

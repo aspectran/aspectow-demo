@@ -30,6 +30,7 @@
                     <col style="width: 25%"/>
                     <col/>
                 </colgroup>
+                <tbody class="table-group-divider">
                 <tr>
                     <td>First name:</td>
                     <td><input type="text" name="shipToFirstName" value="${order.shipToFirstName}" class="form-control"/>
@@ -70,6 +71,7 @@
                     <td><input type="text" name="shipCountry" value="${order.shipCountry}" class="form-control"/>
                         <span class="text-danger">${errors.shipCountry}</span></td>
                 </tr>
+                </tbody>
             </table>
 
             <div class="text-center">

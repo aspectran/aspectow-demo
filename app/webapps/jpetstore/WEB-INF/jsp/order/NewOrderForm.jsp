@@ -32,6 +32,7 @@
                     <col style="width: 25%"/>
                     <col/>
                 </colgroup>
+                <tbody class="table-group-divider">
                 <tr>
                     <td>Card Type:</td>
                     <td>
@@ -55,6 +56,7 @@
                     <td><input type="text" name="expiryDate" value="${order.expiryDate}" class="form-control"/>
                         <span class="text-danger">${errors.expiryDate}</span></td>
                 </tr>
+                </tbody>
             </table>
 
             <h3>Billing Address</h3>
@@ -63,6 +65,7 @@
                     <col style="width: 25%"/>
                     <col/>
                 </colgroup>
+                <tbody class="table-group-divider">
                 <tr>
                     <td>First name:</td>
                     <td><input type="text" name="billToFirstName" value="${order.billToFirstName}" class="form-control"/>
@@ -112,6 +115,7 @@
                         </div>
                     </td>
                 </tr>
+                </tbody>
             </table>
 
             <c:if test="${not empty order}">

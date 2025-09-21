@@ -25,7 +25,7 @@
 
 	<div class="d-flex justify-content-between align-items-center mb-3">
 		<h3>${product.name}</h3>
-		<a class="btn btn-secondary" href="<aspectran:url value="/categories/${product.categoryId}"/>">Return to ${product.categoryId}</a>
+		<a class="btn btn-secondary btn-sm" href="<aspectran:url value="/categories/${product.categoryId}"/>">Return to ${product.categoryId}</a>
 	</div>
 
     <table class="table table-striped">
@@ -51,7 +51,7 @@
 				</td>
 				<td><fmt:formatNumber value="${item.listPrice}" pattern="$#,##0.00"/></td>
 				<td class="text-end">
-					<a class="btn btn-primary" href="<aspectran:url value="/cart/addItemToCart?itemId=${item.itemId}"/>">Add to Cart</a>
+					<a class="btn btn-primary btn-sm" href="<aspectran:url value="/cart/addItemToCart?itemId=${item.itemId}"/>">Add to Cart</a>
 				</td>
 			</tr>
 		</c:forEach>

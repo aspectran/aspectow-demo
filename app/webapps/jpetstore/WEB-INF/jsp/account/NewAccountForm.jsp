@@ -28,6 +28,7 @@
                     <col style="width: 25%"/>
                     <col/>
                 </colgroup>
+                <tbody class="table-group-divider">
                 <tr>
                     <td>User ID:</td>
                     <td>
@@ -50,12 +51,13 @@
                         <span class="text-danger">${errors.repeatedPassword}</span>
                     </td>
                 </tr>
+                </tbody>
             </table>
 
             <%@ include file="IncludeAccountFields.jsp"%>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Save Account Information</button>
+                <button type="submit" class="btn btn-success">Save Account Information</button>
             </div>
         </form>
     </div>

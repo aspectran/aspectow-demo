@@ -28,7 +28,6 @@
         <span><i class="bi bi-basket3-fill"></i> <fmt:formatNumber value="${pageInfo.totalElements}"/></span>
     </div>
 
-
     <table class="table table-striped">
         <thead>
 		<tr>

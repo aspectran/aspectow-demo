@@ -23,7 +23,7 @@
 
 	<div class="d-flex justify-content-between align-items-center mb-3">
 		<h3>Search Results for "${param.keyword}"</h3>
-		<a href="<aspectran:url value="/"/>" class="btn btn-secondary">Return to Main Menu</a>
+		<a class="btn btn-secondary btn-sm" href="<aspectran:url value="/"/>">Return to Main Menu</a>
 	</div>
 
 	<table class="table table-striped">

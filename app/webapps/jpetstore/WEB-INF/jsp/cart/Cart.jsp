@@ -27,7 +27,7 @@
 
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<h3>Shopping Cart</h3>
-			<a class="btn btn-secondary" href="<aspectran:url value="/"/>">Return to Main Menu</a>
+			<a class="btn btn-secondary btn-sm" href="<aspectran:url value="/"/>">Return to Main Menu</a>
 		</div>
 
 		<form method="post" hx-post="<aspectran:url value="/cart/updateCartQuantities"/>" hx-target="#jpetstore-content">

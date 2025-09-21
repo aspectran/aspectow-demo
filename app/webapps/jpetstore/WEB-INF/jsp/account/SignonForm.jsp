@@ -19,14 +19,13 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<c:if test="${param.created eq 'true'}">
-	<div id="MessageBar">
-		<p>Your account has been created. Please try login.</p>
-	</div>
-</c:if>
-
 <div id="Signon" class="row justify-content-center">
     <div class="col-md-6">
+        <c:if test="${param.created eq 'true'}">
+            <div class="alert alert-info">
+                <p>Your account has been created. Please try login.</p>
+            </div>
+        </c:if>
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Please enter your username and password.</h5>
@@ -41,7 +40,7 @@
                         <input type="password" id="password" name="password" value="j2ee" class="form-control"/>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="submit" class="btn btn-success">Login</button>
                     </div>
                     <c:if test="${param.retry eq 'true'}">
                         <div class="alert alert-danger mt-3">

@@ -97,4 +97,4 @@
 		</div>
 	</div>
 </div>
-<div class="container p-3">
+<div class="container py-4 px-3 px-lg-4">

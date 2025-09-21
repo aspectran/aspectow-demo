@@ -30,7 +30,7 @@
 			<a class="btn btn-secondary" href="<aspectran:url value="/"/>">Return to Main Menu</a>
 		</div>
 
-		<form method="post" hx-post="<aspectran:url value="/cart/updateCartQuantities"/>" hx-target=".jpetstore.page-content">
+		<form method="post" hx-post="<aspectran:url value="/cart/updateCartQuantities"/>" hx-target="#jpetstore-content">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -47,7 +47,7 @@
                 <tbody class="table-group-divider">
 				<c:if test="${cart.numberOfItems eq 0}">
 					<tr>
-						<td colspan="8">Your cart is empty.</td>
+						<td colspan="8" class="text-center">Your cart is empty.</td>
 					</tr>
 				</c:if>
 				<c:forEach var="cartItem" items="${cart.cartItems}">
@@ -65,8 +65,8 @@
 						<td><input type="number" name="${cartItem.item.itemId}" size="3" maxlength="3" value="${cartItem.quantity}"/></td>
 						<td><fmt:formatNumber value="${cartItem.item.listPrice}" pattern="$#,##0.00"/></td>
 						<td><fmt:formatNumber value="${cartItem.total}" pattern="$#,##0.00"/></td>
-						<td>
-							<a class="btn btn-danger" hx-post="<aspectran:url value="/cart/removeItemFromCart?cartItem=${cartItem.item.itemId}"/>" hx-target=".jpetstore.page-content">Remove</a>
+						<td class="text-end">
+							<a class="btn btn-danger btn-sm" hx-post="<aspectran:url value="/cart/removeItemFromCart?cartItem=${cartItem.item.itemId}"/>" hx-target="#jpetstore-content">Remove</a>
 						</td>
 					</tr>
 				</c:forEach>
@@ -76,14 +76,14 @@
 					<td colspan="4"></td>
 					<td>
 						<c:if test="${cart.numberOfItems gt 0}">
-							<button class="btn btn-primary" type="submit">Update Cart</button>
+							<button class="btn btn-primary btn-sm" type="submit">Update Cart</button>
 						</c:if>
 					</td>
 					<td><strong>Sub Total:</strong></td>
 					<td><strong><fmt:formatNumber value="${cart.subTotal}" pattern="$#,##0.00"/></strong></td>
-					<td>
+					<td class="text-end">
 						<c:if test="${cart.numberOfItems gt 0}">
-							<a class="btn btn-danger" hx-post="<aspectran:url value="/cart/removeAllItemsFromCart"/>" hx-target=".jpetstore.page-content">Remove All</a>
+							<a class="btn btn-danger btn-sm" hx-post="<aspectran:url value="/cart/removeAllItemsFromCart"/>" hx-target="#jpetstore-content">Remove All</a>
 						</c:if>
 					</td>
 				</tr>

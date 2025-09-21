@@ -23,6 +23,7 @@
 		<col style="width: 25%"/>
 		<col/>
 	</colgroup>
+    <tbody class="table-group-divider">
 	<tr>
 		<td>First name:</td>
 		<td>
@@ -93,6 +94,7 @@
 			<span class="text-danger">${errors.country}</span>
 		</td>
 	</tr>
+    </tbody>
 </table>
 
 <h3>Profile Information</h3>
@@ -101,6 +103,7 @@
 		<col style="width: 25%"/>
 		<col/>
 	</colgroup>
+    <tbody class="table-group-divider">
 	<tr>
 		<td>Language Preference:</td>
 		<td>
@@ -135,4 +138,5 @@
 			<input type="checkbox" name="bannerOption" value="true"<c:if test="${account.bannerOption}"> checked</c:if> class="form-check-input"/>
 		</td>
 	</tr>
+    </tbody>
 </table>

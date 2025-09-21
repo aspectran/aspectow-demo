@@ -20,14 +20,13 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<c:if test="${param.updated eq 'true'}">
-	<div id="MessageBar">
-		<p>Your account has been updated.</p>
-	</div>
-</c:if>
-
 <div class="row justify-content-center">
     <div class="col-lg-8">
+        <c:if test="${param.updated eq 'true'}">
+            <div class="alert alert-info">
+                <p>Your account has been updated.</p>
+            </div>
+        </c:if>
         <form method="post" action="<aspectran:url value="/account/editAccount"/>">
             <h3>User Information</h3>
             <table class="table table-striped">
@@ -35,6 +34,7 @@
                     <col style="width: 25%"/>
                     <col/>
                 </colgroup>
+                <tbody class="table-group-divider">
                 <tr>
                     <td>User ID:</td>
                     <td>${account.username}</td>
@@ -53,12 +53,13 @@
                         <span class="text-danger">${errors.repeatedPassword}</span>
                     </td>
                 </tr>
+                </tbody>
             </table>
 
             <%@ include file="IncludeAccountFields.jsp" %>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Save Account Information</button>
+                <button type="submit" class="btn btn-success">Save Account Information</button>
             </div>
         </form>
     </div>

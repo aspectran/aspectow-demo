@@ -50,7 +50,7 @@
 					${item.attribute4} ${item.attribute5} ${product.name}
 				</td>
 				<td><fmt:formatNumber value="${item.listPrice}" pattern="$#,##0.00"/></td>
-				<td>
+				<td class="text-end">
 					<a class="btn btn-primary" href="<aspectran:url value="/cart/addItemToCart?itemId=${item.itemId}"/>">Add to Cart</a>
 				</td>
 			</tr>

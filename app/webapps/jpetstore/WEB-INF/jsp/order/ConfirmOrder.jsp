@@ -21,12 +21,11 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div class="alert alert-info">
-	<p>Please confirm the information below and then press continue...</p>
-</div>
-
 <div class="row justify-content-center">
     <div class="col-lg-8">
+        <div class="alert alert-info">
+            <p>Please confirm the information below and then press continue...</p>
+        </div>
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<h3>Order</h3>
 			<a href="<aspectran:url value="/"/>" class="btn btn-secondary">Return to Main Menu</a>

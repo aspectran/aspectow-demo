@@ -73,7 +73,7 @@
             </table>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-primary">Continue</button>
+                <button type="submit" class="btn btn-success">Continue</button>
                 <a href="<aspectran:url value="/order/newOrderForm"/>" class="btn btn-secondary">Back</a>
             </div>
         </form>

@@ -21,198 +21,204 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp" %>
 
-<c:if test="${param.submitted eq 'true'}">
-    <div id="MessageBar">
-        <p>Thank you, your order has been submitted.</p>
-    </div>
-</c:if>
-
 <div class="row justify-content-center">
-<div class="col-lg-8">
-	<div class="d-flex justify-content-between align-items-center mb-3">
-		<h3>Order</h3>
-		<a class="btn btn-secondary" href="<aspectran:url value="/"/>">Return to Main Menu</a>
-	</div>
-    <table class="table table-striped">
-        <colgroup>
-            <col style="width: 25%"/>
-            <col/>
-        </colgroup>
-        <tr>
-            <td>Order No.</td>
-            <td>#${order.orderId}</td>
-        </tr>
-        <tr>
-            <td>Order Date</td>
-            <td>
-                <fmt:formatDate value="${order.orderDate}" pattern="yyyy/MM/dd hh:mm:ss"/>
-            </td>
-        </tr>
-    </table>
-
-    <h3>Payment Details</h3>
-    <table class="table table-striped">
-        <colgroup>
-            <col style="width: 25%"/>
-            <col/>
-        </colgroup>
-        <tr>
-            <td>Card Type:</td>
-            <td><c:out value="${order.cardType}"/></td>
-        </tr>
-        <tr>
-            <td>Card Number:</td>
-            <td>
-                <c:out value="${order.creditCard}"/>
-                * Fake number!
-            </td>
-        </tr>
-        <tr>
-            <td>Expiry Date (MM/YYYY):</td>
-            <td><c:out value="${order.expiryDate}"/></td>
-        </tr>
-    </table>
-
-    <h3>Billing Address</h3>
-    <table class="table table-striped">
-        <colgroup>
-            <col style="width: 25%"/>
-            <col/>
-        </colgroup>
-        <tr>
-            <td>First name:</td>
-            <td><c:out value="${order.billToFirstName}"/></td>
-        </tr>
-        <tr>
-            <td>Last name:</td>
-            <td><c:out value="${order.billToLastName}"/></td>
-        </tr>
-        <tr>
-            <td>Address 1:</td>
-            <td><c:out value="${order.billAddress1}"/></td>
-        </tr>
-        <tr>
-            <td>Address 2:</td>
-            <td><c:out value="${order.billAddress2}"/></td>
-        </tr>
-        <tr>
-            <td>City:</td>
-            <td><c:out value="${order.billCity}"/></td>
-        </tr>
-        <tr>
-            <td>State:</td>
-            <td><c:out value="${order.billState}"/></td>
-        </tr>
-        <tr>
-            <td>Zip:</td>
-            <td><c:out value="${order.billZip}"/></td>
-        </tr>
-        <tr>
-            <td>Country:</td>
-            <td><c:out value="${order.billCountry}"/></td>
-        </tr>
-    </table>
-
-    <h3>Shipping Address</h3>
-    <table class="table table-striped">
-        <colgroup>
-            <col style="width: 25%"/>
-            <col/>
-        </colgroup>
-        <tr>
-            <td>First name:</td>
-            <td><c:out value="${order.shipToFirstName}"/></td>
-        </tr>
-        <tr>
-            <td>Last name:</td>
-            <td><c:out value="${order.shipToLastName}"/></td>
-        </tr>
-        <tr>
-            <td>Address 1:</td>
-            <td><c:out value="${order.shipAddress1}"/></td>
-        </tr>
-        <tr>
-            <td>Address 2:</td>
-            <td><c:out value="${order.shipAddress2}"/></td>
-        </tr>
-        <tr>
-            <td>City:</td>
-            <td><c:out value="${order.shipCity}"/></td>
-        </tr>
-        <tr>
-            <td>State:</td>
-            <td><c:out value="${order.shipState}"/></td>
-        </tr>
-        <tr>
-            <td>Zip:</td>
-            <td><c:out value="${order.shipZip}"/></td>
-        </tr>
-        <tr>
-            <td>Country:</td>
-            <td><c:out value="${order.shipCountry}"/></td>
-        </tr>
-        <tr>
-            <td>Courier:</td>
-            <td><c:out value="${order.courier}"/></td>
-        </tr>
-        <tr>
-            <td>Status:</td>
-            <td><c:out value="${order.status}"/></td>
-        </tr>
-    </table>
-
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Item ID</th>
-            <th>Description</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total Cost</th>
-        </tr>
-        </thead>
-        <tbody class="table-group-divider">
-        <c:forEach var="lineItem" items="${order.lineItems}">
+    <div class="col-lg-8">
+        <c:if test="${param.submitted eq 'true'}">
+            <div class="alert alert-info">
+                <p>Thank you, your order has been submitted.</p>
+            </div>
+        </c:if>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>Order</h3>
+            <a class="btn btn-secondary" href="<aspectran:url value="/"/>">Return to Main Menu</a>
+        </div>
+        <table class="table table-striped">
+            <colgroup>
+                <col style="width: 25%"/>
+                <col/>
+            </colgroup>
+            <tbody class="table-group-divider">
             <tr>
-                <td align="center">
-                    <a href="<aspectran:url value="/products/${lineItem.item.product.productId}/items/${lineItem.item.itemId}"/>">${lineItem.item.itemId}</a>
-                </td>
-                <td>
-                    <c:if test="${not empty lineItem.item}">
-                        ${lineItem.item.attribute1}
-                        ${lineItem.item.attribute2}
-                        ${lineItem.item.attribute3}
-                        ${lineItem.item.attribute4}
-                        ${lineItem.item.attribute5}
-                        ${lineItem.item.product.name}
-                    </c:if>
-                    <c:if test="${empty lineItem.item}">
-                        <i>{description unavailable}</i>
-                    </c:if>
-                </td>
-                <td align="center">${lineItem.quantity}</td>
-                <td align="center"><fmt:formatNumber value="${lineItem.unitPrice}" pattern="$#,##0.00"/></td>
-                <td align="center"><fmt:formatNumber value="${lineItem.total}" pattern="$#,##0.00"/></td>
+                <td>Order No.</td>
+                <td>#${order.orderId}</td>
             </tr>
-        </c:forEach>
-        </tbody>
-        <tfoot class="table-group-divider">
-        <tr>
-            <th colspan="3"></th>
-            <th>Total</th>
-            <th>
-                <fmt:formatNumber value="${order.totalPrice}" pattern="$#,##0.00"/>
-            </th>
-        </tr>
-        </tfoot>
-    </table>
+            <tr>
+                <td>Order Date</td>
+                <td>
+                    <fmt:formatDate value="${order.orderDate}" pattern="yyyy/MM/dd hh:mm:ss"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-    <div class="button-bar">
-        <button type="button" class="btn btn-warning"
-                onclick="location.href='<aspectran:url value="/order/deleteOrder/${order.orderId}"/>';">Delete Order
-        </button>
+        <h3>Payment Details</h3>
+        <table class="table table-striped">
+            <colgroup>
+                <col style="width: 25%"/>
+                <col/>
+            </colgroup>
+            <tbody class="table-group-divider">
+            <tr>
+                <td>Card Type:</td>
+                <td><c:out value="${order.cardType}"/></td>
+            </tr>
+            <tr>
+                <td>Card Number:</td>
+                <td>
+                    <c:out value="${order.creditCard}"/>
+                    * Fake number!
+                </td>
+            </tr>
+            <tr>
+                <td>Expiry Date (MM/YYYY):</td>
+                <td><c:out value="${order.expiryDate}"/></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3>Billing Address</h3>
+        <table class="table table-striped">
+            <colgroup>
+                <col style="width: 25%"/>
+                <col/>
+            </colgroup>
+            <tbody class="table-group-divider">
+            <tr>
+                <td>First name:</td>
+                <td><c:out value="${order.billToFirstName}"/></td>
+            </tr>
+            <tr>
+                <td>Last name:</td>
+                <td><c:out value="${order.billToLastName}"/></td>
+            </tr>
+            <tr>
+                <td>Address 1:</td>
+                <td><c:out value="${order.billAddress1}"/></td>
+            </tr>
+            <tr>
+                <td>Address 2:</td>
+                <td><c:out value="${order.billAddress2}"/></td>
+            </tr>
+            <tr>
+                <td>City:</td>
+                <td><c:out value="${order.billCity}"/></td>
+            </tr>
+            <tr>
+                <td>State:</td>
+                <td><c:out value="${order.billState}"/></td>
+            </tr>
+            <tr>
+                <td>Zip:</td>
+                <td><c:out value="${order.billZip}"/></td>
+            </tr>
+            <tr>
+                <td>Country:</td>
+                <td><c:out value="${order.billCountry}"/></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h3>Shipping Address</h3>
+        <table class="table table-striped">
+            <colgroup>
+                <col style="width: 25%"/>
+                <col/>
+            </colgroup>
+            <tbody class="table-group-divider">
+            <tr>
+                <td>First name:</td>
+                <td><c:out value="${order.shipToFirstName}"/></td>
+            </tr>
+            <tr>
+                <td>Last name:</td>
+                <td><c:out value="${order.shipToLastName}"/></td>
+            </tr>
+            <tr>
+                <td>Address 1:</td>
+                <td><c:out value="${order.shipAddress1}"/></td>
+            </tr>
+            <tr>
+                <td>Address 2:</td>
+                <td><c:out value="${order.shipAddress2}"/></td>
+            </tr>
+            <tr>
+                <td>City:</td>
+                <td><c:out value="${order.shipCity}"/></td>
+            </tr>
+            <tr>
+                <td>State:</td>
+                <td><c:out value="${order.shipState}"/></td>
+            </tr>
+            <tr>
+                <td>Zip:</td>
+                <td><c:out value="${order.shipZip}"/></td>
+            </tr>
+            <tr>
+                <td>Country:</td>
+                <td><c:out value="${order.shipCountry}"/></td>
+            </tr>
+            <tr>
+                <td>Courier:</td>
+                <td><c:out value="${order.courier}"/></td>
+            </tr>
+            <tr>
+                <td>Status:</td>
+                <td><c:out value="${order.status}"/></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Item ID</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total Cost</th>
+            </tr>
+            </thead>
+            <tbody class="table-group-divider">
+            <c:forEach var="lineItem" items="${order.lineItems}">
+                <tr>
+                    <td align="center">
+                        <a href="<aspectran:url value="/products/${lineItem.item.product.productId}/items/${lineItem.item.itemId}"/>">${lineItem.item.itemId}</a>
+                    </td>
+                    <td>
+                        <c:if test="${not empty lineItem.item}">
+                            ${lineItem.item.attribute1}
+                            ${lineItem.item.attribute2}
+                            ${lineItem.item.attribute3}
+                            ${lineItem.item.attribute4}
+                            ${lineItem.item.attribute5}
+                            ${lineItem.item.product.name}
+                        </c:if>
+                        <c:if test="${empty lineItem.item}">
+                            <i>{description unavailable}</i>
+                        </c:if>
+                    </td>
+                    <td align="center">${lineItem.quantity}</td>
+                    <td align="center"><fmt:formatNumber value="${lineItem.unitPrice}" pattern="$#,##0.00"/></td>
+                    <td align="center"><fmt:formatNumber value="${lineItem.total}" pattern="$#,##0.00"/></td>
+                </tr>
+            </c:forEach>
+            </tbody>
+            <tfoot class="table-group-divider">
+            <tr>
+                <th colspan="3"></th>
+                <th>Total</th>
+                <th>
+                    <fmt:formatNumber value="${order.totalPrice}" pattern="$#,##0.00"/>
+                </th>
+            </tr>
+            </tfoot>
+        </table>
+
+        <div class="text-center">
+            <button type="button" class="btn btn-danger"
+                    onclick="location.href='<aspectran:url value="/order/deleteOrder/${order.orderId}"/>';">Delete Order</button>
+        </div>
     </div>
-
 </div>
 
 <%@ include file="../common/IncludeBottom.jsp" %>

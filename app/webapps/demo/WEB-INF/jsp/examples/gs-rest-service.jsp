@@ -5,11 +5,9 @@
         <h2>Customer List</h2>
         <span id="customer-total" class="float-end badge bg-warning"
               style="font-size:2em;position:absolute;top:0;right:10px;border-radius:50%;">0</span>
-        <div class="card card-body p-1 pe-0" style="height:361px;overflow-y:auto;">
-            <div id="customer-list-board">
-                <div id="customer-list-group" class="list-group w-100" role="button">
-                    <!-- Customer list items will be appended here -->
-                </div>
+        <div id="customer-list-board" class="card card-body p-1 pe-0" style="height:361px;overflow-y:auto;">
+            <div id="customer-list-group" class="list-group w-100" role="button">
+                <!-- Customer list items will be appended here -->
             </div>
         </div>
         <div class="d-flex justify-content-between align-items-center">
@@ -77,8 +75,6 @@
     <aspectran:profile expression="!prod">
     const BASE_PATH = "${pageContext.request.contextPath}/examples";
     </aspectran:profile>
-    // Global variable to store the currently selected customer ID
-    let selectedCustomerId = null;
 
     $(function () {
         let customerForm = $("#customer-form");
@@ -86,10 +82,14 @@
         // Change event for the new dropdown items
         $("#customer-list-group").on("click", "a", function (e) {
             e.preventDefault();
-            $(this).parent().find("a").removeClass("active");
-            const id = $(this).addClass("active").data("id");
-            selectedCustomerId = id; // Store selected ID
-            selectCustomer(id);
+            const id = $(this).data("id");
+
+            // Add active class and scroll into view
+            $("#customer-list-group a").removeClass("active"); // Remove active from others
+            $(this).addClass("active"); // Add active to current
+
+            scrollIntoView(this); // Scroll the clicked item into view
+
             $("#customer-details, #customer-number").stop(true).fadeOut(300);
             getCustomer(id);
             $("#customer-details, #customer-number").fadeIn(200);
@@ -101,7 +101,6 @@
             $("#customer-list-board, #customer-total").fadeIn(200);
         });
         $("button.add-customer").click(function () {
-            selectedCustomerId = null; // Clear selected ID
             clearForm();
             customerForm.find("input[name=name]").focus();
         });
@@ -120,6 +119,30 @@
 
         getCustomerList();
     });
+
+    // Function to scroll an element into view within its scrollable parent
+    function scrollIntoView(element) {
+        const container = $("#customer-list-board"); // Changed to customer-list-board as it's the scrollable parent
+        const item = $(element);
+
+        if (item.length === 0 || container.length === 0) {
+            return; // Element or container not found
+        }
+
+        const containerTop = container.scrollTop();
+        const containerBottom = containerTop + container.height();
+
+        const itemTop = item.position().top + containerTop; // Absolute position relative to container's scroll top
+        const itemBottom = itemTop + item.outerHeight();
+
+        if (itemTop < containerTop) {
+            // Item is above the current view, scroll up
+            container.scrollTop(itemTop);
+        } else if (itemBottom > containerBottom) {
+            // Item is below the current view, scroll down
+            container.scrollTop(itemBottom - container.height());
+        }
+    }
 
     function getCustomerList() {
         $.ajax({
@@ -159,7 +182,6 @@
                 customerForm.find("input[name=age]").val(data.customer.age);
                 customerForm.find("input[name=approved][value=" + (data.customer.approved ? "Y" : "N") + "]").prop("checked", true);
                 $("#customer-number").text(data.customer.id);
-                selectedCustomerId = data.customer.id; // Update selected ID
             },
             error: function (xhr, status, error) {
                 alert("code: " + xhr.status + "\nmessage: " + xhr.responseText + "\nerror: " + error);
@@ -199,15 +221,14 @@
             success: function (data, textStatus, xhr) {
                 describe(this.type, this.url, xhr);
                 if (id) {
-                    // Update existing item in dropdown
-                    $("#customer-list-group a[data-id='" + data.id + "']").text(data.id + ". " + data.name);
+                    // Update existing item in list-group
+                    $("#customer-list-group a[data-id='" + data.customer.id + "']").text(data.customer.id + ". " + data.customer.name);
                 } else {
-                    // Add new item to dropdown
+                    customerForm.find("input[name=id]").val(data.id);
+                    // Add new item to list-group
                     $("#customer-list-group").append($("<a class='list-group-item list-group-item-action' data-id='" + data.id + "'>" + data.id + ". " + data.name + "</a>"));
+                    selectCustomer(data.id);
                 }
-                selectedCustomerId = data.id; // Update selected ID
-                selectCustomer(data.id);
-                customerForm.find("input[name=id]").val(data.id);
                 $("#customer-number").text(data.id);
                 $("#customer-total").text($("#customer-list-group a").length); // Update total count
             },
@@ -234,8 +255,7 @@
             dataType: "json",
             success: function (data, textStatus, xhr) {
                 describe(this.type, this.url, xhr);
-                $("#customer-list-group a[data-id='" + id + "']").remove(); // Remove item from dropdown
-                selectedCustomerId = null; // Clear selected ID
+                $("#customer-list-group a[data-id='" + id + "']").remove(); // Remove item from list-group
                 clearForm();
                 $("#customer-total").text($("#customer-list-group a").length); // Update total count
             },
@@ -270,6 +290,7 @@
     function selectCustomer(id) {
         $("#customer-list-group").find("a").removeClass("active");
         $("#customer-list-group").find("a[data-id=" + id + "]").addClass("active").focus();
+        $("#customer-list-board").scrollTop($("#customer-list-board").prop("scrollHeight"));
     }
 
     function clearForm() {
@@ -281,7 +302,7 @@
         $("#customer-total").text($("#customer-list-group a").length);
         $("#customer-number").text("-");
         customerForm.find("input.is-invalid").removeClass("is-invalid");
-        selectedCustomerId = null; // Clear selected ID
+        $("#customer-list-group a").removeClass("active"); // Remove active class from all items
     }
 
     function describe(method, url, xhr) {
@@ -294,5 +315,5 @@
             $("#response-body").prepend("<strong>Location: " + xhr.getResponseHeader('Location') + "</strong>\n");
         }
         $("#response-status").fadeIn(200);
-        }
+    }
 </script>

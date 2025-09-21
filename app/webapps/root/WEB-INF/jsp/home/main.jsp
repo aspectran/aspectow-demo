@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
 <div class="row g-3 pb-3">
-  <div class="col-12">
+  <div class="col-12 pt-3">
       Explore powerful Aspectran features firsthand through examples of web applications, RESTful API creation, and integration with various technologies.
   </div>
   <div class="col-12">

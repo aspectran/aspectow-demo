@@ -5,10 +5,12 @@
         <h2>Customer List</h2>
         <span id="customer-total" class="float-end badge bg-warning"
               style="font-size:2em;position:absolute;top:0;right:10px;border-radius:50%;">0</span>
-        <div id="customer-list-board" class="dropdown">
-            <ul class="list-group w-100" aria-labelledby="customerListDropdown" id="customer-list-group">
-                <!-- Customer list items will be appended here -->
-            </ul>
+        <div class="card card-body p-1 pe-0" style="height:361px;overflow-y:auto;">
+            <div id="customer-list-board">
+                <div id="customer-list-group" class="list-group w-100" role="button">
+                    <!-- Customer list items will be appended here -->
+                </div>
+            </div>
         </div>
         <div class="d-flex justify-content-between align-items-center">
         <div class="mt-2">
@@ -82,12 +84,12 @@
         let customerForm = $("#customer-form");
 
         // Change event for the new dropdown items
-        $("#customer-list-group").on("click", ".list-group-item", function (e) {
+        $("#customer-list-group").on("click", "a", function (e) {
             e.preventDefault();
-            const id = $(this).data("id");
-            // const name = $(this).text();
-            // $("#customerListDropdown").text(name); // Update button text
+            $(this).parent().find("a").removeClass("active");
+            const id = $(this).addClass("active").data("id");
             selectedCustomerId = id; // Store selected ID
+            selectCustomer(id);
             $("#customer-details, #customer-number").stop(true).fadeOut(300);
             getCustomer(id);
             $("#customer-details, #customer-number").fadeIn(200);
@@ -99,7 +101,6 @@
             $("#customer-list-board, #customer-total").fadeIn(200);
         });
         $("button.add-customer").click(function () {
-            $("#customerListDropdown").text("Select Customer"); // Reset button text
             selectedCustomerId = null; // Clear selected ID
             clearForm();
             customerForm.find("input[name=name]").focus();
@@ -133,7 +134,7 @@
                 for (let i = 0; i < data.customers.length; i++) {
                     let id = data.customers[i].id;
                     let name = data.customers[i].name;
-                    listMenu.append($("<li class='list-group-item' data-id='" + id + "'>" + id + ". " + name + "</li>"));
+                    listMenu.append($("<a class='list-group-item list-group-item-action' data-id='" + id + "'>" + id + ". " + name + "</a>"));
                 }
                 clearForm();
                 $("#customer-total").text(data.customers.length); // Update total count
@@ -158,7 +159,6 @@
                 customerForm.find("input[name=age]").val(data.customer.age);
                 customerForm.find("input[name=approved][value=" + (data.customer.approved ? "Y" : "N") + "]").prop("checked", true);
                 $("#customer-number").text(data.customer.id);
-                // $("#customerListDropdown").text(data.customer.id + ". " + data.customer.name); // Update button text
                 selectedCustomerId = data.customer.id; // Update selected ID
             },
             error: function (xhr, status, error) {
@@ -203,13 +203,13 @@
                     $("#customer-list-group a[data-id='" + data.id + "']").text(data.id + ". " + data.name);
                 } else {
                     // Add new item to dropdown
-                    $("#customer-list-group").append($("<li class='list-group-item' data-id='" + data.id + "'>" + data.id + ". " + data.name + "</li>"));
+                    $("#customer-list-group").append($("<a class='list-group-item list-group-item-action' data-id='" + data.id + "'>" + data.id + ". " + data.name + "</a>"));
                 }
-                $("#customerListDropdown").text(data.id + ". " + data.name); // Update button text
                 selectedCustomerId = data.id; // Update selected ID
+                selectCustomer(data.id);
                 customerForm.find("input[name=id]").val(data.id);
                 $("#customer-number").text(data.id);
-                $("#customer-total").text($("#customer-list-group li").length); // Update total count
+                $("#customer-total").text($("#customer-list-group a").length); // Update total count
             },
             error: function (xhr, status, error) {
                 if (xhr.status === 403) {
@@ -234,10 +234,10 @@
             dataType: "json",
             success: function (data, textStatus, xhr) {
                 describe(this.type, this.url, xhr);
-                $("#customer-list-group li[data-id='" + id + "']").remove(); // Remove item from dropdown
+                $("#customer-list-group a[data-id='" + id + "']").remove(); // Remove item from dropdown
                 selectedCustomerId = null; // Clear selected ID
                 clearForm();
-                $("#customer-total").text($("#customer-list-group li").length); // Update total count
+                $("#customer-total").text($("#customer-list-group a").length); // Update total count
             },
             error: function (xhr, status, error) {
                 alert("An error has occurred making the request: " + error);
@@ -267,16 +267,20 @@
         });
     }
 
+    function selectCustomer(id) {
+        $("#customer-list-group").find("a").removeClass("active");
+        $("#customer-list-group").find("a[data-id=" + id + "]").addClass("active").focus();
+    }
+
     function clearForm() {
         let customerForm = $("#customer-form");
         customerForm.find("input[name=id]").val("");
         customerForm.find("input[name=name]").val("");
         customerForm.find("input[name=age]").val("");
         customerForm.find("input[name=approved][value=Y]").prop("checked", true);
-        $("#customer-total").text($("#customer-list-group li").length);
+        $("#customer-total").text($("#customer-list-group a").length);
         $("#customer-number").text("-");
         customerForm.find("input.is-invalid").removeClass("is-invalid");
-        $("#customerListDropdown").text("Select Customer"); // Reset button text
         selectedCustomerId = null; // Clear selected ID
     }
 

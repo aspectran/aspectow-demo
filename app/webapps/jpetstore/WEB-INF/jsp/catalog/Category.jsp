@@ -20,32 +20,28 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div id="Catalog">
-
-	<div class="d-flex justify-content-between align-items-center mb-3">
-		<h3>${category.name}</h3>
-		<a class="btn btn-secondary btn-sm" href="<aspectran:url value="/"/>">Return to Main Menu</a>
-	</div>
-
-	<table class="table table-striped">
-        <thead>
-		<tr>
-			<th>Product ID</th>
-			<th>Name</th>
-		</tr>
-        </thead>
-        <tbody class="table-group-divider">
-		<c:forEach var="product" items="${productList}">
-			<tr>
-				<td>
-					<a href="<aspectran:url value="/products/${product.productId}"/>">${product.productId}</a>
-				</td>
-				<td>${product.name}</td>
-			</tr>
-		</c:forEach>
-        </tbody>
-	</table>
-
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>${category.name}</h3>
+    <a class="btn btn-secondary btn-sm" href="<aspectran:url value="/"/>">Return to Main Menu</a>
 </div>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Product ID</th>
+        <th>Name</th>
+    </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    <c:forEach var="product" items="${productList}">
+        <tr>
+            <td>
+                <a href="<aspectran:url value="/products/${product.productId}"/>">${product.productId}</a>
+            </td>
+            <td>${product.name}</td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
 
 <%@ include file="../common/IncludeBottom.jsp"%>

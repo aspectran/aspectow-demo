@@ -17,7 +17,7 @@
 --%>
 </div>
 
-<div id="Footer" class="container bg-dark p-3">
+<div class="container p-3" style="background-color: #353b3e;">
     <footer class="d-flex flex-wrap justify-content-between align-items-center">
         <div class="col-md-4 align-items-center">
             <p class="m-0"><a href="https://aspectran.com/" class="mb-3 me-2 mb-md-0 text-decoration-none lh-1">aspectran.com</a></p>

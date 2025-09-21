@@ -19,7 +19,7 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div id="Signon" class="row justify-content-center">
+<div class="row justify-content-center">
     <div class="col-md-6">
         <c:if test="${param.created eq 'true'}">
             <div class="alert alert-info">

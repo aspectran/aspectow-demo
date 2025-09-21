@@ -21,93 +21,85 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div id="Catalog">
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Shopping Cart</h3>
+    <a class="btn btn-secondary btn-sm" href="<aspectran:url value="/"/>">Return to Main Menu</a>
+</div>
 
-	<div id="Cart">
+<form method="post" hx-post="<aspectran:url value="/cart/updateCartQuantities"/>" hx-target="#jpetstore-content">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><b>Item ID</b></th>
+            <th><b>Product ID</b></th>
+            <th><b>Description</b></th>
+            <th><b>In Stock?</b></th>
+            <th><b>Quantity</b></th>
+            <th><b>List Price</b></th>
+            <th><b>Total Cost</b></th>
+            <th>&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        <c:if test="${cart.numberOfItems eq 0}">
+            <tr>
+                <td colspan="8" class="text-center">Your cart is empty.</td>
+            </tr>
+        </c:if>
+        <c:forEach var="cartItem" items="${cart.cartItems}">
+            <tr>
+                <td>
+                    <a href="<aspectran:url value="/products/${cartItem.item.product.productId}/items/${cartItem.item.itemId}"/>">${cartItem.item.itemId}</a>
+                </td>
+                <td>${cartItem.item.product.productId}</td>
+                <td align="left">
+                    ${cartItem.item.attribute1} ${cartItem.item.attribute2}
+                    ${cartItem.item.attribute3} ${cartItem.item.attribute4}
+                    ${cartItem.item.attribute5} ${cartItem.item.product.name}
+                </td>
+                <td>${cartItem.inStock}</td>
+                <td><input type="number" name="${cartItem.item.itemId}" size="3" maxlength="3" value="${cartItem.quantity}"/></td>
+                <td><fmt:formatNumber value="${cartItem.item.listPrice}" pattern="$#,##0.00"/></td>
+                <td><fmt:formatNumber value="${cartItem.total}" pattern="$#,##0.00"/></td>
+                <td class="text-end">
+                    <a class="btn btn-danger btn-sm" hx-post="<aspectran:url value="/cart/removeItemFromCart?cartItem=${cartItem.item.itemId}"/>" hx-target="#jpetstore-content">Remove</a>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+        <tfoot class="table-group-divider">
+        <tr>
+            <td colspan="4"></td>
+            <td>
+                <c:if test="${cart.numberOfItems gt 0}">
+                    <button class="btn btn-primary btn-sm" type="submit">Update Cart</button>
+                </c:if>
+            </td>
+            <td><strong>Sub Total:</strong></td>
+            <td><strong><fmt:formatNumber value="${cart.subTotal}" pattern="$#,##0.00"/></strong></td>
+            <td class="text-end">
+                <c:if test="${cart.numberOfItems gt 0}">
+                    <a class="btn btn-danger btn-sm" hx-post="<aspectran:url value="/cart/removeAllItemsFromCart"/>" hx-target="#jpetstore-content">Remove All</a>
+                </c:if>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
 
-		<div class="d-flex justify-content-between align-items-center mb-3">
-			<h3>Shopping Cart</h3>
-			<a class="btn btn-secondary btn-sm" href="<aspectran:url value="/"/>">Return to Main Menu</a>
-		</div>
+</form>
 
-		<form method="post" hx-post="<aspectran:url value="/cart/updateCartQuantities"/>" hx-target="#jpetstore-content">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-					<th><b>Item ID</b></th>
-					<th><b>Product ID</b></th>
-					<th><b>Description</b></th>
-					<th><b>In Stock?</b></th>
-					<th><b>Quantity</b></th>
-					<th><b>List Price</b></th>
-					<th><b>Total Cost</b></th>
-					<th>&nbsp;</th>
-				</tr>
-                </thead>
-                <tbody class="table-group-divider">
-				<c:if test="${cart.numberOfItems eq 0}">
-					<tr>
-						<td colspan="8" class="text-center">Your cart is empty.</td>
-					</tr>
-				</c:if>
-				<c:forEach var="cartItem" items="${cart.cartItems}">
-					<tr>
-						<td>
-							<a href="<aspectran:url value="/products/${cartItem.item.product.productId}/items/${cartItem.item.itemId}"/>">${cartItem.item.itemId}</a>
-						</td>
-						<td>${cartItem.item.product.productId}</td>
-						<td align="left">
-							${cartItem.item.attribute1} ${cartItem.item.attribute2}
-							${cartItem.item.attribute3} ${cartItem.item.attribute4}
-							${cartItem.item.attribute5} ${cartItem.item.product.name}
-						</td>
-						<td>${cartItem.inStock}</td>
-						<td><input type="number" name="${cartItem.item.itemId}" size="3" maxlength="3" value="${cartItem.quantity}"/></td>
-						<td><fmt:formatNumber value="${cartItem.item.listPrice}" pattern="$#,##0.00"/></td>
-						<td><fmt:formatNumber value="${cartItem.total}" pattern="$#,##0.00"/></td>
-						<td class="text-end">
-							<a class="btn btn-danger btn-sm" hx-post="<aspectran:url value="/cart/removeItemFromCart?cartItem=${cartItem.item.itemId}"/>" hx-target="#jpetstore-content">Remove</a>
-						</td>
-					</tr>
-				</c:forEach>
-                </tbody>
-                <tfoot class="table-group-divider">
-				<tr>
-					<td colspan="4"></td>
-					<td>
-						<c:if test="${cart.numberOfItems gt 0}">
-							<button class="btn btn-primary btn-sm" type="submit">Update Cart</button>
-						</c:if>
-					</td>
-					<td><strong>Sub Total:</strong></td>
-					<td><strong><fmt:formatNumber value="${cart.subTotal}" pattern="$#,##0.00"/></strong></td>
-					<td class="text-end">
-						<c:if test="${cart.numberOfItems gt 0}">
-							<a class="btn btn-danger btn-sm" hx-post="<aspectran:url value="/cart/removeAllItemsFromCart"/>" hx-target="#jpetstore-content">Remove All</a>
-						</c:if>
-					</td>
-				</tr>
-                </tfoot>
-			</table>
+<c:if test="${cart.numberOfItems gt 0}">
+    <div class="text-center">
+        <a class="btn btn-success" href="<aspectran:url value="/order/newOrderForm"/>">Proceed to Checkout</a>
+    </div>
+</c:if>
 
-		</form>
-
-		<c:if test="${cart.numberOfItems gt 0}">
-            <div class="text-center">
-			    <a class="btn btn-success" href="<aspectran:url value="/order/newOrderForm"/>">Proceed to Checkout</a>
-            </div>
-		</c:if>
-	</div>
-
-	<div id="MyList" class="mt-3">
-		<c:if test="${not empty user.account}">
-			<c:if test="${!empty user.account.listOption}">
-				<%@ include file="IncludeMyList.jsp"%>
-			</c:if>
-		</c:if>
-	</div>
-
-	<div id="Separator">&nbsp;</div>
+<div class="mt-5">
+    <c:if test="${not empty user.account}">
+        <c:if test="${!empty user.account.listOption}">
+            <%@ include file="IncludeMyList.jsp"%>
+        </c:if>
+    </c:if>
 </div>
 
 <%@ include file="../common/IncludeBottom.jsp"%>

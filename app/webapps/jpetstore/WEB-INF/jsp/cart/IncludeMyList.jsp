@@ -20,7 +20,7 @@
 --%>
 <c:if test="${not empty user.products}">
 	<div class="panel">
-		<h4>Pet Favorites </h4>
+		<h4>Pet Favorites</h4>
 		<p>Shop for more of your favorite pets here.</p>
 		<ul>
 			<c:forEach var="product" items="${user.products}">

@@ -26,7 +26,7 @@
     </div>
 </c:if>
 
-<div id="Main" class="row">
+<div class="row">
 	<div id="Sidebar" class="col-lg-3 col-md-4">
 		<div id="SidebarContent">
 			<h4><a href="<aspectran:url value="/categories/FISH"/>">Fish</a></h4>

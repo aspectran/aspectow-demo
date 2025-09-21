@@ -19,37 +19,35 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div id="Catalog">
-
-	<div class="d-flex justify-content-between align-items-center mb-3">
-		<h3>Search Results for "${param.keyword}"</h3>
-		<a class="btn btn-secondary btn-sm" href="<aspectran:url value="/"/>">Return to Main Menu</a>
-	</div>
-
-	<table class="table table-striped">
-		<colgroup>
-			<col style="width: 20%"/>
-			<col style="width: 30%"/>
-			<col/>
-		</colgroup>
-		<tr>
-			<th>Product ID</th>
-			<th>Name</th>
-			<th>Description</th>
-		</tr>
-		<c:forEach var="product" items="${productList}">
-			<tr>
-				<td>
-					<strong><a href="<aspectran:url value="/products/${product.productId}"/>">${product.productId}</a></strong>
-				</td>
-				<td>${product.name}</td>
-				<td style="text-align: left">
-					<a href="<aspectran:url value="/products/${product.productId}"/>">${product.description}</a>
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
-
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Search Results for "${param.keyword}"</h3>
+    <a class="btn btn-secondary btn-sm" href="<aspectran:url value="/"/>">Return to Main Menu</a>
 </div>
+
+<table class="table table-striped">
+    <colgroup>
+        <col style="width: 20%"/>
+        <col style="width: 30%"/>
+        <col/>
+    </colgroup>
+    <tbody class="table-group-divider">
+    <tr>
+        <th>Product ID</th>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+    <c:forEach var="product" items="${productList}">
+        <tr>
+            <td>
+                <strong><a href="<aspectran:url value="/products/${product.productId}"/>">${product.productId}</a></strong>
+            </td>
+            <td>${product.name}</td>
+            <td style="text-align: left">
+                <a href="<aspectran:url value="/products/${product.productId}"/>">${product.description}</a>
+            </td>
+        </tr>
+    </c:forEach>
+    </tbody>
+</table>
 
 <%@ include file="../common/IncludeBottom.jsp"%>

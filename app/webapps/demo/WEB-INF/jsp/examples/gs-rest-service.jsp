@@ -5,22 +5,25 @@
         <h2>Customer List</h2>
         <span id="customer-total" class="float-end badge bg-warning"
               style="font-size:2em;position:absolute;top:0;right:10px;border-radius:50%;">0</span>
-        <div id="customer-list-board">
-            <select name="customerList" class="form-select" size="13">
-            </select>
+        <div id="customer-list-board" class="dropdown">
+            <ul class="list-group w-100" aria-labelledby="customerListDropdown" id="customer-list-group">
+                <!-- Customer list items will be appended here -->
+            </ul>
         </div>
-        <div class="float-start mt-2">
+        <div class="d-flex justify-content-between align-items-center">
+        <div class="mt-2">
             <button type="button" class="btn btn-warning refresh-customers">Refresh</button>
         </div>
-        <div class="float-end mt-2">
+        <div class="mt-2">
             <button type="button" class="btn btn-primary add-customer">Add</button>
             <button type="button" class="btn btn-danger delete-customer">Delete</button>
+        </div>
         </div>
     </div>
     <div class="col-lg-8" style="position:relative;">
         <h2>Customer Details</h2>
         <span id="customer-number" class="float-end badge bg-success"
-              style="font-size:2em;position:absolute;top:0;right:10px;border-radius:50%;z-index:1;">0</span>
+              style="font-size:2em;position:absolute;top:0;right:10px;border-radius:50%;">0</span>
         <form id="customer-form">
             <div id="customer-details" class="card card-body">
                 <div class="mb-3">
@@ -72,20 +75,32 @@
     <aspectran:profile expression="!prod">
     const BASE_PATH = "${pageContext.request.contextPath}/examples";
     </aspectran:profile>
+    // Global variable to store the currently selected customer ID
+    let selectedCustomerId = null;
+
     $(function () {
         let customerForm = $("#customer-form");
-        $("select[name=customerList]").change(function () {
+
+        // Change event for the new dropdown items
+        $("#customer-list-group").on("click", ".list-group-item", function (e) {
+            e.preventDefault();
+            const id = $(this).data("id");
+            // const name = $(this).text();
+            // $("#customerListDropdown").text(name); // Update button text
+            selectedCustomerId = id; // Store selected ID
             $("#customer-details, #customer-number").stop(true).fadeOut(300);
-            getCustomer($(this).val());
+            getCustomer(id);
             $("#customer-details, #customer-number").fadeIn(200);
         });
+
         $("button.refresh-customers").click(function () {
             $("#customer-list-board, #customer-total").stop(true).fadeOut(300);
             getCustomerList();
             $("#customer-list-board, #customer-total").fadeIn(200);
         });
         $("button.add-customer").click(function () {
-            $("select[name=customerList] option:selected").removeAttr("selected");
+            $("#customerListDropdown").text("Select Customer"); // Reset button text
+            selectedCustomerId = null; // Clear selected ID
             clearForm();
             customerForm.find("input[name=name]").focus();
         });
@@ -113,14 +128,15 @@
             success: function (data, textStatus, xhr) {
                 console.log(data);
                 describe("GET", this.url, xhr);
-                let list = $("select[name=customerList]");
-                list.empty();
+                let listMenu = $("#customer-list-group");
+                listMenu.empty();
                 for (let i = 0; i < data.customers.length; i++) {
                     let id = data.customers[i].id;
                     let name = data.customers[i].name;
-                    list.append($("<option/>").attr("value", id).text(id + ". " + name));
+                    listMenu.append($("<li class='list-group-item' data-id='" + id + "'>" + id + ". " + name + "</li>"));
                 }
                 clearForm();
+                $("#customer-total").text(data.customers.length); // Update total count
             },
             error: function (xhr, status, error) {
                 alert("code: " + xhr.status + "\nmessage: " + xhr.responseText + "\nerror: " + error);
@@ -142,6 +158,8 @@
                 customerForm.find("input[name=age]").val(data.customer.age);
                 customerForm.find("input[name=approved][value=" + (data.customer.approved ? "Y" : "N") + "]").prop("checked", true);
                 $("#customer-number").text(data.customer.id);
+                // $("#customerListDropdown").text(data.customer.id + ". " + data.customer.name); // Update button text
+                selectedCustomerId = data.customer.id; // Update selected ID
             },
             error: function (xhr, status, error) {
                 alert("code: " + xhr.status + "\nmessage: " + xhr.responseText + "\nerror: " + error);
@@ -181,17 +199,17 @@
             success: function (data, textStatus, xhr) {
                 describe(this.type, this.url, xhr);
                 if (id) {
-                    $("select[name=customerList] option[value=" + data.id + "]").text(data.id + ". " + data.name);
+                    // Update existing item in dropdown
+                    $("#customer-list-group a[data-id='" + data.id + "']").text(data.id + ". " + data.name);
                 } else {
-                    $("#customer-total").fadeOut(300);
-                    $("select[name=customerList]").append($("<option/>").attr("value", data.id).text(data.id + ". " + data.name));
-                    $("select[name=customerList]").val(data.id);
-                    customerForm.find("input[name=id]").val(data.id);
-                    $("#customer-number").text(data.id);
-                    $("#customer-total").text($("select[name=customerList] option").length);
-                    $("#customer-total").fadeIn(200);
+                    // Add new item to dropdown
+                    $("#customer-list-group").append($("<li class='list-group-item' data-id='" + data.id + "'>" + data.id + ". " + data.name + "</li>"));
                 }
-                $("select[name=customerList] option:selected").css("color", "orange");
+                $("#customerListDropdown").text(data.id + ". " + data.name); // Update button text
+                selectedCustomerId = data.id; // Update selected ID
+                customerForm.find("input[name=id]").val(data.id);
+                $("#customer-number").text(data.id);
+                $("#customer-total").text($("#customer-list-group li").length); // Update total count
             },
             error: function (xhr, status, error) {
                 if (xhr.status === 403) {
@@ -216,8 +234,10 @@
             dataType: "json",
             success: function (data, textStatus, xhr) {
                 describe(this.type, this.url, xhr);
-                $("select[name=customerList] option[value=" + id + "]").remove();
+                $("#customer-list-group li[data-id='" + id + "']").remove(); // Remove item from dropdown
+                selectedCustomerId = null; // Clear selected ID
                 clearForm();
+                $("#customer-total").text($("#customer-list-group li").length); // Update total count
             },
             error: function (xhr, status, error) {
                 alert("An error has occurred making the request: " + error);
@@ -253,9 +273,11 @@
         customerForm.find("input[name=name]").val("");
         customerForm.find("input[name=age]").val("");
         customerForm.find("input[name=approved][value=Y]").prop("checked", true);
-        $("#customer-total").text($("select[name=customerList] option").length);
+        $("#customer-total").text($("#customer-list-group li").length);
         $("#customer-number").text("-");
         customerForm.find("input.is-invalid").removeClass("is-invalid");
+        $("#customerListDropdown").text("Select Customer"); // Reset button text
+        selectedCustomerId = null; // Clear selected ID
     }
 
     function describe(method, url, xhr) {
@@ -268,5 +290,5 @@
             $("#response-body").prepend("<strong>Location: " + xhr.getResponseHeader('Location') + "</strong>\n");
         }
         $("#response-status").fadeIn(200);
-    }
+        }
 </script>

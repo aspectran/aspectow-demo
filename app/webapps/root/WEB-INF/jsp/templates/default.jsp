@@ -83,7 +83,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                            href="<aspectran:url value="/"/>" title="Examples">Examples</a>
+                            href="<aspectran:url value="/"/>" title="Sample applications built on Aspectran">Sample Apps</a>
                         <ul class="dropdown-menu">
                             <aspectran:profile expression="prod">
                                 <li><a class="dropdown-item" href="https://demo.aspectran.com">Aspectran Demo</a></li>
@@ -187,7 +187,6 @@
         <div class="container breadcrumb-bar">
             <nav role="navigation" aria-label="You are here:">
                 <ol class="breadcrumb" itemprop="breadcrumb">
-                    <li class="breadcrumb-item"><a href="<aspectran:url value="/"/>">Sample Apps</a></li>
                 </ol>
             </nav>
         </div>
@@ -399,14 +398,17 @@
 </script>
 <script>
     $(function () {
-        let menuitem = $("#navbarSupportedContent .navbar-nav a[href='" + decodeURI(location.pathname) + "']").last();
-        if (menuitem.length > 0) {
+        let links = $("#navbarSupportedContent .navbar-nav a[href='" + decodeURI(location.pathname) + "']").last();
+        if (links.length > 0) {
             let arr = [];
-            arr.push({'name': menuitem.text(), 'href': null});
-            menuitem.parentsUntil(".navbar-nav").each(function () {
+            arr.push({'name': links.text(), 'href': location.pathname});
+            links.parentsUntil(".navbar-nav").each(function () {
                 let a2 = $(this).find(".nav-link");
                 if (a2.is("a")) {
-                    arr.push({'name': a2.text(), 'href': a2.attr("href") || ""});
+                    let href = a2.attr("href");
+                    if (href !== location.pathname) {
+                        arr.push({'name': a2.text(), 'href': href || ""});
+                    }
                 }
             });
             arr.reverse();

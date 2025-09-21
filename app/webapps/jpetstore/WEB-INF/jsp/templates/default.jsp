@@ -86,24 +86,26 @@
             </div>
             <div class="top-bar-left me-auto">
                 <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                           title="Sample applications built on Aspectran">Sample Apps</a>
+                        <ul class="dropdown-menu">
+                            <aspectran:profile expression="prod">
+                                <li><a class="dropdown-item" href="https://jpetstore.aspectran.com">JPetStore Demo</a></li>
+                                <li><a class="dropdown-item" href="https://petclinic.aspectran.com">PetClinic Demo</a></li>
+                                <li><a class="dropdown-item" href="https://demo.aspectran.com/">Aspectran Demo</a></li>
+                            </aspectran:profile>
+                            <aspectran:profile expression="!prod">
+                                <li><a class="dropdown-item" href="<aspectran:url value="/../jpetstore/"/>">JPetStore Demo</a></li>
+                                <li><a class="dropdown-item" href="<aspectran:url value="/../petclinic/"/>">PetClinic Demo</a></li>
+                                <li><a class="dropdown-item" href="<aspectran:url value="/../demo/"/>">Aspectran Demo</a></li>
+                            </aspectran:profile>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link">Get Involved</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="https://github.com/aspectran/aspectran-jpetstore">GitHub</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                            title="More Sample Apps">More Sample Apps</a>
-                        <ul class="dropdown-menu">
-                            <aspectran:profile expression="prod">
-                                <li><a class="dropdown-item" href="https://demo.aspectran.com/">Aspectran Demo</a></li>
-                                <li><a class="dropdown-item" href="https://jpetstore.aspectran.com">JPetStore Demo</a></li>
-                            </aspectran:profile>
-                            <aspectran:profile expression="!prod">
-                                <li><a class="dropdown-item" href="<aspectran:url value="/../demo/"/>">Aspectran Demo</a></li>
-                                <li><a class="dropdown-item" href="<aspectran:url value="/../petclinic/"/>">PetClinic Demo</a></li>
-                            </aspectran:profile>
                         </ul>
                     </li>
                 </ul>
@@ -194,7 +196,7 @@
                     <aspectran:profile expression="!prod">
                         <li class="breadcrumb-item"><a href="<aspectran:url value="/../"/>">Sample Apps</a></li>
                     </aspectran:profile>
-                    <li class="breadcrumb-item"><a href="<aspectran:url value="/"/>">JPetStore Demo</a></li>
+                    <li class="breadcrumb-item active"><a href="<aspectran:url value="/"/>">JPetStore Demo</a></li>
                 </ol>
             </nav>
         </div>
@@ -406,18 +408,22 @@
 </script>
 <script>
     $(function () {
-        let menuitem = $("#navbarSupportedContent .navbar-nav a[href='" + decodeURI(location.pathname) + "']").last();
-        if (menuitem.length > 0) {
+        let links = $("#navbarSupportedContent .navbar-nav a[href='" + decodeURI(location.pathname) + "']").last();
+        if (links.length > 0) {
             let arr = [];
-            arr.push({'name': menuitem.text(), 'href': null});
-            menuitem.parentsUntil(".navbar-nav").each(function () {
+            arr.push({'name': links.text(), 'href': location.pathname});
+            links.parentsUntil(".navbar-nav").each(function () {
                 let a2 = $(this).find(".nav-link");
                 if (a2.is("a")) {
-                    arr.push({'name': a2.text(), 'href': a2.attr("href") || ""});
+                    let href = a2.attr("href");
+                    if (href !== location.pathname) {
+                        arr.push({'name': a2.text(), 'href': href || ""});
+                    }
                 }
             });
             arr.reverse();
             for (let i in arr) {
+                console.log(i);
                 let item = arr[i];
                 let li = $("<li class='breadcrumb-item'></li>");
                 if (i < arr.length - 1) {

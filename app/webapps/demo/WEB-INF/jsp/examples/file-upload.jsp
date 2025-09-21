@@ -251,7 +251,7 @@
                     node.find('.file-info').append(error);
                 }
                 setTimeout(function () {
-                    // node.find(".progress").fadeOut();
+                    node.find(".progress").fadeOut();
                 }, 500);
             });
         }).on('fileuploadfail', function (e, data) {

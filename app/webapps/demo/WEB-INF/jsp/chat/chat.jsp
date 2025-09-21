@@ -2,20 +2,20 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
 <div class="row">
-    <div id="chat-title" class="col-12">
-        <h2>Chat <span id="totalPeople"></span></h2>
+    <div id="chat-title" class="col-12 p-3">
+        <h2 class="m-0">Chat <span id="totalPeople"></span></h2>
         <a class="btn btn-outline-secondary leave" onclick="leaveRoom();"><i class="bi bi-box-arrow-left"></i> Leave</a>
     </div>
-    <div id="chat-contacts" class="col-md-4 col-lg-3 d-none d-md-block"></div>
-    <div id="chat-room" class="col-12 col-md-8 col-lg-9">
+    <div id="chat-contacts" class="col-md-4 col-lg-3 d-none d-md-block p-3"></div>
+    <div id="chat-room" class="col-12 col-md-8 col-lg-9 ps-3">
         <form id="chat-signin" onsubmit="return false;">
             <h3>Type your username</h3>
             <input type="text" id="chat-username" class="form-control" maxlength="50" placeholder="Username" autocomplete="off" autofocus/>
             <button class="btn btn-primary" onclick="signIn()">Start Chatting <i class="bi bi-box-arrow-right ms-2"></i></button>
         </form>
-        <div id="chat-messages"></div>
+        <div id="chat-messages" class="pe-3 pb-3"></div>
         <form id="chat-controls-form">
-            <div class="input-group">
+            <div class="input-group pe-3">
                 <input class="form-control" type="text" id="chat-message" placeholder="Type a message..."/>
                 <button type="submit" class="btn btn-primary"><i class="bi bi-send-fill"></i> Send</button>
             </div>
@@ -25,7 +25,6 @@
 <style>
     #chat-title {
         background-color: var(--bs-primary);
-        padding: 10px 20px 10px 20px;
         color: var(--bs-light);
     }
     #chat-title h2 {
@@ -63,7 +62,6 @@
 
     #chat-contacts {
         float: left;
-        padding: 15px;
         background-color: var(--bs-secondary-bg);
         height: 580px;
         overflow: auto;
@@ -82,7 +80,7 @@
     }
 
     #chat-messages {
-        height: 500px;
+        height: 530px;
         overflow-y: auto;
         display: none;
     }
@@ -119,7 +117,7 @@
     }
     #chat-messages .message.received .sender {
         font-weight: bold;
-        color: var(--bs-primary);
+        color: var(--bs-secondary);
     }
     #chat-messages .message.sent {
         right: 0;
@@ -138,7 +136,6 @@
 
     #chat-controls-form {
         height: 40px;
-        padding: 20px 0;
         display: none;
     }
 

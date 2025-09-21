@@ -41,7 +41,7 @@
         bottom: 0;
     }
 </style>
-<div class="row gx-3 pt-4">
+<div class="row gx-3 py-4">
     <div class="col-12">
         <div class="card">
             <div class="card-header">

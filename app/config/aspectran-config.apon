@@ -13,7 +13,6 @@ system: {
         jboss.threads.eqe.statistics.active-count: true
     }
 }
-
 context: {
     name: root
     rules: /config/root-context.xml

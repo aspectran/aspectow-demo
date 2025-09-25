@@ -9,7 +9,7 @@
       <div class="col-12 col-md-6 col-lg-3 text-center">
         <div class="card">
           <div class="card-body">
-            <a href="<aspectran:url value="/jpetstore/"/>" title="JPetStore is a full-stack sample web application built on top of MyBatis 3, Aspectran 8."><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/demo/jpetstore.png" class="img-fluid"/></a>
+            <a href="<aspectran:url value="/jpetstore/"/>" title="JPetStore is a full-stack sample web application built on top of MyBatis 3, Aspectran 9."><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/demo/jpetstore.png" class="img-fluid"/></a>
             <p class="card-text mt-2"><a href="<aspectran:url value="/jpetstore/"/>">JPetStore Demo</a></p>
           </div>
         </div>
@@ -17,7 +17,7 @@
       <div class="col-12 col-md-6 col-lg-3 text-center">
         <div class="card">
           <div class="card-body">
-            <a href="<aspectran:url value="/petclinic/"/>" title="PetClinic is a full-stack sample web application built on top Aspectran 8."><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/demo/petclinic.png" class="img-fluid"/></a>
+            <a href="<aspectran:url value="/petclinic/"/>" title="PetClinic is a full-stack sample web application built on top Aspectran 9."><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/demo/petclinic.png" class="img-fluid"/></a>
             <p class="card-text mt-2"><a href="<aspectran:url value="/petclinic/"/>">PetClinic Demo</a></p>
           </div>
         </div>

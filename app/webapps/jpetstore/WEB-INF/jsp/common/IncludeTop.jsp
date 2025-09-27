@@ -24,7 +24,7 @@
         <a href="<aspectran:url value="/"/>" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
             <img src="<aspectran:url value="/images/logo-topbar.gif"/>" alt="JPetStore">
         </a>
-        <div class="col-12 col-lg-auto me-lg-auto mb-2 d-flex justify-content-center">
+        <div class="col-12 col-md-auto me-lg-auto d-flex justify-content-center">
             <!-- Expanded menu for large screens and up -->
             <ul class="nav d-none d-xl-flex">
                 <c:forEach var="entry" items="${staticCodes.categories}">
@@ -65,7 +65,7 @@
                 </div>
             </div>
         </div>
-        <div class="me-lg-3 mb-3 mb-lg-0">
+        <div class="me-lg-3 mb-lg-0">
             <a href="<aspectran:url value="/cart/viewCart"/>" class="btn btn-success">
                 <i class="bi bi-cart4"></i> ${user.cart.numberOfItems}
             </a>
@@ -74,12 +74,12 @@
                 <a href="<aspectran:url value="/account/newAccountForm"/>" class="btn btn-warning">Sign Up</a>
             </c:if>
             <c:if test="${user.authenticated}">
+                <a href="<aspectran:url value="/order/listOrders"/>" class="btn btn-secondary">My Orders</a>
                 <div class="dropdown d-inline-block">
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        My Account
-                    </button>
+                    <a class="btn btn-primary dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" title="My Account">
+                        <i class="bi bi-person-circle"></i>
+                    </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="<aspectran:url value="/order/listOrders"/>">My Orders</a></li>
                         <li><a class="dropdown-item" href="<aspectran:url value="/account/editAccountForm"/>">My Account</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="<aspectran:url value="/account/signoff"/>">Sign Out</a></li>
@@ -87,7 +87,7 @@
                 </div>
             </c:if>
         </div>
-        <form class="col-12 col-lg-2" role="search" action="<aspectran:url value="/catalog/searchProducts"/>">
+        <form class="col-12 col-md-6 col-lg-2 mt-3 mt-md-0" role="search" action="<aspectran:url value="/catalog/searchProducts"/>">
             <div class="input-group">
                 <input type="search" class="form-control" name="keyword" placeholder="Search" aria-label="Search" aria-describedby="jpetstore-search-btn">
                 <button class="btn btn-outline-primary text-white" type="button" id="jpetstore-search-btn"><i class="bi bi-search"></i></button>

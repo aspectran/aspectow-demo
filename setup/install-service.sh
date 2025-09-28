@@ -39,5 +39,4 @@ sudo systemctl cat $APP_NAME
 echo --------------------------------------------------------
 
 sudo systemctl daemon-reload || exit
-sudo systemctl enable $APP_NAME || exit
 echo "Service $APP_NAME has been installed successfully."

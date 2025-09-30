@@ -51,7 +51,7 @@ This method uses a pre-configured Aspectran Shell distribution, providing a quic
     ```sh
     cd app/bin
     ./shell.sh  # For Linux/macOS
-    shell.cmd   # For Windows
+    shell.bat   # For Windows
     ```
     The application will start, and you should see log messages indicating that the web server is running.
 

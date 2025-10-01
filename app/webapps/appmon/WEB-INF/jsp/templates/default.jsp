@@ -45,12 +45,10 @@
     <link rel="icon" type="image/png" sizes="96x96" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/favicon-96x96.png"/>
     <meta name="msapplication-TileImage" content="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/ms-icon-144x144.png"/>
     <meta name="msapplication-TileColor" content="#4B555A"/>
-    <link rel="stylesheet" type="text/css" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/bootstrap@5.3.8/css/aspectran.css?20250922"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap">
-    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/modernizr-custom.js"></script>
-    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/countries/countries.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/bootstrap@5.3.8/css/aspectran.css?20250923"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" integrity="sha256-pdY4ejLKO67E0CM2tbPtq1DJ3VGDVVdqAR6j3ZwdiE4=" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js" integrity="sha256-Lye89HGy1p3XhJT24hcvsoRw64Q4IOL5a7hdOflhjTA=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js" integrity="sha256-eVNjHw5UeU0jUqPPpZHAkU1z4U+QFBBY488WvueTm88=" crossorigin="anonymous"></script>
@@ -61,6 +59,9 @@
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.13/plugin/localizedFormat.js" integrity="sha256-g+gxm1xmRq4IecSRujv2eKyUCo/i1b5kRnWNcSbYEO0=" crossorigin="anonymous"></script>
     <script>dayjs.extend(window.dayjs_plugin_utc)</script>
     <script>dayjs.extend(window.dayjs_plugin_localizedFormat)</script>
+    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/navigation.js?20250923"></script>
+    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/modernizr-custom.js"></script>
+    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/countries/countries.js"></script>
 </head>
 <body id="top-of-page" class="${page.style}" itemscope itemtype="https://schema.org/WebPage">
 <nav id="navigation" class="navbar navbar-expand-lg" data-bs-theme="dark">
@@ -282,46 +283,6 @@
 </script>
 <script>
     $(function () {
-        let $win = $(window);
-        let $nav = $("#navigation");
-        let navHeight = Math.abs($("#masthead").height() - $nav.height());
-        let lastScrollTop = 0;
-        let scrolled;
-        let navFixed;
-        $win.scroll(function () {
-            scrolled = true;
-        });
-        setInterval(function () {
-            if (scrolled) {
-                let scrollTop = $win.scrollTop();
-                if (Math.abs(lastScrollTop - scrollTop) <= 10) {
-                    return;
-                }
-                if (scrollTop <= navHeight) {
-                    if (navFixed) {
-                        $nav.removeClass("fixed");
-                        navFixed = false;
-                    }
-                } else if (scrollTop > lastScrollTop) {
-                    if (navFixed) {
-                        $nav.removeClass("fixed");
-                        navFixed = false;
-                    }
-                } else {
-                    if (!navFixed) {
-                        if ($nav.hasClass("immediate")) {
-                            $nav.removeClass("immediate")
-                        } else {
-                            $nav.addClass("fixed");
-                            $nav.hide().fadeIn(500);
-                            navFixed = true;
-                        }
-                    }
-                }
-                lastScrollTop = scrollTop;
-                scrolled = false;
-            }
-        }, 200);
         /* google search */
         $("form[name=google_quick_search]").submit(function (event) {
             window.open("https://www.google.com/search?q=" + this.keyword.value + "+site:https%3A%2F%2Faspectran.com");

@@ -117,12 +117,12 @@ public class OwnerController {
 
     @Request("/owners/${ownerId}/edit")
     @Dispatch("owners/createOrUpdateOwnerForm")
-	public void initUpdateOwnerForm(@NonNull Translet translet, @Required int ownerId) {
+	public void initUpdateOwnerForm(@NonNull Translet translet, @Required Integer ownerId) {
         showOwner(translet, ownerId);
 	}
 
     @RequestToPost("/owners/${ownerId}/edit")
-	public void processUpdateOwnerForm(@NonNull Translet translet, Owner owner, @Required int ownerId, Integer page) {
+	public void processUpdateOwnerForm(@NonNull Translet translet, Owner owner, @Required Integer ownerId, Integer page) {
         ValidationResult result = validator.validate(owner);
         if (result.hasErrors()) {
             translet.setAttribute("errors", result.getErrors());
@@ -147,7 +147,7 @@ public class OwnerController {
 	 */
 	@Request("/owners/${ownerId}")
     @Dispatch("owners/ownerDetails")
-	public void showOwner(@NonNull Translet translet, @Required int ownerId) {
+	public void showOwner(@NonNull Translet translet, @Required Integer ownerId) {
         Owner owner = ownerDao.findById(ownerId);
         if (owner == null) {
             translet.setAttribute("error", "The owner with id " + ownerId + " doesn't exist.");

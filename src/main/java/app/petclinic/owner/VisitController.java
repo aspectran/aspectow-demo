@@ -47,7 +47,7 @@ public class VisitController {
 
 	@RequestToGet("/new")
     @Dispatch("pets/createOrUpdateVisitForm")
-	public void initNewVisitForm(@NonNull Translet translet, @Required int ownerId, @Required int petId) {
+	public void initNewVisitForm(@NonNull Translet translet, @Required Integer ownerId, @Required Integer petId) {
         Owner owner = findOwner(ownerId, petId);
         Pet pet = owner.getPet(petId);
         Visit visit = new Visit();
@@ -59,7 +59,7 @@ public class VisitController {
 
 	@RequestToPost("/new")
     @Redirect("/owners/${ownerId}")
-	public void processNewVisitForm(@NonNull Translet translet, @Required int ownerId, @Required int petId, Visit visit) {
+	public void processNewVisitForm(@NonNull Translet translet, @Required Integer ownerId, @Required Integer petId, Visit visit) {
         Owner owner = findOwner(ownerId, petId);
         Pet pet = owner.getPet(petId);
 

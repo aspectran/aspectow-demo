@@ -50,7 +50,7 @@ public class PetController {
 
 	@RequestToGet("/pets/new")
     @Dispatch("pets/createOrUpdatePetForm")
-	public void initCreationForm(@NonNull Translet translet, @Required int ownerId) {
+	public void initCreationForm(@NonNull Translet translet, @Required Integer ownerId) {
         Owner owner = findOwner(ownerId);
 		Pet pet = new Pet();
 		owner.addPet(pet);
@@ -62,7 +62,7 @@ public class PetController {
 
 	@RequestToPost("/pets/new")
     @Redirect("/owners/${ownerId}")
-	public void processCreationForm(@NonNull Translet translet, @Required int ownerId, @Required Pet pet) {
+	public void processCreationForm(@NonNull Translet translet, @Required Integer ownerId, @Required Pet pet) {
         Owner owner = findOwner(ownerId);
         PetType petType = findPetTypeById(pet.getTypeId());
         if (petType != null) {
@@ -97,7 +97,7 @@ public class PetController {
 
 	@RequestToGet("/pets/${petId}/edit")
     @Dispatch("pets/createOrUpdatePetForm")
-	public void initUpdateForm(@NonNull Translet translet, @Required int ownerId, @Required int petId) {
+	public void initUpdateForm(@NonNull Translet translet, @Required Integer ownerId, @Required Integer petId) {
         Owner owner = findOwner(ownerId, petId);
         Pet pet = owner.getPet(petId);
 
@@ -108,7 +108,7 @@ public class PetController {
 
 	@RequestToPost("/pets/${petId}/edit")
     @Redirect("/owners/${ownerId}")
-	public void processUpdateForm(@NonNull Translet translet, @Required int ownerId, @Required int petId, Pet pet) {
+	public void processUpdateForm(@NonNull Translet translet, @Required Integer ownerId, @Required Integer petId, Pet pet) {
         Owner owner = findOwner(ownerId);
         ValidationResult result = validator.validate(translet, pet);
 

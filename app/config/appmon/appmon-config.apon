@@ -3,7 +3,6 @@ pollingConfig: {
     sessionTimeout: 10000
     initialBufferSize: 9999
 }
-counterPersistInterval: 1
 domain: {
     name: backend1
     title: Localhost(Websocket)

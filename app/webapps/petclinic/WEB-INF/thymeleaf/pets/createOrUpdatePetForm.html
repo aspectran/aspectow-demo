@@ -4,7 +4,7 @@
 
 <th:block th:fragment="content">
     <h2>
-        <th:block th:if="${pet[\'new\']}">New</th:block> Pet
+        <th:block th:if="${pet['new']}">New</th:block> Pet
     </h2>
     <form class="form-horizontal" method="post">
         <input th:if="${pet.id != null}" type="hidden" name="id" th:value="${pet.id}"/>
@@ -21,7 +21,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button th:with="text=${pet[\'new\']} ? 'Add Pet' : 'Update Pet'"
+                <button th:with="text=${pet['new']} ? 'Add Pet' : 'Update Pet'"
                         class="btn btn-primary" type="submit" th:text="${text}">Add Pet
                 </button>
                 <button class="btn btn-primary" type="button" onclick="history.back();">Cancel</button>

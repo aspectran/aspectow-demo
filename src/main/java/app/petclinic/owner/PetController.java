@@ -29,6 +29,7 @@ import com.aspectran.utils.annotation.jsr305.NonNull;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * @author Juergen Hoeller
@@ -116,7 +117,7 @@ public class PetController {
 		// checking if the pet name already exist for the owner
 		if (StringUtils.hasText(petName)) {
 			Pet existingPet = owner.getPet(petName, false);
-			if (existingPet != null && existingPet.getId() != pet.getId()) {
+			if (existingPet != null && !Objects.equals(existingPet.getId(), pet.getId())) {
                 result.putError("name", translet.getMessage("duplicate", "already exists"));
 			}
 		}
@@ -137,6 +138,7 @@ public class PetController {
             translet.setAttribute("owner", owner);
             translet.setAttribute("pet", pet);
             translet.setAttribute("types", populatePetTypes());
+            translet.setAttribute("errors", result.getErrors());
             translet.dispatch("pets/createOrUpdatePetForm");
             return;
 		}

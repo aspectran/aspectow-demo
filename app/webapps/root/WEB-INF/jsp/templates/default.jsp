@@ -27,8 +27,8 @@
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google" content="notranslate">
-    <title>${empty page.title ? "Aspectow Demo" : page.title}</title>
-    <meta name="description" content="${empty page.description ? "Welcome to the Aspectow Demo Site, showcasing best practices and diverse use cases for application development with the Aspectran framework." : page.description}">
+    <title>${empty page.title ? "Aspectow Sample Applications" : page.title}</title>
+    <meta name="description" content="${empty page.description ? "Aspectow is an enterprise WAS based on Aspectran. Explore powerful features and best practices through various sample applications built with Aspectow, optimized for MSA environments." : page.description}">
     <link rel="mask-icon" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-logo.svg" color="#4B555A">
     <link rel="apple-touch-icon" sizes="57x57" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-60x60.png">
@@ -47,10 +47,10 @@
     <meta name="msapplication-TileColor" content="#4B555A">
     <link rel="stylesheet" type="text/css" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/bootstrap@5.3.8/css/aspectran.css?v=20250923"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap">
-    <script src="https://assets.aspectran.com/js/modernizr-custom.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" integrity="sha256-pdY4ejLKO67E0CM2tbPtq1DJ3VGDVVdqAR6j3ZwdiE4=" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/navigation.js?20250923"></script>
 </head>
 <body id="top-of-page" class="${page.style}" itemscope itemtype="https://schema.org/WebPage">
 <nav id="navigation" class="navbar navbar-expand-lg" data-bs-theme="dark">
@@ -333,46 +333,6 @@
 </script>
 <script>
     $(function () {
-        let $win = $(window);
-        let $nav = $("#navigation");
-        let navHeight = Math.abs($("#masthead").height() - $nav.height());
-        let lastScrollTop = 0;
-        let scrolled;
-        let navFixed;
-        $win.scroll(function () {
-            scrolled = true;
-        });
-        setInterval(function () {
-            if (scrolled) {
-                let scrollTop = $win.scrollTop();
-                if (Math.abs(lastScrollTop - scrollTop) <= 10) {
-                    return;
-                }
-                if (scrollTop <= navHeight) {
-                    if (navFixed) {
-                        $nav.removeClass("fixed");
-                        navFixed = false;
-                    }
-                } else if (scrollTop > lastScrollTop) {
-                    if (navFixed) {
-                        $nav.removeClass("fixed");
-                        navFixed = false;
-                    }
-                } else {
-                    if (!navFixed) {
-                        if ($nav.hasClass("immediate")) {
-                            $nav.removeClass("immediate")
-                        } else {
-                            $nav.addClass("fixed");
-                            $nav.hide().fadeIn(500);
-                            navFixed = true;
-                        }
-                    }
-                }
-                lastScrollTop = scrollTop;
-                scrolled = false;
-            }
-        }, 200);
         /* google search */
         $("form[name=google_quick_search]").submit(function (event) {
             window.open("https://www.google.com/search?q=" + this.keyword.value + "+site:https%3A%2F%2Faspectran.com");

@@ -27,8 +27,8 @@
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="google" content="notranslate">
-    <title>${empty page.title ? "Aspectran Demo" : page.title}</title>
-    <meta name="description" content="${empty page.description ? "Welcome to the Aspectran Demo Site" : page.description}">
+    <title>${empty page.title ? "Aspectow Demo" : page.title}</title>
+    <meta name="description" content="${empty page.description ? "Welcome to the Aspectow Demo Site, showcasing best practices and diverse use cases for application development with the Aspectran framework." : page.description}">
     <link rel="mask-icon" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-logo.svg" color="#4B555A">
     <link rel="apple-touch-icon" sizes="57x57" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/apple-icon-60x60.png">

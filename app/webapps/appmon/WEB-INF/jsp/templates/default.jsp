@@ -60,7 +60,6 @@
     <script>dayjs.extend(window.dayjs_plugin_utc)</script>
     <script>dayjs.extend(window.dayjs_plugin_localizedFormat)</script>
     <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/navigation.js?20250923"></script>
-    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/modernizr-custom.js"></script>
     <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/countries/countries.js"></script>
 </head>
 <body id="top-of-page" class="${page.style}" itemscope itemtype="https://schema.org/WebPage">

@@ -38,7 +38,7 @@
                         <item name="path" value="/"/>
                     </properties>
                     <properties profile="prod">
-                        <item name="domain" value="aspectran.com"/>
+                        <item name="domain" value="%{tow.server.domain}"/>
                     </properties>
                 </bean>
             </item>

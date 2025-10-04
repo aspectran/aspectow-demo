@@ -35,8 +35,5 @@
     <append resource="app/root/shell/examples/hello.xml"/>
     <append resource="app/root/shell/examples/echo.xml"/>
     <append resource="app/root/shell/examples/login.xml"/>
-<!--    <append resource="app/root/shell/examples/speak.xml"/>-->
-<!--    <append resource="app/root/shell/examples/resource.xml"/>-->
-<!--    <append resource="app/root/shell/examples/memo.xml"/>-->
 
 </aspectran>

@@ -112,7 +112,6 @@
             <artifactId>aspectow-appmon</artifactId>
             <version>${aspectow.appmon.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.aspectran</groupId>
             <artifactId>aspectran-with-jpa</artifactId>

@@ -152,6 +152,7 @@
     </div>
 </nav>
 <section itemscope itemtype="https://schema.org/Article">
+    <c:if test="${not empty page.headline or not empty page.headimageinclude}">
     <div id="masthead">
         <div class="container">
         <c:if test="${not empty page.headline}">
@@ -191,6 +192,7 @@
             </nav>
         </div>
     </div>
+    </c:if>
     <div class="container page-content">
     <c:if test="${not empty page.include}">
         <jsp:include page="/WEB-INF/jsp/${page.include}.jsp"/>

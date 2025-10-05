@@ -81,7 +81,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <li><a class="dropdown-item" href="<aspectran:url value="/account/editAccountForm"/>">My Account</a></li>
-                        <li><hr class="dropdown-divider"></li>
+                        <li><hr class="dropdown-divider"/></li>
                         <li><a class="dropdown-item" href="<aspectran:url value="/account/signoff"/>">Sign Out</a></li>
                     </ul>
                 </div>

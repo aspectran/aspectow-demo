@@ -50,7 +50,8 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" integrity="sha256-pdY4ejLKO67E0CM2tbPtq1DJ3VGDVVdqAR6j3ZwdiE4=" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/navigation.js?20250923"></script>
+    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/navigation.js?v=20250923"></script>
+    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/theme-toggler.js?v=20251005"></script>
 </head>
 <body id="top-of-page" class="${page.style}" itemscope itemtype="https://schema.org/WebPage">
 <nav id="navigation" class="navbar navbar-expand-lg" data-bs-theme="dark">

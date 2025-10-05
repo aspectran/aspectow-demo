@@ -51,7 +51,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" integrity="sha256-pdY4ejLKO67E0CM2tbPtq1DJ3VGDVVdqAR6j3ZwdiE4=" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js" integrity="sha256-YCMa5rqds4JesVomESLV9VkhxNU7Zr9jfcGLTuJ8efk=" crossorigin="anonymous"></script>
-    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/navigation.js?20250923"></script>
+    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/navigation.js?v=20250923"></script>
+    <script src="<aspectran:token type='bean' expression='cdnAssets^url'/>/js/theme-toggler.js?v=20251005"></script>
 </head>
 <body id="top-of-page" class="plate solid console" itemscope itemtype="https://schema.org/WebPage">
 <nav id="navigation" class="navbar navbar-expand-lg" data-bs-theme="dark">
@@ -247,100 +248,6 @@
         </div>
     </div>
 </footer>
-<script>
-    $(function () {
-        const getStoredTheme = () => localStorage.getItem('theme');
-        const setStoredTheme = theme => localStorage.setItem('theme', theme);
-
-        const getPreferredTheme = () => {
-            const storedTheme = getStoredTheme();
-            if (storedTheme) {
-                return storedTheme;
-            }
-            return 'auto';
-        };
-
-        const setTheme = theme => {
-            const newTheme = theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme;
-            $('html').attr('data-bs-theme', newTheme);
-        };
-
-        const showActiveTheme = (theme) => {
-            const $themeToggler = $('.theme-toggler');
-            if (!$themeToggler.length) {
-                return;
-            }
-
-            $themeToggler.find('.dropdown-item.active').removeClass('active');
-            $themeToggler.find('.dropdown-item .bi-check2').addClass('d-none');
-
-            const $activeItem = $themeToggler.find('[data-bs-theme-value="' + theme + '"]');
-            $activeItem.addClass('active');
-            $activeItem.find('.bi-check2').removeClass('d-none');
-
-            const iconClass = $activeItem.find('.bi:first').attr('class').match(/bi-[^\s]+/)[0];
-            $themeToggler.find('.theme-icon-active').attr('class', 'bi theme-icon-active ' + iconClass);
-        };
-
-        const preferredTheme = getPreferredTheme();
-        setTheme(preferredTheme);
-        showActiveTheme(preferredTheme);
-
-        $(window.matchMedia('(prefers-color-scheme: dark)')).on('change', () => {
-            const storedTheme = getStoredTheme();
-            if (storedTheme === 'auto' || !storedTheme) {
-                setTheme('auto');
-            }
-        });
-
-        $('.theme-toggler [data-bs-theme-value]').on('click', function() {
-            const theme = $(this).data('bs-theme-value');
-            setStoredTheme(theme);
-            setTheme(theme);
-            showActiveTheme(theme);
-        });
-    });
-</script>
-<script>
-    const supportedLanguages = ['en', 'ko'];
-    function getPreferredLangCodeFromLocalStorage() {
-        let langCode = localStorage.getItem("preferred-lang-code");
-        if (langCode && supportedLanguages.includes(langCode)) {
-            return langCode;
-        } else {
-            return null;
-        }
-    }
-    function setPreferredLangCodeToLocalStorage(langCode) {
-        localStorage.setItem("preferred-lang-code", langCode);
-    }
-    function getPreferredLangCode() {
-        let langCode = getPreferredLangCodeFromLocalStorage();
-        if (langCode) {
-            return langCode;
-        }
-        const languages = navigator.languages;
-        if (languages && languages.length) {
-            for (const lang of languages) {
-                let code = lang.substring(0, 2);
-                if (supportedLanguages.includes(code)) {
-                    return code;
-                }
-            }
-        }
-        return 'en';
-    }
-    $(function () {
-        $(".choice-preferred-lang").on("click", function (e) {
-            e.preventDefault();
-            let langCode = $(this).attr("lang");
-            if (langCode) {
-                setPreferredLangCodeToLocalStorage(langCode);
-            }
-            location.href = $(this).attr("href");
-        });
-    });
-</script>
 <script>
     $(function () {
         /* google search */

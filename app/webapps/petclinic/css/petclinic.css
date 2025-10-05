@@ -149,7 +149,6 @@
 .petclinic h1, .petclinic h2, .petclinic h3, .petclinic p, .petclinic input {
   margin: 0;
   font-weight: 400;
-  color: #34302d;
 }
 .petclinic h1 {
   font-size: 24px;

@@ -83,8 +83,8 @@
             </button>
         </div>
     </div>
-    <div class="top-bar">
-        <div class="container collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="top-bar collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="container d-lg-flex g-0 g-lg-4">
             <div class="top-bar-logo">
                 <div class="circle">
                     <aspectran:profile expression="prod">
@@ -108,7 +108,7 @@
                         <a class="nav-link" href="https://github.com/aspectran/aspectow-appmon" title="Get Involved">v${page.version}</a>
                     </li>
                 </ul>
-                <div class="settings d-flex align-items-center justify-content-end gap-2 m-2 mx-md-0 mb-md-2 m-lg-0">
+                <div class="settings d-flex align-items-center justify-content-end gap-2 m-2 mx-md-3 m-lg-0">
                     <div class="theme-toggler dropdown">
                         <button class="btn btn-primary dropdown-toggle" type="button" id="theme-toggler-btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme">
                             <i class="bi theme-icon-active"></i>

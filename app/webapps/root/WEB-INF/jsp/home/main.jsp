@@ -54,7 +54,7 @@
                 <a href="<aspectran:profile expression="prod">https://demo.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/demo/"/></aspectran:profile>">Aspectran Examples</a>
             </div>
             <div class="card-body">
-                <p class="card-text">The goal of the PetClinic Demo App is to provide and demonstrate a sample web application that leverages Aspectran and JPA.</p>
+                <p class="card-text">This site is a collection of reference applications created to showcase examples of Aspectran applications following recommended best practices.</p>
             </div>
         </div>
     </div>

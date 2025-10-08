@@ -12,25 +12,21 @@
         <arguments>
             <item>
                 <bean class="com.aspectran.thymeleaf.TemplateEngineFactoryBean">
-                    <properties>
-                        <item name="templateResolvers" type="set">
-                            <bean class="com.aspectran.thymeleaf.template.FileTemplateResolver">
-                                <properties>
-                                    <item name="prefix">#{basePath}/webapps/petclinic/WEB-INF/thymeleaf/</item>
-                                    <item name="suffix">.html</item>
-                                    <item name="templateMode">HTML</item>
-                                </properties>
-                                <properties profile="!prod">
-                                    <item name="cacheable" valueType="boolean">false</item>
-                                </properties>
-                                <properties profile="prod">
-                                    <item name="cacheable" valueType="boolean">true</item>
-                                    <!-- Set template cache TTL to 1 hour -->
-                                    <item name="cacheTTLMs" valueType="long">3600000</item>
-                                </properties>
-                            </bean>
-                        </item>
-                    </properties>
+                    <property name="templateResolvers" type="set">
+                        <bean class="com.aspectran.thymeleaf.template.FileTemplateResolver">
+                            <property name="prefix">#{basePath}/webapps/petclinic/WEB-INF/thymeleaf/</property>
+                            <property name="suffix">.html</property>
+                            <property name="templateMode">HTML</property>
+                            <properties profile="!prod">
+                                <item name="cacheable" valueType="boolean">false</item>
+                            </properties>
+                            <properties profile="prod">
+                                <item name="cacheable" valueType="boolean">true</item>
+                                <!-- Set template cache TTL to 1 hour -->
+                                <item name="cacheTTLMs" valueType="long">3600000</item>
+                            </properties>
+                        </bean>
+                    </property>
                 </bean>
             </item>
         </arguments>

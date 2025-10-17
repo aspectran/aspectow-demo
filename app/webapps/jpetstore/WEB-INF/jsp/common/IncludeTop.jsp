@@ -32,7 +32,7 @@
                 </c:forEach>
                 <li>
                     <aspectran:profile expression="prod">
-                        <a class="nav-link px-2 text-white" href="https://public.aspectran.com/monitoring/#jpetstore" target="_blank" title="View logs with AppMon">AppMon</a>
+                        <a class="nav-link px-2 text-warning" href="https://public.aspectran.com/monitoring/#jpetstore" target="_blank" title="View logs with AppMon">AppMon</a>
                     </aspectran:profile>
                     <aspectran:profile expression="!prod">
                         <a class="nav-link px-2 text-warning" href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank" title="View logs with AppMon">AppMon</a>

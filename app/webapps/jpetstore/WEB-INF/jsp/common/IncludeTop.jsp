@@ -38,7 +38,7 @@
                         <a class="nav-link px-2 text-warning" href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank" title="View logs with AppMon">AppMon</a>
                     </aspectran:profile>
                 </li>
-                <li><a class="nav-link px-2 text-white" href="<aspectran:url value="/help.html"/>">?</a></li>
+                <li><a class="nav-link px-2" href="<aspectran:url value="/help.html"/>">?</a></li>
             </ul>
             <!-- Dropdown menu for screens smaller than large -->
             <div class="nav d-xl-none">

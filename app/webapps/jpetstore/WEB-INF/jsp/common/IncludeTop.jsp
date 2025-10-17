@@ -54,14 +54,14 @@
                 </div>
                 <div class="nav-item">
                 <aspectran:profile expression="prod">
-                    <a class="nav-link text-white" href="https://public.aspectran.com/monitoring/#jpetstore" target="_blank" title="View logs with AppMon">AppMon</a>
+                    <a class="nav-link text-warning" href="https://public.aspectran.com/monitoring/#jpetstore" target="_blank" title="View logs with AppMon">AppMon</a>
                 </aspectran:profile>
                 <aspectran:profile expression="!prod">
-                    <a class="nav-link text-white" href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank" title="View logs with AppMon">AppMon</a>
+                    <a class="nav-link text-warning" href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank" title="View logs with AppMon">AppMon</a>
                 </aspectran:profile>
                 </div>
                 <div class="nav-item">
-                    <a class="nav-link text-white" href="<aspectran:url value="/help.html"/>">?</a>
+                    <a class="nav-link" href="<aspectran:url value="/help.html"/>">?</a>
                 </div>
             </div>
         </div>

@@ -79,7 +79,7 @@ public class OwnerController {
 
 		if (listOwners.size() == 1) {
 			// 1 owner found
-			Owner owner = listOwners.get(0);
+			Owner owner = listOwners.getFirst();
             translet.redirect("/owners/" + owner.getId());
 			return;
 		}

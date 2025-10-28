@@ -2,6 +2,8 @@
 
 This repository contains the source code for the Aspectow Demo Site, a collection of reference applications designed to illustrate best practices and common use cases for developing applications with the Aspectran framework. It showcases various features of Aspectran, including web application development, RESTful API creation, and integration with other technologies.
 
+<img width="1042" alt="petclinic-screenshot" src="https://aspectran.com/images/projects/demo.png">
+
 ## Web Applications Demonstrated
 
 This demo site showcases 4 distinct web applications:

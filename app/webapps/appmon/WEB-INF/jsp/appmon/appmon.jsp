@@ -17,7 +17,7 @@
         document.write('<script src="https://appmon-assets.aspectran.com/appmon/js/polling-client.js?v=<aspectran:token type='bean' expression='appmonAssets^cacheBustingVersion'/>">\x3C/script>');
     }
 </script>
-<div class="container g-1">
+<div class="container">
     <div class="row">
         <div class="domain metrics-bar">
             <div class="title">
@@ -33,10 +33,10 @@
     </div>
     <ul class="instance tabs nav nav-tabs mt-3">
         <li class="tabs-title nav-item">
-            <a class="nav-link"><i class="bi bi-modem"></i> <span class="title">JPetStore</span> <i class="indicator bi bi-lightning-charge-fill"></i></a>
+            <a class="nav-link"><i class="bi bi-box"></i> <span class="title">JPetStore</span> <i class="indicator bi bi-lightning-charge-fill"></i></a>
         </li>
         <li class="tabs-title nav-item available active">
-            <a class="nav-link"><i class="bi bi-modem"></i> <span class="title">PetClinic</span> <i class="indicator bi bi-lightning-charge-fill"></i></a>
+            <a class="nav-link"><i class="bi bi-box"></i> <span class="title">PetClinic</span> <i class="indicator bi bi-lightning-charge-fill"></i></a>
         </li>
     </ul>
     <div class="control-bar">
@@ -151,8 +151,7 @@
 <script>
     $(function () {
         const BASE_PATH = "${pageContext.request.contextPath}";
-        const TOKEN = "${page.token}";
         const INSTANCES = "${page.instances}";
-        new FrontBuilder().build(BASE_PATH, TOKEN, INSTANCES);
+        new FrontBuilder().build(BASE_PATH, INSTANCES);
     });
 </script>

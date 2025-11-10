@@ -88,7 +88,7 @@ public class XSSPreventionFilter {
         }
         List<Pattern> patterns = null;
         List<XSSPatternItem> list = xssPatternParameters.getParametersList();
-        if (list != null) {
+        if (list != null && !list.isEmpty()) {
             patterns = new ArrayList<>(list.size());
             for (XSSPatternItem item : list) {
                 String patternStr = item.getPattern();
@@ -109,7 +109,7 @@ public class XSSPreventionFilter {
                 patterns.add(pattern);
             }
         }
-        if (patterns != null && !patterns.isEmpty()) {
+        if (patterns != null) {
             this.patterns = patterns.toArray(new Pattern[0]);
         } else {
             this.patterns = null;

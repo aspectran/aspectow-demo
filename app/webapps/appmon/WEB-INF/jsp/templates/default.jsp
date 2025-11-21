@@ -68,10 +68,10 @@
     <div class="title-bar">
         <div class="title-bar-left">
             <aspectran:profile expression="prod">
-                <a class="logo" href="https://public.aspectran.com/" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                <a class="logo" href="https://public.aspectran.com/" title="Aspectran"></a>
             </aspectran:profile>
             <aspectran:profile expression="!prod">
-                <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                <a class="logo" href="<aspectran:url value="/../"/>" title="Aspectran"></a>
             </aspectran:profile>
         </div>
         <div class="title-bar-center">
@@ -87,10 +87,10 @@
         <div class="container d-lg-flex g-0 g-lg-4">
             <div class="top-bar-logo">
                 <aspectran:profile expression="prod">
-                    <a class="navbar-brand logo" href="https://public.aspectran.com/" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                    <a class="navbar-brand logo" href="https://public.aspectran.com/" title="Aspectran"></a>
                 </aspectran:profile>
                 <aspectran:profile expression="!prod">
-                    <a class="navbar-brand logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                    <a class="navbar-brand logo" href="<aspectran:url value="/../"/>" title="Aspectran"></a>
                 </aspectran:profile>
             </div>
             <div class="top-bar-left me-auto">

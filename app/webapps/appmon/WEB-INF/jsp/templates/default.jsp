@@ -86,14 +86,12 @@
     <div class="top-bar collapse navbar-collapse" id="navbarSupportedContent">
         <div class="container d-lg-flex g-0 g-lg-4">
             <div class="top-bar-logo">
-                <div class="circle">
-                    <aspectran:profile expression="prod">
-                        <a class="navbar-brand logo" href="https://public.aspectran.com/" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-site-logo.png" alt="Aspectran"/></a>
-                    </aspectran:profile>
-                    <aspectran:profile expression="!prod">
-                        <a class="navbar-brand logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-site-logo.png" alt="Aspectran"/></a>
-                    </aspectran:profile>
-                </div>
+                <aspectran:profile expression="prod">
+                    <a class="navbar-brand logo" href="https://public.aspectran.com/" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                </aspectran:profile>
+                <aspectran:profile expression="!prod">
+                    <a class="navbar-brand logo" href="<aspectran:url value="/../"/>" title="Aspectran"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/aspectran-site-logo.png" alt="Aspectran"/></a>
+                </aspectran:profile>
             </div>
             <div class="top-bar-left me-auto">
                 <ul class="navbar-nav">

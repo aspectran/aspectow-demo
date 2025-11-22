@@ -27,8 +27,8 @@
 </c:if>
 
 <div class="row">
-	<div id="Sidebar" class="col-lg-3 col-md-4">
-		<div id="SidebarContent">
+	<div id="Sidebar" class="col-lg-3 col-md-4 mb-3">
+		<div id="SidebarContent" class="panel">
 			<h4><a href="<aspectran:url value="/categories/FISH"/>">Fish</a></h4>
 			<p>Saltwater, Freshwater</p>
 			<h4><a href="<aspectran:url value="/categories/DOGS"/>">Dogs</a></h4>
@@ -38,11 +38,11 @@
 			<h4><a href="<aspectran:url value="/categories/REPTILES"/>">Reptiles</a></h4>
 			<p>Lizards, Turtles, Snakes</p>
 			<h4><a href="<aspectran:url value="/categories/BIRDS"/>">Birds</a></h4>
-			<p>Exotic Varieties</p>
+			<p class="mb-1">Exotic Varieties</p>
 		</div>
 	</div>
 	<div id="MainImage" class="col-lg-6 col-md-8">
-		<div id="MainImageContent" class="text-center p-3">
+		<div id="MainImageContent" class="text-center bg-white px-3 py-4 mb-3 mb-md-0 ms-md-3 me-md-0 me-lg-3 rounded">
 		  <map name="estoremap">
 			<area alt="Birds" coords="72,2,280,250"
 				href="<aspectran:url value="/categories/BIRDS"/>" shape="RECT"/>
@@ -60,7 +60,7 @@
 		  <img height="355" src="<aspectran:url value="/images/splash.gif"/>" align="middle" usemap="#estoremap" width="350" class="img-fluid"/>
 		</div>
 	</div>
-	<div id="RightSidebar" class="col-lg-3 col-md-12">
+	<div id="RightSidebar" class="col-lg-3 col-md-12 mb-3">
 		<div id="MyList">
 			<c:if test="${not empty user.account}">
 				<c:if test="${!empty user.account.listOption}">

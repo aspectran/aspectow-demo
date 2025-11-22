@@ -56,8 +56,8 @@
 <nav id="navigation" class="navbar navbar-expand-lg" data-bs-theme="dark">
     <div class="title-bar">
         <div class="title-bar-left">
-            <a class="navbar-brand logo" th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" href="https://public.aspectran.com/" title="Aspectran"><img th:src="@{|${#{cdnAssets}.url}/img/aspectran-site-logo.png|}" alt="Aspectran"/></a>
-            <a class="navbar-brand logo" th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" th:href="@{/../}" title="Aspectran"><img th:src="@{|${#{cdnAssets}.url}/img/aspectran-site-logo.png|}" alt="Aspectran"/></a>
+            <a class="navbar-brand logo" th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" href="https://public.aspectran.com/" title="Aspectran"></a>
+            <a class="navbar-brand logo" th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" th:href="@{/../}" title="Aspectran"></a>
         </div>
         <div class="title-bar-center">
             <a href="#top-of-page">Aspectran</a>
@@ -71,8 +71,8 @@
     <div class="top-bar collapse navbar-collapse" id="navbarSupportedContent">
         <div class="container d-lg-flex g-0 g-lg-4">
             <div class="top-bar-logo">
-                <a th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" class="navbar-brand logo" href="https://public.aspectran.com/" title="Aspectran"><img th:src="@{|${#{cdnAssets}.url}/img/aspectran-site-logo.png|}" alt="Aspectran"/></a>
-                <a th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" class="navbar-brand logo" th:href="@{/../}" title="Aspectran"><img th:src="@{|${#{cdnAssets}.url}/img/aspectran-site-logo.png|}" alt="Aspectran"/></a>
+                <a th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" class="navbar-brand logo" href="https://public.aspectran.com/" title="Aspectran"></a>
+                <a th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" class="navbar-brand logo" th:href="@{/../}" title="Aspectran"></a>
             </div>
             <div class="top-bar-left me-auto">
                 <ul class="navbar-nav">

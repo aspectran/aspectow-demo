@@ -16,7 +16,6 @@
 package app.petclinic.owner;
 
 import app.petclinic.model.NamedEntity;
-import com.aspectran.utils.annotation.jsr305.NonNull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +26,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import org.jspecify.annotations.NonNull;
 
 import java.time.LocalDate;
 import java.util.Collection;

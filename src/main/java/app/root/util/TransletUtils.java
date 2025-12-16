@@ -17,9 +17,9 @@ package app.root.util;
 
 import com.aspectran.core.activity.Translet;
 import com.aspectran.utils.StringUtils;
-import com.aspectran.utils.annotation.jsr305.NonNull;
 import com.aspectran.web.support.http.HttpHeaders;
 import jakarta.servlet.http.HttpServletRequest;
+import org.jspecify.annotations.NonNull;
 
 /**
  * <p>Created: 2021/05/30</p>

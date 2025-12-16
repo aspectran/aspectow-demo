@@ -16,7 +16,7 @@
 package app.petclinic.common.validation;
 
 import com.aspectran.core.activity.Translet;
-import com.aspectran.utils.annotation.jsr305.NonNull;
+import org.jspecify.annotations.NonNull;
 
 /**
  * <p>Created: 2025-05-14</p>

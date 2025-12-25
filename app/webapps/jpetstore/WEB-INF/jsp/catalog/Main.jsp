@@ -22,7 +22,7 @@
 
 <c:if test="${not empty user.account}">
     <div class="text-end pb-2">
-        <i class="bi bi-person-circle"></i> <aspectran:message code='welcome' arguments="${user.account.firstName}" htmlEscape="true" javaScriptEscape="true"/>
+        <i class="bi bi-person-circle"></i> <aspectran:message code='welcome' arguments="${user.account.firstName}" htmlEscape="true"/>
     </div>
 </c:if>
 

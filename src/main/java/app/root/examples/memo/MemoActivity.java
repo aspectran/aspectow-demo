@@ -19,6 +19,7 @@ import com.aspectran.core.activity.Translet;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
+import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.Map;
@@ -54,7 +55,7 @@ public class MemoActivity {
         return memoDao.deleteAllMemo();
     }
 
-    public int addBulkMemo(Translet translet) {
+    public int addBulkMemo(@NonNull Translet translet) {
         int repetitions = Integer.parseInt(translet.getParameter("repetitions"));
         int affected = 0;
         for (int i = 0; i < repetitions; i++) {

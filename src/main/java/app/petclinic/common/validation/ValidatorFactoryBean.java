@@ -75,7 +75,6 @@ public class ValidatorFactoryBean implements ActivityContextAware, Initializable
         return validator;
     }
 
-
     @Override
     public void destroy() throws Exception {
         if (validatorFactory != null) {

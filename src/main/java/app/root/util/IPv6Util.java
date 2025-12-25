@@ -91,7 +91,7 @@ public class IPv6Util {
     }
 
     @NonNull
-    private static String format(@NonNull short[] addr) {
+    private static String format(short @NonNull [] addr) {
         return String.format("%04x:%04x:%04x:%04x:%04x:%04x:%04x:%04x",
                 addr[0] & 0xffff,
                 addr[1] & 0xffff,

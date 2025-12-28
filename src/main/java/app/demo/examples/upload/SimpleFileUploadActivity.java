@@ -29,6 +29,7 @@ import com.aspectran.utils.FilenameUtils;
 import com.aspectran.utils.StringUtils;
 import com.aspectran.web.support.http.HttpStatus;
 import com.aspectran.web.support.http.HttpStatusSetter;
+import com.aspectran.web.support.util.WebUtils;
 import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,10 +38,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>Created: 2018. 7. 9.</p>
@@ -50,7 +51,7 @@ public class SimpleFileUploadActivity {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleFileUploadActivity.class);
 
-    private final Map<String, UploadedFile> uploadedFiles = new ConcurrentHashMap<>();
+    private final Map<String, UploadedFile> uploadedFiles = new LinkedHashMap<>();
 
     private int maxFiles = 50;
 
@@ -124,10 +125,7 @@ public class SimpleFileUploadActivity {
         String key = translet.getParameter("key");
         UploadedFile uploadedFile = uploadedFiles.get(key);
         if (uploadedFile != null) {
-            translet.getResponseAdapter().setContentType(uploadedFile.getFileType());
-            translet.getResponseAdapter().setHeader("Content-disposition",
-                    "attachment; filename=\"" + uploadedFile.getFileName() + "\"");
-            translet.getResponseAdapter().getOutputStream().write(uploadedFile.getBytes());
+            WebUtils.serveFile(translet, uploadedFile.getFileName(), uploadedFile.getFileType(), uploadedFile.getBytes());
         } else {
             HttpStatusSetter.setStatus(HttpStatus.NOT_FOUND, translet);
         }

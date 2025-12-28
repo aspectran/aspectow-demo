@@ -24,21 +24,18 @@
         </settings>
     </aspect>
 
-    <bean id="imageFileUploader" class="com.aspectran.web.support.multipart.inmemory.InMemoryMultipartFormDataParserFactoryBean">
+    <bean id="imageFileUploader"
+          class="com.aspectran.web.support.multipart.inmemory.InMemoryMultipartFormDataParserFactoryBean">
         <description>
             Required to handle multi-part form data.
         </description>
-        <properties>
-            <item name="maxRequestSize" value="1M"/>
-            <item name="maxFileSize" value="500KB"/>
-            <item name="allowedFileExtensions" value="jpg,jpeg,png,gif"/>
-        </properties>
+        <property name="maxRequestSize" value="1M"/>
+        <property name="maxFileSize" value="500KB"/>
+        <property name="allowedFileExtensions" value="jpg,jpeg,png,gif"/>
     </bean>
 
     <bean class="app.demo.examples.upload.SimpleFileUploadActivity">
-        <properties>
-            <item name="maxFiles" valueType="int">12</item>
-        </properties>
+        <property name="maxFiles" valueType="int">12</property>
     </bean>
 
     <translet name="/">

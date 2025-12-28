@@ -8,74 +8,62 @@
     </description>
 
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroyMethod="close" lazyDestroy="true">
-        <arguments>
-            <item>
-                <bean class="com.zaxxer.hikari.HikariConfig">
-                    <arguments>
-                        <item>
-                            <bean class="com.aspectran.core.support.PropertiesFactoryBean">
-                                <properties profile="h2">
-                                    <item name="locations" type="array">
-                                        <value>classpath:app/jpetstore/common/db/h2/db.properties</value>
-                                    </item>
-                                </properties>
-                                <properties profile="mariadb">
-                                    <item name="locations" type="array">
-                                        <value>classpath:app/jpetstore/common/db/mariadb/db.properties</value>
-                                    </item>
-                                </properties>
-                                <properties profile="mysql">
-                                    <item name="locations" type="array">
-                                        <value>classpath:app/jpetstore/common/db/mysql/db.properties</value>
-                                    </item>
-                                </properties>
-                                <properties profile="oracle">
-                                    <item name="locations" type="array">
-                                        <value>classpath:app/jpetstore/common/db/oracle/db.properties</value>
-                                    </item>
-                                </properties>
-                            </bean>
-                        </item>
-                    </arguments>
-                    <properties>
-                        <item name="poolName">jpetstore</item>
-                        <item name="registerMbeans" valueType="boolean">true</item>
-                    </properties>
-                </bean>
-            </item>
-        </arguments>
+        <argument>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <argument>
+                    <bean class="com.aspectran.core.support.PropertiesFactoryBean">
+                        <properties profile="h2">
+                            <item name="locations" type="array">
+                                <value>classpath:app/jpetstore/common/db/h2/db.properties</value>
+                            </item>
+                        </properties>
+                        <properties profile="mariadb">
+                            <item name="locations" type="array">
+                                <value>classpath:app/jpetstore/common/db/mariadb/db.properties</value>
+                            </item>
+                        </properties>
+                        <properties profile="mysql">
+                            <item name="locations" type="array">
+                                <value>classpath:app/jpetstore/common/db/mysql/db.properties</value>
+                            </item>
+                        </properties>
+                        <properties profile="oracle">
+                            <item name="locations" type="array">
+                                <value>classpath:app/jpetstore/common/db/oracle/db.properties</value>
+                            </item>
+                        </properties>
+                    </bean>
+                </argument>
+                <property name="poolName">jpetstore</property>
+                <property name="registerMbeans" valueType="boolean">true</property>
+            </bean>
+        </argument>
     </bean>
 
     <bean id="sqlSessionFactory" class="com.aspectran.mybatis.SqlSessionFactoryBean" lazyDestroy="true">
         <description>
             FactoryBean that creates an MyBatis SqlSessionFactory using default MyBatis Configuration.
         </description>
-        <properties>
-            <item name="configLocation" value="classpath:app/jpetstore/common/mybatis/mybatis-config.xml"/>
-            <item name="environment">
-                <bean class="org.apache.ibatis.mapping.Environment">
-                    <arguments>
-                        <item>default</item>
-                        <item>
-                            <bean class="org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory"/>
-                        </item>
-                        <item>#{dataSource}</item>
-                    </arguments>
-                </bean>
-            </item>
-            <item name="databaseIdProvider">
-                <bean class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
-                    <properties>
-                        <item name="properties" type="properties">
-                            <entry name="H2" value="h2"/>
-                            <entry name="MariaDB" value="mysql"/>
-                            <entry name="MySQL" value="mysql"/>
-                            <entry name="Oracle" value="oracle"/>
-                        </item>
-                    </properties>
-                </bean>
-            </item>
-        </properties>
+        <property name="configLocation" value="classpath:app/jpetstore/common/mybatis/mybatis-config.xml"/>
+        <property name="environment">
+            <bean class="org.apache.ibatis.mapping.Environment">
+                <argument>default</argument>
+                <argument>
+                    <bean class="org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory"/>
+                </argument>
+                <argument>#{dataSource}</argument>
+            </bean>
+        </property>
+        <property name="databaseIdProvider">
+            <bean class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
+                <property name="properties" type="properties">
+                    <entry name="H2" value="h2"/>
+                    <entry name="MariaDB" value="mysql"/>
+                    <entry name="MySQL" value="mysql"/>
+                    <entry name="Oracle" value="oracle"/>
+                </property>
+            </bean>
+        </property>
     </bean>
 
 </aspectran>

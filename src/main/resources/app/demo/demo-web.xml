@@ -12,10 +12,8 @@
         <description>
             Register a JSP View Dispatcher.
         </description>
-        <properties>
-            <item name="prefix">/WEB-INF/jsp/</item>
-            <item name="suffix">.jsp</item>
-        </properties>
+        <property name="prefix">/WEB-INF/jsp/</property>
+        <property name="suffix">.jsp</property>
     </bean>
 
     <aspect id="webTransletSettings">
@@ -31,6 +29,34 @@
             <setting name="characterEncoding" value="utf-8"/>
             <setting name="viewDispatcher" value="jspViewDispatcher"/>
             <setting name="proxyProtocolAware" value="true"/>
+        </settings>
+    </aspect>
+
+    <bean id="defaultMultipartFormDataParser"
+          class="com.aspectran.web.support.multipart.inmemory.InMemoryMultipartFormDataParserFactoryBean">
+        <description>
+            A default multipart form data parser that applies to all unconfigured multipart requests.
+            Inspired by Spring Boot's defaults for a sensible security baseline.
+        </description>
+        <property name="maxRequestSize" value="10MB"/>
+        <property name="maxFileSize" value="1MB"/>
+        <property name="allowedFileExtensions" value="txt,log,csv,md,json,xml,jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx"/>
+    </bean>
+
+    <aspect id="defaultMultipartPostSettings">
+        <description>
+            This aspect is for injecting default settings into all POST requests.
+        </description>
+        <joinpoint>
+            methods: [
+                POST
+            ]
+            pointcut: {
+                +: /**
+            }
+        </joinpoint>
+        <settings>
+            <setting name="multipartFormDataParser" value="defaultMultipartFormDataParser"/>
         </settings>
     </aspect>
 

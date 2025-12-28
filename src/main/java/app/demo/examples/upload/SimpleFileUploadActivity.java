@@ -37,10 +37,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>Created: 2018. 7. 9.</p>
@@ -50,7 +50,7 @@ public class SimpleFileUploadActivity {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleFileUploadActivity.class);
 
-    private final Map<String, UploadedFile> uploadedFiles = new LinkedHashMap<>();
+    private final Map<String, UploadedFile> uploadedFiles = new ConcurrentHashMap<>();
 
     private int maxFiles = 50;
 

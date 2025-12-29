@@ -8,63 +8,49 @@
     </description>
 
     <environment>
-        <properties>
-            <item name="tow.context.petclinic.name">petclinic</item>
-            <item name="tow.context.petclinic.config">classpath:app/petclinic/petclinic-config.apon</item>
-        </properties>
+        <property name="tow.context.petclinic.name">petclinic</property>
+        <property name="tow.context.petclinic.config">classpath:app/petclinic/petclinic-config.apon</property>
     </environment>
 
     <bean id="tow.context.petclinic.servletContext"
           class="com.aspectran.undertow.server.servlet.TowServletContext"
           scope="prototype">
-        <properties>
-            <item name="deploymentName">%{tow.context.petclinic.name}</item>
-            <item name="contextPath">/%{tow.context.petclinic.name}</item>
-            <item name="resourceManager">
-                <bean class="com.aspectran.undertow.server.handler.resource.TowResourceManager">
-                    <properties>
-                        <item name="base">/webapps/%{tow.context.petclinic.name}</item>
-                    </properties>
-                </bean>
-            </item>
-            <item name="scratchDir">/work/_webapps/%{tow.context.petclinic.name}</item>
-            <item name="sessionManager">#{tow.context.petclinic.sessionManager}</item>
-            <item name="servletSessionConfig">
-                <bean class="io.undertow.servlet.api.ServletSessionConfig">
-                    <properties>
-                        <item name="sessionTrackingModes" type="set">
-                            <value>#{class:jakarta.servlet.SessionTrackingMode^COOKIE}</value>
-                        </item>
-                        <item name="path" value="/"/>
-                    </properties>
-                    <properties profile="prod">
-                        <item name="domain" value="%{tow.server.domain}"/>
-                    </properties>
-                </bean>
-            </item>
-            <item name="initParams" type="map">
-                <entry name="aspectran:config">%{tow.context.petclinic.config}</entry>
-            </item>
-            <item name="servlets" type="array">
-                <bean class="com.aspectran.undertow.server.servlet.DefaultJspServlet">
-                    <properties>
-                        <item name="loadOnStartup" valueType="int">0</item>
-                    </properties>
-                </bean>
-                <bean class="com.aspectran.undertow.server.servlet.TowServlet">
-                    <arguments>
-                        <item>webActivityServlet</item>
-                        <item>com.aspectran.web.servlet.WebActivityServlet</item>
-                    </arguments>
-                    <properties>
-                        <item name="mappings" type="array">
-                            <value>/</value>
-                        </item>
-                        <item name="loadOnStartup" valueType="int">1</item>
-                    </properties>
-                </bean>
-            </item>
-        </properties>
+        <property name="deploymentName">%{tow.context.petclinic.name}</property>
+        <property name="contextPath">/%{tow.context.petclinic.name}</property>
+        <property name="resourceManager">
+            <bean class="com.aspectran.undertow.server.handler.resource.TowResourceManager">
+                <property name="base">/webapps/%{tow.context.petclinic.name}</property>
+            </bean>
+        </property>
+        <property name="scratchDir">/work/_webapps/%{tow.context.petclinic.name}</property>
+        <property name="sessionManager">#{tow.context.petclinic.sessionManager}</property>
+        <property name="servletSessionConfig">
+            <bean class="io.undertow.servlet.api.ServletSessionConfig">
+                <property name="sessionTrackingModes" type="set">
+                    <value>#{class:jakarta.servlet.SessionTrackingMode^COOKIE}</value>
+                </property>
+                <property name="path" value="/"/>
+                <properties profile="prod">
+                    <item name="domain" value="%{tow.server.domain}"/>
+                </properties>
+            </bean>
+        </property>
+        <property name="initParams" type="map">
+            <entry name="aspectran:config">%{tow.context.petclinic.config}</entry>
+        </property>
+        <property name="servlets" type="array">
+            <bean class="com.aspectran.undertow.server.servlet.DefaultJspServlet">
+                <property name="loadOnStartup" valueType="int">0</property>
+            </bean>
+            <bean class="com.aspectran.undertow.server.servlet.TowServlet">
+                <argument>webActivityServlet</argument>
+                <argument>com.aspectran.web.servlet.WebActivityServlet</argument>
+                <property name="mappings" type="array">
+                    <value>/</value>
+                </property>
+                <property name="loadOnStartup" valueType="int">1</property>
+            </bean>
+        </property>
     </bean>
 
     <bean id="tow.context.petclinic.sessionManager"
@@ -73,56 +59,46 @@
         <properties profile="!prod">
             <item name="sessionManagerConfig">
                 <bean class="com.aspectran.core.context.config.SessionManagerConfig">
-                    <arguments>
-                        <item>
-                            workerName: pn0
-                            maxActiveSessions: 99999
-                            maxIdleSeconds: 489
-                            evictionIdleSeconds: 258
-                            maxIdleSecondsForNew: 60
-                            evictionIdleSecondsForNew: 30
-                            scavengingIntervalSeconds: 90
-                            clusterEnabled: false
-                        </item>
-                    </arguments>
+                    <argument>
+                        workerName: pn0
+                        maxActiveSessions: 99999
+                        maxIdleSeconds: 489
+                        evictionIdleSeconds: 258
+                        maxIdleSecondsForNew: 60
+                        evictionIdleSecondsForNew: 30
+                        scavengingIntervalSeconds: 90
+                        clusterEnabled: false
+                    </argument>
                 </bean>
             </item>
             <item name="sessionStore">
                 <bean class="com.aspectran.core.component.session.FileSessionStoreFactoryBean">
-                    <properties>
-                        <item name="storeDir">/work/_sessions/%{tow.context.petclinic.name}</item>
-                    </properties>
+                    <property name="storeDir">/work/_sessions/%{tow.context.petclinic.name}</property>
                 </bean>
             </item>
         </properties>
         <properties profile="prod">
             <item name="sessionManagerConfig">
                 <bean class="com.aspectran.core.context.config.SessionManagerConfig">
-                    <arguments>
-                        <item>
-                            workerName: jn0
-                            maxActiveSessions: 99999
-                            maxIdleSeconds: 489
-                            evictionIdleSeconds: 258
-                            maxIdleSecondsForNew: 60
-                            evictionIdleSecondsForNew: 30
-                            scavengingIntervalSeconds: 90
-                            clusterEnabled: true
-                        </item>
-                    </arguments>
+                    <argument>
+                        workerName: pn0
+                        maxActiveSessions: 99999
+                        maxIdleSeconds: 489
+                        evictionIdleSeconds: 258
+                        maxIdleSecondsForNew: 60
+                        evictionIdleSecondsForNew: 30
+                        scavengingIntervalSeconds: 90
+                        clusterEnabled: true
+                    </argument>
                 </bean>
             </item>
             <item name="sessionStore">
                 <bean class="com.aspectran.core.component.session.redis.lettuce.DefaultLettuceSessionStoreFactoryBean">
-                    <properties>
-                        <item name="poolConfig">
-                            <bean class="com.aspectran.core.component.session.redis.lettuce.RedisConnectionPoolConfig">
-                                <properties>
-                                    <item name="uri">%{system:redis.uri}/14</item>
-                                </properties>
-                            </bean>
-                        </item>
-                    </properties>
+                    <property name="poolConfig">
+                        <bean class="com.aspectran.core.component.session.redis.lettuce.RedisConnectionPoolConfig">
+                            <property name="uri">%{system:redis.uri}/14</property>
+                        </bean>
+                    </property>
                 </bean>
             </item>
         </properties>

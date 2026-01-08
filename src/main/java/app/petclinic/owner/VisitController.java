@@ -23,7 +23,6 @@ import com.aspectran.core.component.bean.annotation.Dispatch;
 import com.aspectran.core.component.bean.annotation.Redirect;
 import com.aspectran.core.component.bean.annotation.RequestToGet;
 import com.aspectran.core.component.bean.annotation.RequestToPost;
-import com.aspectran.core.component.bean.annotation.Required;
 import org.jspecify.annotations.NonNull;
 
 /**
@@ -47,7 +46,7 @@ public class VisitController {
 
 	@RequestToGet("/new")
     @Dispatch("pets/createOrUpdateVisitForm")
-	public void initNewVisitForm(@NonNull Translet translet, @Required Integer ownerId, @Required Integer petId) {
+	public void initNewVisitForm(@NonNull Translet translet, @NonNull Integer ownerId, @NonNull Integer petId) {
         Owner owner = findOwner(ownerId, petId);
         Pet pet = owner.getPet(petId);
         Visit visit = new Visit();
@@ -59,7 +58,7 @@ public class VisitController {
 
 	@RequestToPost("/new")
     @Redirect("/owners/${ownerId}")
-	public void processNewVisitForm(@NonNull Translet translet, @Required Integer ownerId, @Required Integer petId, Visit visit) {
+	public void processNewVisitForm(@NonNull Translet translet, @NonNull Integer ownerId, @NonNull Integer petId, Visit visit) {
         Owner owner = findOwner(ownerId, petId);
         Pet pet = owner.getPet(petId);
 

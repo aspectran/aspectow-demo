@@ -25,7 +25,6 @@ import com.aspectran.core.component.bean.annotation.Dispatch;
 import com.aspectran.core.component.bean.annotation.Request;
 import com.aspectran.core.component.bean.annotation.RequestToGet;
 import com.aspectran.core.component.bean.annotation.RequestToPost;
-import com.aspectran.core.component.bean.annotation.Required;
 import com.aspectran.utils.StringUtils;
 import com.aspectran.web.support.http.HttpStatusSetter;
 import org.jspecify.annotations.NonNull;
@@ -117,12 +116,12 @@ public class OwnerController {
 
     @Request("/owners/${ownerId}/edit")
     @Dispatch("owners/createOrUpdateOwnerForm")
-	public void initUpdateOwnerForm(@NonNull Translet translet, @Required Integer ownerId) {
+	public void initUpdateOwnerForm(@NonNull Translet translet, @NonNull Integer ownerId) {
         showOwner(translet, ownerId);
 	}
 
     @RequestToPost("/owners/${ownerId}/edit")
-	public void processUpdateOwnerForm(@NonNull Translet translet, Owner owner, @Required Integer ownerId, Integer page) {
+	public void processUpdateOwnerForm(@NonNull Translet translet, Owner owner, @NonNull Integer ownerId, Integer page) {
         ValidationResult result = validator.validate(owner);
         if (result.hasErrors()) {
             translet.setAttribute("errors", result.getErrors());
@@ -147,7 +146,7 @@ public class OwnerController {
 	 */
 	@Request("/owners/${ownerId}")
     @Dispatch("owners/ownerDetails")
-	public void showOwner(@NonNull Translet translet, @Required Integer ownerId) {
+	public void showOwner(@NonNull Translet translet, @NonNull Integer ownerId) {
         Owner owner = ownerDao.findById(ownerId);
         if (owner == null) {
             translet.setAttribute("error", "The owner with id " + ownerId + " doesn't exist.");

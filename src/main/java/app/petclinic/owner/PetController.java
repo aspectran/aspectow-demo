@@ -23,7 +23,6 @@ import com.aspectran.core.component.bean.annotation.Dispatch;
 import com.aspectran.core.component.bean.annotation.Redirect;
 import com.aspectran.core.component.bean.annotation.RequestToGet;
 import com.aspectran.core.component.bean.annotation.RequestToPost;
-import com.aspectran.core.component.bean.annotation.Required;
 import com.aspectran.utils.StringUtils;
 import org.jspecify.annotations.NonNull;
 
@@ -51,7 +50,7 @@ public class PetController {
 
 	@RequestToGet("/pets/new")
     @Dispatch("pets/createOrUpdatePetForm")
-	public void initCreationForm(@NonNull Translet translet, @Required Integer ownerId) {
+	public void initCreationForm(@NonNull Translet translet, @NonNull Integer ownerId) {
         Owner owner = findOwner(ownerId);
 		Pet pet = new Pet();
 		owner.addPet(pet);
@@ -63,7 +62,7 @@ public class PetController {
 
 	@RequestToPost("/pets/new")
     @Redirect("/owners/${ownerId}")
-	public void processCreationForm(@NonNull Translet translet, @Required Integer ownerId, @Required Pet pet) {
+	public void processCreationForm(@NonNull Translet translet, @NonNull Integer ownerId, @NonNull Pet pet) {
         Owner owner = findOwner(ownerId);
         PetType petType = findPetTypeById(pet.getTypeId());
         if (petType != null) {
@@ -98,7 +97,7 @@ public class PetController {
 
 	@RequestToGet("/pets/${petId}/edit")
     @Dispatch("pets/createOrUpdatePetForm")
-	public void initUpdateForm(@NonNull Translet translet, @Required Integer ownerId, @Required Integer petId) {
+	public void initUpdateForm(@NonNull Translet translet, @NonNull Integer ownerId, @NonNull Integer petId) {
         Owner owner = findOwner(ownerId, petId);
         Pet pet = owner.getPet(petId);
 
@@ -109,7 +108,7 @@ public class PetController {
 
 	@RequestToPost("/pets/${petId}/edit")
     @Redirect("/owners/${ownerId}")
-	public void processUpdateForm(@NonNull Translet translet, @Required Integer ownerId, @Required Integer petId, Pet pet) {
+	public void processUpdateForm(@NonNull Translet translet, @NonNull Integer ownerId, @NonNull Integer petId, Pet pet) {
         Owner owner = findOwner(ownerId);
         ValidationResult result = validator.validate(translet, pet);
 

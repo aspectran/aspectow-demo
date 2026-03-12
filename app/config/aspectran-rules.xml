@@ -52,8 +52,8 @@
 
     <append file="/config/server/server.xml"/>
     <append file="/config/appmon/appmon-assets.xml"/>
-    <append resource="app/root/common/db/db-context.xml"/>
-    <append resource="app/root/shell/shell-context.xml"/>
-    <append resource="app/root/web/web-context.xml"/>
+    <append resource="app/root/common/db/root-db.xml"/>
+    <append resource="app/root/shell/shell-rules.xml"/>
+    <append resource="app/root/web/web-rules.xml"/>
 
 </aspectran>

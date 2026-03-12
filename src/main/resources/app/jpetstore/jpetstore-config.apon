@@ -1,6 +1,6 @@
 context: {
     name: jpetstore
-    rules: classpath:app/jpetstore/jpetstore-context.xml
+    rules: classpath:app/jpetstore/jpetstore-root-rules.xml
     scan: [
         app.jpetstore
     ]

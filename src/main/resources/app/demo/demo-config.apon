@@ -1,6 +1,6 @@
 context: {
     name: demo
-    rules: classpath:app/demo/demo-context.xml
+    rules: classpath:app/demo/demo-root-rules.xml
     scan: [
         app.demo
     ]

@@ -39,6 +39,10 @@
         </settings>
     </aspect>
 
-    <append resource="app/demo/demo-web.xml"/>
+    <append resource="app/jpetstore/common/static-codes.xml"/>
+    <append resource="app/jpetstore/common/db/jpetstore-db.xml"/>
+    <append resource="app/jpetstore/common/i18n/jpetstore-i18n.xml"/>
+    <append resource="app/jpetstore/common/filter/xss-prevent.xml"/>
+    <append resource="app/jpetstore/jpetstore-web-rules.xml"/>
 
 </aspectran>

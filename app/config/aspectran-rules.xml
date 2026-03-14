@@ -52,6 +52,7 @@
 
     <append file="/config/server/server.xml"/>
     <append file="/config/appmon/appmon-assets.xml"/>
+    <append resource="app/appmon/appmon-ext-persistence.xml" profile="appmon.ext-persistence"/>
     <append resource="app/root/common/db/root-db.xml"/>
     <append resource="app/root/shell/shell-rules.xml"/>
     <append resource="app/root/web/web-rules.xml"/>

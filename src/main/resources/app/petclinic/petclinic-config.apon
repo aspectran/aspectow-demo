@@ -1,6 +1,6 @@
 context: {
     name: petclinic
-    rules: classpath:app/petclinic/petclinic-context.xml
+    rules: classpath:app/petclinic/petclinic-root-rules.xml
     scan: [
         app.petclinic
     ]

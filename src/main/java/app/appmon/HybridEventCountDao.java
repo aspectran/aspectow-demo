@@ -62,7 +62,7 @@ public class HybridEventCountDao implements EventCountMapper {
 
     @Override
     public List<EventCountVO> getChartDataByHour(String domain, String instance, String event, int zoneOffset, LocalDateTime dateOffset) {
-        return local().getChartDataByHour(domain, instance, event, zoneOffset, dateOffset);
+        return supabase().getChartDataByHour(domain, instance, event, zoneOffset, dateOffset);
     }
 
     @Override
@@ -79,4 +79,5 @@ public class HybridEventCountDao implements EventCountMapper {
     public List<EventCountVO> getChartDataByYear(String domain, String instance, String event, int zoneOffset, LocalDateTime dateOffset) {
         return supabase().getChartDataByYear(domain, instance, event, zoneOffset, dateOffset);
     }
+
 }

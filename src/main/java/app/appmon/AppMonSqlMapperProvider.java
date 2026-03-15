@@ -16,9 +16,6 @@
 package app.appmon;
 
 import com.aspectran.core.component.bean.annotation.Autowired;
-import com.aspectran.core.component.bean.annotation.Bean;
-import com.aspectran.core.component.bean.annotation.Component;
-import com.aspectran.core.component.bean.annotation.Profile;
 import com.aspectran.mybatis.SqlMapperProvider;
 import org.apache.ibatis.session.SqlSession;
 
@@ -28,9 +25,6 @@ import org.apache.ibatis.session.SqlSession;
  *
  * <p>Created: 2025. 2. 15.</p>
  */
-@Component
-@Bean(lazyDestroy = true)
-@Profile("appmon.ext-persistence")
 public class AppMonSqlMapperProvider implements SqlMapperProvider {
 
     private final SqlSession sqlSession;

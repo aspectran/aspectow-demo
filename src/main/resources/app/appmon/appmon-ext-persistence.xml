@@ -9,14 +9,14 @@
 
     <!-- Properties -->
     <bean id="appmonDBProperties" class="com.aspectran.core.support.PropertiesFactoryBean">
-        <property name="ignoreInvalidResource" valueType="boolean">true</property>
+        <property name="ignoreInvalidResource" valueType="boolean">false</property>
         <property name="locations" type="array">
             <value>/config/appmon/appmon.db-mariadb.properties</value>
         </property>
     </bean>
 
     <bean id="supabaseDBProperties" class="com.aspectran.core.support.PropertiesFactoryBean">
-        <property name="ignoreInvalidResource" valueType="boolean">true</property>
+        <property name="ignoreInvalidResource" valueType="boolean">false</property>
         <property name="locations" type="array">
             <value>/config/appmon/appmon.db-supabase.properties</value>
         </property>

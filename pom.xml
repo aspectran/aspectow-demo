@@ -204,7 +204,7 @@
                 <version>3.15.0</version>
                 <configuration>
                     <compilerArgs>
-                        <arg>-Xlint:-try,-path,-options</arg>
+                        <arg>-Xlint:-try,-path</arg>
                     </compilerArgs>
                     <proc>full</proc>
                     <showDeprecation>true</showDeprecation>

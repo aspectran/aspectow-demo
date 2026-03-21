@@ -90,7 +90,7 @@
         <form class="col-12 col-md-6 col-lg-2 mt-3 mt-md-0" role="search" action="<aspectran:url value="/catalog/searchProducts"/>">
             <div class="input-group">
                 <input type="search" class="form-control" name="keyword" placeholder="Search" aria-label="Search" aria-describedby="jpetstore-search-btn">
-                <button class="btn btn-outline-primary text-white" type="button" id="jpetstore-search-btn"><i class="bi bi-search"></i></button>
+                <button class="btn btn-outline-secondary text-white" type="button" id="jpetstore-search-btn"><i class="bi bi-search"></i></button>
             </div>
         </form>
     </div>

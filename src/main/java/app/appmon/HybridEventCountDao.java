@@ -23,11 +23,11 @@ public class HybridEventCountDao implements EventCountMapper {
     }
 
     private EventCountMapper local() {
-        return localProvider.getSimpleSqlSession().getMapper(EventCountMapper.class);
+        return localProvider.mapper(EventCountMapper.class);
     }
 
     private EventCountMapper supabase() {
-        return supabaseProvider.getSimpleSqlSession().getMapper(EventCountMapper.class);
+        return supabaseProvider.mapper(EventCountMapper.class);
     }
 
     @Override

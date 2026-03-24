@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package app.jpetstore.common.mybatis.mapper;
+package app.jpetstore.common.db.mapper;
 
-import app.jpetstore.catalog.domain.Product;
+import app.jpetstore.catalog.domain.Category;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.mybatis.SqlMapperAccess;
@@ -25,39 +25,33 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 /**
- * The Interface ProductMapper.
+ * The Interface CategoryMapper.
  *
  * @author Juho Jeong
  */
 @Mapper
-public interface ProductMapper {
+public interface CategoryMapper {
 
-    List<Product> getProductListByCategory(String categoryId);
+    List<Category> getCategoryList();
 
-    Product getProduct(String productId);
-
-    List<Product> searchProductList(String keywords);
+    Category getCategory(String categoryId);
 
     @Component
-    class Dao extends SqlMapperAccess<ProductMapper> implements ProductMapper {
+    class Dao extends SqlMapperAccess<CategoryMapper> implements CategoryMapper {
 
         @Autowired
         public Dao(SqlMapperProvider sqlMapperProvider) {
-            super(sqlMapperProvider, ProductMapper.class);
-        }
-        @Override
-        public List<Product> getProductListByCategory(String categoryId) {
-            return simple().getProductListByCategory(categoryId);
+            super(sqlMapperProvider, CategoryMapper.class);
         }
 
         @Override
-        public Product getProduct(String productId) {
-            return simple().getProduct(productId);
+        public List<Category> getCategoryList() {
+            return simple().getCategoryList();
         }
 
         @Override
-        public List<Product> searchProductList(String keywords) {
-            return simple().searchProductList(keywords);
+        public Category getCategory(String categoryId) {
+            return simple().getCategory(categoryId);
         }
 
     }

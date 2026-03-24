@@ -44,7 +44,7 @@
         <description>
             FactoryBean that creates an MyBatis SqlSessionFactory using default MyBatis Configuration.
         </description>
-        <property name="configLocation" value="classpath:app/jpetstore/common/mybatis/mybatis-config.xml"/>
+        <property name="configLocation" value="classpath:app/jpetstore/common/db/mybatis-config.xml"/>
         <property name="environment">
             <bean class="org.apache.ibatis.mapping.Environment">
                 <argument>default</argument>

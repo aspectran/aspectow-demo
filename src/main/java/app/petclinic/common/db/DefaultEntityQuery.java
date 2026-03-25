@@ -32,7 +32,7 @@ import com.querydsl.jpa.JPQLTemplates;
  *
  * <p><b>Transaction Management:</b><br>
  * This query executor automatically participates in Aspectran's AOP-based transaction
- * management through the aspect identified by {@code "defaultEntityManagerAspect"}.
+ * management through the aspect identified by {@code "jpaAspect"}.
  * All query and data modification operations are executed within the context of
  * the current transaction managed by {@link com.aspectran.jpa.EntityManagerAdvice}.
  *
@@ -69,7 +69,7 @@ public class DefaultEntityQuery extends EntityQuery {
      * Constructs a new DefaultEntityQuery instance.
      * <p>This constructor configures the query executor to:
      * <ul>
-     *     <li>Use the aspect identified by {@code "defaultEntityManagerAspect"} for
+     *     <li>Use the aspect identified by {@code "jpaAspect"} for
      *         transaction management and EntityManager lifecycle</li>
      *     <li>Use default JPQL templates for standard JPA compatibility</li>
      * </ul>
@@ -77,7 +77,7 @@ public class DefaultEntityQuery extends EntityQuery {
      * {@link com.aspectran.jpa.EntityManagerAdvice} aspect in the Aspectran context.
      */
     public DefaultEntityQuery() {
-        super("defaultEntityManagerAspect");
+        super("jpaAspect");
         setTemplates(JPQLTemplates.DEFAULT);
     }
 

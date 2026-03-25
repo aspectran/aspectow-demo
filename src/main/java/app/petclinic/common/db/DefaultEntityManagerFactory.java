@@ -78,11 +78,6 @@ public class DefaultEntityManagerFactory extends EntityManagerFactoryBean {
         this.dataSource = dataSource;
     }
 
-    @Override
-    protected void preConfigure(Map<String, Object> properties) {
-        super.preConfigure(properties);
-    }
-
     /**
      * Pre-configures the PersistenceConfiguration before EntityManagerFactory creation.
      * <p>This method sets up:

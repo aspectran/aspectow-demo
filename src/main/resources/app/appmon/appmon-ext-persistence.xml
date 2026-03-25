@@ -51,27 +51,29 @@
         <property name="autoCommit" valueType="boolean">true</property>
     </bean>
 
-    <aspect id="appmonLocalTxAspect">
-        <joinpoint>
-            pointcut: {
-                +: **@appmonLocalSqlSession
-            }
-        </joinpoint>
-        <advice bean="appmonLocalTxAdvice">
-            <before>
-                <invoke method="open"/>
-            </before>
-            <after>
-                <invoke method="commit"/>
-            </after>
-            <finally>
-                <invoke method="close"/>
-            </finally>
-        </advice>
-    </aspect>
+<!--    <aspect id="appmonLocalTxAspect">-->
+<!--        <joinpoint>-->
+<!--            pointcut: {-->
+<!--                +: **@appmonLocalSqlSession-->
+<!--            }-->
+<!--        </joinpoint>-->
+<!--        <advice bean="appmonLocalTxAdvice">-->
+<!--            <before>-->
+<!--                <invoke method="open"/>-->
+<!--            </before>-->
+<!--            <after>-->
+<!--                <invoke method="commit"/>-->
+<!--            </after>-->
+<!--            <finally>-->
+<!--                <invoke method="close"/>-->
+<!--            </finally>-->
+<!--        </advice>-->
+<!--    </aspect>-->
 
     <bean id="appmonLocalSqlSession" class="com.aspectran.mybatis.SqlSessionAgent">
         <argument>appmonLocalTxAspect</argument>
+        <property name="targetBeanId">appmonLocalSqlSession</property>
+        <property name="sqlSessionFactoryBeanId">appmonLocalSqlSessionFactory</property>
     </bean>
 
     <bean id="appmonLocalSqlMapperProvider" class="app.appmon.AppMonSqlMapperProvider">
@@ -84,27 +86,29 @@
         <property name="autoCommit" valueType="boolean">true</property>
     </bean>
 
-    <aspect id="supabaseTxAspect">
-        <joinpoint>
-            pointcut: {
-                +: **@supabaseSqlSession
-            }
-        </joinpoint>
-        <advice bean="supabaseTxAdvice">
-            <before>
-                <invoke method="open"/>
-            </before>
-            <after>
-                <invoke method="commit"/>
-            </after>
-            <finally>
-                <invoke method="close"/>
-            </finally>
-        </advice>
-    </aspect>
+<!--    <aspect id="supabaseTxAspect">-->
+<!--        <joinpoint>-->
+<!--            pointcut: {-->
+<!--                +: **@supabaseSqlSession-->
+<!--            }-->
+<!--        </joinpoint>-->
+<!--        <advice bean="supabaseTxAdvice">-->
+<!--            <before>-->
+<!--                <invoke method="open"/>-->
+<!--            </before>-->
+<!--            <after>-->
+<!--                <invoke method="commit"/>-->
+<!--            </after>-->
+<!--            <finally>-->
+<!--                <invoke method="close"/>-->
+<!--            </finally>-->
+<!--        </advice>-->
+<!--    </aspect>-->
 
     <bean id="supabaseSqlSession" class="com.aspectran.mybatis.SqlSessionAgent">
         <argument>supabaseTxAspect</argument>
+        <property name="targetBeanId">supabaseSqlSession</property>
+        <property name="sqlSessionFactoryBeanId">supabaseSqlSessionFactory</property>
     </bean>
 
     <bean id="supabaseSqlMapperProvider" class="app.appmon.AppMonSqlMapperProvider">

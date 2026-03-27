@@ -24,18 +24,16 @@
 </div>
 <style>
     #chat-title {
-        background-color: var(--bs-primary);
+        background-color: var(--bs-dark);
         color: var(--bs-light);
     }
     #chat-title h2 {
         float: left;
         font-size: 28px;
-        color: var(--bs-light);
     }
     #chat-title a {
         float: right;
         display: none;
-        color: var(--bs-light);
     }
 
     #chat-room {

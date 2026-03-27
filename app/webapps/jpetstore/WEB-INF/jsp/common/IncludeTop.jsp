@@ -74,9 +74,9 @@
                 <a href="<aspectran:url value="/account/newAccountForm"/>" class="btn btn-warning">Sign Up</a>
             </c:if>
             <c:if test="${user.authenticated}">
-                <a href="<aspectran:url value="/order/listOrders"/>" class="btn btn-secondary">My Orders</a>
+                <a href="<aspectran:url value="/order/listOrders"/>" class="btn btn-primary">My Orders</a>
                 <div class="dropdown d-inline-block">
-                    <a class="btn btn-primary dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" title="My Account">
+                    <a class="btn btn-warning dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" title="My Account">
                         <i class="bi bi-person-circle"></i>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">

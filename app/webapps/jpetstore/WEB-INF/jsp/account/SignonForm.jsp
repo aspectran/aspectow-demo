@@ -40,7 +40,7 @@
                         <input type="password" id="password" name="password" value="j2ee" class="form-control"/>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-success">Login</button>
+                        <button type="submit" class="btn btn-primary">Login</button>
                     </div>
                     <c:if test="${param.retry eq 'true'}">
                         <div class="alert alert-danger mt-3">

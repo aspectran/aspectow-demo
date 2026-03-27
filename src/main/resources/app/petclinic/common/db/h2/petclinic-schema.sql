@@ -24,7 +24,9 @@ CREATE TABLE IF NOT EXISTS vet_specialties (
     vet_id       INTEGER NOT NULL,
     specialty_id INTEGER NOT NULL
 );
+ALTER TABLE vet_specialties DROP CONSTRAINT IF EXISTS fk_vet_specialties_vets;
 ALTER TABLE vet_specialties ADD CONSTRAINT IF NOT EXISTS fk_vet_specialties_vets FOREIGN KEY (vet_id) REFERENCES vets (id);
+ALTER TABLE vet_specialties DROP CONSTRAINT IF EXISTS fk_vet_specialties_specialties;
 ALTER TABLE vet_specialties ADD CONSTRAINT IF NOT EXISTS fk_vet_specialties_specialties FOREIGN KEY (specialty_id) REFERENCES specialties (id);
 
 CREATE TABLE IF NOT EXISTS types (
@@ -50,7 +52,9 @@ CREATE TABLE IF NOT EXISTS pets (
     type_id    INTEGER NOT NULL,
     owner_id   INTEGER
 );
+ALTER TABLE pets DROP CONSTRAINT IF EXISTS fk_pets_owners;
 ALTER TABLE pets ADD CONSTRAINT IF NOT EXISTS fk_pets_owners FOREIGN KEY (owner_id) REFERENCES owners (id);
+ALTER TABLE pets DROP CONSTRAINT IF EXISTS fk_pets_types;
 ALTER TABLE pets ADD CONSTRAINT IF NOT EXISTS fk_pets_types FOREIGN KEY (type_id) REFERENCES types (id);
 CREATE INDEX IF NOT EXISTS pets_name ON pets (name);
 
@@ -60,5 +64,6 @@ CREATE TABLE IF NOT EXISTS visits (
     visit_date  DATE,
     description VARCHAR(255)
 );
+ALTER TABLE visits DROP CONSTRAINT IF EXISTS fk_visits_pets;
 ALTER TABLE visits ADD CONSTRAINT IF NOT EXISTS fk_visits_pets FOREIGN KEY (pet_id) REFERENCES pets (id);
 CREATE INDEX IF NOT EXISTS visits_pet_id ON visits (pet_id);

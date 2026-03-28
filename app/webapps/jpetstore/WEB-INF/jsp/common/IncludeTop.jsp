@@ -32,10 +32,10 @@
                 </c:forEach>
                 <li>
                     <aspectran:profile expression="prod">
-                        <a class="nav-link px-2 text-warning" href="https://public.aspectran.com/monitoring/#jpetstore" target="_blank" title="View logs with AppMon">AppMon</a>
+                        <a class="nav-link px-2 text-warning" href="https://public.aspectran.com/monitoring/#jpetstore" target="_blank" title="VReal-time logs, metrics, and traffic monitoring">AppMon</a>
                     </aspectran:profile>
                     <aspectran:profile expression="!prod">
-                        <a class="nav-link px-2 text-warning" href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank" title="View logs with AppMon">AppMon</a>
+                        <a class="nav-link px-2 text-warning" href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank" title="Real-time logs, metrics, and traffic monitoring">AppMon</a>
                     </aspectran:profile>
                 </li>
                 <li><a class="nav-link px-2" href="<aspectran:url value="/help.html"/>">?</a></li>
@@ -54,10 +54,10 @@
                 </div>
                 <div class="nav-item">
                 <aspectran:profile expression="prod">
-                    <a class="nav-link text-warning" href="https://public.aspectran.com/monitoring/#jpetstore" target="_blank" title="View logs with AppMon">AppMon</a>
+                    <a class="nav-link text-warning" href="https://public.aspectran.com/monitoring/#jpetstore" target="_blank" title="Real-time logs, metrics, and traffic monitoring">AppMon</a>
                 </aspectran:profile>
                 <aspectran:profile expression="!prod">
-                    <a class="nav-link text-warning" href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank" title="View logs with AppMon">AppMon</a>
+                    <a class="nav-link text-warning" href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank" title="Real-time logs, metrics, and traffic monitoring">AppMon</a>
                 </aspectran:profile>
                 </div>
                 <div class="nav-item">
@@ -71,12 +71,12 @@
             </a>
             <c:if test="${not user.authenticated}">
                 <a href="<aspectran:url value="/account/signonForm"/>" class="btn btn-outline-light me-2">Sign In</a>
-                <a href="<aspectran:url value="/account/newAccountForm"/>" class="btn btn-warning">Sign Up</a>
+                <a href="<aspectran:url value="/account/newAccountForm"/>" class="btn btn-secondary">Sign Up</a>
             </c:if>
             <c:if test="${user.authenticated}">
                 <a href="<aspectran:url value="/order/listOrders"/>" class="btn btn-primary">My Orders</a>
                 <div class="dropdown d-inline-block">
-                    <a class="btn btn-warning dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" title="My Account">
+                    <a class="btn btn-secondary dropdown-toggle" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" title="My Account">
                         <i class="bi bi-person-circle"></i>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">

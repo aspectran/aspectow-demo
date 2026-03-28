@@ -67,7 +67,7 @@
         </div>
         <div class="me-lg-3 mb-lg-0">
             <a href="<aspectran:url value="/cart/viewCart"/>" class="btn btn-success">
-                <i class="bi bi-cart4"></i> ${user.cart.numberOfItems}
+                <i class="bi bi-cart4"></i> <aspectran:eval expression="user?.cart?.numberOfItems ?: 0"/>
             </a>
             <c:if test="${not user.authenticated}">
                 <a href="<aspectran:url value="/account/signonForm"/>" class="btn btn-outline-light me-2">Sign In</a>

@@ -24,7 +24,7 @@
 
     <!-- Session Factories -->
     <bean id="appmonLocalSqlSessionFactory" class="com.aspectran.mybatis.SqlSessionFactoryBean" lazyDestroy="true">
-        <property name="configLocation" value="classpath:com/aspectran/appmon/config/db/mybatis-config.xml"/>
+        <property name="configLocation" value="classpath:com/aspectran/aspectow/appmon/config/db/mybatis-config.xml"/>
         <property name="environmentId" value="default"/>
         <property name="variables" type="properties">
             <entry name="driver">#{appmonDBProperties^driver}</entry>
@@ -35,7 +35,7 @@
     </bean>
 
     <bean id="supabaseSqlSessionFactory" class="com.aspectran.mybatis.SqlSessionFactoryBean" lazyDestroy="true">
-        <property name="configLocation" value="classpath:com/aspectran/appmon/config/db/mybatis-config.xml"/>
+        <property name="configLocation" value="classpath:com/aspectran/aspectow/appmon/config/db/mybatis-config.xml"/>
         <property name="environmentId" value="default"/>
         <property name="variables" type="properties">
             <entry name="driver">#{supabaseDBProperties^driver}</entry>

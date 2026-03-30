@@ -32,8 +32,8 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.Locale;
 
-import static com.aspectran.appmon.engine.exporter.event.session.SessionEventReader.USER_COUNTRY_CODE;
-import static com.aspectran.appmon.engine.exporter.event.session.SessionEventReader.USER_IP_ADDRESS;
+import static com.aspectran.aspectow.appmon.engine.exporter.event.session.SessionEventReader.USER_COUNTRY_CODE;
+import static com.aspectran.aspectow.appmon.engine.exporter.event.session.SessionEventReader.USER_IP_ADDRESS;
 
 /**
  * <p>Created: 2024-12-13</p>

@@ -65,7 +65,7 @@
     <div class="title-bar">
         <div class="title-bar-left">
             <a th:if="${#{currentEnvironment}.matchesProfiles('dev')}" class="logo" th:href="@{/../}" title="Aspectran"></a>
-            <a th:if="${!#{currentEnvironment}.matchesProfiles('dev')}" class="logo" th:href="https://public.aspectran.com/" title="Aspectran"></a>
+            <a th:if="${!#{currentEnvironment}.matchesProfiles('dev')}" class="logo" href="https://public.aspectran.com/" title="Aspectran"></a>
         </div>
         <div class="title-bar-center">
             <a href="#top-of-page">AppMon</a>
@@ -80,7 +80,7 @@
         <div class="container d-lg-flex g-0 g-lg-4">
             <div class="top-bar-logo">
                 <a th:if="${#{currentEnvironment}.matchesProfiles('dev')}" class="navbar-brand logo" th:href="@{/../}" title="Aspectran"></a>
-                <a th:if="${!#{currentEnvironment}.matchesProfiles('dev')}" class="navbar-brand logo" th:href="https://public.aspectran.com/" title="Aspectran"></a>
+                <a th:if="${!#{currentEnvironment}.matchesProfiles('dev')}" class="navbar-brand logo" href="https://public.aspectran.com/" title="Aspectran"></a>
             </div>
             <div class="top-bar-left me-auto">
                 <ul class="navbar-nav">

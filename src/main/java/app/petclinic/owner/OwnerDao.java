@@ -15,7 +15,7 @@
  */
 package app.petclinic.owner;
 
-import app.petclinic.common.db.DefaultEntityQuery;
+import app.petclinic.common.db.PetclinicEntityQuery;
 import app.petclinic.common.pagination.PageInfo;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
@@ -42,7 +42,7 @@ public class OwnerDao {
     private final EntityQuery entityQuery;
 
     @Autowired
-    public OwnerDao(DefaultEntityQuery entityQuery) {
+    public OwnerDao(PetclinicEntityQuery entityQuery) {
         this.entityQuery = entityQuery;
     }
 

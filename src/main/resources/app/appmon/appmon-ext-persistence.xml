@@ -70,7 +70,7 @@
 <!--        </advice>-->
 <!--    </aspect>-->
 
-    <bean id="appmonLocalSqlSession" class="com.aspectran.mybatis.SqlSessionAgent">
+    <bean id="appmonLocalSqlSession" class="com.aspectran.mybatis.DefaultSqlSessionAgent">
         <argument>appmonLocalTxAspect</argument>
         <property name="targetBeanId">appmonLocalSqlSession</property>
         <property name="sqlSessionFactoryBeanId">appmonLocalSqlSessionFactory</property>
@@ -105,7 +105,7 @@
 <!--        </advice>-->
 <!--    </aspect>-->
 
-    <bean id="supabaseSqlSession" class="com.aspectran.mybatis.SqlSessionAgent">
+    <bean id="supabaseSqlSession" class="com.aspectran.mybatis.DefaultSqlSessionAgent">
         <argument>supabaseTxAspect</argument>
         <property name="targetBeanId">supabaseSqlSession</property>
         <property name="sqlSessionFactoryBeanId">supabaseSqlSessionFactory</property>

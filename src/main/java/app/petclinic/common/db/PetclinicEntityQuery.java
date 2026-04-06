@@ -18,7 +18,6 @@ package app.petclinic.common.db;
 import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.jpa.querydsl.DefaultEntityQuery;
-import com.aspectran.jpa.querydsl.EntityQuery;
 import com.querydsl.jpa.JPQLTemplates;
 
 /**
@@ -56,7 +55,7 @@ import com.querydsl.jpa.JPQLTemplates;
  * }
  * }</pre>
  *
- * @see EntityQuery
+ * @see DefaultEntityQuery
  * @see com.aspectran.jpa.EntityManagerAdvice
  * @see JPQLTemplates
  *

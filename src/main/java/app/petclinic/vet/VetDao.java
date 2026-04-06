@@ -19,7 +19,7 @@ import app.petclinic.common.db.PetclinicEntityQuery;
 import app.petclinic.common.pagination.PageInfo;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
-import com.aspectran.jpa.querydsl.EntityQuery;
+import com.aspectran.jpa.querydsl.AbstractEntityQuery;
 import com.querydsl.core.Fetchable;
 import org.jspecify.annotations.NonNull;
 
@@ -39,7 +39,7 @@ import java.util.List;
 @Component
 public class VetDao {
 
-    private final EntityQuery entityQuery;
+    private final AbstractEntityQuery entityQuery;
 
     @Autowired
     public VetDao(PetclinicEntityQuery entityQuery) {

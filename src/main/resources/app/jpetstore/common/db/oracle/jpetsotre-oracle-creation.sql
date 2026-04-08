@@ -138,13 +138,13 @@ create index itemProd on item (productid);
 
 create table inventory (
     itemid varchar2(10) not null,
-    qty NUMBER(5) not null,
+    qty NUMBER not null,
     constraint pk_inventory primary key (itemid)
 );
 
 create table sequence (
     name varchar2(30) not null,
-    nextid NUMBER(15) not null,
+    nextid NUMBER not null,
     constraint pk_sequence primary key (name)
 );
 
@@ -221,31 +221,31 @@ INSERT INTO item (itemid, productid, listprice, unitcost, supplier, status, attr
 INSERT INTO item (itemid, productid, listprice, unitcost, supplier, status, attr1) VALUES ('EST-27','K9-CW-01',155.29, 90.00,1,'P','Adult Female');
 INSERT INTO item (itemid, productid, listprice, unitcost, supplier, status, attr1) VALUES ('EST-28','K9-RT-01',155.29, 90.00,1,'P','Adult Female');
 
-INSERT INTO inventory (itemid, qty) VALUES ('EST-1',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-2',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-3',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-4',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-5',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-6',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-7',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-8',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-9',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-10',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-11',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-12',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-13',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-14',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-15',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-16',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-17',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-18',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-19',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-20',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-21',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-22',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-23',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-24',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-25',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-26',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-27',10000);
-INSERT INTO inventory (itemid, qty) VALUES ('EST-28',10000);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-1',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-2',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-3',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-4',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-5',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-6',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-7',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-8',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-9',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-10',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-11',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-12',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-13',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-14',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-15',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-16',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-17',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-18',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-19',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-20',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-21',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-22',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-23',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-24',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-25',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-26',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-27',99999999999);
+INSERT INTO inventory (itemid, qty) VALUES ('EST-28',99999999999);

@@ -23,7 +23,7 @@ domain: {
         url: /appmon/backend
     }
 }
-instance: {
+app: {
     name: jpetstore
     title: JPetStore
     event: {
@@ -63,7 +63,7 @@ instance: {
         sampleInterval: 300
     }
 }
-instance: {
+app: {
     name: petclinic
     title: PetClinic
     event: {
@@ -103,7 +103,7 @@ instance: {
         sampleInterval: 300
     }
 }
-instance: {
+app: {
     name: demo
     title: Demo
     event: {
@@ -133,7 +133,7 @@ instance: {
         sampleInterval: 300
     }
 }
-instance: {
+app: {
     name: demo2
     title: RESTful Demo
     event: {
@@ -162,7 +162,7 @@ instance: {
         sampleInterval: 300
     }
 }
-instance: {
+app: {
     name: root
     title: Root
     event: {
@@ -209,7 +209,7 @@ instance: {
         sampleInterval: 300
     }
 }
-instance: {
+app: {
     name: appmon
     title: AppMon
     hidden: true

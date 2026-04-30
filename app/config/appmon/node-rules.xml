@@ -5,12 +5,12 @@
 
     <bean class="com.aspectran.aspectow.node.config.NodeConfigResolver">
         <properties profile="prod">
-            <item name="locations" type="array">
+            <item name="configLocation">
                 <value>/config/appmon/node-config-prod.apon</value>
             </item>
         </properties>
         <properties profile="!prod">
-            <item name="locations" type="array">
+            <item name="configLocation">
                 <value>/config/appmon/node-config.apon</value>
             </item>
         </properties>

@@ -7,38 +7,22 @@ pollingConfig: {
     # The initial capacity of the shared message buffer
     initialBufferSize: 9999
 }
-domain: {
-    name: backend1
-    title: Localhost(Websocket)
-    endpoint: {
-        mode: auto
-        url: /appmon/backend
-    }
-}
-domain: {
-    name: backend2
-    title: Localhost(Polling)
-    endpoint: {
-        mode: auto
-        url: /appmon/backend
-    }
-}
 app: {
-    name: jpetstore
+    id: jpetstore
     title: JPetStore
     event: {
-        name: activity
+        id: activity
         target: jpetstore
         parameters: {
             +: /**
         }
     }
     event: {
-        name: session
+        id: session
         target: tow.server/jpetstore
     }
     metric: {
-        name: cp-jpetstore
+        id: cp-jpetstore
         title: CP-jpetstore
         description: Shows the JDBC connection pool usage status
         reader: com.aspectran.aspectow.appmon.engine.exporter.metric.jdbc.HikariPoolMBeanReader
@@ -49,14 +33,14 @@ app: {
         exportInterval: 900
     }
     log: {
-        name: app
+        id: app
         title: JPetStore App
         file: /logs/jpetstore.log
         lastLines: 1000
         sampleInterval: 300
     }
     log: {
-        name: access
+        id: access
         title: JPetStore Access
         file: /logs/jpetstore-access.log
         lastLines: 1000
@@ -64,21 +48,21 @@ app: {
     }
 }
 app: {
-    name: petclinic
+    id: petclinic
     title: PetClinic
     event: {
-        name: activity
+        id: activity
         target: petclinic
         parameters: {
             +: /**
         }
     }
     event: {
-        name: session
+        id: session
         target: tow.server/petclinic
     }
     metric: {
-        name: cp-petclinic
+        id: cp-petclinic
         title: CP-petclinic
         description: Shows the JDBC connection pool usage status
         reader: com.aspectran.aspectow.appmon.engine.exporter.metric.jdbc.HikariPoolMBeanReader
@@ -89,14 +73,14 @@ app: {
         exportInterval: 900
     }
     log: {
-        name: app
+        id: app
         title: PetClinic App
         file: /logs/petclinic.log
         lastLines: 1000
         sampleInterval: 300
     }
     log: {
-        name: access
+        id: access
         title: PetClinic Access
         file: /logs/petclinic-access.log
         lastLines: 1000
@@ -104,10 +88,10 @@ app: {
     }
 }
 app: {
-    name: demo
+    id: demo
     title: Demo
     event: {
-        name: activity
+        id: activity
         target: demo
         parameters: {
             +: /**
@@ -115,18 +99,18 @@ app: {
         }
     }
     event: {
-        name: session
+        id: session
         target: tow.server/demo
     }
     log: {
-        name: app
+        id: app
         title: Demo App
         file: /logs/demo.log
         lastLines: 1000
         sampleInterval: 300
     }
     log: {
-        name: access
+        id: access
         title: Demo Access
         file: /logs/demo-access.log
         lastLines: 1000
@@ -134,28 +118,28 @@ app: {
     }
 }
 app: {
-    name: demo2
+    id: demo2
     title: RESTful Demo
     event: {
-        name: activity
+        id: activity
         target: demo
         parameters: {
             +: /examples/gs-rest-service/**
         }
     }
     event: {
-        name: session
+        id: session
         target: tow.server/demo
     }
     log: {
-        name: app
+        id: app
         title: Demo App
         file: /logs/demo2.log
         lastLines: 1000
         sampleInterval: 300
     }
     log: {
-        name: access
+        id: access
         title: Demo Access
         file: /logs/demo2-access.log
         lastLines: 1000
@@ -163,21 +147,21 @@ app: {
     }
 }
 app: {
-    name: root
+    id: root
     title: Root
     event: {
-        name: activity
+        id: activity
         target: root
         parameters: {
             +: /**
         }
     }
     event: {
-        name: session
+        id: session
         target: tow.server/root
     }
     metric: {
-        name: heap
+        id: heap
         title: Heap
         description: Shows JVM Heap memory usage status
         reader: com.aspectran.aspectow.appmon.engine.exporter.metric.jvm.HeapMemoryUsageReader
@@ -185,7 +169,7 @@ app: {
         heading: true
     }
     metric: {
-        name: undertow-tp
+        id: undertow-tp
         title: Undertow TP
         description: Metrics of Undertow thread pool resources
         reader: com.aspectran.aspectow.appmon.engine.exporter.metric.undertow.NioWorkerMetricsReader
@@ -195,14 +179,14 @@ app: {
         heading: true
     }
     log: {
-        name: app
+        id: app
         title: Root App
         file: /logs/root.log
         lastLines: 1000
         sampleInterval: 300
     }
     log: {
-        name: access
+        id: access
         title: Root Access
         file: /logs/root-access.log
         lastLines: 1000
@@ -210,22 +194,23 @@ app: {
     }
 }
 app: {
-    name: appmon
+    id: appmon
     title: AppMon
     hidden: true
     event: {
-        name: activity
+        id: activity
         target: appmon
         parameters: {
             +: /**
+            -: /nodes/**/appmon/polling/**  # Ignore polling requests
         }
     }
     event: {
-        name: session
+        id: session
         target: tow.server/appmon
     }
     metric: {
-        name: heap
+        id: heap
         title: Heap
         description: Shows JVM Heap memory usage status
         reader: com.aspectran.aspectow.appmon.engine.exporter.metric.jvm.HeapMemoryUsageReader
@@ -233,7 +218,7 @@ app: {
         heading: true
     }
     metric: {
-        name: undertow-tp
+        id: undertow-tp
         title: Undertow TP
         description: Metrics of Undertow thread pool resources
         reader: com.aspectran.aspectow.appmon.engine.exporter.metric.undertow.NioWorkerMetricsReader
@@ -243,14 +228,14 @@ app: {
         heading: true
     }
     log: {
-        name: appmon
+        id: appmon
         title: AppMon
         file: /logs/appmon.log
         lastLines: 1000
         sampleInterval: 300
     }
     log: {
-        name: access
+        id: access
         title: AppMon Access
         file: /logs/appmon-access.log
         lastLines: 1000

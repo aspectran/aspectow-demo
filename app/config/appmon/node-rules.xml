@@ -4,9 +4,6 @@
 <aspectran>
 
     <bean class="com.aspectran.aspectow.node.config.NodeConfigResolver">
-        <properties>
-            <item name="ignoreInvalidResource" valueType="boolean">false</item>
-        </properties>
         <properties profile="prod">
             <item name="locations" type="array">
                 <value>/config/appmon/node-config-prod.apon</value>

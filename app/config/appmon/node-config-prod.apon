@@ -12,9 +12,9 @@ node: {
     }
 }
 node: {
-    id: node1
+    id: node2
     group: group1
-    title: Node-1
+    title: Node-2
     endpoint: {
         mode: auto
     }

@@ -5,7 +5,17 @@
 
     <bean class="com.aspectran.aspectow.node.config.NodeConfigResolver">
         <properties>
-            <item name="configLocation">/config/appmon/node-config.apon</item>
+            <item name="ignoreInvalidResource" valueType="boolean">false</item>
+        </properties>
+        <properties profile="prod">
+            <item name="locations" type="array">
+                <value>/config/appmon/node-config-prod.apon</value>
+            </item>
+        </properties>
+        <properties profile="!prod">
+            <item name="locations" type="array">
+                <value>/config/appmon/node-config.apon</value>
+            </item>
         </properties>
     </bean>
 

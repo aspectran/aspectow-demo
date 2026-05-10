@@ -31,8 +31,8 @@ public class HybridEventCountDao implements EventCountMapper {
     }
 
     @Override
-    public EventCountVO getLastEventCount(String domain, String instance, String event) {
-        return local().getLastEventCount(domain, instance, event);
+    public EventCountVO getLastEventCount(String nodeId, String appId, String eventId) {
+        return local().getLastEventCount(nodeId, appId, eventId);
     }
 
     @Override
@@ -56,28 +56,28 @@ public class HybridEventCountDao implements EventCountMapper {
     }
 
     @Override
-    public List<EventCountVO> getChartData(String domain, String instance, String event, LocalDateTime dateOffset) {
-        return local().getChartData(domain, instance, event, dateOffset);
+    public List<EventCountVO> getChartData(String nodeId, String appId, String eventId, LocalDateTime dateOffset) {
+        return local().getChartData(nodeId, appId, eventId, dateOffset);
     }
 
     @Override
-    public List<EventCountVO> getChartDataByHour(String domain, String instance, String event, int zoneOffset, LocalDateTime dateOffset) {
-        return supabase().getChartDataByHour(domain, instance, event, zoneOffset, dateOffset);
+    public List<EventCountVO> getChartDataByHour(String nodeId, String appId, String eventId, int zoneOffset, LocalDateTime dateOffset) {
+        return supabase().getChartDataByHour(nodeId, appId, eventId, zoneOffset, dateOffset);
     }
 
     @Override
-    public List<EventCountVO> getChartDataByDay(String domain, String instance, String event, int zoneOffset, LocalDateTime dateOffset) {
-        return supabase().getChartDataByDay(domain, instance, event, zoneOffset, dateOffset);
+    public List<EventCountVO> getChartDataByDay(String nodeId, String appId, String eventId, int zoneOffset, LocalDateTime dateOffset) {
+        return supabase().getChartDataByDay(nodeId, appId, eventId, zoneOffset, dateOffset);
     }
 
     @Override
-    public List<EventCountVO> getChartDataByMonth(String domain, String instance, String event, int zoneOffset, LocalDateTime dateOffset) {
-        return supabase().getChartDataByMonth(domain, instance, event, zoneOffset, dateOffset);
+    public List<EventCountVO> getChartDataByMonth(String nodeId, String appId, String eventId, int zoneOffset, LocalDateTime dateOffset) {
+        return supabase().getChartDataByMonth(nodeId, appId, eventId, zoneOffset, dateOffset);
     }
 
     @Override
-    public List<EventCountVO> getChartDataByYear(String domain, String instance, String event, int zoneOffset, LocalDateTime dateOffset) {
-        return supabase().getChartDataByYear(domain, instance, event, zoneOffset, dateOffset);
+    public List<EventCountVO> getChartDataByYear(String nodeId, String appId, String eventId, int zoneOffset, LocalDateTime dateOffset) {
+        return supabase().getChartDataByYear(nodeId, appId, eventId, zoneOffset, dateOffset);
     }
 
 }

@@ -61,8 +61,18 @@ public class HybridEventCountDao implements EventCountMapper {
     }
 
     @Override
+    public List<EventCountVO> getGroupChartData(String groupId, String appId, String eventId, LocalDateTime dateOffset) {
+        return local().getGroupChartData(groupId, appId, eventId, dateOffset);
+    }
+
+    @Override
     public List<EventCountVO> getChartDataByHour(String nodeId, String appId, String eventId, int zoneOffset, LocalDateTime dateOffset) {
         return supabase().getChartDataByHour(nodeId, appId, eventId, zoneOffset, dateOffset);
+    }
+
+    @Override
+    public List<EventCountVO> getGroupChartDataByHour(String groupId, String appId, String eventId, int zoneOffset, LocalDateTime dateOffset) {
+        return local().getGroupChartDataByHour(groupId, appId, eventId, zoneOffset, dateOffset);
     }
 
     @Override
@@ -71,13 +81,28 @@ public class HybridEventCountDao implements EventCountMapper {
     }
 
     @Override
+    public List<EventCountVO> getGroupChartDataByDay(String groupId, String appId, String eventId, int zoneOffset, LocalDateTime dateOffset) {
+        return supabase().getGroupChartDataByDay(groupId, appId, eventId, zoneOffset, dateOffset);
+    }
+
+    @Override
     public List<EventCountVO> getChartDataByMonth(String nodeId, String appId, String eventId, int zoneOffset, LocalDateTime dateOffset) {
         return supabase().getChartDataByMonth(nodeId, appId, eventId, zoneOffset, dateOffset);
     }
 
     @Override
+    public List<EventCountVO> getGroupChartDataByMonth(String groupId, String appId, String eventId, int zoneOffset, LocalDateTime dateOffset) {
+        return supabase().getGroupChartDataByMonth(groupId, appId, eventId, zoneOffset, dateOffset);
+    }
+
+    @Override
     public List<EventCountVO> getChartDataByYear(String nodeId, String appId, String eventId, int zoneOffset, LocalDateTime dateOffset) {
         return supabase().getChartDataByYear(nodeId, appId, eventId, zoneOffset, dateOffset);
+    }
+
+    @Override
+    public List<EventCountVO> getGroupChartDataByYear(String groupId, String appId, String eventId, int zoneOffset, LocalDateTime dateOffset) {
+        return supabase().getGroupChartDataByYear(groupId, appId, eventId, zoneOffset, dateOffset);
     }
 
 }

@@ -31,9 +31,19 @@
     </th:block>
 </head>
 <body>
-    <th:block layout:fragment="content" class="container">
+    <th:block layout:fragment="content">
         <div class="row">
-            <div class="node metrics-bar full-width">
+            <div class="node-bar mt-0 mt-md-3 py-2 py-md-0">
+                <ul class="node tabs flat nav nav-tabs">
+                    <li class="tabs-title nav-item">
+                        <a class="nav-link">
+                            <i class="bi bi-server"></i><span class="number"></span> <span class="title">Node-1</span>
+                            <i class="indicator bi bi-lightning-charge-fill" data-icon-connected="bi-lightning-charge-fill" data-icon-disconnected="bi-ban" data-icon-error="bi-exclamation-octagon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="node metrics-bar no-title">
                 <div class="title">
                     <i class="bi bi-server"></i><span class="number"></span>
                 </div>
@@ -45,9 +55,9 @@
                 </div>
             </div>
         </div>
-        <ul class="app tabs nav nav-tabs mt-3">
+        <ul class="app tabs nav nav-tabs mt-3 pb-2 pb-md-0">
             <li class="tabs-title nav-item">
-                <a class="nav-link"><i class="bi bi-box"></i> <span class="title">Instance</span> <i class="indicator bi bi-lightning-charge-fill"></i></a>
+                <a class="nav-link"><i class="bi bi-box"></i> <span class="title">App 1</span> <i class="indicator bi bi-lightning-charge-fill"></i></a>
             </li>
         </ul>
         <div class="control-bar">
@@ -149,7 +159,7 @@
             <div class="col-12 console-box">
                 <div class="status-bar">
                     <h4 class="ellipses"></h4>
-                    <a class="load-previous" title="Load previous logs" style="display: none;">
+                    <a class="load-previous" title="Load previous logs">
                         <i class="icon bi bi-arrow-up-circle"></i>
                     </a>
                     <a class="clear-screen" title="Clear screen">

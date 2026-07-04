@@ -29,7 +29,6 @@ import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.tool.schema.Action;
 
 import javax.sql.DataSource;
-import java.util.Map;
 
 /**
  * Default EntityManagerFactory configuration for the PetClinic application.

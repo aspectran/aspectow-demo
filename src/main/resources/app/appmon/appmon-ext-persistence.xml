@@ -70,13 +70,13 @@
 <!--        </advice>-->
 <!--    </aspect>-->
 
-    <bean id="appmonLocalSqlSession" class="com.aspectran.mybatis.DefaultSqlSessionAgent">
+    <bean id="appmonLocalSqlSession" class="app.appmon.HybridAppMonSqlSession">
         <argument>appmonLocalTxAspect</argument>
         <property name="targetBeanId">appmonLocalSqlSession</property>
         <property name="sqlSessionFactoryBeanId">appmonLocalSqlSessionFactory</property>
     </bean>
 
-    <bean id="appmonLocalSqlMapperProvider" class="app.appmon.AppMonSqlMapperProvider">
+    <bean id="appmonLocalSqlMapperProvider" class="app.appmon.HybridAppMonSqlMapperProvider" lazyDestroy="true">
         <argument>#{appmonLocalSqlSession}</argument>
     </bean>
 
@@ -105,18 +105,18 @@
 <!--        </advice>-->
 <!--    </aspect>-->
 
-    <bean id="supabaseSqlSession" class="com.aspectran.mybatis.DefaultSqlSessionAgent">
+    <bean id="supabaseSqlSession" class="app.appmon.HybridAppMonSqlSession">
         <argument>supabaseTxAspect</argument>
         <property name="targetBeanId">supabaseSqlSession</property>
         <property name="sqlSessionFactoryBeanId">supabaseSqlSessionFactory</property>
     </bean>
 
-    <bean id="supabaseSqlMapperProvider" class="app.appmon.AppMonSqlMapperProvider">
+    <bean id="supabaseSqlMapperProvider" class="app.appmon.HybridAppMonSqlMapperProvider" lazyDestroy="true">
         <argument>#{supabaseSqlSession}</argument>
     </bean>
 
     <!-- 3. Hybrid DAO Overriding -->
-    <bean id="appmon.eventCountDao" class="app.appmon.HybridEventCountDao">
+    <bean id="appmon.hybridEventCountDao" class="app.appmon.HybridEventCountDao">
         <argument>#{appmonLocalSqlMapperProvider}</argument>
         <argument>#{supabaseSqlMapperProvider}</argument>
     </bean>

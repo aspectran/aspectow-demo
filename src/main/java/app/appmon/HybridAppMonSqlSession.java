@@ -15,28 +15,24 @@
  */
 package app.appmon;
 
-import com.aspectran.core.component.bean.annotation.Autowired;
-import com.aspectran.mybatis.SqlMapperProvider;
-import org.apache.ibatis.session.SqlSession;
+import com.aspectran.aspectow.appmon.engine.persist.db.tx.AppMonSqlSession;
+import com.aspectran.aspectow.appmon.engine.persist.db.tx.AppMonTxAspect;
+import com.aspectran.mybatis.DefaultSqlSessionAgent;
 
 /**
- * The default provider for {@link SqlSession} instances.
- * It supplies the simple, auto-committing SqlSession for database operations.
+ * A {@link HybridAppMonSqlSession} for handling simple, auto-committing database sessions.
+ * This agent is advised by {@link AppMonTxAspect} to manage transactions.
  *
  * <p>Created: 2025. 2. 15.</p>
  */
-public class AppMonSqlMapperProvider implements SqlMapperProvider {
+public class HybridAppMonSqlSession extends AppMonSqlSession {
 
-    private final SqlSession sqlSession;
-
-    @Autowired
-    public AppMonSqlMapperProvider(SqlSession sqlSession) {
-        this.sqlSession = sqlSession;
-    }
-
-    @Override
-    public SqlSession getSimpleSqlSession() {
-        return sqlSession;
+    /**
+     * Instantiates a new DefaultSqlSessionAgent.
+     * @param txAspectId the ID of the aspect that provides the SqlSessionAdvice
+     */
+    public HybridAppMonSqlSession(String txAspectId) {
+        super(txAspectId);
     }
 
 }

@@ -29,6 +29,7 @@
                 <property name="sessionTrackingModes" type="set">
                     <value>#{class:jakarta.servlet.SessionTrackingMode^COOKIE}</value>
                 </property>
+                <property name="name" value="JSESSIONID"/>
                 <property name="path" value="/"/>
                 <properties profile="prod">
                     <item name="domain" value="%{tow.server.domain}"/>

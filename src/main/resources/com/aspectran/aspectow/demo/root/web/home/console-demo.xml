@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 9.0//EN"
+        "https://aspectran.com/dtd/aspectran-9.dtd">
+<aspectran>
+
+    <bean id="consoleTokenIssuer" class="com.aspectran.aspectow.console.auth.ConsoleTokenIssuer"/>
+
+    <translet name="/console-demo">
+        <action id="token" bean="consoleTokenIssuer" method="issueToken">
+            <argument valueType="int">15</argument>
+            <argument valueType="boolean">true</argument>
+        </action>
+        <redirect path="/console/auth/demo/login">
+            <parameter name="token" value="@{token}"/>
+            <parameter name="redirect" value="@{redirect}"/>
+        </redirect>
+    </translet>
+
+    <translet name="/monitoring/">
+        <forward translet="/console-demo">
+            <attribute name="redirect" value="/appmon/dashboard/"/>
+        </forward>
+    </translet>
+
+</aspectran>

@@ -112,10 +112,10 @@
             <div class="top-bar-right d-lg-flex align-items-center gap-3">
                 <ul class="navbar-nav">
                     <aspectran:profile expression="prod">
-                        <li class="nav-item"><a class="nav-link" href="https://public.aspectran.com/monitoring/#jpetstore" target="_blank">Monitoring</a></li>
+                        <li class="nav-item"><a class="nav-link" href="https://public.aspectran.com/console/" target="_blank">Console</a></li>
                     </aspectran:profile>
                     <aspectran:profile expression="!prod">
-                        <li class="nav-item"><a class="nav-link" href="<aspectran:url value="/../monitoring/#jpetstore"/>" target="_blank">Monitoring</a></li>
+                        <li class="nav-item"><a class="nav-link" href="<aspectran:url value="/../console/"/>" target="_blank">Console</a></li>
                     </aspectran:profile>
                 </ul>
                 <div class="quick-search-box m-2 mx-md-3 m-lg-0">

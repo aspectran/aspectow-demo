@@ -34,6 +34,6 @@
 
     <append resource="com/aspectran/aspectow/demo/root/common/cdn/cdn-assets.xml"/>
     <append resource="com/aspectran/aspectow/demo/root/web/home/home.xml"/>
-    <append resource="com/aspectran/aspectow/demo/root/web/home/monitoring.xml"/>
+    <append resource="com/aspectran/aspectow/demo/root/web/home/console-demo.xml"/>
 
 </aspectran>

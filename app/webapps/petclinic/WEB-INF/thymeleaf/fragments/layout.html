@@ -45,6 +45,11 @@
             <span>Error</span>
           </li>
 
+          <li>
+            <a th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" class="nav-link bi bi-activity" href="https://public.aspectran.com/monitoring/#petclinic"> Monitoring</a>
+            <a th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" class="nav-link bi bi-activity" th:href="@{/../monitoring/#petclinic}"> Monitoring</a>
+          </li>
+
         </ul>
       </div>
     </nav>

@@ -99,8 +99,8 @@
             <div class="top-bar-right d-lg-flex align-items-center gap-3">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" class="nav-link" href="https://public.aspectran.com/monitoring/#petclinic">Monitoring</a>
-                        <a th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" class="nav-link" th:href="@{/../monitoring/#petclinic}">Monitoring</a>
+                        <a th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" class="nav-link" href="https://public.aspectran.com/console/">Console</a>
+                        <a th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" class="nav-link" th:href="@{/../console/}">Console</a>
                     </li>
                 </ul>
                 <div class="quick-search-box m-2 mx-md-3 m-lg-0">

@@ -50,8 +50,8 @@
         </settings>
     </aspect>
 
-    <append resource="app/root/common/db/root-db.xml"/>
-    <append resource="app/root/shell/shell-rules.xml"/>
-    <append resource="app/root/web/web-rules.xml"/>
+    <append resource="com/aspectran/aspectow/demo/root/common/db/root-db.xml"/>
+    <append resource="com/aspectran/aspectow/demo/root/shell/shell-rules.xml"/>
+    <append resource="com/aspectran/aspectow/demo/root/web/web-rules.xml"/>
 
 </aspectran>

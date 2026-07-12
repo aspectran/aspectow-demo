@@ -1,0 +1,7 @@
+context: {
+    name: demo
+    rules: classpath:com/aspectran/aspectow/demo/demo/demo-root-rules.xml
+    scan: [
+        com.aspectran.aspectow.demo.demo
+    ]
+}

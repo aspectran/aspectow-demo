@@ -9,7 +9,7 @@
 
     <environment>
         <property name="tow.context.jpetstore.name">jpetstore</property>
-        <property name="tow.context.jpetstore.config">classpath:app/jpetstore/jpetstore-config.apon</property>
+        <property name="tow.context.jpetstore.config">classpath:com/aspectran/aspectow/demo/jpetstore/jpetstore-config.apon</property>
     </environment>
 
     <bean id="tow.context.jpetstore.servletContext"

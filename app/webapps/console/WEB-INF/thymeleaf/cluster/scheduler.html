@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{templates/default}">
+<head>
+    <style>
+        .scheduler-card {
+            border: 1px solid var(--bs-border-color);
+            background: var(--bs-body-bg);
+            margin-bottom: 1.5rem;
+        }
+        .service-header {
+            background: var(--bs-tertiary-bg);
+            border-bottom: 1px solid var(--bs-border-color);
+        }
+        .schedule-row {
+            transition: background-color 0.2s;
+        }
+        .schedule-row:hover {
+            background-color: var(--bs-tertiary-bg);
+        }
+        .job-table {
+            background: var(--bs-secondary-bg);
+            border-radius: 8px;
+            margin: 0.5rem 0;
+        }
+        .isolated-icon {
+            color: var(--bs-warning);
+        }
+        .status-badge {
+            width: 80px;
+            display: inline-block;
+            text-align: center;
+        }
+        .status-pill {
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .target-selector {
+            background: var(--bs-secondary-bg);
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--bs-border-color);
+        }
+        .log-container {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            font-family: var(--bs-font-monospace);
+            font-size: 0.8rem;
+            padding: 0.6rem;
+            height: 300px;
+            overflow-y: auto;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            border: 1px solid #333;
+        }
+        .log-line {
+            white-space: pre;
+            margin-bottom: 0;
+            padding: 0;
+        }
+        .log-header {
+            background: #2d2d2d;
+            color: #aaa;
+            padding: 5px 15px;
+            font-size: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .log-wrapper.expanded {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+            background: #1e1e1e;
+        }
+        .log-wrapper.expanded .log-header {
+            border-radius: 0;
+            padding: 10px 20px;
+        }
+        .log-wrapper.expanded .log-container {
+            flex: 1;
+            height: auto;
+            border-radius: 0;
+            border: none;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <th:block layout:fragment="content">
+        <div th:if="${session.USER_INFO.hasRole('SUPER_ADMIN') || session.USER_INFO.hasRole('ADMIN') || session.USER_INFO.hasRole('DEMO')}">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold mb-1">Scheduler Manager</h2>
+                    <p class="text-muted mb-0">Monitor and control scheduled jobs across the cluster.</p>
+                </div>
+                <div class="d-flex flex-column gap-1 align-items-end">
+                    <div>
+                        <span class="text-muted small">Target Mode:</span>
+                        <span class="fw-bold text-primary" th:text="${page.clusterMode?.toUpperCase() ?: 'GATEWAY'}">GATEWAY</span>
+                    </div>
+                    <div>
+                        <span class="text-muted small">Distributed Lock:</span>
+                        <span th:if="${page.hasJobLockProvider}" class="badge bg-success-subtle text-success border border-success-subtle">ENABLED</span>
+                        <span th:unless="${page.hasJobLockProvider}" class="badge bg-secondary-subtle text-secondary border border-secondary-subtle">DISABLED</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card target-selector mb-4">
+                <div class="row align-items-center g-3">
+                    <div class="col-auto">
+                        <label class="fw-bold small text-muted text-uppercase">Target Node</label>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="node-selector" class="form-select form-select-sm">
+                            <!-- Dynamic options -->
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button id="refresh-btn" class="btn btn-outline-primary btn-sm px-3">
+                            <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="col text-end">
+                        <span id="connection-indicator" class="status-pill bg-secondary text-white">CONNECTING...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Section -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="card shadow-sm p-3">
+                        <div class="small text-muted text-uppercase fw-bold">Active Schedules</div>
+                        <div class="h3 fw-bold mb-0" id="stat-active-schedules">-</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm p-3">
+                        <div class="small text-muted text-uppercase fw-bold">Active Jobs</div>
+                        <div class="h3 fw-bold mb-0" id="stat-active-jobs">-</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm p-3 text-warning">
+                        <div class="small text-uppercase fw-bold">Isolated Items</div>
+                        <div class="h3 fw-bold mb-0" id="stat-isolated">-</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm p-3 text-info">
+                        <div class="small text-uppercase fw-bold">Target Node</div>
+                        <div class="h3 fw-bold mb-0 text-truncate" id="stat-current-node">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div id="scheduler-container">
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 text-muted">Connecting to node and fetching data...</p>
+                </div>
+            </div>
+        </div>
+        <div th:unless="${session.USER_INFO.hasRole('SUPER_ADMIN') || session.USER_INFO.hasRole('ADMIN') || session.USER_INFO.hasRole('DEMO')}" class="alert alert-danger my-4">
+            <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> Access Denied</h4>
+            <p class="mb-0">You do not have permission to access this page.</p>
+        </div>
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:src="@{/assets/js/console-client.js}"></script>
+        <script th:inline="javascript">
+            const basePath = [[@{/}]].replace(/\/$/, '');
+            const clusterMode = [[${page.clusterMode}]];
+            const myNodeId = [[${page.myNodeId}]];
+            let nodes = [[${page.nodes}]];
+            let consoleClient = null;
+            let currentNodeId = [[${page.node.id}]];
+
+            function refreshNodeList() {
+                return fetch(basePath + "/cluster/scheduler/nodes", {
+                        headers: { 'Accept': 'application/json' }
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.success) {
+                            nodes = res.data;
+                            if (consoleClient && consoleClient.established) {
+                                const current = nodes.find(n => n.id === currentNodeId);
+                                if (current) {
+                                    current.status = 'LIVE';
+                                }
+                            }
+                            renderNodeSelector();
+                            if (clusterMode === 'direct') {
+                                checkDirectNodesHealth();
+                            }
+                            return res.data;
+                        } else {
+                            throw new Error(res.error ? res.error.message : "Failed to refresh node list");
+                        }
+                    });
+            }
+
+            function renderNodeSelector() {
+                const $select = $('#node-selector');
+                $select.empty();
+                if (clusterMode === 'gateway') {
+                    const groups = [...new Set(nodes.map(n => n.group).filter(g => g))];
+                    groups.forEach(group => {
+                        const $optgroup = $('<optgroup>').attr('label', group);
+                        nodes.filter(n => n.group === group).forEach(n => {
+                            const title = n.title ? n.title + ' (' + n.id + ')' : n.id;
+                            const option = new Option(title, n.id);
+                            if (n.status && n.status.toUpperCase() === 'DEAD') {
+                                $(option).addClass('text-danger');
+                                option.text += ' [DEAD]';
+                            }
+                            $optgroup.append(option);
+                        });
+                        $select.append($optgroup);
+                    });
+                    const nogroup = nodes.filter(n => !n.group);
+                    if (nogroup.length > 0) {
+                        nogroup.forEach(n => {
+                            const title = n.title ? n.title + ' (' + n.id + ')' : n.id;
+                            const option = new Option(title, n.id);
+                            if (n.status && n.status.toUpperCase() === 'DEAD') {
+                                $(option).addClass('text-danger');
+                                option.text += ' [DEAD]';
+                            }
+                            $select.append(option);
+                        });
+                    }
+                } else {
+                    nodes.forEach(n => {
+                        const title = n.title ? n.title + ' (' + n.id + ')' : n.id;
+                        const option = new Option(title, n.id);
+                        const isMainNode = (n.id === currentNodeId);
+                        if (n.status && n.status.toUpperCase() === 'DEAD' && (isMainNode || n.healthChecked)) {
+                            $(option).addClass('text-danger');
+                            option.text += ' [DEAD]';
+                        }
+                        $select.append(option);
+                    });
+                }
+                $select.val(currentNodeId);
+            }
+
+            function connectToNode(nodeId, forceStatusCheck = false) {
+                if (forceStatusCheck) {
+                    refreshNodeList().then(() => doConnectToNode(nodeId));
+                } else {
+                    doConnectToNode(nodeId);
+                }
+            }
+
+            function doConnectToNode(nodeId) {
+                if (consoleClient) {
+                    consoleClient.stop();
+                }
+
+                currentNodeId = nodeId;
+                updateStats('-', '-', '-', nodeId);
+
+                const nodeInfo = nodes.find(n => n.id === nodeId);
+                if (clusterMode === 'gateway' && nodeInfo && nodeInfo.status && nodeInfo.status.toUpperCase() === 'DEAD') {
+                    showDeadNodeError(nodeId);
+                    return;
+                }
+
+                $('#connection-indicator').text("CONNECTING...").removeClass("bg-success bg-danger bg-warning").addClass("bg-secondary");
+                $('#scheduler-container').html('<div class="text-center py-5"><div class="spinner-border text-primary"></div><p class="mt-2 text-muted">Fetching data from ' + nodeId + '...</p></div>');
+
+                const targetNode = nodes.find(n => n.id === nodeId);
+                const isDirect = (clusterMode === 'direct');
+                const node = {
+                    id: nodeId,
+                    port: isDirect && targetNode ? targetNode.port : null,
+                    endpoint: {
+                        path: (isDirect && targetNode && targetNode.port && targetNode.endpoint && targetNode.endpoint.path ? targetNode.endpoint.path : basePath) + "/nodes/" + nodeId,
+                        mode: (targetNode && targetNode.endpoint ? targetNode.endpoint.mode : null)
+                    }
+                };
+
+                consoleClient = new ConsoleClient(node, {
+                    onBeforeConnect: () => {
+                        return fetch(basePath + "/cluster/token", {
+                                headers: { 'Accept': 'application/json' }
+                            })
+                            .then(response => response.json())
+                            .then(res => res.success ? res.data : null)
+                            .catch(err => {
+                                console.error("Failed to fetch new token:", err);
+                                return null;
+                            });
+                    },
+                    onMessage: (response) => {
+                        if (response.error) {
+                            console.error("Received error message:", response.error);
+                            return;
+                        }
+                        handleMessage(response);
+                    },
+                    onEstablished: () => {
+                        if (nodeInfo) {
+                            nodeInfo.status = 'LIVE';
+                            renderNodeSelector();
+                        }
+                        $('#connection-indicator').text("CONNECTED").removeClass("bg-secondary bg-danger bg-warning").addClass("bg-success");
+                        const request = {
+                            header: "execute",
+                            targetNodeId: currentNodeId,
+                            command: "services"
+                        };
+                        consoleClient.sendMessage(request);
+                    },
+                    onRetry: (count, max) => {
+                        $('#connection-indicator').text(`RECONNECTING (${count}/${max})...`).removeClass("bg-success bg-danger").addClass("bg-warning");
+                    },
+                    onClose: (event) => {
+                        if (clusterMode === 'direct' && nodeInfo) {
+                            nodeInfo.status = 'DEAD';
+                            renderNodeSelector();
+                        }
+                        $('#connection-indicator').text(event.code === 1003 ? "SESSION EXPIRED" : "DISCONNECTED")
+                            .removeClass("bg-success bg-warning").addClass("bg-danger");
+                    },
+                    onFailed: () => {
+                        if (nodeInfo) {
+                            nodeInfo.status = 'DEAD';
+                            renderNodeSelector();
+                        }
+                        showDeadNodeError(nodeId);
+                    }
+                });
+                consoleClient.start('scheduler');
+            }
+
+            function showDeadNodeError(nodeId) {
+                $('#connection-indicator').text("NODE DEAD").removeClass("bg-success bg-warning bg-secondary").addClass("bg-danger");
+                $('#scheduler-container').html(`
+                    <div class="text-center py-5">
+                        <i class="bi bi-exclamation-triangle fs-1 text-danger mb-3"></i>
+                        <h5 class="fw-bold">Node Unreachable</h5>
+                        <p class="text-muted">The target node <strong>${nodeId}</strong> is currently in DEAD state.</p>
+                        <button class="btn btn-sm btn-outline-primary mt-2" onclick="connectToNode('${nodeId}', true)">
+                            <i class="bi bi-arrow-clockwise me-1"></i> Try Again
+                        </button>
+                    </div>
+                `);
+            }
+
+            function handleMessage(response) {
+                if (response.header === 'services') {
+                    renderSchedulerList(response.data);
+                } else if (response.header === 'log') {
+                    appendLogLine(response.owner, response.data);
+                } else if (response.header === 'previousLogs') {
+                    prependLogLines(response.owner, response.data);
+                } else if (response.header === 'stateUpdated' && response.data) {
+                    const stateData = response.data;
+                    const serviceId = stateData.serviceName.replace(/[^a-zA-Z0-9]/g, '_');
+                    const safeId = stateData.id.replace(/[^a-zA-Z0-9]/g, '_');
+                    const isEnabled = !stateData.disabled;
+                    if (stateData.success) {
+                        if (stateData.type === 'schedule') {
+                            const $badge = $(`#badge-${serviceId}-${safeId}`);
+                            const $switch = $(`#switch-${serviceId}-${safeId}`);
+                            const $jobsContainer = $(`#jobs-${serviceId}-${safeId}`);
+                            if (isEnabled) {
+                                $badge.text('ACTIVE').removeClass('text-bg-danger').addClass('text-bg-success');
+                                $switch.prop('checked', true);
+                                // Show jobs as active if they are individually enabled
+                                $jobsContainer.find('.list-group-item').each(function() {
+                                    const $jobSwitch = $(this).find('.form-check-input');
+                                    if ($jobSwitch.is(':checked')) {
+                                        $(this).find('.bi-play-circle').removeClass('text-muted').addClass('text-success');
+                                        $(this).find('span').first().removeClass('text-muted');
+                                    }
+                                });
+                            } else {
+                                $badge.text('DISABLED').removeClass('text-bg-success').addClass('text-bg-danger');
+                                $switch.prop('checked', false);
+                                // Mute all jobs because the schedule is off
+                                $jobsContainer.find('.bi-play-circle').removeClass('text-success').addClass('text-muted');
+                                $jobsContainer.find('.list-group-item span').first().addClass('text-muted');
+                            }
+                        } else if (stateData.type === 'job') {
+                            const $switch = $(`#switch-${serviceId}-${safeId}`);
+                            const $icon = $(`#icon-${serviceId}-${safeId}`);
+                            const $text = $(`#text-${serviceId}-${safeId}`);
+                            
+                            const $collapse = $switch.closest('.collapse');
+                            const prefix = `jobs-${serviceId}-`;
+                            const safeScheduleId = $collapse.attr('id').substring(prefix.length);
+                            const isScheduleActive = $(`#badge-${serviceId}-${safeScheduleId}`).hasClass('text-bg-success');
+
+                            if (isEnabled) {
+                                $switch.prop('checked', true);
+                                if (isScheduleActive) {
+                                    $icon.removeClass('text-muted').addClass('text-success');
+                                    $text.removeClass('text-muted');
+                                }
+                            } else {
+                                $switch.prop('checked', false);
+                                $icon.removeClass('text-success').addClass('text-muted');
+                                $text.addClass('text-muted');
+                            }
+                        }
+                        recalculateStats();
+                    } else {
+                        $(`#switch-${serviceId}-${safeId}`).prop('checked', stateData.disabled);
+                        alert(stateData.message);
+                    }
+                } else if (response.header === 'nodeJoined') {
+                    if (response.nodeId === currentNodeId && currentNodeId !== myNodeId) {
+                        // Delay reload slightly to ensure the re-joined node's scheduler services have fully started
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                        return;
+                    }
+                    refreshNodeList().then(() => {
+                        const joinedNode = nodes.find(n => n.id === response.nodeId);
+                        if (joinedNode) {
+                            joinedNode.status = 'active';
+                            renderNodeSelector();
+                        }
+                        if (response.nodeId === currentNodeId && (!consoleClient || !consoleClient.established)) {
+                            setTimeout(() => {
+                                connectToNode(currentNodeId);
+                            }, 1000);
+                        }
+                    });
+                } else if (response.header === 'nodeLeft') {
+                    refreshNodeList();
+                }
+            }
+
+            function recalculateStats() {
+                let activeSchedules = $('.status-badge.text-bg-success').length;
+                let activeJobs = 0;
+                
+                $('.schedule-row').each(function() {
+                    const $row = $(this);
+                    if ($row.find('.status-badge').hasClass('text-bg-success')) {
+                        const targetId = $row.find('[data-bs-toggle="collapse"]').attr('data-bs-target');
+                        $(targetId).find('.form-check-input').each(function() {
+                            if ($(this).is(':checked')) {
+                                activeJobs++;
+                            }
+                        });
+                    }
+                });
+
+                let isolated = $('.isolated-icon').length;
+                updateStats(activeSchedules, activeJobs, isolated, currentNodeId);
+            }
+
+            function renderSchedulerList(services) {
+                let html = '';
+                let totalSchedules = 0;
+                let totalActiveSchedules = 0;
+                let totalActiveJobs = 0;
+                let totalIsolated = 0;
+
+                if (!services || services.length === 0) {
+                    $('#scheduler-container').html(`
+                        <div class="text-center py-5">
+                            <i class="bi bi-info-circle fs-1 text-info mb-3"></i>
+                            <h5 class="fw-bold">No Active Services</h5>
+                            <p class="text-muted">No active services or schedulers found on this node. They might still be starting up.</p>
+                            <button class="btn btn-sm btn-outline-primary mt-2" onclick="connectToNode('${currentNodeId}', true)">
+                                <i class="bi bi-arrow-clockwise me-1"></i> Try Again
+                            </button>
+                        </div>
+                    `);
+                    updateStats(0, 0, 0, currentNodeId);
+                    return;
+                }
+
+                services.forEach(service => {
+                    const serviceId = service.serviceName.replace(/[^a-zA-Z0-9]/g, '_');
+                    html += `<div class="card scheduler-card shadow-sm overflow-hidden">
+                        <div class="service-header d-flex align-items-center gap-3 p-3">
+                            <i class="bi bi-gear-wide-connected fs-4 text-primary d-none d-md-block"></i>
+                            <div>
+                                <h5 class="fw-bold mb-0 fs-sm-6">${service.serviceName}</h5>
+                                <small class="text-muted">Context: ${service.contextName}</small>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table mb-0 align-middle">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;"></th>
+                                        <th>Schedule ID</th>
+                                        <th>Trigger / Expression</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-end" style="width: 150px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>`;
+
+                    if (!service.schedules || service.schedules.length === 0) {
+                        html += `<tr><td colspan="5" class="text-center text-muted py-4">No schedules defined in this service.</td></tr>`;
+                    } else {
+                        service.schedules.forEach(schedule => {
+                            totalSchedules++;
+                            const isScheduleEnabled = !schedule.disabled;
+                            const isScheduleIsolated = schedule.isolated;
+                            if (isScheduleEnabled) totalActiveSchedules++;
+                            if (isScheduleIsolated) totalIsolated++;
+
+                            const safeScheduleId = schedule.id.replace(/[^a-zA-Z0-9]/g, '_');
+
+                            html += `<tr class="schedule-row">
+                                <td class="text-center">
+                                    <button class="btn btn-link btn-sm p-0 text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#jobs-${serviceId}-${safeScheduleId}">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </button>
+                                </td>
+                                <td class="fw-medium">
+                                    ${isScheduleIsolated ? '<i class="bi bi-lock-fill isolated-icon me-1" title="Isolated"></i>' : ''}
+                                    ${schedule.id}
+                                </td>
+                                <td>
+                                    <code class="small px-2 py-1 bg-body-tertiary rounded">${schedule.scheduler?.trigger?.expression?.expression || schedule.scheduler?.trigger?.type || 'N/A'}</code>
+                                </td>
+                                <td class="text-center">
+                                    <span id="badge-${serviceId}-${safeScheduleId}" class="badge rounded-pill status-badge ${isScheduleEnabled ? 'text-bg-success' : 'text-bg-danger'}">
+                                        ${isScheduleEnabled ? 'ACTIVE' : 'DISABLED'}
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <div class="form-check form-switch d-inline-block">
+                                        <input id="switch-${serviceId}-${safeScheduleId}" class="form-check-input" type="checkbox" role="switch" 
+                                            ${isScheduleEnabled ? 'checked' : ''} 
+                                            ${isScheduleIsolated ? 'disabled' : ''}
+                                            onclick="toggleState('${service.serviceName}', 'schedule', '${schedule.id}', this.checked)">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="collapse" id="jobs-${serviceId}-${safeScheduleId}">
+                                <td colspan="5" class="p-0">
+                                    <div class="p-3">
+                                        <div class="job-table p-3">
+                                            <div class="small fw-bold text-muted mb-2 text-uppercase">Jobs in this Schedule</div>
+                                            <div class="list-group list-group-flush border-top border-bottom">`;
+                            
+                            if (schedule.job) {
+                                (Array.isArray(schedule.job) ? schedule.job : [schedule.job]).forEach(job => {
+                                    const isJobEnabled = !job.disabled;
+                                    const isJobIsolated = job.isolated;
+                                    const isJobEffectivelyActive = isJobEnabled && isScheduleEnabled;
+                                    if (isJobEnabled && isScheduleEnabled) totalActiveJobs++;
+                                    if (isJobIsolated) totalIsolated++;
+
+                                    const safeJobId = job.translet.replace(/[^a-zA-Z0-9]/g, '_');
+
+                                    html += `<div class="list-group-item d-flex justify-content-between align-items-center bg-transparent border-0 px-0 py-2">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <i id="icon-${serviceId}-${safeJobId}" class="bi bi-play-circle small ${isJobEffectivelyActive ? 'text-success' : 'text-muted'}"></i>
+                                            <span id="text-${serviceId}-${safeJobId}" class="${isJobEffectivelyActive ? '' : 'text-muted'}">${job.translet}</span>
+                                            ${isJobIsolated ? '<i class="bi bi-lock-fill isolated-icon small" title="Isolated"></i>' : ''}
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input id="switch-${serviceId}-${safeJobId}" class="form-check-input" type="checkbox" role="switch" 
+                                                ${isJobEnabled ? 'checked' : ''} 
+                                                ${(isJobIsolated || isScheduleIsolated) ? 'disabled' : ''}
+                                                onclick="toggleState('${service.serviceName}', 'job', '${job.translet}', this.checked)">
+                                        </div>
+                                    </div>`;
+                                });
+                            }
+
+                            html += `       </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>`;
+                        });
+                    }
+
+                    html += `   </tbody>
+                            </table>
+                        </div>`;
+
+                    if (service.schedules && service.schedules.length > 0) {
+                        html += `<!-- Log Viewer Section -->
+                        <div id="log-wrapper-${service.loggingGroup}" class="log-wrapper">
+                            <div class="log-header">
+                                <span><i class="bi bi-terminal me-2"></i>Live Scheduler Logs</span>
+                                <div class="d-flex align-items-center gap-3">
+                                    <button class="btn btn-link btn-xs text-secondary p-0 text-decoration-none" onclick="clearLog('${service.loggingGroup}')">
+                                        <i class="bi bi-trash3"></i> Clear
+                                    </button>
+                                    <button class="btn btn-link btn-xs text-secondary p-0 text-decoration-none expand-btn" onclick="toggleExpandLog('${service.loggingGroup}')">
+                                        <i class="bi bi-arrows-angle-expand"></i> Expand
+                                    </button>
+                                    <div class="form-check form-check-inline m-0 d-flex align-items-center">
+                                        <input class="form-check-input me-2" type="checkbox" id="auto-scroll-${service.loggingGroup}" checked style="cursor:pointer">
+                                        <label class="form-check-label text-secondary" for="auto-scroll-${service.loggingGroup}" style="cursor:pointer; font-size: 0.75rem;">Auto-scroll</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="log-viewer-${service.loggingGroup}" class="log-container" 
+                                 onscroll="onLogScroll(this, '${service.loggingGroup}')">
+                                <div class="text-muted italic">Waiting for logs...</div>
+                            </div>
+                        </div>`;
+                    }
+
+                    html += `</div>`;
+                });
+
+                $('#scheduler-container').html(html);
+                updateStats(totalActiveSchedules, totalActiveJobs, totalIsolated, currentNodeId);
+
+                // Auto-fetch recent logs after rendering the list
+                services.forEach(service => {
+                    if (service.loggingGroup) {
+                        fetchPreviousLogs(service.loggingGroup);
+                    }
+                });
+            }
+
+            function appendLogLine(loggingGroup, logLine) {
+                const $container = $(`#log-viewer-${loggingGroup}`);
+                if ($container.length === 0) return;
+
+                // Stop auto-scroll if currently loading previous logs
+                if ($container.data('loading')) return;
+
+                if ($container.find('.text-muted').length > 0) {
+                    $container.empty();
+                }
+
+                const $line = $('<p class="log-line"></p>').text(logLine);
+                $container.append($line);
+
+                if ($container.children('.log-line').length > 2000) {
+                    $container.children('.log-line').first().remove();
+                }
+
+                if ($(`#auto-scroll-${loggingGroup}`).is(':checked')) {
+                    $container.scrollTop($container[0].scrollHeight);
+                }
+            }
+
+            function prependLogLines(loggingGroup, logLines) {
+                console.log("prependLogLines called:", loggingGroup, logLines);
+                const $container = $(`#log-viewer-${loggingGroup}`);
+                if ($container.length === 0) return;
+
+                try {
+                    if (typeof logLines === 'string') {
+                        try {
+                            logLines = JSON.parse(logLines);
+                        } catch (e) {
+                            console.error("Failed to parse logLines string:", e);
+                        }
+                    }
+
+                    if (!logLines || logLines.length === 0) {
+                        $container.data('no-more-logs', true);
+                        return;
+                    }
+
+                    if ($container.find('.text-muted').length > 0) {
+                        $container.empty();
+                    }
+
+                    const scrollHeightBefore = $container[0].scrollHeight;
+                    
+                    // Add all lines at once
+                    const $fragment = $(document.createDocumentFragment());
+                    logLines.forEach(line => {
+                        $fragment.append($('<p class="log-line"></p>').text(line));
+                    });
+                    
+                    const $loading = $container.find('.loading-logs');
+                    if ($loading.length > 0) {
+                        $loading.after($fragment);
+                    } else {
+                        $container.prepend($fragment);
+                    }
+
+                    // Adjust scroll to maintain position
+                    const scrollHeightAfter = $container[0].scrollHeight;
+                    $container.scrollTop($container.scrollTop() + (scrollHeightAfter - scrollHeightBefore));
+                } catch (err) {
+                    console.error("Error prepending log lines:", err);
+                } finally {
+                    $container.data('loading', false);
+                    $container.find('.loading-logs').remove();
+                }
+            }
+
+            function onLogScroll(container, loggingGroup) {
+                const $container = $(container);
+                if ($container.scrollTop() === 0 && $container.children('.log-line').length > 0 &&
+                    !$container.data('loading') && !$container.data('no-more-logs')) {
+                    fetchPreviousLogs(loggingGroup);
+                }
+            }
+
+            function fetchPreviousLogs(loggingGroup) {
+                const $container = $(`#log-viewer-${loggingGroup}`);
+                const loadedCount = $container.children('.log-line').length;
+
+                $container.data('loading', true);
+                if ($container.find('.text-muted').length > 0) {
+                    $container.empty();
+                }
+                $container.prepend('<div class="loading-logs text-info small italic py-2"><i class="bi bi-arrow-up-circle me-2"></i>Loading previous logs...</div>');
+
+                const request = {
+                    header: "execute",
+                    targetNodeId: currentNodeId,
+                    command: "previousLogs",
+                    loggingGroup: loggingGroup,
+                    loadedLines: loadedCount
+                };
+                consoleClient.sendMessage(request);
+            }
+
+            function clearLog(loggingGroup) {
+                const $container = $(`#log-viewer-${loggingGroup}`);
+                $container.empty().append('<div class="text-muted italic">Log cleared.</div>');
+                $container.data('no-more-logs', false);
+                $container.data('loading', false);
+            }
+
+            function toggleExpandLog(loggingGroup) {
+                const $wrapper = $(`#log-wrapper-${loggingGroup}`);
+                const isExpanded = $wrapper.toggleClass('expanded').hasClass('expanded');
+                const $btn = $wrapper.find('.expand-btn');
+                const $icon = $btn.find('i');
+                const $container = $wrapper.find('.log-container');
+                
+                if (isExpanded) {
+                    $icon.removeClass('bi-arrows-angle-expand').addClass('bi-arrows-angle-contract');
+                    $btn.contents().last()[0].textContent = ' Collapse';
+                    $('body').css('overflow', 'hidden');
+                } else {
+                    $icon.removeClass('bi-arrows-angle-contract').addClass('bi-arrows-angle-expand');
+                    $btn.contents().last()[0].textContent = ' Expand';
+                    $('body').css('overflow', '');
+                }
+                
+                // Auto-scroll to bottom if checked
+                if ($(`#auto-scroll-${loggingGroup}`).is(':checked')) {
+                    $container.scrollTop($container[0].scrollHeight);
+                }
+            }
+
+            function updateStats(schedules, jobs, isolated, node) {
+                $('#stat-active-schedules').text(schedules);
+                $('#stat-active-jobs').text(jobs);
+                $('#stat-isolated').text(isolated);
+                $('#stat-current-node').text(node);
+            }
+
+            function toggleState(serviceName, type, id, checked) {
+                const command = checked ? 'enable' : 'disable';
+                const request = {
+                    header: "execute",
+                    targetNodeId: currentNodeId,
+                    command: command,
+                    serviceName: serviceName
+                };
+                if (type === 'schedule') request.scheduleId = id;
+                if (type === 'job') request.jobName = id;
+                consoleClient.sendMessage(request);
+            }
+
+            function checkDirectNodesHealth() {
+                if (clusterMode !== 'direct') return;
+
+                nodes.forEach(n => {
+                    if (n.id === currentNodeId) return;
+
+                    let path = basePath + "/nodes/" + n.id + "/scheduler/ping";
+                    if (n.port && (location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
+                        const url = new URL(path, location.href);
+                        url.port = n.port;
+                        path = url.origin + url.pathname;
+                    }
+
+                    fetch(path, { method: 'GET' })
+                        .then(res => {
+                            n.status = 'LIVE';
+                            n.healthChecked = true;
+                            renderNodeSelector();
+                        })
+                        .catch(err => {
+                            console.warn("Health check failed for node:", n.id, err);
+                            n.status = 'DEAD';
+                            n.healthChecked = true;
+                            renderNodeSelector();
+                        });
+                });
+            }
+
+            $(function() {
+                renderNodeSelector();
+                connectToNode(currentNodeId);
+                checkDirectNodesHealth();
+
+                $('#node-selector').on('change', function() {
+                    const nodeId = $(this).val();
+                    const url = new URL(window.location);
+                    url.searchParams.set('nodeId', nodeId);
+                    window.history.replaceState({}, '', url);
+                    connectToNode(nodeId);
+                });
+
+                $('#refresh-btn').on('click', function() {
+                    refreshNodeList().then(() => {
+                        if (consoleClient && consoleClient.established && consoleClient.mode === 'websocket') {
+                            const request = {
+                                header: "execute",
+                                targetNodeId: currentNodeId,
+                                command: "services"
+                            };
+                            consoleClient.sendMessage(request);
+                        } else {
+                            doConnectToNode(currentNodeId);
+                        }
+                    });
+                });
+            });
+        </script>
+    </th:block>
+</body>
+</html>

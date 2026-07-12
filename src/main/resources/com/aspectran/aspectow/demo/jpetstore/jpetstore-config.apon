@@ -1,0 +1,15 @@
+context: {
+    name: jpetstore
+    rules: classpath:com/aspectran/aspectow/demo/jpetstore/jpetstore-root-rules.xml
+    scan: [
+        com.aspectran.aspectow.demo.jpetstore
+    ]
+    profiles: {
+        base: [
+            h2
+        ]
+        default: [
+            dev
+        ]
+    }
+}

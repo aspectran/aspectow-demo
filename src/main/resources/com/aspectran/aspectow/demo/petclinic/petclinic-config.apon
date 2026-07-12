@@ -1,0 +1,15 @@
+context: {
+    name: petclinic
+    rules: classpath:com/aspectran/aspectow/demo/petclinic/petclinic-root-rules.xml
+    scan: [
+        com.aspectran.aspectow.demo.petclinic
+    ]
+    profiles: {
+        base: [
+            h2
+        ]
+        default: [
+            dev
+        ]
+    }
+}

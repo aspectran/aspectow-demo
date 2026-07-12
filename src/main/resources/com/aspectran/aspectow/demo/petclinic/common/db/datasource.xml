@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 9.0//EN"
+        "https://aspectran.com/dtd/aspectran-9.dtd">
+<aspectran>
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroyMethod="close" lazyDestroy="true">
+        <argument>
+            <bean class="com.zaxxer.hikari.HikariConfig">
+                <argument>
+                    <bean class="com.aspectran.core.support.PropertiesFactoryBean">
+                        <properties>
+                            <item name="ignoreInvalidResource" valueType="boolean">true</item>
+                        </properties>
+                        <properties profile="h2">
+                            <item name="locations" type="array">
+                                <value>classpath:com/aspectran/aspectow/demo/petclinic/common/db/h2/db.properties</value>
+                                <value>classpath:com/aspectran/aspectow/demo/petclinic/common/db/h2/db.system.properties</value>
+                                <value>/config/db-h2.properties</value>
+                            </item>
+                        </properties>
+                        <properties profile="mariadb">
+                            <item name="locations" type="array">
+                                <value>classpath:com/aspectran/aspectow/demo/petclinic/common/db/mariadb/db.properties</value>
+                                <value>classpath:com/aspectran/aspectow/demo/petclinic/common/db/mariadb/db.system.properties</value>
+                                <value>/config/db-mariadb.properties</value>
+                            </item>
+                        </properties>
+                        <properties profile="(oracle,!dev)">
+                            <item name="locations" type="array">
+                                <value>classpath:com/aspectran/aspectow/demo/petclinic/common/db/oracle/db.properties</value>
+                                <value>classpath:com/aspectran/aspectow/demo/petclinic/common/db/oracle/db.system.properties</value>
+                                <value>/config/db-oracle.properties</value>
+                            </item>
+                        </properties>
+                        <properties profile="(oracle,dev)">
+                            <item name="locations" type="array">
+                                <value>classpath:com/aspectran/aspectow/demo/petclinic/common/db/oracle/db-dev.properties</value>
+                            </item>
+                        </properties>
+                    </bean>
+                </argument>
+                <property name="poolName">petclinic</property>
+                <property name="registerMbeans" valueType="boolean">true</property>
+            </bean>
+        </argument>
+    </bean>
+
+</aspectran>

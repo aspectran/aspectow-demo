@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 9.0//EN"
+        "https://aspectran.com/dtd/aspectran-9.dtd">
+<aspectran>
+
+    <description style="apon">
+        |
+        |JPetStore is a full web application built on top of MyBatis 3 and Aspectran 9.
+        |
+    </description>
+
+    <bean id="basePath" class="com.aspectran.core.support.BasePathFactoryBean"/>
+    <bean id="currentEnvironment" class="com.aspectran.core.support.CurrentEnvironmentFactoryBean"/>
+    <bean id="currentTranslet" class="com.aspectran.core.support.CurrentTransletFactoryBean" scope="request"/>
+    <bean id="currentActivityData" class="com.aspectran.core.support.CurrentActivityDataFactoryBean" scope="request"/>
+
+    <aspect id="activityDataAccessibility">
+        <description>
+            The activity data of each translet can be referenced with the "data" attribute.
+        </description>
+        <advice>
+            <before>
+                <echo>
+                    <item name="data">#{currentActivityData}</item>
+                </echo>
+            </before>
+        </advice>
+    </aspect>
+
+    <aspect id="defaultTransletSettings">
+        <description>
+            Defines an aspect that injects default settings into all translets.
+        </description>
+        <settings>
+            <setting name="format.indentSize" value="2"/>
+            <setting name="format.dateFormat" value="yyyy-MM-dd"/>
+            <setting name="format.dateTimeFormat" value="yyyy-MM-dd HH:mm:ss"/>
+            <setting name="format.nullWritable" value="true"/>
+        </settings>
+    </aspect>
+
+    <append resource="com/aspectran/aspectow/demo/jpetstore/common/static-codes.xml"/>
+    <append resource="com/aspectran/aspectow/demo/jpetstore/common/db/jpetstore-db.xml"/>
+    <append resource="com/aspectran/aspectow/demo/jpetstore/common/i18n/jpetstore-i18n.xml"/>
+    <append resource="com/aspectran/aspectow/demo/jpetstore/common/filter/xss-prevent.xml"/>
+    <append resource="com/aspectran/aspectow/demo/jpetstore/jpetstore-web-rules.xml"/>
+
+</aspectran>

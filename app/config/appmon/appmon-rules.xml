@@ -19,6 +19,6 @@
         </properties>
     </bean>
 
-    <append resource="app/appmon/appmon-ext-persistence.xml" profile="appmon.ext-persistence"/>
+    <append file="/config/appmon/appmon-ext-persistence.xml" profile="appmon.ext-persistence"/>
 
 </aspectran>

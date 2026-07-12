@@ -9,7 +9,7 @@
 
     <environment>
         <property name="tow.context.demo.name">demo</property>
-        <property name="tow.context.demo.config">classpath:app/demo/demo-config.apon</property>
+        <property name="tow.context.demo.config">classpath:com/aspectran/aspectow/demo/demo/demo-config.apon</property>
     </environment>
 
     <bean id="tow.context.demo.servletContext"

@@ -9,7 +9,7 @@
 
     <environment>
         <property name="tow.context.petclinic.name">petclinic</property>
-        <property name="tow.context.petclinic.config">classpath:app/petclinic/petclinic-config.apon</property>
+        <property name="tow.context.petclinic.config">classpath:com/aspectran/aspectow/demo/petclinic/petclinic-config.apon</property>
     </environment>
 
     <bean id="tow.context.petclinic.servletContext"

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 9.0//EN"
+        "https://aspectran.com/dtd/aspectran-9.dtd">
+<aspectran>
+
+    <description>
+        A set of voices used in Skylark
+    </description>
+
+    <bean id="voice-kevin16" class="com.aspectran.aspectow.demo.demo.skylark.tts.TextToSpeechBean">
+        <property name="properties" type="properties">
+            <entry name="freetts.voices">com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory</entry>
+        </property>
+        <property name="voiceName">kevin16</property>
+    </bean>
+
+</aspectran>

@@ -18,14 +18,12 @@ context: {
     rules: [
         /config/aspectran-rules.xml
         /config/server/server.xml
-        /config/appmon/node-rules.xml
-        /config/appmon/appmon-rules.xml
     ]
     resources: [
         /lib/ext
     ]
     scan: [
-        app.root
+        com.aspectran.aspectow.demo.root
     ]
     profiles: {
         default: [

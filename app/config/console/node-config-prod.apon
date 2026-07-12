@@ -1,0 +1,13 @@
+# Cluster-wide settings
+cluster: {
+    id: cluster1
+    mode: gateway  # direct or gateway
+    scheduler: {
+        releasedOnUnlock: false
+    }
+}
+group: {
+    id: group1
+    title: Aspectow Demo
+    description: This group is for Aspectow Demo.
+}

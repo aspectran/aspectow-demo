@@ -5,10 +5,10 @@
 
     <bean class="com.aspectran.aspectow.appmon.engine.config.AppMonConfigResolver">
         <properties profile="!prod">
-            <item name="configLocation">/config/appmon/appmon-config.apon</item>
+            <item name="configLocation">/config/console/appmon-config.apon</item>
         </properties>
         <properties profile="prod">
-            <item name="configLocation">/config/appmon/appmon-config-prod.apon</item>
+            <item name="configLocation">/config/console/appmon-config-prod.apon</item>
         </properties>
     </bean>
 
@@ -18,16 +18,16 @@
         </properties>
         <properties profile="prod">
             <item name="locations" type="array">
-                <value>/config/appmon/appmon-assets-prod.properties</value>
+                <value>/config/console/appmon-assets-prod.properties</value>
             </item>
         </properties>
         <properties profile="!prod">
             <item name="locations" type="array">
-                <value>/config/appmon/appmon-assets-dev.properties</value>
+                <value>/config/console/appmon-assets-dev.properties</value>
             </item>
         </properties>
     </bean>
 
-    <append file="/config/appmon/appmon-ext-persistence.xml" profile="appmon.ext-persistence"/>
+    <append file="/config/console/appmon-ext-persistence.xml" profile="appmon.ext-persistence"/>
 
 </aspectran>

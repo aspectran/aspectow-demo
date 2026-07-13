@@ -16,9 +16,9 @@
         </redirect>
     </translet>
 
-    <translet name="/monitoring/">
+    <translet name="/monitoring/${appsToSubscribe}">
         <forward translet="/console-demo">
-            <attribute name="redirect" value="/appmon/dashboard/"/>
+            <attribute name="redirect" value="/appmon/dashboard/${appsToSubscribe}"/>
         </forward>
     </translet>
 

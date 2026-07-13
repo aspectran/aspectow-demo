@@ -23,14 +23,14 @@ import org.apache.ibatis.session.SqlSession;
  * A provider class for managing an instance of {@link HybridAppMonSqlSession}.
  * This class extends {@link AppMonSqlMapperProvider} and is designed to supply
  * a {@link HybridAppMonSqlSession} for database operations.
- *
+ * <p>
  * The {@link HybridAppMonSqlMapperProvider} is primarily used in scenarios where
  * a hybrid session is required to manage database interactions that combine
- * features of both standard and specific implementations of {@link SqlSession}.
- *
+ * features of both standard and specific implementations of {@link SqlSession}.</p>
+ * <p>
  * This implementation allows seamless integration with the existing infrastructure
- * of {@link AppMonSqlMapperProvider}, leveraging the functionality of {@link HybridAppMonSqlSession}.
- *
+ * of {@link AppMonSqlMapperProvider}, leveraging the functionality of {@link HybridAppMonSqlSession}.</p>
+ * <p>
  * @see AppMonSqlMapperProvider
  * @see HybridAppMonSqlSession
  */

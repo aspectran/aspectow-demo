@@ -112,8 +112,8 @@
                 <entry name="demo2">
                     +: /demo/examples/gs-rest-service/**
                 </entry>
-                <entry name="appmon">
-                    +: /appmon/**
+                <entry name="console">
+                    +: /console/**
                 </entry>
             </item>
         </properties>
@@ -128,8 +128,8 @@
                 <entry name="demo">
                     +: /demo/**
                 </entry>
-                <entry name="appmon">
-                    +: /appmon/**
+                <entry name="console">
+                    +: /console/**
                 </entry>
             </item>
         </properties>

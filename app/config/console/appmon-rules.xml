@@ -12,22 +12,6 @@
         </properties>
     </bean>
 
-    <bean id="appmonAssets" class="com.aspectran.core.support.PropertiesFactoryBean">
-        <properties>
-            <item name="ignoreInvalidResource" valueType="boolean">false</item>
-        </properties>
-        <properties profile="prod">
-            <item name="locations" type="array">
-                <value>/config/console/appmon-assets-prod.properties</value>
-            </item>
-        </properties>
-        <properties profile="!prod">
-            <item name="locations" type="array">
-                <value>/config/console/appmon-assets-dev.properties</value>
-            </item>
-        </properties>
-    </bean>
-
     <append file="/config/console/appmon-ext-persistence.xml" profile="appmon.ext-persistence"/>
 
 </aspectran>

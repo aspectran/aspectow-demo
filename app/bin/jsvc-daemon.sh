@@ -271,7 +271,9 @@ start_aspectran() {
 
 stop_aspectran() {
   PID=$(pidof_daemon) || true
-  if [ -z "$PID" ]; then
+  EXTRA_PIDS=$(pgrep -f "com.aspectran.daemon.JsvcDaemon.*$BASE_DIR" 2>/dev/null || true)
+
+  if [ -z "$PID" ] && [ -z "$EXTRA_PIDS" ]; then
     echo "Aspectran daemon NOT running."
     if [ -f "$BASE_DIR/.lock" ]; then
       echo "Warning: Found stale application lock file. Removing it."
@@ -279,20 +281,42 @@ stop_aspectran() {
     fi
     return 0
   fi
-  echo "Stopping Aspectran daemon (pid $PID)..."
-  if ! stop_daemon; then
-    if kill -0 "$PID" > /dev/null 2>&1; then
-      echo "Warning: jsvc failed to stop the daemon. Trying 'kill'..."
-      kill "$PID" > /dev/null 2>&1 || true
-    fi
+
+  CHILD_PID=""
+  if [ -n "$PID" ]; then
+    CHILD_PID=$(pgrep -P "$PID" 2>/dev/null || true)
   fi
 
-  # Wait for the process to die
+  ALL_PIDS=$(echo "$PID $CHILD_PID $EXTRA_PIDS" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+
+  echo "Stopping Aspectran daemon (pids: $ALL_PIDS)..."
+  if ! stop_daemon; then
+    echo "Warning: jsvc failed to stop the daemon. Trying 'kill'..."
+    for p in $ALL_PIDS; do
+      if kill -0 "$p" > /dev/null 2>&1; then
+        kill "$p" > /dev/null 2>&1 || true
+      fi
+    done
+  fi
+
+  # Wait for all processes to die
   counter=0
-  while kill -0 "$PID" > /dev/null 2>&1; do
+  while true; do
+    ALIVE_PIDS=""
+    for p in $ALL_PIDS; do
+      if kill -0 "$p" > /dev/null 2>&1; then
+        ALIVE_PIDS="$ALIVE_PIDS $p"
+      fi
+    done
+    if [ -z "$ALIVE_PIDS" ]; then
+      break
+    fi
+
     if [ "$counter" -ge "$SERVICE_STOP_WAIT_TIME" ]; then
-      echo "Warning: Daemon (pid $PID) still alive after $SERVICE_STOP_WAIT_TIME seconds. Force killing..."
-      kill -9 "$PID" > /dev/null 2>&1 || true
+      echo "Warning: Daemon processes ($ALIVE_PIDS) still alive after $SERVICE_STOP_WAIT_TIME seconds. Force killing..."
+      for p in $ALIVE_PIDS; do
+        kill -9 "$p" > /dev/null 2>&1 || true
+      done
       sleep 1
       break
     fi
@@ -302,7 +326,6 @@ stop_aspectran() {
 
   # Cleanup
   rm -f "$PID_FILE"
-  # Also remove the application's own lock file if it exists
   if [ -f "$BASE_DIR/.lock" ]; then
     rm -f "$BASE_DIR/.lock"
   fi

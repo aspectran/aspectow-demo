@@ -287,7 +287,7 @@ stop_aspectran() {
     CHILD_PID=$(pgrep -P "$PID" 2>/dev/null || true)
   fi
 
-  ALL_PIDS=$(echo "$PID $CHILD_PID $EXTRA_PIDS" | tr ' ' '\n' | sort -u | tr '\n' ' ')
+  ALL_PIDS=$(echo "$PID $CHILD_PID $EXTRA_PIDS" | tr ' ' '\n' | grep -v '^$' | sort -u | xargs)
 
   echo "Stopping Aspectran daemon (pids: $ALL_PIDS)..."
   if ! stop_daemon; then

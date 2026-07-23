@@ -277,41 +277,28 @@ stop_aspectran() {
       echo "Warning: Found stale application lock file. Removing it."
       rm -f "$BASE_DIR/.lock"
     fi
-    exit 7
+    return 0
   fi
   echo "Stopping Aspectran daemon (pid $PID)..."
-  if stop_daemon; then
-    if [ -f "$PID_FILE" ]; then
-      # Wait for the pid file to be removed
-      counter=0
-      while [ -f "$PID_FILE" ]; do
-        if [ "$counter" -ge 5 ]; then
-          break
-        fi
-        sleep 1
-        counter=$((counter + 1))
-      done
-    fi
-  else
-    # Fallback to kill if jsvc stop fails
+  if ! stop_daemon; then
     if kill -0 "$PID" > /dev/null 2>&1; then
       echo "Warning: jsvc failed to stop the daemon. Trying 'kill'..."
       kill "$PID" > /dev/null 2>&1 || true
-
-      # Wait for the process to die
-      counter=0
-      while kill -0 "$PID" > /dev/null 2>&1; do
-        if [ "$counter" -ge "$SERVICE_STOP_WAIT_TIME" ]; then
-          echo "Warning: Daemon (pid $PID) still alive after $SERVICE_STOP_WAIT_TIME seconds. Force killing..."
-          kill -9 "$PID" > /dev/null 2>&1 || true
-          sleep 1
-          break
-        fi
-        sleep 1
-        counter=$((counter + 1))
-      done
     fi
   fi
+
+  # Wait for the process to die
+  counter=0
+  while kill -0 "$PID" > /dev/null 2>&1; do
+    if [ "$counter" -ge "$SERVICE_STOP_WAIT_TIME" ]; then
+      echo "Warning: Daemon (pid $PID) still alive after $SERVICE_STOP_WAIT_TIME seconds. Force killing..."
+      kill -9 "$PID" > /dev/null 2>&1 || true
+      sleep 1
+      break
+    fi
+    sleep 1
+    counter=$((counter + 1))
+  done
 
   # Cleanup
   rm -f "$PID_FILE"
@@ -320,6 +307,7 @@ stop_aspectran() {
     rm -f "$BASE_DIR/.lock"
   fi
   echo "Aspectran daemon stopped."
+  return 0
 }
 
 restart_aspectran() {

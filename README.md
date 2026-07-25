@@ -1,6 +1,6 @@
-# Aspectow Demo Site: A Comprehensive Reference Application
+# Aspectow Demo Site: Comprehensive WAS Reference Application
 
-This repository contains the source code for the Aspectow Demo Site, a collection of reference applications designed to illustrate best practices and common use cases for developing applications with the Aspectran framework. It showcases various features of Aspectran, including web application development, RESTful API creation, and integration with other technologies.
+This repository contains the source code for the Aspectow Demo Site, a comprehensive demonstration and reference application designed to showcase the features, operation, and multi-app integration capabilities of the **Aspectow Web Application Server (WAS)** powered by the Aspectran framework. It demonstrates how enterprise web applications, RESTful APIs, and real-time monitoring components seamlessly run together under the Aspectow WAS environment.
 
 <img width="1042" alt="petclinic-screenshot" src="https://aspectran.com/images/projects/demo.png">
 

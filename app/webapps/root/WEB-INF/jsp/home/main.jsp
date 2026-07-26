@@ -25,7 +25,7 @@
     <div class="col">
         <div class="card h-100 shadow-sm">
             <a class="d-none d-md-block" href="<aspectran:profile expression="prod">https://jpetstore.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/jpetstore/"/></aspectran:profile>"
-               title="JPetStore is a full-stack sample web application built on top of MyBatis 3, Aspectran 9."><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/demo/jpetstore.png" class="img-fluid"/></a>
+               title="JPetStore is a full-stack sample web application built on top of MyBatis 3, Aspectran 9."><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/screenshots/demo/jpetstore.png" class="img-fluid"/></a>
             <div class="card-header">
                 <a href="<aspectran:profile expression="prod">https://jpetstore.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/jpetstore/"/></aspectran:profile>">JPetStore Demo</a>
             </div>
@@ -37,7 +37,7 @@
     <div class="col">
         <div class="card h-100 shadow-sm">
             <a class="d-none d-md-block" href="<aspectran:profile expression="prod">https://petclinic.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/petclinic/"/></aspectran:profile>"
-               title="PetClinic is a full-stack sample web application built on top Aspectran 9."><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/demo/petclinic.png" class="img-fluid"/></a>
+               title="PetClinic is a full-stack sample web application built on top Aspectran 9."><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/screenshots/demo/petclinic.png" class="img-fluid"/></a>
             <div class="card-header">
                 <a href="<aspectran:profile expression="prod">https://petclinic.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/petclinic/"/></aspectran:profile>">PetClinic Demo</a>
             </div>
@@ -49,7 +49,7 @@
     <div class="col">
         <div class="card h-100 shadow-sm">
             <a class="d-none d-md-block" href="<aspectran:profile expression="prod">https://demo.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/demo/"/></aspectran:profile>"
-               title="Aspectran Examples"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/demo/demo.png" class="img-fluid"/></a>
+               title="Aspectran Examples"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/screenshots/demo/demo.png" class="img-fluid"/></a>
             <div class="card-header">
                 <a href="<aspectran:profile expression="prod">https://demo.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/demo/"/></aspectran:profile>">Aspectran Examples</a>
             </div>
@@ -60,7 +60,7 @@
     </div>
     <div class="col">
         <div class="card h-100 shadow-sm">
-            <a class="d-none d-md-block" href="<aspectran:url value="/monitoring/"/>" title="View logs with AppMon"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/img/demo/appmon.png" class="img-fluid"/></a>
+            <a class="d-none d-md-block" href="<aspectran:url value="/monitoring/"/>" title="View logs with AppMon"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/screenshots/demo/appmon.png" class="img-fluid"/></a>
             <div class="card-header">
                 <a href="<aspectran:url value="/monitoring/"/>">Aspectow AppMon</a>
             </div>

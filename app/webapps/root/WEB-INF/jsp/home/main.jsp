@@ -49,7 +49,7 @@
     <div class="col">
         <div class="card h-100 shadow-sm">
             <a class="d-none d-md-block" href="<aspectran:profile expression="prod">https://demo.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/demo/"/></aspectran:profile>"
-               title="Aspectran Examples"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/screenshots/demo/demo.png" class="img-fluid"/></a>
+               title="Aspectran Examples"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/screenshots/demo/aspectran-demo.png" class="img-fluid"/></a>
             <div class="card-header">
                 <a href="<aspectran:profile expression="prod">https://demo.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/demo/"/></aspectran:profile>">Aspectran Examples</a>
             </div>
@@ -60,7 +60,7 @@
     </div>
     <div class="col">
         <div class="card h-100 shadow-sm">
-            <a class="d-none d-md-block" href="<aspectran:url value="/monitoring/"/>" title="View logs with AppMon"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/screenshots/demo/appmon.png" class="img-fluid"/></a>
+            <a class="d-none d-md-block" href="<aspectran:url value="/monitoring/"/>" title="View logs with AppMon"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/screenshots/demo/aspectow-appmon.png" class="img-fluid"/></a>
             <div class="card-header">
                 <a href="<aspectran:url value="/monitoring/"/>">Aspectow AppMon</a>
             </div>

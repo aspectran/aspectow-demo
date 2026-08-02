@@ -11,6 +11,9 @@ system: {
         # which is useful for performance monitoring and debugging.
         jboss.threads.eqe.statistics: true
         jboss.threads.eqe.statistics.active-count: true
+        # Sets the default system property for the main portal URL to return to from the Console UI,
+        # if not already specified via JVM system property (-Daspectow.console.portalUrl=<url>).
+        aspectow.console.portalUrl: /../
     }
 }
 context: {

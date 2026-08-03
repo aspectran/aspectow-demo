@@ -32,6 +32,9 @@ context: {
         default: [
             dev
         ]
+        base: [
+            console.ui
+        ]
     }
     autoReload: {
         scanIntervalSeconds: 5

@@ -31,9 +31,7 @@
                 </property>
                 <property name="name" value="JSESSIONID"/>
                 <property name="path" value="/"/>
-                <properties profile="prod">
-                    <item name="domain" value="%{tow.server.domain}"/>
-                </properties>
+                <property name="domain" value="%{tow.server.domain}"/>
             </bean>
         </property>
         <property name="initParams" type="map">

@@ -6,7 +6,7 @@
     <!-- Specifies the URL to return to the main portal or home site from the Console UI.
          Resolves the system property 'aspectow.console.portalUrl'. -->
     <environment>
-        <property name="aspectow.console.portalUrl">%{system:aspectow.console.portalUrl}</property>
+        <property name="aspectow.console.portalUrl">%{system:aspectow.console.portalUrl:/../}</property>
     </environment>
 
     <append file="/config/console/node-rules.xml"/>

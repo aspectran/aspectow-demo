@@ -7,7 +7,7 @@ cluster: {
     }
 }
 group: {
-    id: localhost
-    title: Localhost
+    id: dev-aspectow-demo-group1
+    title: Dev Aspectow Demo
     description: This group is for localhost development.
 }

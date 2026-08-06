@@ -192,20 +192,19 @@ app: {
     }
 }
 app: {
-    id: appmon
-    title: AppMon
-    hidden: true
+    id: console
+    title: Console
     event: {
         id: activity
-        target: appmon
+        target: console
         parameters: {
             +: /**
-            -: /nodes/**/appmon/polling/**  # Ignore polling requests
+            -: /nodes/**/polling/**  # Ignore polling requests
         }
     }
     event: {
         id: session
-        target: tow.server/appmon
+        target: tow.server/console
     }
     metric: {
         id: heap
@@ -221,22 +220,19 @@ app: {
         description: Metrics of Undertow thread pool resources
         reader: com.aspectran.aspectow.appmon.engine.exporter.metric.undertow.NioWorkerMetricsReader
         target: tow.server
-        sampleInterval: 30
-        exportInterval: 900
+        sampleInterval: 500
         heading: true
     }
     log: {
-        id: appmon
-        title: AppMon
-        file: /logs/appmon.log
-        lastLines: 300
+        id: app
+        file: console.log
         sampleInterval: 300
+        lastLines: 100
     }
     log: {
         id: access
-        title: AppMon Access
-        file: /logs/appmon-access.log
-        lastLines: 100
+        file: console-access.log
         sampleInterval: 300
+        lastLines: 100
     }
 }

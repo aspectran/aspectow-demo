@@ -7,56 +7,44 @@
         Aspectran configuration for setting up the servlet context.
     </description>
 
-    <append resource="com/aspectran/aspectow/console/config/rules/context/tow-context-console.xml">
+    <environment>
+        <properties profile="prod">
+            <item name="aspectow.console.url">https://public.aspectran.com/console/</item>
+        </properties>
+        <properties profile="!prod">
+            <item name="aspectow.console.url">http://localhost:8082/console/</item>
+        </properties>
+    </environment>
+
+    <append resource="com/aspectran/aspectow/console/config/rules/context/tow-context-console.xml" profile="!prod"/>
+
+    <append resource="com/aspectran/aspectow/console/config/rules/context/tow-context-console.xml" profile="prod">
         <bean id="tow.context.console.sessionManager"
               class="com.aspectran.undertow.server.session.TowSessionManager"
               scope="prototype">
-            <properties profile="!prod">
-                <item name="sessionManagerConfig">
-                    <bean class="com.aspectran.core.context.config.SessionManagerConfig">
-                        <argument>
-                            workerName: cn0
-                            maxActiveSessions: 999
-                            maxIdleSeconds: 600
-                            evictionIdleSeconds: 300
-                            maxIdleSecondsForNew: 120
-                            evictionIdleSecondsForNew: 60
-                            scavengingIntervalSeconds: 180
-                            clusterEnabled: false
-                        </argument>
-                    </bean>
-                </item>
-                <item name="sessionStore">
-                    <bean class="com.aspectran.core.component.session.FileSessionStoreFactoryBean">
-                        <property name="storeDir">%{system:aspectran.workPath:/work}/_sessions/%{tow.context.console.name}</property>
-                    </bean>
-                </item>
-            </properties>
-            <properties profile="prod">
-                <item name="sessionManagerConfig">
-                    <bean class="com.aspectran.core.context.config.SessionManagerConfig">
-                        <argument>
-                            workerName: cn0
-                            maxActiveSessions: 999
-                            maxIdleSeconds: 600
-                            evictionIdleSeconds: 300
-                            maxIdleSecondsForNew: 120
-                            evictionIdleSecondsForNew: 60
-                            scavengingIntervalSeconds: 180
-                            clusterEnabled: true
-                        </argument>
-                    </bean>
-                </item>
-                <item name="sessionStore">
-                    <bean class="com.aspectran.core.component.session.redis.lettuce.DefaultLettuceSessionStoreFactoryBean">
-                        <property name="poolConfig">
-                            <bean class="com.aspectran.core.component.session.redis.lettuce.RedisConnectionPoolConfig">
-                                <property name="uri">%{system:redis.uri}/10</property>
-                            </bean>
-                        </property>
-                    </bean>
-                </item>
-            </properties>
+            <property name="sessionManagerConfig">
+                <bean class="com.aspectran.core.context.config.SessionManagerConfig">
+                    <argument>
+                        workerName: cn0
+                        maxActiveSessions: 999
+                        maxIdleSeconds: 600
+                        evictionIdleSeconds: 300
+                        maxIdleSecondsForNew: 120
+                        evictionIdleSecondsForNew: 60
+                        scavengingIntervalSeconds: 180
+                        clusterEnabled: true
+                    </argument>
+                </bean>
+            </property>
+            <property name="sessionStore">
+                <bean class="com.aspectran.core.component.session.redis.lettuce.DefaultLettuceSessionStoreFactoryBean">
+                    <property name="poolConfig">
+                        <bean class="com.aspectran.core.component.session.redis.lettuce.RedisConnectionPoolConfig">
+                            <property name="uri">%{system:redis.uri}/10</property>
+                        </bean>
+                    </property>
+                </bean>
+            </property>
         </bean>
     </append>
 

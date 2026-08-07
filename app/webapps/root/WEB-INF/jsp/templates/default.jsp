@@ -106,7 +106,8 @@
             </div>
             <div class="top-bar-right d-lg-flex align-items-center gap-3">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="<aspectran:url value="/console-demo"/>">Console</a></li>
+                    <aspectran:token type="property" expression="aspectow.console.url" var="consoleUrl"/>
+                    <li class="nav-item"><a class="nav-link" href="<aspectran:url value="${consoleUrl}"/>">Console</a></li>
                 </ul>
                 <div class="quick-search-box m-2 mx-md-3 m-lg-0">
                     <form name="google_quick_search" role="search">

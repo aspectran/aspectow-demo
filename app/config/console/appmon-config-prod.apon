@@ -117,7 +117,6 @@ app: {
 app: {
     id: root
     title: Root
-    hidden: true
     event: {
         id: activity
         target: root

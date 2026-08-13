@@ -40,7 +40,7 @@
                 <bean class="com.aspectran.core.component.session.redis.lettuce.DefaultLettuceSessionStoreFactoryBean">
                     <property name="poolConfig">
                         <bean class="com.aspectran.core.component.session.redis.lettuce.RedisConnectionPoolConfig">
-                            <property name="uri">%{system:redis.uri}/10</property>
+                            <property name="uri">%{system:redis.uri}/9</property>
                         </bean>
                     </property>
                 </bean>

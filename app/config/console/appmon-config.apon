@@ -194,6 +194,7 @@ app: {
 app: {
     id: console
     title: Console
+    hidden: true
     event: {
         id: activity
         target: console

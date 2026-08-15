@@ -2,12 +2,14 @@
 cluster: {
     id: dev-cluster1
     mode: gateway  # direct or gateway
+    pulseInterval: 5000
+    pulseTimeout: 20000
     scheduler: {
         releasedOnUnlock: false
     }
 }
 group: {
-    id: dev-aspectow-demo-group1
+    id: dev-group1
     title: Dev Aspectow Demo
     description: This group is for localhost development.
 }

@@ -15,9 +15,11 @@
  */
 package com.aspectran.aspectow.demo.root.common;
 
+import com.aspectran.aspectow.appmon.AboutMe;
 import com.aspectran.aspectow.appmon.common.support.IPCountryResolver;
 import com.aspectran.core.component.bean.ablility.DisposableBean;
 import com.aspectran.utils.Assert;
+import com.aspectran.utils.StringUtils;
 import com.aspectran.utils.SystemUtils;
 import com.aspectran.utils.apon.JsonToParameters;
 import com.aspectran.utils.apon.Parameters;
@@ -33,12 +35,13 @@ import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.support.ClassicRequestBuilder;
+import org.apache.hc.core5.util.TimeValue;
 import org.apache.hc.core5.util.Timeout;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
@@ -61,55 +64,89 @@ public class WhoisIPCountryResolver implements IPCountryResolver, DisposableBean
 
     private static final String FAILED = "(failed)";
 
+    private static final int DEFAULT_MAX_CACHE_SIZE = 2048;
+
     private static final List<String> iso2CountryCodes;
 
-    private static final List<String> lookupAvoidedList;
+    private String apiUrl;
 
-    private static final String apiUrl;
+    private int maxCacheSize;
 
-    private final Cache<String, String> cache =
-            new ConcurrentLruCache<>(128, this::getCountryCode);
+    private CloseableHttpClient httpClient;
 
-    private final CloseableHttpClient httpClient;
+    private Cache<String, String> cache;
 
     static {
         iso2CountryCodes = List.of(Locale.getISOCountries());
-
-        lookupAvoidedList = List.of(
-                "127.0.0.1",
-                "0000:0000:0000:0000:0000:0000:0000:0001",
-                "localhost"
-        );
-
-        apiUrl = SystemUtils.getProperty("ipascc.api.url");
     }
 
     public WhoisIPCountryResolver() {
-        ConnectionConfig connectionConfig = ConnectionConfig.custom()
-                .setConnectTimeout(Timeout.ofMilliseconds(TIMEOUT))
-                .setSocketTimeout(Timeout.ofMilliseconds(TIMEOUT))
-                .build();
+        this(SystemUtils.getProperty("ipascc.api.url"), DEFAULT_MAX_CACHE_SIZE);
+    }
 
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectionRequestTimeout(Timeout.ofMilliseconds(TIMEOUT))
-                .setResponseTimeout(Timeout.ofMilliseconds(TIMEOUT))
-                .build();
+    public WhoisIPCountryResolver(String apiUrl) {
+        this(apiUrl, DEFAULT_MAX_CACHE_SIZE);
+    }
 
-        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-        connectionManager.setDefaultMaxPerRoute(5);
-        connectionManager.setMaxTotal(5);
-        connectionManager.setDefaultConnectionConfig(connectionConfig);
+    public WhoisIPCountryResolver(String apiUrl, int maxCacheSize) {
+        this.maxCacheSize = maxCacheSize;
+        setApiUrl(apiUrl);
+    }
 
-        httpClient = HttpClientBuilder.create()
-                .setConnectionManager(connectionManager)
-                .setDefaultRequestConfig(requestConfig)
-                .build();
+    public String getApiUrl() {
+        return apiUrl;
+    }
+
+    public void setApiUrl(String apiUrl) {
+        this.apiUrl = apiUrl;
+        if (StringUtils.hasText(apiUrl)) {
+            if (httpClient == null) {
+                httpClient = createHttpClient();
+            }
+            if (cache != null) {
+                cache.clear();
+            }
+            cache = new ConcurrentLruCache<>(maxCacheSize, this::getCountryCode);
+        } else {
+            if (cache != null) {
+                cache.clear();
+                cache = null;
+            }
+            if (httpClient != null) {
+                try {
+                    httpClient.close();
+                } catch (Exception ignored) {
+                }
+                httpClient = null;
+            }
+        }
+    }
+
+    public int getMaxCacheSize() {
+        return maxCacheSize;
+    }
+
+    public void setMaxCacheSize(int maxCacheSize) {
+        Assert.isTrue(maxCacheSize > 0, "maxCacheSize must be positive");
+        this.maxCacheSize = maxCacheSize;
+        if (StringUtils.hasText(apiUrl)) {
+            if (cache != null) {
+                cache.clear();
+            }
+            cache = new ConcurrentLruCache<>(maxCacheSize, this::getCountryCode);
+        }
     }
 
     @Override
     public void destroy() throws Exception {
-        httpClient.close();
-        cache.clear();
+        if (httpClient != null) {
+            httpClient.close();
+            httpClient = null;
+        }
+        if (cache != null) {
+            cache.clear();
+            cache = null;
+        }
     }
 
     @Override
@@ -122,10 +159,7 @@ public class WhoisIPCountryResolver implements IPCountryResolver, DisposableBean
             ipAddress = ip6;
         }
 
-        if (apiUrl == null ||
-                lookupAvoidedList.contains(ipAddress) ||
-                ipAddress.startsWith("192.168.0.") ||
-                ipAddress.startsWith("10.")) {
+        if (cache == null || !StringUtils.hasText(apiUrl) || isPrivateOrLocalIp(ipAddress)) {
             return getCountryCode(locale);
         }
 
@@ -137,39 +171,105 @@ public class WhoisIPCountryResolver implements IPCountryResolver, DisposableBean
     }
 
     private String getCountryCode(String ipAddress) {
-        ClassicRequestBuilder requestBuilder = ClassicRequestBuilder
-                .get()
-                .setCharset(StandardCharsets.UTF_8)
-                .setUri(apiUrl + ipAddress);
-
-        ClassicHttpRequest request = requestBuilder.build();
-
+        if (httpClient == null) {
+            return FAILED;
+        }
         try {
+            ClassicRequestBuilder requestBuilder = ClassicRequestBuilder
+                    .get()
+                    .setCharset(StandardCharsets.UTF_8)
+                    .setUri(apiUrl + ipAddress);
+
+            ClassicHttpRequest request = requestBuilder.build();
+
             return httpClient.execute(request, response -> {
                 int statusCode = response.getCode();
                 if (statusCode != 200) {
-                    throw new IOException("Failed with HTTP error code : " + statusCode);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("WHOIS API returned HTTP status {} for IP {}", statusCode, ipAddress);
+                    }
+                    return FAILED;
                 }
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
                     String result = EntityUtils.toString(entity);
                     Parameters parameters = JsonToParameters.from(result);
                     Parameters whois = parameters.getParameters("whois");
-                    String countryCode = whois.getString("countryCode");
-                    if (countryCode == null || !iso2CountryCodes.contains(countryCode)) {
-                        countryCode = NONE;
+                    if (whois != null) {
+                        String countryCode = whois.getString("countryCode");
+                        if (countryCode != null && iso2CountryCodes.contains(countryCode)) {
+                            if (logger.isDebugEnabled()) {
+                                logger.debug("Country code of IP address {} is {}", ipAddress, countryCode);
+                            }
+                            return countryCode;
+                        }
                     }
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Country code of IP address {} is {}", ipAddress, countryCode);
-                    }
-                    return countryCode;
+                    return NONE;
                 }
                 return FAILED;
             });
-        } catch (IOException e) {
-            logger.error("IP address lookup failed: {}", ipAddress, e);
+        } catch (Exception e) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("WHOIS IP lookup failed for {}: {}", ipAddress, e.getMessage(), e);
+            } else {
+                logger.warn("WHOIS IP lookup failed for {}: {}", ipAddress, e.getMessage());
+            }
             return FAILED;
         }
+    }
+
+    private static CloseableHttpClient createHttpClient() {
+        ConnectionConfig connectionConfig = ConnectionConfig.custom()
+                .setConnectTimeout(Timeout.ofMilliseconds(TIMEOUT))
+                .setSocketTimeout(Timeout.ofMilliseconds(TIMEOUT))
+                .setTimeToLive(TimeValue.ofMinutes(5))
+                .build();
+
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectionRequestTimeout(Timeout.ofMilliseconds(TIMEOUT))
+                .setResponseTimeout(Timeout.ofMilliseconds(TIMEOUT))
+                .build();
+
+        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+        connectionManager.setDefaultMaxPerRoute(5);
+        connectionManager.setMaxTotal(5);
+        connectionManager.setDefaultConnectionConfig(connectionConfig);
+
+        return HttpClientBuilder.create()
+                .setConnectionManager(connectionManager)
+                .setDefaultRequestConfig(requestConfig)
+                .evictExpiredConnections()
+                .evictIdleConnections(TimeValue.ofSeconds(30))
+                .disableCookieManagement()
+                .disableAuthCaching()
+                .setUserAgent("Aspectran-AppMon/" + AboutMe.VERSION)
+                .build();
+    }
+
+    private static boolean isPrivateOrLocalIp(@NonNull String ip) {
+        return ip.equals("127.0.0.1") ||
+                ip.startsWith("127.") ||
+                ip.startsWith("10.") ||
+                ip.startsWith("192.168.") ||
+                ip.startsWith("169.254.") ||
+                ip.equals("localhost") ||
+                ip.equals("0000:0000:0000:0000:0000:0000:0000:0001") ||
+                ip.equals("0000:0000:0000:0000:0000:0000:0000:0000") ||
+                ip.startsWith("fe80:") ||
+                (ip.startsWith("172.") && is172Private(ip));
+    }
+
+    private static boolean is172Private(@NonNull String ip) {
+        int secondDot = ip.indexOf('.', 4);
+        if (secondDot > 4) {
+            try {
+                int secondOctet = Integer.parseInt(ip.substring(4, secondDot));
+                return secondOctet >= 16 && secondOctet <= 31;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        }
+        return false;
     }
 
     @Nullable

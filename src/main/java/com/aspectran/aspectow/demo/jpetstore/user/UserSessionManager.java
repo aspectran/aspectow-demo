@@ -74,9 +74,6 @@ public class UserSessionManager implements ActivityContextAware {
 
     public void save(UserSession userSession) {
         getSessionAdapter().setAttribute(USER_SESSION_KEY, userSession);
-        if (userSession.getAccount() != null) {
-            getSessionAdapter().setAttribute("user.name", userSession.getAccount().getUsername()); // for AppMon
-        }
     }
 
     public void expire() {

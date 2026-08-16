@@ -15,12 +15,9 @@
  */
 package com.aspectran.aspectow.demo.root.common;
 
+import com.aspectran.aspectow.appmon.common.support.IPCountryResolver;
 import com.aspectran.aspectow.demo.root.util.IPv6Util;
-import com.aspectran.aspectow.demo.root.util.TransletUtils;
-import com.aspectran.core.activity.Translet;
 import com.aspectran.core.component.bean.ablility.DisposableBean;
-import com.aspectran.core.component.bean.annotation.Bean;
-import com.aspectran.core.component.bean.annotation.Component;
 import com.aspectran.utils.Assert;
 import com.aspectran.utils.SystemUtils;
 import com.aspectran.utils.apon.JsonToParameters;
@@ -37,6 +34,7 @@ import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.support.ClassicRequestBuilder;
 import org.apache.hc.core5.util.Timeout;
+import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,17 +44,16 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * WHOIS OpenAPI
+ * WHOIS OpenAPI based {@link IPCountryResolver} implementation.
  *
- * <p>{"whois":{"query":"185.80.140.175","queryType":"IPv4","registry":"RIPENCC","countryCode":"YE"}}</p>
+ * <p>Sample WHOIS response:
+ * {"whois":{"query":"185.80.140.175","queryType":"IPv4","registry":"RIPENCC","countryCode":"YE"}}</p>
  *
  * <p>Created: 2020/06/29</p>
  */
-@Component
-@Bean("ipToCountryLookup")
-public class IPToCountryLookup implements DisposableBean {
+public class WhoisIPCountryResolver implements IPCountryResolver, DisposableBean {
 
-    private static final Logger logger = LoggerFactory.getLogger(IPToCountryLookup.class);
+    private static final Logger logger = LoggerFactory.getLogger(WhoisIPCountryResolver.class);
 
     private static final int TIMEOUT = 3000;
 
@@ -87,7 +84,7 @@ public class IPToCountryLookup implements DisposableBean {
         apiUrl = SystemUtils.getProperty("ipascc.api.url");
     }
 
-    public IPToCountryLookup() {
+    public WhoisIPCountryResolver() {
         ConnectionConfig connectionConfig = ConnectionConfig.custom()
                 .setConnectTimeout(Timeout.ofMilliseconds(TIMEOUT))
                 .setSocketTimeout(Timeout.ofMilliseconds(TIMEOUT))
@@ -115,12 +112,9 @@ public class IPToCountryLookup implements DisposableBean {
         cache.clear();
     }
 
-    public String getCountryCode(Translet translet) {
-        String remoteAddr = TransletUtils.getRemoteAddr(translet);
-        return getCountryCode(remoteAddr, translet.getRequestAdapter().getLocale());
-    }
-
-    public String getCountryCode(String ipAddress, Locale locale) {
+    @Override
+    @Nullable
+    public String resolveCountryCode(String ipAddress, @Nullable Locale locale) {
         Assert.notNull(ipAddress, "ipAddress must not be null");
 
         String ip6 = IPv6Util.normalize(ipAddress);
@@ -152,43 +146,44 @@ public class IPToCountryLookup implements DisposableBean {
 
         try {
             return httpClient.execute(request, response -> {
-                        int statusCode = response.getCode();
-                        if (statusCode != 200) {
-                            throw new IOException("Failed with HTTP error code : " + statusCode);
-                        }
-                        HttpEntity entity = response.getEntity();
-                        if (entity != null) {
-                            String result = EntityUtils.toString(entity);
-                            Parameters parameters = JsonToParameters.from(result);
-                            Parameters whois = parameters.getParameters("whois");
-                            String countryCode = whois.getString("countryCode");
-                            if (countryCode == null || !iso2CountryCodes.contains(countryCode)) {
-                                countryCode = NONE;
-                            }
-                            if (logger.isDebugEnabled()) {
-                                logger.debug("Country code of IP address {} is {}", ipAddress, countryCode);
-                            }
-                            return countryCode;
-                        }
-                        return FAILED;
-                    });
+                int statusCode = response.getCode();
+                if (statusCode != 200) {
+                    throw new IOException("Failed with HTTP error code : " + statusCode);
+                }
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    String result = EntityUtils.toString(entity);
+                    Parameters parameters = JsonToParameters.from(result);
+                    Parameters whois = parameters.getParameters("whois");
+                    String countryCode = whois.getString("countryCode");
+                    if (countryCode == null || !iso2CountryCodes.contains(countryCode)) {
+                        countryCode = NONE;
+                    }
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Country code of IP address {} is {}", ipAddress, countryCode);
+                    }
+                    return countryCode;
+                }
+                return FAILED;
+            });
         } catch (IOException e) {
             logger.error("IP address lookup failed: {}", ipAddress, e);
             return FAILED;
         }
     }
 
+    @Nullable
     private String getCountryCode(Locale locale) {
         return (locale != null ? locale.getCountry() : null);
     }
 
     public static void main(String[] args) throws Exception {
-        IPToCountryLookup ipToCountryLookup = new IPToCountryLookup();
-        System.out.println(ipToCountryLookup.getCountryCode("103.99.216.86", Locale.KOREA));
-        System.out.println(ipToCountryLookup.getCountryCode("103.99.216.999", Locale.KOREA));
-        System.out.println(ipToCountryLookup.getCountryCode("0:0:0:0:0:0:0:1", Locale.KOREA));
-        System.out.println(ipToCountryLookup.getCountryCode("2a01:6502:a56:4735::1", Locale.KOREA));
-        ipToCountryLookup.destroy();
+        WhoisIPCountryResolver ipCountryResolver = new WhoisIPCountryResolver();
+        System.out.println(ipCountryResolver.resolveCountryCode("103.99.216.86", Locale.KOREA));
+        System.out.println(ipCountryResolver.resolveCountryCode("103.99.216.999", Locale.KOREA));
+        System.out.println(ipCountryResolver.resolveCountryCode("0:0:0:0:0:0:0:1", Locale.KOREA));
+        System.out.println(ipCountryResolver.resolveCountryCode("2a01:6502:a56:4735::1", Locale.KOREA));
+        ipCountryResolver.destroy();
     }
 
 }

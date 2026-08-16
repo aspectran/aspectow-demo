@@ -18,6 +18,9 @@ app: {
     event: {
         id: session
         target: tow.server/jpetstore
+        parameters: {
+            usernameAttribute: user.account.username
+        }
     }
     metric: {
         id: cp-jpetstore

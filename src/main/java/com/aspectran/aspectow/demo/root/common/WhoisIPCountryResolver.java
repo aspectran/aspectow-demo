@@ -16,7 +16,6 @@
 package com.aspectran.aspectow.demo.root.common;
 
 import com.aspectran.aspectow.appmon.common.support.IPCountryResolver;
-import com.aspectran.aspectow.demo.root.util.IPv6Util;
 import com.aspectran.core.component.bean.ablility.DisposableBean;
 import com.aspectran.utils.Assert;
 import com.aspectran.utils.SystemUtils;
@@ -24,6 +23,7 @@ import com.aspectran.utils.apon.JsonToParameters;
 import com.aspectran.utils.apon.Parameters;
 import com.aspectran.utils.cache.Cache;
 import com.aspectran.utils.cache.ConcurrentLruCache;
+import com.aspectran.utils.net.IpAddressUtils;
 import org.apache.hc.client5.http.config.ConnectionConfig;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
@@ -117,7 +117,7 @@ public class WhoisIPCountryResolver implements IPCountryResolver, DisposableBean
     public String resolveCountryCode(String ipAddress, @Nullable Locale locale) {
         Assert.notNull(ipAddress, "ipAddress must not be null");
 
-        String ip6 = IPv6Util.normalize(ipAddress);
+        String ip6 = IpAddressUtils.normalizeIPv6(ipAddress);
         if (ip6 != null) {
             ipAddress = ip6;
         }

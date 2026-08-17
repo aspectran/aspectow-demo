@@ -40,9 +40,9 @@ context: {
     singleton: true
 }
 scheduler: {
-    startDelaySeconds: 3
+    startDelaySeconds: 2
     waitOnShutdown: true
-    enabled: false
+    enabled: true
 }
 shell: {
     style: {

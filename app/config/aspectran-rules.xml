@@ -54,5 +54,6 @@
     <append resource="com/aspectran/aspectow/demo/root/common/db/root-db.xml"/>
     <append resource="com/aspectran/aspectow/demo/root/shell/shell-rules.xml"/>
     <append resource="com/aspectran/aspectow/demo/root/web/web-rules.xml"/>
+    <append resource="com/aspectran/aspectow/demo/root/demo/demo.xml"/>
 
 </aspectran>

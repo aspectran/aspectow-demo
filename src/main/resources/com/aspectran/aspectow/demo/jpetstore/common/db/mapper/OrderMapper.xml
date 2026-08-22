@@ -21,8 +21,6 @@
 
 <mapper namespace="com.aspectran.aspectow.demo.jpetstore.common.db.mapper.OrderMapper">
 
-  <cache />
-
   <select id="getOrder" resultType="com.aspectran.aspectow.demo.jpetstore.order.domain.Order">
     SELECT
       BILLADDR1 AS billAddress1,

@@ -21,8 +21,6 @@
 
 <mapper namespace="com.aspectran.aspectow.demo.jpetstore.common.db.mapper.SequenceMapper">
 
-  <cache />
-
   <select id="getSequence" resultType="com.aspectran.aspectow.demo.jpetstore.order.domain.Sequence">
     SELECT name, nextid
     FROM SEQUENCE

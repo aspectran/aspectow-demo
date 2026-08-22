@@ -21,7 +21,7 @@
 
 <mapper namespace="com.aspectran.aspectow.demo.jpetstore.common.db.mapper.ItemMapper">
 
-  <cache />
+  <cache flushInterval="60000" size="512" readOnly="false" />
 
   <select id="getItemListByProduct" resultType="com.aspectran.aspectow.demo.jpetstore.order.domain.Item">
     SELECT

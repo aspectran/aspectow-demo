@@ -30,6 +30,16 @@
             <setting name="viewDispatcher" value="jspViewDispatcher"/>
             <setting name="proxyProtocolAware" value="true"/>
         </settings>
+        <advice>
+            <before>
+                <headers>
+                    <item name="X-Frame-Options">SAMEORIGIN</item>
+                    <item name="X-Content-Type-Options">nosniff</item>
+                    <item name="X-XSS-Protection">1; mode=block</item>
+                    <item name="Referrer-Policy">strict-origin-when-cross-origin</item>
+                </headers>
+            </before>
+        </advice>
     </aspect>
 
     <append resource="com/aspectran/aspectow/demo/root/common/cdn/cdn-assets.xml"/>

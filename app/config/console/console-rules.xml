@@ -5,7 +5,7 @@
 
     <environment>
         <properties profile="prod">
-            <item name="aspectow.console.url">https://public.aspectran.com/console/</item>
+            <item name="aspectow.console.url">https://public.aspectran.com/console-demo</item>
             <item name="aspectow.console.portalUrl">https://public.aspectran.com/</item>
         </properties>
         <properties profile="!prod">

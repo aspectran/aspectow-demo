@@ -5,11 +5,9 @@
 
     <environment>
         <properties profile="prod">
-            <item name="aspectow.console.url">https://public.aspectran.com/console-demo</item>
             <item name="aspectow.console.portalUrl">https://public.aspectran.com/</item>
         </properties>
         <properties profile="!prod">
-            <item name="aspectow.console.url">http://localhost:8082/</item>
             <item name="aspectow.console.portalUrl">http://localhost:8080/</item>
         </properties>
     </environment>

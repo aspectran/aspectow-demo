@@ -33,7 +33,7 @@
     </aspect>
 
     <bean id="defaultMultipartFormDataParser"
-          class="com.aspectran.web.support.multipart.inmemory.InMemoryMultipartFormDataParserFactoryBean">
+          class="com.aspectran.web.servlet.support.multipart.inmemory.InMemoryMultipartFormDataParserFactoryBean">
         <description>
             A default multipart form data parser that applies to all unconfigured multipart requests.
             Inspired by Spring Boot's defaults for a sensible security baseline.

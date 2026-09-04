@@ -8,7 +8,7 @@
         Note that names of translets that match the request URI always start with a forward slash (/).
     </description>
 
-    <bean id="defaultJspTemplate" class="com.aspectran.web.support.view.JspTemplateViewDispatcher">
+    <bean id="defaultJspTemplate" class="com.aspectran.web.servlet.support.view.JspTemplateViewDispatcher">
         <description>
             Register a JSP Template View Dispatcher.
         </description>

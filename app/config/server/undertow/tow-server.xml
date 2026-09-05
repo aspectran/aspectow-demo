@@ -38,6 +38,7 @@
     </environment>
 
     <bean id="tow.server" class="com.aspectran.undertow.server.DefaultTowServer">
+        <property name="proxyAddressForwarding" valueType="boolean">true</property>
         <property name="httpListeners" type="array">
             <bean class="com.aspectran.undertow.server.HttpListenerConfig">
                 <property name="port" valueType="int">%{tow.server.listener.http.port}</property>

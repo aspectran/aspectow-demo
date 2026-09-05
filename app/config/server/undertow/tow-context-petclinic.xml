@@ -38,9 +38,6 @@
             <entry name="aspectran:config">%{tow.context.petclinic.config}</entry>
         </property>
         <property name="servlets" type="array">
-            <bean class="com.aspectran.undertow.server.servlet.DefaultJspServlet">
-                <property name="loadOnStartup" valueType="int">0</property>
-            </bean>
             <bean class="com.aspectran.undertow.server.servlet.TowServlet">
                 <argument>webActivityServlet</argument>
                 <argument>com.aspectran.web.servlet.WebActivityServlet</argument>

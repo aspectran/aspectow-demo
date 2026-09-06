@@ -49,9 +49,10 @@
             </div>
             <div class="card-body">
                 <ul>
-                    <li>The maximum file size for uploads in this demo is <strong>500KB</strong>.</li>
+                    <li>The maximum file size for uploads in this demo is <strong>500KB</strong> (maximum request size is <strong>1MB</strong>).</li>
                     <li>Only image files (<strong>JPG, GIF, PNG</strong>) are allowed in this demo.</li>
-                    <li>Up to 30 files will be stored in the memory, and older files will be deleted.</li>
+                    <li>Processed using Aspectran's <strong>Standard Servlet Multipart Parser</strong> based on the Jakarta Servlet Part API.</li>
+                    <li>Up to 12 files will be kept, and older files will be deleted.</li>
                     <li>You can <strong>drag &amp; drop</strong> files from your desktop on this webpage (see <a
                             href="https://github.com/blueimp/jQuery-File-Upload/wiki/Browser-support">Browser
                         support</a>).
@@ -207,53 +208,60 @@
                 progress + '%'
             ).attr('aria-valuenow', progress).text(progress + '%');
         }).on('fileuploaddone', function (e, data) {
-            $.each(data.result.files, function (index, file) {
-                let node = $(data.context);
-                if (file.fileName) {
-                    let link = $('<a>')
-                        .attr('href', "files/" + file.key)
-                        .attr('target', '_blank');
-                    node.find(".col-auto canvas")
-                        .addClass("link")
-                        .click(function() {
-                            window.open(file.url);
-                        }).wrap(link);
-                    let fileLink = $('<a>')
-                        .attr('href', "files/" + file.key)
-                        .attr('target', '_blank')
-                        .attr('download', file.fileName)
-                        .text(file.fileName);
-                    node.find("p a.filename").replaceWith(fileLink);
-                    node.find("button.delete-btn")
-                        .data("file-key", file.key)
-                        .prop("disabled", false)
-                        .on('click', function () {
-                            let that = $(this);
-                            let fileKey = that.data("file-key");
-                            console.log("fileKey: ", fileKey);
-                            if (fileKey) {
-                                $.ajax({
-                                    url: url + "/" + fileKey,
-                                    type: 'delete',
-                                    success: function () {
-                                        that.closest('li').fadeOut();
-                                        setTimeout(function () {
-                                            that.closest('li').remove();
-                                        }, 500)
-                                    }
-                                });
-                            } else {
-                                that.closest('li').remove();
-                            }
-                        });
-                } else if (file.error) {
-                    let error = $('<div class="alert alert-danger p-1 m-0 mt-1"/>').text(file.error);
-                    node.find('.file-info').append(error);
-                }
-                setTimeout(function () {
-                    node.find(".progress").fadeOut();
-                }, 500);
-            });
+            let node = $(data.context);
+            if (data.result && data.result.files && data.result.files.length > 0) {
+                $.each(data.result.files, function (index, file) {
+                    if (file.fileName) {
+                        let link = $('<a>')
+                            .attr('href', "files/" + file.key)
+                            .attr('target', '_blank');
+                        node.find(".col-auto canvas")
+                            .addClass("link")
+                            .click(function() {
+                                window.open(file.url);
+                            }).wrap(link);
+                        let fileLink = $('<a>')
+                            .attr('href', "files/" + file.key)
+                            .attr('target', '_blank')
+                            .attr('download', file.fileName)
+                            .text(file.fileName);
+                        node.find("p a.filename").replaceWith(fileLink);
+                        node.find("button.delete-btn")
+                            .data("file-key", file.key)
+                            .prop("disabled", false)
+                            .on('click', function () {
+                                let that = $(this);
+                                let fileKey = that.data("file-key");
+                                console.log("fileKey: ", fileKey);
+                                if (fileKey) {
+                                    $.ajax({
+                                        url: url + "/" + fileKey,
+                                        type: 'delete',
+                                        success: function () {
+                                            that.closest('li').fadeOut();
+                                            setTimeout(function () {
+                                                that.closest('li').remove();
+                                            }, 500)
+                                        }
+                                    });
+                                } else {
+                                    that.closest('li').remove();
+                                }
+                            });
+                    } else if (file.error) {
+                        let error = $('<div class="alert alert-danger p-1 m-0 mt-1"/>').text(file.error);
+                        node.find('.file-info').append(error);
+                        node.find('.progress-bar').removeClass('bg-success').addClass('bg-danger');
+                    }
+                });
+            } else {
+                let error = $('<div class="alert alert-danger p-1 m-0 mt-1"/>').text('File upload failed.');
+                node.find('.file-info').append(error);
+                node.find('.progress-bar').removeClass('bg-success').addClass('bg-danger');
+            }
+            setTimeout(function () {
+                node.find(".progress").fadeOut();
+            }, 500);
         }).on('fileuploadfail', function (e, data) {
             $.each(data.files, function () {
                 let node = $(data.context);

@@ -25,6 +25,8 @@ import jakarta.persistence.PersistenceUnitTransactionType;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.EnvironmentSettings;
 import org.hibernate.cfg.JdbcSettings;
+import org.hibernate.cfg.TransactionSettings;
+import org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.hibernate.tool.schema.Action;
 
@@ -84,6 +86,7 @@ public class DefaultEntityManagerFactory extends EntityManagerFactoryBean {
      *     <li>Hibernate as the persistence provider</li>
      *     <li>RESOURCE_LOCAL transaction management</li>
      *     <li>Non-JTA DataSource configuration</li>
+     *     <li>No JTA platform for standalone transaction management</li>
      *     <li>Aspectran's ClassLoader for proper class loading (required for Hibernate 7.0.1+)</li>
      * </ul>
      * <p><b>Important:</b> The ClassLoader configuration is essential for preventing
@@ -98,6 +101,7 @@ public class DefaultEntityManagerFactory extends EntityManagerFactoryBean {
         configuration.provider(HibernatePersistenceProvider.class.getName());
         configuration.transactionType(PersistenceUnitTransactionType.RESOURCE_LOCAL);
         configuration.property(JdbcSettings.JAKARTA_NON_JTA_DATASOURCE, dataSource);
+        configuration.property(TransactionSettings.JTA_PLATFORM, NoJtaPlatform.INSTANCE);
         configuration.property(EnvironmentSettings.CLASSLOADERS, getActivityContext().getClassLoader());
     }
 

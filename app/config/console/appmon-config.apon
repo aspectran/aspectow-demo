@@ -63,8 +63,8 @@ app: {
         target: tow.server/petclinic
     }
     metric: {
-        id: cp-petclinic
-        title: CP-petclinic
+        id: petclinic-cp
+        title: PetClinic CP
         description: Shows the JDBC connection pool usage status
         reader: com.aspectran.aspectow.appmon.engine.exporter.metric.jdbc.HikariPoolMBeanReader
         parameters: {

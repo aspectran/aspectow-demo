@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 9.0//EN"
+        "https://aspectran.com/dtd/aspectran-9.dtd">
+<aspectran>
+
+    <!-- Default settings for web translets -->
+    <aspect id="webTransletSettings">
+        <joinpoint>
+            pointcut: {
+                +: /**
+            }
+        </joinpoint>
+        <settings>
+            <setting name="characterEncoding" value="utf-8"/>
+            <setting name="viewDispatcher" value="thymeleafViewDispatcher"/>
+            <setting name="proxyProtocolAware" value="true"/>
+        </settings>
+    </aspect>
+
+    <aspect id="htmlWebSecuritySettings">
+        <description style="apon">
+            |Aspect to inject security response headers specifically for HTML view requests.
+            |- Triggered declaratively only for browser HTML page requests matching the 'Accept=text/html' joinpoint header condition.
+            |- Sets Content-Type to 'text/html; charset=utf-8' to prevent HTML source code from rendering as plain text when 'X-Content-Type-Options: nosniff' is active.
+            |- Configures Content-Security-Policy (CSP) to mitigate XSS attacks and permit trusted external CDN/font domains (jsdelivr, jquery, googleapis, gstatic).
+        </description>
+        <joinpoint>
+            headers: [
+                "Accept=text/html"
+            ]
+            pointcut: {
+                +: /**
+            }
+        </joinpoint>
+        <advice>
+            <before>
+                <headers>
+                    <item name="Content-Type">text/html; charset=utf-8</item>
+                </headers>
+            </before>
+        </advice>
+    </aspect>
+
+    <!-- Thymeleaf Template Engine Configuration -->
+    <bean id="thymeleaf" class="com.aspectran.thymeleaf.ThymeleafTemplateEngine">
+        <argument>
+            <bean class="com.aspectran.thymeleaf.TemplateEngineFactoryBean">
+                <property name="templateResolvers" type="set">
+                    <bean class="com.aspectran.thymeleaf.template.FileTemplateResolver">
+                        <property name="prefix">#{basePath}/webapps/todos/WEB-INF/templates/</property>
+                        <property name="suffix">.html</property>
+                        <property name="templateMode">HTML</property>
+                        <properties profile="dev">
+                            <item name="cacheable" valueType="boolean">false</item> <!-- For development -->
+                        </properties>
+                    </bean>
+                </property>
+            </bean>
+        </argument>
+    </bean>
+
+    <!-- Thymeleaf View Dispatcher Bean -->
+    <bean id="thymeleafViewDispatcher" class="com.aspectran.thymeleaf.view.ThymeleafViewDispatcher">
+        <argument>#{thymeleaf}</argument>
+    </bean>
+
+    <!-- CORS Configuration -->
+    <aspect id="corsProcessorAspect">
+        <joinpoint>
+            methods: [
+                GET, POST, PATCH, PUT, DELETE
+            ]
+            headers: [
+                Origin
+            ]
+            pointcut: {
+                +: /**
+            }
+        </joinpoint>
+        <advice bean="corsProcessor">
+            <before>
+                <invoke method="processActualRequest"/>
+            </before>
+        </advice>
+        <exception>
+            <thrown type="com.aspectran.web.support.cors.CorsException">
+                <transform format="text">
+                    <template>
+                        @{CORS.HTTP_STATUS_CODE}: @{CORS.HTTP_STATUS_TEXT}
+                    </template>
+                </transform>
+            </thrown>
+        </exception>
+    </aspect>
+
+    <bean id="corsProcessor" class="com.aspectran.web.support.cors.DefaultCorsProcessor">
+        <property name="allowedMethods" type="set">
+            <value>GET</value>
+            <value>POST</value>
+            <value>PATCH</value>
+            <value>PUT</value>
+            <value>DELETE</value>
+            <value>OPTIONS</value>
+            <value>HEAD</value>
+        </property>
+        <property name="allowedHeaders" type="set">
+            <value>*</value>
+        </property>
+        <property name="maxAgeSeconds" valueType="int">86400</property>
+    </bean>
+
+    <translet name="/**" method="OPTIONS">
+        <action bean="corsProcessor" method="processPreflightRequest"/>
+        <exception>
+            <thrown type="com.aspectran.web.support.cors.CorsException">
+                <transform format="text">
+                    <template>
+                        @{CORS.HTTP_STATUS_CODE}: @{CORS.HTTP_STATUS_TEXT}
+                    </template>
+                </transform>
+            </thrown>
+        </exception>
+    </translet>
+
+    <translet name="/">
+        <redirect path="/todos"/>
+    </translet>
+
+</aspectran>

@@ -1,0 +1,15 @@
+context: {
+    name: todos
+    rules: classpath:com/aspectran/aspectow/demo/todos/todos-root-rules.xml
+    scan: [
+        com.aspectran.aspectow.demo.todos
+    ]
+    profiles: {
+        base: [
+            h2
+        ]
+        default: [
+            dev
+        ]
+    }
+}

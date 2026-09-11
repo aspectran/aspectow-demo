@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE aspectran PUBLIC "-//ASPECTRAN//DTD Aspectran 9.0//EN"
+        "https://aspectran.com/dtd/aspectran-9.dtd">
+<aspectran>
+
+    <description style="apon">
+        |
+        |Use the command '{{GREEN}}undertow{{reset}}' to control the Undertow Server.
+        |Since Undertow Server is running, have your web browser point to:
+        |   {{81}}http://localhost:8080/todos{{reset}}
+        |REST API endpoint:
+        |   {{81}}http://localhost:8080/todos/api{{reset}}
+        |
+        |Current profiles: #{currentEnvironment^currentProfiles}
+        |
+    </description>
+
+    <bean id="basePath" class="com.aspectran.core.support.BasePathFactoryBean"/>
+    <bean id="currentEnvironment" class="com.aspectran.core.support.CurrentEnvironmentFactoryBean"/>
+
+    <!-- Default settings for all translets -->
+    <aspect id="defaultTransletSettings">
+        <settings>
+            <setting name="format.indentSize" value="2"/>
+            <setting name="format.dateFormat" value="yyyy-MM-dd"/>
+            <setting name="format.dateTimeFormat" value="yyyy-MM-dd HH:mm:ss"/>
+            <setting name="format.nullWritable" value="true"/>
+        </settings>
+    </aspect>
+
+    <append resource="com/aspectran/aspectow/demo/todos/todos-web-rules.xml"/>
+    <append resource="com/aspectran/aspectow/demo/todos/db/todos-db.xml"/>
+
+</aspectran>

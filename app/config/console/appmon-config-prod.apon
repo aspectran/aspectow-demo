@@ -89,6 +89,46 @@ app: {
     }
 }
 app: {
+    id: todos
+    title: Todo-Backend
+    event: {
+        id: activity
+        target: todos
+        parameters: {
+            +: /**
+        }
+    }
+    event: {
+        id: session
+        target: tow.server/todos
+    }
+    metric: {
+        id: todos-cp
+        title: Todos CP
+        description: Shows the JDBC connection pool usage status
+        reader: com.aspectran.aspectow.appmon.engine.exporter.metric.jdbc.HikariPoolMBeanReader
+        parameters: {
+            poolName: todos
+        }
+        sampleInterval: 50
+        exportInterval: 900
+    }
+    log: {
+        id: app
+        title: Todos App
+        file: /logs/todos.log
+        lastLines: 300
+        sampleInterval: 300
+    }
+    log: {
+        id: access
+        title: Todos Access
+        file: /logs/todos-access.log
+        lastLines: 100
+        sampleInterval: 300
+    }
+}
+app: {
     id: demo
     title: Demo
     event: {

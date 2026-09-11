@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Aspectow To-Do App</title>
+    <link rel="stylesheet" type="text/css" href="https://assets.aspectran.com/bootstrap@5.3.8/css/aspectran.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" integrity="sha256-pdY4ejLKO67E0CM2tbPtq1DJ3VGDVVdqAR6j3ZwdiE4=" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container mt-5" style="max-width: 640px;">
+        <h1 class="text-center">Aspectow To-Do List</h1>
+        <div class="text-center text-muted mb-3">
+            <small>REST API: <a th:href="@{/api}" target="_blank" class="text-decoration-none">/api</a> (Todo-Backend Spec)</small>
+        </div>
+
+        <!-- To-Do List -->
+        <ul class="list-group mt-4" id="todo-list">
+            <li th:each="todo : ${todos}" class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                    <form th:action="@{/{id}/update(id=${todo.id})}" method="post" class="flex-grow-1">
+                        <input type="checkbox" name="completed" class="form-check-input me-2" th:checked="${todo.completed}" value="true" onchange="this.form.submit()">
+                        <span th:text="${todo.title}" th:classappend="${todo.completed} ? 'text-decoration-line-through text-muted' : ''">Task description</span>
+                    </form>
+                    <form th:action="@{/{id}/delete(id=${todo.id})}" method="post">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+
+        <!-- Add To-Do Form -->
+        <form th:action="@{/}" method="post" class="mt-4">
+            <div class="input-group">
+                <input type="text" name="title" class="form-control" placeholder="Add a new task..." required>
+                <button type="submit" class="btn btn-primary">Add Task</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

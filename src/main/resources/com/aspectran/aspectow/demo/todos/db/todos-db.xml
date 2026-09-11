@@ -19,6 +19,11 @@
                                 <value>classpath:com/aspectran/aspectow/demo/todos/db/mariadb/db.properties</value>
                             </item>
                         </properties>
+                        <properties profile="supabase">
+                            <item name="locations" type="array">
+                                <value>classpath:com/aspectran/aspectow/demo/todos/db/supabase/aspectow-console.db-supabase.properties</value>
+                            </item>
+                        </properties>
                     </bean>
                 </argument>
                 <property name="poolName">todos</property>
@@ -37,15 +42,6 @@
                     <bean class="org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory"/>
                 </argument>
                 <argument>#{dataSource}</argument>
-            </bean>
-        </property>
-        <property name="databaseIdProvider">
-            <bean class="org.apache.ibatis.mapping.VendorDatabaseIdProvider">
-                <property name="properties" type="properties">
-                    <entry name="H2" value="h2"/>
-                    <entry name="MariaDB" value="mysql"/>
-                    <entry name="MySQL" value="mysql"/>
-                </property>
             </bean>
         </property>
     </bean>

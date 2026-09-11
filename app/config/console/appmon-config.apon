@@ -161,11 +161,11 @@ app: {
     }
 }
 app: {
-    id: demo
-    title: Demo
+    id: examples
+    title: Examples
     event: {
         id: activity
-        target: demo
+        target: examples
         parameters: {
             +: /**
             -: /examples/gs-rest-service/**
@@ -173,19 +173,19 @@ app: {
     }
     event: {
         id: session
-        target: tow.server/demo
+        target: tow.server/examples
     }
     log: {
         id: app
-        title: Demo App
-        file: /logs/demo.log
+        title: Examples App
+        file: /logs/examples.log
         lastLines: 300
         sampleInterval: 300
     }
     log: {
         id: access
-        title: Demo Access
-        file: /logs/demo-access.log
+        title: Examples Access
+        file: /logs/examples-access.log
         lastLines: 100
         sampleInterval: 300
     }
@@ -197,12 +197,12 @@ app: {
         id: activity
         target: demo
         parameters: {
-            +: /examples/gs-rest-service/**
+            +: /rest/gs-rest-service/**
         }
     }
     event: {
         id: session
-        target: tow.server/demo
+        target: tow.server/examples
     }
     log: {
         id: app

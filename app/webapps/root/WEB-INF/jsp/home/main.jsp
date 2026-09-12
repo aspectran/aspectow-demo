@@ -48,10 +48,10 @@
     </div>
     <div class="col">
         <div class="card h-100 shadow-sm">
-            <a href="<aspectran:profile expression="prod">https://demo.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/examples/"/></aspectran:profile>"
+            <a href="<aspectran:profile expression="prod">https://examples.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/examples/"/></aspectran:profile>"
                title="Aspectran Examples"><img src="<aspectran:token type='bean' expression='cdnAssets^url'/>/screenshots/demo/aspectran-demo.png" class="img-fluid"/></a>
             <div class="card-header">
-                <a href="<aspectran:profile expression="prod">https://demo.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/examples/"/></aspectran:profile>">Aspectran Examples</a>
+                <a href="<aspectran:profile expression="prod">https://examples.aspectran.com/</aspectran:profile><aspectran:profile expression="!prod"><aspectran:url value="/examples/"/></aspectran:profile>">Aspectran Examples</a>
             </div>
             <div class="card-body">
                 <p class="card-text">This site is a collection of reference applications created to showcase examples of Aspectran applications following recommended best practices.</p>

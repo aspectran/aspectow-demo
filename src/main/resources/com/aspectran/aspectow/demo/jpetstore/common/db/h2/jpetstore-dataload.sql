@@ -30,7 +30,7 @@ INSERT IGNORE INTO bannerdata VALUES ('CATS','/images/banner_cats.gif');
 INSERT IGNORE INTO bannerdata VALUES ('DOGS','/images/banner_dogs.gif');
 INSERT IGNORE INTO bannerdata VALUES ('REPTILES','/images/banner_reptiles.gif');
 INSERT IGNORE INTO bannerdata VALUES ('BIRDS','/images/banner_birds.gif');
-INSERT IGNORE INTO bannerdata VALUES ('SUPPLIES', '/images/banner_supplies.gif');
+INSERT IGNORE INTO bannerdata VALUES ('SUPPLIES', '/images/banner_supplies.jpg');
 
 INSERT IGNORE INTO category VALUES ('FISH','Fish','/images/fish_icon.gif', '<font size="5" color="blue">Fish</font>');
 INSERT IGNORE INTO category VALUES ('DOGS','Dogs','/images/dogs_icon.gif', '<font size="5" color="blue">Dogs</font>');

@@ -27,7 +27,7 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-4 text-center align-content-center bg-light border rounded-pill py-3">
+    <div class="col-lg-4 text-center align-content-center">
         <img src="<aspectran:url value="${product.image}"/>" class="img-fluid"/>
     </div>
     <div class="col-lg-8 ps-lg-4 mt-3 mt-lg-0">

@@ -38,7 +38,9 @@
 			<h4><a href="<aspectran:url value="/categories/REPTILES"/>">Reptiles</a></h4>
 			<p>Lizards, Turtles, Snakes</p>
 			<h4><a href="<aspectran:url value="/categories/BIRDS"/>">Birds</a></h4>
-			<p class="mb-1">Exotic Varieties</p>
+			<p>Exotic Varieties</p>
+			<h4><a href="<aspectran:url value="/categories/SUPPLIES"/>">Supplies</a></h4>
+			<p class="mb-1">Pet Supplies & Accessories</p>
 		</div>
 	</div>
 	<div id="MainImage" class="col-lg-6 col-md-8">

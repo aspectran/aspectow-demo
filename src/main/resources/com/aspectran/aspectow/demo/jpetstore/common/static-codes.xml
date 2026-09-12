@@ -30,6 +30,7 @@
             <entry name="REPTILES">Reptiles</entry>
             <entry name="CATS">Cats</entry>
             <entry name="BIRDS">Birds</entry>
+            <entry name="SUPPLIES">Supplies</entry>
         </property>
         <property name="creditCardTypes" type="map">
             <entry name="Visa">Visa</entry>

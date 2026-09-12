@@ -76,7 +76,7 @@ public class OwnerController {
 			return;
 		}
 
-		if (listOwners.size() == 1) {
+		if (lastName != null && listOwners.size() == 1) {
 			// 1 owner found
 			Owner owner = listOwners.getFirst();
             translet.redirect("/owners/" + owner.getId());

@@ -35,7 +35,7 @@
 
     <append resource="com/aspectran/aspectow/demo/petclinic/common/db/datasource.xml"/>
     <append resource="com/aspectran/aspectow/demo/petclinic/common/filter/xss-prevent.xml"/>
-    <append resource="com/aspectran/aspectow/demo/petclinic/common/i18n/i18n-context.xml"/>
+    <append resource="com/aspectran/aspectow/demo/petclinic/common/i18n/i18n.xml"/>
     <append resource="com/aspectran/aspectow/demo/petclinic/petclinic-web-rules.xml"/>
 
 </aspectran>

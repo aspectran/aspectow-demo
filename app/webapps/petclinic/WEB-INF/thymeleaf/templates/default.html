@@ -84,8 +84,8 @@
                             <li th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}"><a class="dropdown-item" th:href="@{/../jpetstore/}">JPetStore Demo</a></li>
                             <li th:if="${#{currentEnvironment}.acceptsProfiles('prod')}"><a class="dropdown-item" href="https://petclinic.aspectran.com/">PetClinic Demo</a></li>
                             <li th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}"><a class="dropdown-item" th:href="@{/../petclinic/}">PetClinic Demo</a></li>
-                            <li th:if="${#{currentEnvironment}.acceptsProfiles('prod')}"><a class="dropdown-item" href="https://demo.aspectran.com/">Aspectran Demo</a></li>
-                            <li th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}"><a class="dropdown-item" th:href="@{/../demo/}">Aspectran Demo</a></li>
+                            <li th:if="${#{currentEnvironment}.acceptsProfiles('prod')}"><a class="dropdown-item" href="https://examples.aspectran.com/">Aspectran Examples</a></li>
+                            <li th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}"><a class="dropdown-item" th:href="@{/../examples/}">Aspectran Examples</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

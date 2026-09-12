@@ -92,6 +92,9 @@
                         </ul>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#iframeModal" data-src="/todos/" data-title="Todos">Todos</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link">Get Involved</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="https://github.com/aspectran/demo-app">GitHub</a></li>
@@ -256,6 +259,40 @@
         </div>
     </div>
 </footer>
+<!-- Common Bootstrap Modal -->
+<div class="modal fade" id="iframeModal" tabindex="-1" aria-labelledby="iframeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content" style="height: 100vh;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="iframeModalLabel">Loading...</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0 d-flex flex-column flex-grow-1">
+                <iframe id="modalIframe" src="" width="100%" class="h-100" style="border: none;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const iframeModal = document.getElementById('iframeModal');
+    const modalIframe = document.getElementById('modalIframe');
+    const modalTitle = iframeModal.querySelector('.modal-title');
+    iframeModal.addEventListener('show.bs.modal', function (event) {
+        const triggerElement = event.relatedTarget.closest('[data-src]');
+        if (triggerElement) {
+            const iframeSrc = triggerElement.getAttribute('data-src');
+            modalIframe.setAttribute('src', iframeSrc);
+            const titleText = triggerElement.getAttribute('data-title');
+            if (titleText) {
+                modalTitle.textContent = titleText;
+            }
+        }
+    });
+    iframeModal.addEventListener('hide.bs.modal', function () {
+        modalIframe.setAttribute('src', '');
+        modalTitle.textContent = 'Loading...';
+    });
+</script>
 <script>
     $(function () {
         const getStoredTheme = () => localStorage.getItem('theme');

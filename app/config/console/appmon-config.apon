@@ -191,11 +191,11 @@ app: {
     }
 }
 app: {
-    id: demo2
+    id: examples2
     title: RESTful Demo
     event: {
         id: activity
-        target: demo
+        target: examples
         parameters: {
             +: /rest/gs-rest-service/**
         }
@@ -206,15 +206,15 @@ app: {
     }
     log: {
         id: app
-        title: Demo App
-        file: /logs/demo2.log
+        title: Examples App
+        file: /logs/examples2.log
         lastLines: 300
         sampleInterval: 300
     }
     log: {
         id: access
-        title: Demo Access
-        file: /logs/demo2-access.log
+        title: Examples Access
+        file: /logs/examples2-access.log
         lastLines: 100
         sampleInterval: 300
     }

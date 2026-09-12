@@ -108,12 +108,15 @@
                 <entry name="petclinic">
                     +: /petclinic/**
                 </entry>
-                <entry name="demo">
-                    +: /demo/**
-                    -: /demo/examples/gs-rest-service/**
+                <entry name="todos">
+                    +: /todos/**
                 </entry>
-                <entry name="demo2">
-                    +: /demo/examples/gs-rest-service/**
+                <entry name="examples">
+                    +: /examples/**
+                    -: /examples/rest/gs-rest-service/**
+                </entry>
+                <entry name="examples2">
+                    +: /examples/rest/gs-rest-service/**
                 </entry>
                 <entry name="console">
                     +: /console/**
@@ -128,8 +131,11 @@
                 <entry name="petclinic">
                     +: /petclinic/**
                 </entry>
-                <entry name="demo">
-                    +: /demo/**
+                <entry name="todos">
+                    +: /todos/**
+                </entry>
+                <entry name="examples">
+                    +: /examples/**
                 </entry>
                 <entry name="console">
                     +: /console/**

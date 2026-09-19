@@ -64,7 +64,7 @@
     </div>
     <div class="col-12" style="position:relative;">
         <span id="response-status" class="float-start badge bg-secondary"
-              style="font-size:2em;position:absolute;top:-30px;right:10px;border-radius:50%;">200</span>
+              style="font-size:2em;position:absolute;top:-10px;right:0;border-radius:50%;">200</span>
         <div class="border rounded bg-body-tertiary p-2 mb-3">
             <pre id="response-body" class="m-0" style="min-height:100px;max-height:300px;"></pre>
         </div>
@@ -79,7 +79,7 @@
     </aspectran:profile>
 
     $(function () {
-        let customerForm = $("#customer-form");
+        const customerForm = $("#customer-form");
 
         // Change event for the new dropdown items
         $("#customer-list-group").on("click", "a", function (e) {
@@ -171,7 +171,7 @@
     }
 
     function getCustomer(id) {
-        let customerForm = $("#customer-form");
+        const customerForm = $("#customer-form");
         customerForm.find("input.is-invalid").removeClass("is-invalid");
         $.ajax({
             type: "GET",
@@ -192,7 +192,7 @@
     }
 
     function saveCustomer() {
-        let customerForm = $("#customer-form");
+        const customerForm = $("#customer-form");
         if (customerForm.find("input[name=name]").val() === "") {
             customerForm.find("input[name=name]").addClass("is-invalid");
         }
@@ -245,7 +245,7 @@
     }
 
     function deleteCustomer() {
-        let customerForm = $("#customer-form");
+        const customerForm = $("#customer-form");
         let id = customerForm.find("input[name=id]").val();
         if (!id) {
             alert("Please select a customer to remove.");
@@ -268,8 +268,8 @@
     }
 
     function updateApproval(approved) {
-        let customerForm = $("#customer-form");
-        let id = customerForm.find("input[name=id]").val();
+        const customerForm = $("#customer-form");
+        const id = customerForm.find("input[name=id]").val();
         if (!id) {
             return;
         }
@@ -296,7 +296,7 @@
     }
 
     function clearForm() {
-        let customerForm = $("#customer-form");
+        const customerForm = $("#customer-form");
         customerForm.find("input[name=id]").val("");
         customerForm.find("input[name=name]").val("");
         customerForm.find("input[name=age]").val("");

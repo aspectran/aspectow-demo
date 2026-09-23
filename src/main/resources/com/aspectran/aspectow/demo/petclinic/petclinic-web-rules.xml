@@ -35,6 +35,7 @@
             Register a Thymeleaf View Dispatcher.
         </description>
         <argument>#{thymeleaf}</argument>
+        <property name="contentType">text/html</property>
     </bean>
 
     <aspect id="webTransletSettings">

@@ -6,7 +6,7 @@ pollingConfig: {
     sessionTimeout: 30000
 }
 app: {
-    id: console-console
+    id: demo-console
     title: Console
     hidden: true
     event: {

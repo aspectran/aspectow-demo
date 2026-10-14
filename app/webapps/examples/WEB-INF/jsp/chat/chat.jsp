@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://aspectran.com/tags" prefix="aspectran" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="aspectran" uri="aspectran.tags" %>
 <div class="row">
     <div id="chat-title" class="col-12 p-3">
         <h2 class="m-0">Chat <span id="totalPeople"></span></h2>

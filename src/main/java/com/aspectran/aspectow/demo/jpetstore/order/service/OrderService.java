@@ -25,6 +25,8 @@ import com.aspectran.aspectow.demo.jpetstore.order.domain.Order;
 import com.aspectran.aspectow.demo.jpetstore.order.domain.Sequence;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.jspecify.annotations.NonNull;
 
 import java.util.HashMap;
@@ -46,7 +48,7 @@ public class OrderService {
 
     private final LineItemMapper.Dao lineItemDao;
 
-    private final SequenceMapper.Dao sequenceDao;
+    private final SqlSessionFactory sqlSessionFactory;
 
     private final Object sequenceLock = new Object();
 
@@ -54,11 +56,11 @@ public class OrderService {
     public OrderService(ItemMapper.Dao itemDao,
                         OrderMapper.Dao orderDao,
                         LineItemMapper.Dao lineItemDao,
-                        SequenceMapper.Dao sequenceDao) {
+                        SqlSessionFactory sqlSessionFactory) {
         this.itemDao = itemDao;
         this.orderDao = orderDao;
         this.lineItemDao = lineItemDao;
-        this.sequenceDao = sequenceDao;
+        this.sqlSessionFactory = sqlSessionFactory;
     }
 
     /**
@@ -130,14 +132,18 @@ public class OrderService {
     public int getNextId(String name) {
         int nextId;
         synchronized (sequenceLock) {
-            Sequence sequence = sequenceDao.getSequence(new Sequence(name, -1));
-            if (sequence == null) {
-                throw new RuntimeException(
-                        "Error: A null sequence was returned from the database (could not get next " + name + " sequence)");
+            try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+                SequenceMapper sequenceMapper = sqlSession.getMapper(SequenceMapper.class);
+                Sequence sequence = sequenceMapper.getSequence(new Sequence(name, -1));
+                if (sequence == null) {
+                    throw new RuntimeException(
+                            "Error: A null sequence was returned from the database (could not get next " + name + " sequence)");
+                }
+                nextId = sequence.getNextId();
+                Sequence parameterObject = new Sequence(name, nextId + 1);
+                sequenceMapper.updateSequence(parameterObject);
+                sqlSession.commit();
             }
-            nextId = sequence.getNextId();
-            Sequence parameterObject = new Sequence(name, nextId + 1);
-            sequenceDao.updateSequence(parameterObject);
         }
         return nextId;
     }

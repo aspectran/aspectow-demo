@@ -48,20 +48,27 @@ public class CartService {
     }
 
     public void addItemToCart(String itemId) {
+        if (itemId == null || itemId.isEmpty()) {
+            return;
+        }
         if (getCart().containsItemId(itemId)) {
             getCart().incrementQuantityByItemId(itemId);
         } else {
-            // isInStock is a "real-time" property that must be updated
-            // every time an item is added to the cart, even if other
-            // item details are cached.
-            boolean isInStock = catalogService.isItemInStock(itemId);
             Item item = catalogService.getItem(itemId);
-            getCart().addItem(item, isInStock);
+            if (item != null) {
+                // isInStock is a "real-time" property that must be updated
+                // every time an item is added to the cart, even if other
+                // item details are cached.
+                boolean isInStock = catalogService.isItemInStock(itemId);
+                getCart().addItem(item, isInStock);
+            }
         }
     }
 
     public void removeItemFromCart(String itemId) {
-        getCart().removeItemById(itemId);
+        if (itemId != null && !itemId.isEmpty()) {
+            getCart().removeItemById(itemId);
+        }
     }
 
     public void removeAllItemsFormCart() {
@@ -73,7 +80,9 @@ public class CartService {
     }
 
     public void setQuantityByItemId(String itemId, int quantity) {
-        getCart().setQuantityByItemId(itemId, quantity);
+        if (itemId != null && !itemId.isEmpty()) {
+            getCart().setQuantityByItemId(itemId, quantity);
+        }
     }
 
 }

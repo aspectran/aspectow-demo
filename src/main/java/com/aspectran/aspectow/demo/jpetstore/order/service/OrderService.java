@@ -105,8 +105,10 @@ public class OrderService {
             order.setLineItems(lineItemDao.getLineItemsByOrderId(orderId));
             order.getLineItems().forEach(lineItem -> {
                 Item item = itemDao.getItem(lineItem.getItemId());
-                item.setQuantity(itemDao.getInventoryQuantity(lineItem.getItemId()));
-                lineItem.setItem(item);
+                if (item != null) {
+                    item.setQuantity(itemDao.getInventoryQuantity(lineItem.getItemId()));
+                    lineItem.setItem(item);
+                }
             });
         }
         return order;

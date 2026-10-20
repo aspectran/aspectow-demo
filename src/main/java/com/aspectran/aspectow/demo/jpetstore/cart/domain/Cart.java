@@ -58,15 +58,18 @@ public class Cart implements Serializable {
     }
 
     public boolean containsItemId(String itemId) {
-        return itemMap.containsKey(itemId);
+        return (itemId != null && itemMap.containsKey(itemId));
     }
 
     /**
-     * Adds the item.
-     * @param item the item
-     * @param isInStock the is in stock
+     * Adds an item to the cart.
+     * @param item the item to be added to the cart; must not be null
+     * @param isInStock a flag indicating whether the item is in stock
      */
     public void addItem(@NonNull Item item, boolean isInStock) {
+        if (item == null) {
+            return;
+        }
         CartItem cartItem = itemMap.get(item.getItemId());
         if (cartItem == null) {
             cartItem = new CartItem();
@@ -85,6 +88,9 @@ public class Cart implements Serializable {
      * @return the item
      */
     public Item removeItemById(String itemId) {
+        if (itemId == null) {
+            return null;
+        }
         CartItem cartItem = itemMap.remove(itemId);
         if (cartItem != null) {
             itemList.remove(cartItem);
@@ -99,13 +105,23 @@ public class Cart implements Serializable {
      * @param itemId the item id
      */
     public void incrementQuantityByItemId(String itemId) {
+        if (itemId == null) {
+            return;
+        }
         CartItem cartItem = itemMap.get(itemId);
-        cartItem.incrementQuantity();
+        if (cartItem != null) {
+            cartItem.incrementQuantity();
+        }
     }
 
     public void setQuantityByItemId(String itemId, int quantity) {
+        if (itemId == null) {
+            return;
+        }
         CartItem cartItem = itemMap.get(itemId);
-        cartItem.setQuantity(quantity);
+        if (cartItem != null) {
+            cartItem.setQuantity(quantity);
+        }
     }
 
     /**

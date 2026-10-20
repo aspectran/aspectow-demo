@@ -35,7 +35,7 @@ public interface ItemMapper {
 
     void updateInventoryQuantity(Map<String, Object> params);
 
-    int getInventoryQuantity(String itemId);
+    Integer getInventoryQuantity(String itemId);
 
     List<Item> getItemListByProduct(String productId);
 
@@ -55,8 +55,12 @@ public interface ItemMapper {
         }
 
         @Override
-        public int getInventoryQuantity(String itemId) {
-            return mapper().getInventoryQuantity(itemId);
+        public Integer getInventoryQuantity(String itemId) {
+            if (itemId == null || itemId.isEmpty()) {
+                return 0;
+            }
+            Integer quantity = mapper().getInventoryQuantity(itemId);
+            return (quantity != null ? quantity : 0);
         }
 
         @Override

@@ -33,7 +33,6 @@ import com.aspectran.core.component.bean.annotation.Redirect;
 import com.aspectran.core.component.bean.annotation.Request;
 import com.aspectran.core.component.bean.annotation.RequestToPost;
 import com.aspectran.web.support.http.HttpStatusSetter;
-import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
@@ -175,8 +174,17 @@ public class OrderActivity {
     @Request("/order/viewOrder")
     @Dispatch("order/ViewOrder")
     @Action("order")
-    public Order viewOrder(@NonNull Integer orderId) {
-        return orderService.getOrder(orderId);
+    public Order viewOrder(Translet translet, Integer orderId) {
+        if (orderId == null) {
+            translet.redirect("/order/listOrders");
+            return null;
+        }
+        Order order = orderService.getOrder(orderId);
+        if (order == null) {
+            translet.redirect("/order/listOrders");
+            return null;
+        }
+        return order;
     }
 
     /**
@@ -184,8 +192,10 @@ public class OrderActivity {
      */
     @Request("/order/deleteOrder/${orderId}")
     @Redirect("/order/listOrders")
-    public void deleteOrder(@NonNull Integer orderId) {
-        orderService.deleteOrder(orderId);
+    public void deleteOrder(Integer orderId) {
+        if (orderId != null) {
+            orderService.deleteOrder(orderId);
+        }
     }
 
 }

@@ -90,7 +90,11 @@ public class CatalogService {
     }
 
     public boolean isItemInStock(String itemId) {
-        return (itemDao.getInventoryQuantity(itemId) > 0);
+        if (itemId == null || itemId.isEmpty()) {
+            return false;
+        }
+        Integer quantity = itemDao.getInventoryQuantity(itemId);
+        return (quantity != null && quantity > 0);
     }
 
 }

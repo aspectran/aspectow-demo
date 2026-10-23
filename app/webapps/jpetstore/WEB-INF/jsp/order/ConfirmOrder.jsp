@@ -26,10 +26,8 @@
         <div class="alert alert-info">
             <p>Please confirm the information below and then press continue...</p>
         </div>
-		<div class="d-flex justify-content-between align-items-center mb-3">
-			<h3>Order</h3>
-			<a class="btn btn-secondary btn-sm" href="<aspectran:url value="/"/>">Return to Main Menu</a>
-		</div>
+
+        <h3>Order</h3>
         <form method="post" action="<aspectran:url value="/order/submitOrder"/>">
             <input type="hidden" name="confirmed" value="true"/>
             <table class="table table-striped">
@@ -37,12 +35,14 @@
                     <col style="width: 25%"/>
                     <col/>
                 </colgroup>
+                <tbody class="table-group-divider">
                 <tr>
                     <td>Order Date</td>
                     <td>
                         <fmt:formatDate value="${user.order.orderDate}" pattern="yyyy/MM/dd hh:mm:ss"/>
                     </td>
                 </tr>
+                </tbody>
             </table>
 
             <h3>Billing Address</h3>
@@ -51,6 +51,7 @@
                     <col style="width: 25%;"/>
                     <col/>
                 </colgroup>
+                <tbody class="table-group-divider">
                 <tr>
                     <td>First name:</td>
                     <td><c:out value="${user.order.billToFirstName}"/></td>
@@ -83,6 +84,7 @@
                     <td>Country:</td>
                     <td><c:out value="${user.order.billCountry}"/></td>
                 </tr>
+                </tbody>
             </table>
 
             <h3>Shipping Address</h3>
@@ -91,6 +93,7 @@
                     <col style="width: 25%;"/>
                     <col/>
                 </colgroup>
+                <tbody class="table-group-divider">
                 <tr>
                     <td>First name:</td>
                     <td><c:out value="${user.order.shipToFirstName}"/></td>
@@ -123,6 +126,7 @@
                     <td>Country:</td>
                     <td><c:out value="${user.order.shipCountry}"/></td>
                 </tr>
+                </tbody>
             </table>
 
             <div class="text-center">

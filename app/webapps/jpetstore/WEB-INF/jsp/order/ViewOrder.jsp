@@ -28,10 +28,8 @@
                 <p>Thank you, your order has been submitted.</p>
             </div>
         </c:if>
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3>Order</h3>
-            <a class="btn btn-secondary" href="<aspectran:url value="/"/>">Return to Main Menu</a>
-        </div>
+
+        <h3>Order</h3>
         <table class="table table-striped">
             <colgroup>
                 <col style="width: 25%"/>
@@ -215,8 +213,14 @@
         </table>
 
         <div class="text-center">
-            <button type="button" class="btn btn-danger"
-                    onclick="location.href='<aspectran:url value="/order/deleteOrder/${order.orderId}"/>';">Delete Order</button>
+            <c:if test="${param.submitted eq 'true'}">
+                <a href="<aspectran:url value="/order/listOrders"/>" class="btn btn-secondary">My Orders</a>
+            </c:if>
+            <c:if test="${param.submitted ne 'true'}">
+                <button type="button" class="btn btn-danger"
+                        onclick="location.href='<aspectran:url value="/order/deleteOrder/${order.orderId}"/>';">Delete Order</button>
+                <button type="button" class="btn btn-secondary" onclick="history.back();">Back</button>
+            </c:if>
         </div>
     </div>
 </div>

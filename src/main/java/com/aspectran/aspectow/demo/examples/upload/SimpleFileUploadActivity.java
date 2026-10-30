@@ -43,7 +43,7 @@ import java.util.Map;
 /**
  * <p>Created: 2018. 7. 9.</p>
  */
-@Component("/examples/file-upload")
+@Component("/upload/file-upload")
 public class SimpleFileUploadActivity {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleFileUploadActivity.class);

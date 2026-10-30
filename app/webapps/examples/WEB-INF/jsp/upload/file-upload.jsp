@@ -67,7 +67,7 @@
         </div>
     </div>
     <div class="col-12 mt-3 text-end">
-        <form id="file-upload-form" action="<aspectran:url value="/examples/file-upload/files"/>" method="POST"
+        <form id="file-upload-form" action="<aspectran:url value="/upload/file-upload/files"/>" method="POST"
               enctype="multipart/form-data">
             <label for="file-adds-input" class="btn btn-success">Add files...</label>
             <input type="file" name="file" id="file-adds-input" class="visually-hidden" multiple>
@@ -128,11 +128,32 @@
     $(function () {
         'use strict';
         // Change this to the location of your server-side upload handler:
-        let url = "<aspectran:url value="/examples/file-upload/files"/>";
+        let url = "<aspectran:url value="/upload/file-upload/files"/>";
         let deleteButton = $('<button/>')
             .attr("type", "button")
             .addClass('btn btn-danger btn-sm delete-btn')
-            .append($('<i/>').addClass('bi bi-x-lg'));
+            .append($('<i/>').addClass('bi bi-x-lg'))
+            .on('click', function () {
+                let that = $(this);
+                let fileKey = that.data("file-key");
+                if (fileKey) {
+                    $.ajax({
+                        url: url + "/" + fileKey,
+                        type: 'delete',
+                        success: function () {
+                            that.closest('li').fadeOut();
+                            setTimeout(function () {
+                                that.closest('li').remove();
+                            }, 500);
+                        }
+                    });
+                } else {
+                    that.closest('li').fadeOut();
+                    setTimeout(function () {
+                        that.closest('li').remove();
+                    }, 500);
+                }
+            });
         let progressBar = $('<div/>')
             .addClass('progress')
             .append($('<div/>')
@@ -154,7 +175,7 @@
         }).on('fileuploadadd', function (e, data) {
             let ul = $('#file-upload-list ul');
             if (ul.length === 0) {
-                ul = $('<ul/>').addClass('row');
+                ul = $('<ul/>').addClass('row g-2');
                 $('#file-upload-list').html(ul);
             }
             data.context = $('<li/>').addClass('col-md-4');
@@ -193,11 +214,11 @@
             if (file.preview) {
                 node.find('.col-auto').append(file.preview);
             } else {
-                node.find('.col').append($('<img/>').addClass('blank'));
+                node.find('.col-auto').append($('<img/>').addClass('blank'));
             }
             if (file.error) {
                 node.find(".file-info").append($('<div class="alert alert-danger p-1 m-0 mt-1"/>').text(file.error));
-                node.find("button.delete-btn").prop('disabled', false).fadeOut(1000);
+                node.find("button.delete-btn").prop('disabled', false);
                 node.find('.progress').fadeOut();
             }
         }).on('fileuploadprogress', function (e, data) {
@@ -212,42 +233,22 @@
             if (data.result && data.result.files && data.result.files.length > 0) {
                 $.each(data.result.files, function (index, file) {
                     if (file.fileName) {
+                        let fileUrl = url + "/" + file.key;
                         let link = $('<a>')
-                            .attr('href', "files/" + file.key)
+                            .attr('href', fileUrl)
                             .attr('target', '_blank');
                         node.find(".col-auto canvas")
                             .addClass("link")
-                            .click(function() {
-                                window.open(file.url);
-                            }).wrap(link);
+                            .wrap(link);
                         let fileLink = $('<a>')
-                            .attr('href', "files/" + file.key)
+                            .attr('href', fileUrl)
                             .attr('target', '_blank')
                             .attr('download', file.fileName)
                             .text(file.fileName);
                         node.find("p a.filename").replaceWith(fileLink);
                         node.find("button.delete-btn")
                             .data("file-key", file.key)
-                            .prop("disabled", false)
-                            .on('click', function () {
-                                let that = $(this);
-                                let fileKey = that.data("file-key");
-                                console.log("fileKey: ", fileKey);
-                                if (fileKey) {
-                                    $.ajax({
-                                        url: url + "/" + fileKey,
-                                        type: 'delete',
-                                        success: function () {
-                                            that.closest('li').fadeOut();
-                                            setTimeout(function () {
-                                                that.closest('li').remove();
-                                            }, 500)
-                                        }
-                                    });
-                                } else {
-                                    that.closest('li').remove();
-                                }
-                            });
+                            .prop("disabled", false);
                     } else if (file.error) {
                         let error = $('<div class="alert alert-danger p-1 m-0 mt-1"/>').text(file.error);
                         node.find('.file-info').append(error);
@@ -263,12 +264,16 @@
                 node.find(".progress").fadeOut();
             }, 500);
         }).on('fileuploadfail', function (e, data) {
-            $.each(data.files, function () {
-                let node = $(data.context);
-                let error = $('<div class="alert alert-danger p-1 m-0 mt-1"/>').text('File upload failed.');
-                node.find('.file-info').append(error);
-                node.find('.progress-bar').removeClass('bg-success').addClass('bg-danger');
-            });
+            let node = $(data.context);
+            let msg = (data.jqXHR && data.jqXHR.status === 413)
+                ? 'File is too large.'
+                : 'File upload failed.';
+            let error = $('<div class="alert alert-danger p-1 m-0 mt-1"/>').text(msg);
+            node.find('.file-info').append(error);
+            node.find('.progress-bar').removeClass('bg-success').addClass('bg-danger');
+            setTimeout(function () {
+                node.find(".progress").fadeOut();
+            }, 500);
         }).prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
     });

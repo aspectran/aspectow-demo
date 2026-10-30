@@ -169,7 +169,7 @@ app: {
         target: examples
         parameters: {
             +: /**
-            -: /examples/gs-rest-service/**
+            -: /rest/gs-rest-service/**
         }
     }
     event: {

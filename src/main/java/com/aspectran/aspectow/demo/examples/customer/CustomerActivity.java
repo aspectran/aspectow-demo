@@ -29,7 +29,7 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
-@Component("/examples/gs-rest-service")
+@Component("/rest/gs-rest-service")
 public class CustomerActivity {
 
     private final CustomerRepository repository;

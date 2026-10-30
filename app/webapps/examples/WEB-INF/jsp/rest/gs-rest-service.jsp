@@ -71,12 +71,7 @@
     </div>
 </div>
 <script>
-    <aspectran:profile expression="prod">
-    const BASE_PATH = "/examples";
-    </aspectran:profile>
-    <aspectran:profile expression="!prod">
-    const BASE_PATH = "${pageContext.request.contextPath}/examples";
-    </aspectran:profile>
+    const BASE_PATH = "<aspectran:url value="/rest"/>";
 
     $(function () {
         const customerForm = $("#customer-form");

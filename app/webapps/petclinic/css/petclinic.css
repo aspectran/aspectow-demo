@@ -11,175 +11,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.petclinic .table > thead > tr > th {
-  background-color: rgb(60.2020618557, 55.5711340206, 52.0979381443);
-  color: #f1f1f1;
-}
-.petclinic .table > tbody > tr > th, .petclinic .table > tbody > tr > td {
-  border-top: 1px solid #34302D;
-}
-.petclinic .table-borderless > tbody > tr > th, .petclinic .table-borderless > tbody > tr > td {
-  border-top-width: 0;
-}
-.petclinic .table-filter {
-  background-color: #34302D;
-  padding: 9px 12px;
-}
-.petclinic .nav > li > a {
-  color: #838789;
-}
-.petclinic .btn-primary {
-  margin-top: 12px;
-  border-width: 2px;
-  transition: border 0.15s;
-  color: #f1f1f1;
-  background: #34302D;
-  border-color: #6db33f;
-  -webkit-transition: border 0.15s;
-  -moz-transition: border 0.15s;
-  -o-transition: border 0.15s;
-  -ms-transition: border 0.15s;
-}
-.petclinic .btn-primary:hover, .petclinic .btn-primary:focus, .petclinic .btn-primary:active, .petclinic .btn-primary.active,
-.petclinic .btn-primary .open .dropdown-toggle {
-  background-color: #34302D;
-  border-color: #34302D;
-}
-.petclinic .container .text-muted {
-  margin: 20px 0;
-}
-.petclinic code {
-  font-size: 80%;
-}
 .petclinic .xd-container {
-  margin-top: 20px;
   position: relative;
 }
-.petclinic h1 {
-  margin-bottom: 15px;
-}
-.petclinic .index-page--subtitle {
-  font-size: 16px;
-  line-height: 24px;
-  margin: 0 0 30px;
-}
-.petclinic .form-horizontal button.btn-inverse {
-  margin-left: 32px;
-}
-.petclinic #job-params-modal .modal-dialog {
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-}
-.petclinic [ng-cloak].splash {
-  display: block !important;
-}
-.petclinic [ng-cloak] {
-  display: none;
-}
-.petclinic .splash {
-  background: #6db33f;
-  color: #34302D;
-  display: none;
-}
-.petclinic .error-page {
-  margin-top: 100px;
-  text-align: center;
-}
-.petclinic .error-page .error-title {
-  font-size: 24px;
-  line-height: 24px;
-  margin: 30px 0 0;
-}
+
 .petclinic table td {
   vertical-align: middle;
 }
-.petclinic table td .progress {
-  margin-bottom: 0;
-}
-.petclinic table td.action-column {
-  width: 1px;
-}
-.petclinic .help-block {
-  color: rgb(181.7010309278, 175.1855670103, 170.2989690722);
-}
-.petclinic .cluster-view > table td {
-  vertical-align: top;
-}
-.petclinic .cluster-view .label, .petclinic .cluster-view .column-block {
-  display: block;
-}
-.petclinic .cluster-view .input-group-addon {
-  width: 0;
-}
-.petclinic .cluster-view {
-  margin-bottom: 0;
-}
-.petclinic .container-details-table th {
-  background-color: rgb(60.2020618557, 55.5711340206, 52.0979381443);
-  color: #f1f1f1;
-}
-.petclinic .status-help-content-table td {
-  color: #34302D;
-}
+
 .petclinic .logo {
   width: 200px;
 }
-.petclinic .myspinner {
-  animation-name: spinner;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  -webkit-transform-origin: 49% 50%;
-  -webkit-animation-name: spinner;
-  -webkit-animation-duration: 2s;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-timing-function: linear;
-}
-.petclinic hr {
-  border-top: 1px dotted #34302D;
-}
+
 .petclinic pre.error {
   text-wrap: auto;
-  background-color: black;
-  color: #ccc;
-  padding: 10px;
-}
-
-.petclinic h1, .petclinic h2, .petclinic h3, .petclinic p, .petclinic input {
-  margin: 0;
-  font-weight: 400;
-}
-.petclinic h1 {
-  font-size: 24px;
-  line-height: 30px;
-}
-.petclinic h2 {
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 24px;
-  margin-bottom: 10px;
-}
-.petclinic h3 {
-  font-size: 16px;
-  line-height: 24px;
-  margin-bottom: 10px;
-  font-weight: 700;
-}
-.petclinic strong {
-  font-weight: 700;
+  background-color: #1e2225;
+  color: #e9ecef;
+  padding: 1rem;
+  border-radius: var(--bs-border-radius);
 }
 
 .petclinic .navbar {
-  border-top: 4px solid #6db33f;
-  background-color: #34302d;
+  background-color: #353b3e;
   margin-bottom: 0;
   padding-top: 0;
   padding-bottom: 0;
-  border-bottom: 0;
-  border-left: 0;
-  border-right: 0;
+  border: 0;
 }
+
 .petclinic .navbar a.navbar-brand {
   background: url("../images/spring-logo-dataflow.png") -1px -1px no-repeat;
   width: 229px;
@@ -187,55 +46,54 @@
   display: inline-block;
   text-decoration: none;
 }
+
 .petclinic .navbar a.navbar-brand span {
   display: block;
   width: 229px;
   height: 46px;
   background: url("../images/spring-logo-dataflow.png") -1px -48px no-repeat;
   opacity: 0;
-  -moz-transition: opacity 0.12s ease-in-out;
-  -webkit-transition: opacity 0.12s ease-in-out;
-  -o-transition: opacity 0.12s ease-in-out;
+  transition: opacity 0.12s ease-in-out;
 }
+
 .petclinic .navbar a:hover.navbar-brand span {
   opacity: 1;
 }
-.petclinic .navbar li > a {
-  font-family: "montserratregular", sans-serif;
-  text-shadow: none;
-  font-size: 16px;
-  padding: 28px 20px;
-  transition: all 0.15s;
-  -webkit-transition: all 0.15s;
-  -moz-transition: all 0.15s;
-  -o-transition: all 0.15s;
-  -ms-transition: all 0.15s;
-}
-.petclinic .navbar .navbar-collapse.show .navbar-nav {
-  padding-top: 20px;
-  padding-bottom: 10px;
-}
-.petclinic .navbar .navbar-collapse.show .nav-link,
-.petclinic .navbar .navbar-collapse.collapsing .nav-link {
-  padding: 10px 0 10px 20px;
-}
-.petclinic .navbar li > a {
+
+.petclinic .navbar .navbar-nav > li > a {
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 1.25rem 1.15rem;
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
   text-transform: uppercase;
 }
-.petclinic .navbar li:hover > a {
-  color: #eeeeee;
-  background-color: #6db33f;
+
+.petclinic .navbar .navbar-nav > li > a.active {
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 -3px 0 #21738c;
 }
+
+.petclinic .navbar .navbar-nav > li:hover > a {
+  color: #ffffff;
+  background-color: #21738c;
+}
+
+.petclinic .navbar .navbar-collapse.show .navbar-nav,
+.petclinic .navbar .navbar-collapse.collapsing .navbar-nav {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.petclinic .navbar .navbar-collapse.show .nav-link,
+.petclinic .navbar .navbar-collapse.collapsing .nav-link {
+  padding: 0.65rem 1rem;
+}
+
 .petclinic .navbar-toggler {
   border: 0;
 }
-.petclinic .navbar-toggler .icon-bar + .icon-bar {
-  margin-top: 3px;
-}
-.petclinic .navbar-toggler .icon-bar {
-  width: 19px;
-  height: 3px;
-}
+
 .petclinic .navbar-toggler:focus {
   box-shadow: none;
 }
@@ -243,26 +101,14 @@
 @media (max-width: 768px) {
   .petclinic .navbar a.navbar-brand {
     display: block;
-    margin: 0 auto 0 auto;
+    margin: 0 auto;
     width: 148px;
     height: 50px;
     float: none;
     background: url("../images/spring-logo-dataflow-mobile.png") 0 center no-repeat;
   }
-  .petclinic .homepage-billboard .homepage-subtitle {
-    font-size: 21px;
-    line-height: 21px;
-  }
   .petclinic .navbar a.navbar-brand span {
     display: none;
   }
-  .petclinic .navbar {
-    border-top-width: 0;
-  }
-  .petclinic .index-page--subtitle {
-    margin-top: 10px;
-    margin-bottom: 30px;
-  }
 }
 
-/*# sourceMappingURL=petclinic.css.map */

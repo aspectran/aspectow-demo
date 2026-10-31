@@ -3,24 +3,15 @@
 
 <form>
     <th:block th:fragment="select (label, name, items, value)">
-        <div th:with="valid=${errors == null || !errors.containsKey(name)}"
-             th:class="${'form-group' + (valid ? '' : ' has-error')}"
-             class="form-group">
-            <label class="col-sm-2 control-label" th:text="${label}">Label</label>
-            <div class="col-sm-10">
-                <select th:name="${name}">
+        <div th:with="valid=${errors == null || !errors.containsKey(name)}" class="row mb-3">
+            <label class="col-sm-3 col-form-label fw-semibold text-sm-end" th:for="${name}" th:text="${label}">Label</label>
+            <div class="col-sm-9">
+                <select th:id="${name}" th:name="${name}" class="form-select" th:classappend="${!valid ? 'is-invalid' : ''}">
                     <option th:each="item : ${items}" th:value="${item.id}"
-                            th:text="${item.name}" th:selected="${item.id} == ${value}">dog
+                            th:text="${item.name}" th:selected="${item.id == value}">dog
                     </option>
                 </select>
-                <span th:if="${valid}"
-                      class="fa fa-ok form-control-feedback"
-                      aria-hidden="true"></span>
-                <th:block th:if="${!valid}">
-                <span class="fa fa-remove form-control-feedback"
-                      aria-hidden="true"></span>
-                    <span class="help-inline text-warning" th:errors="*{__${name}__}">Error</span>
-                </th:block>
+                <div th:if="${!valid}" class="invalid-feedback" th:text="${errors['__${name}__']}">Error</div>
             </div>
         </div>
     </th:block>

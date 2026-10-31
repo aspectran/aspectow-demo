@@ -3,23 +3,16 @@
 
   <form>
     <th:block th:fragment="input (type, label, name, value)">
-      <div th:with="valid=${errors == null || !errors.containsKey(name)}"
-        th:class="${'form-group' + (valid ? '' : ' has-error')}">
-        <label class="col-sm-2 control-label" th:text="${label}">Label</label>
-        <div class="col-sm-10">
-            <div th:switch="${type}">
-                <input th:case="'text'" class="form-control" type="text" th:name="${name}" th:value="${value}"/>
-                <input th:case="'date'" class="form-control" type="date" th:name="${name}" th:value="${value}"/>
-            </div>
-          <span th:if="${valid}"
-            class="fa fa-ok form-control-feedback"
-            aria-hidden="true"></span>
-          <th:block th:if="${!valid}">
-            <span
-              class="fa fa-remove form-control-feedback "
-              aria-hidden="true"></span>
-            <span class="help-inline text-warning" th:text="${errors['__${name}__']}">Error</span>
+      <div th:with="valid=${errors == null || !errors.containsKey(name)}" class="row mb-3">
+        <label class="col-sm-3 col-form-label fw-semibold text-sm-end" th:for="${name}" th:text="${label}">Label</label>
+        <div class="col-sm-9">
+          <th:block th:switch="${type}">
+            <input th:case="'text'" th:id="${name}" class="form-control" th:classappend="${!valid ? 'is-invalid' : ''}"
+                   type="text" th:name="${name}" th:value="${value}"/>
+            <input th:case="'date'" th:id="${name}" class="form-control" th:classappend="${!valid ? 'is-invalid' : ''}"
+                   type="date" th:name="${name}" th:value="${value}"/>
           </th:block>
+          <div th:if="${!valid}" class="invalid-feedback" th:text="${errors['__${name}__']}">Error</div>
         </div>
       </div>
     </th:block>

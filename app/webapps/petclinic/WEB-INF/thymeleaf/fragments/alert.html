@@ -1,28 +1,27 @@
 <html xmlns:th="https://www.thymeleaf.org">
 <body>
 
-<div th:if="${flashMap != null && flashMap['message']}" class="alert alert-success" id="success-message">
-    <span th:text="${flashMap['message']}"></span>
+<div th:if="${flashMap != null && flashMap['message']}" class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4" role="alert" id="success-message">
+    <i class="bi bi-check-circle-fill me-2 flex-shrink-0" aria-hidden="true"></i>
+    <div th:text="${flashMap['message']}"></div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
-<div th:if="${flashMap != null && flashMap['error']}" class="alert alert-danger" id="error-message">
-    <span th:text="${flashMap['error']}"></span>
+<div th:if="${flashMap != null && flashMap['error']}" class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-4" role="alert" id="error-message">
+    <i class="bi bi-exclamation-triangle-fill me-2 flex-shrink-0" aria-hidden="true"></i>
+    <div th:text="${flashMap['error']}"></div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
 
 <script th:if="${flashMap != null}">
-    // Function to hide the success and error messages after 3 seconds
-    function hideMessages() {
-        setTimeout(function () {
-            if (document.getElementById("success-message")) {
-                document.getElementById("success-message").style.display = "none";
+    setTimeout(function () {
+        ["success-message", "error-message"].forEach(function (id) {
+            const el = document.getElementById(id);
+            if (el) {
+                const alert = bootstrap.Alert.getOrCreateInstance(el);
+                alert.close();
             }
-            if (document.getElementById("error-message")) {
-                document.getElementById("error-message").style.display = "none";
-            }
-        }, 3000); // 3000 milliseconds (3 seconds)
-    }
-
-    // Call the function to hide messages
-    hideMessages();
+        });
+    }, 3500);
 </script>
 
 </body>

@@ -3,82 +3,141 @@
       th:replace="~{fragments/layout :: layout(~{::content}, 'owners')}">
 
 <th:block th:fragment="content">
-    <h2>Owner Information</h2>
-
     <th:block th:insert="~{fragments/alert}" />
 
+    <div th:if="${error != null}" class="alert alert-warning d-flex align-items-center" role="alert">
+        <i class="bi bi-exclamation-circle-fill me-2" aria-hidden="true"></i>
+        <div th:text="${error}"></div>
+    </div>
+
     <th:block th:if="${owner != null}">
-    <table class="table table-striped">
-        <colgroup>
-            <col style="width: 30%;">
-            <col>
-        </colgroup>
-        <tr>
-            <th>Name</th>
-            <td><b th:text="${owner.firstName + ' ' + owner.lastName}"></b></td>
-        </tr>
-        <tr>
-            <th>Address</th>
-            <td th:text="${owner.address}"></td>
-        </tr>
-        <tr>
-            <th>City</th>
-            <td th:text="${owner.city}"></td>
-        </tr>
-        <tr>
-            <th>Telephone</th>
-            <td th:text="${owner.telephone}"></td>
-        </tr>
-    </table>
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+            <h2 class="h3 mb-0"><i class="bi bi-person-vcard me-2" aria-hidden="true"></i>Owner Information</h2>
+            <div class="d-flex flex-wrap gap-2">
+                <a th:if="${!param.page}" th:href="@{__${owner.id}__/edit}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-pencil-square me-1" aria-hidden="true"></i>Edit Owner
+                </a>
+                <a th:if="${param.page}" th:href="@{__${owner.id}__/edit(page=${param.page})}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-pencil-square me-1" aria-hidden="true"></i>Edit Owner
+                </a>
+                <a th:href="@{__${owner.id}__/pets/new}" class="btn btn-success btn-sm">
+                    <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>Add New Pet
+                </a>
+                <form th:action="@{/owners/__${owner.id}__/delete}" method="post" class="d-inline"
+                      onsubmit="return confirm('Are you sure you want to delete this owner and all associated pets?');">
+                    <input type="hidden" name="page" th:value="${param.page}" th:if="${param.page}"/>
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-trash me-1" aria-hidden="true"></i>Delete Owner
+                    </button>
+                </form>
+                <a th:if="${!param.page}" class="btn btn-outline-secondary btn-sm" th:href="@{/owners/find}">
+                    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Back
+                </a>
+                <a th:if="${param.page}" class="btn btn-outline-secondary btn-sm" th:href="@{/owners(page=${param.page})}">
+                    <i class="bi bi-arrow-left me-1" aria-hidden="true"></i>Back
+                </a>
+            </div>
+        </div>
 
-    <a th:if="${!param.page}" th:href="@{__${owner.id}__/edit}" class="btn btn-primary">Edit Owner</a>
-    <a th:if="${param.page}" th:href="@{__${owner.id}__/edit(page=${param.page})}" class="btn btn-primary">Edit Owner</a>
-    <a th:href="@{__${owner.id}__/pets/new}" class="btn btn-primary">Add New Pet</a>
-    <a th:if="${!param.page}" class="btn btn-primary" th:href="@{/owners/find}">Back</a>
-    <a th:if="${param.page}" class="btn btn-primary" th:href="@{/owners(page=${param.page})}">Back</a>
+        <table class="table table-striped align-middle mb-5">
+            <colgroup>
+                <col style="width: 28%;">
+                <col>
+            </colgroup>
+            <tbody class="table-group-divider">
+            <tr>
+                <th>Name</th>
+                <td><strong th:text="${owner.firstName + ' ' + owner.lastName}"></strong></td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td th:text="${owner.address}"></td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td th:text="${owner.city}"></td>
+            </tr>
+            <tr>
+                <th>Telephone</th>
+                <td class="font-monospace" th:text="${owner.telephone}"></td>
+            </tr>
+            </tbody>
+        </table>
 
-    <h2 class="mt-4">Pets and Visits</h2>
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+            <h2 class="h3 mb-0">
+                <i class="bi bi-heart me-2" aria-hidden="true"></i>Pets and Visits
+                <span th:if="${!owner.pets.isEmpty()}" class="badge bg-secondary-subtle text-body-secondary fs-6 ms-2 fw-normal">
+                    Total pets: <span th:text="${owner.pets.size()}">0</span>
+                </span>
+            </h2>
+        </div>
 
-    <table th:if="${!owner.pets.isEmpty()}" class="table table-striped table-responsive">
-        <colgroup>
-            <col style="width: 30%;">
-            <col>
-        </colgroup>
-        <tr th:each="pet : ${owner.pets}">
-            <td>
-                <dl class="dl-horizontal mb-0">
-                    <dt>Name</dt>
-                    <dd th:text="${pet.name}"></dd>
-                    <dt>Birth Date</dt>
-                    <dd th:text="${#temporals.format(pet.birthDate, 'yyyy-MM-dd')}"></dd>
-                    <dt>Type</dt>
-                    <dd th:text="${pet.type}"></dd>
-                </dl>
-                <a class="btn btn-primary btn-sm" th:href="@{__${owner.id}__/pets/__${pet.id}__/edit}">Edit Pet</a>
-                <a class="btn btn-primary btn-sm" th:href="@{__${owner.id}__/pets/__${pet.id}__/visits/new}">Add Visit</a>
-            </td>
-            <td class="align-top" style="">
-                <div style="width:100%;overflow:auto;max-height:210px;">
-                    <table class="table table-sm caption-top mb-0">
-                        <caption th:if="${!pet.visits.isEmpty()}">[[${pet.visits.size()}]] visits</caption>
-                        <caption th:if="${pet.visits.isEmpty()}">No visits</caption>
-                        <colgroup>
-                            <col style="width: 15%;">
-                            <col>
-                        </colgroup>
-                        <tbody th:if="${!pet.visits.isEmpty()}">
-                            <tr th:each="visit : ${pet.visits}">
-                                <td th:text="${'[' + #temporals.format(visit.date, 'yyyy-MM-dd') + ']'}"></td>
-                                <td th:text="${visit.description}"></td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div th:if="${owner.pets.isEmpty()}" class="card bg-body-tertiary border-0 p-4 text-center text-body-secondary">
+            <p class="mb-2">No pets have been added to this owner yet.</p>
+            <div>
+                <a th:href="@{__${owner.id}__/pets/new}" class="btn btn-outline-success btn-sm">
+                    <i class="bi bi-plus-circle me-1" aria-hidden="true"></i>Add First Pet
+                </a>
+            </div>
+        </div>
+
+        <div th:if="${!owner.pets.isEmpty()}" class="d-flex flex-column gap-3">
+            <div th:each="pet : ${owner.pets}" class="card shadow-sm">
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-4 border-end-md">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h3 class="h5 mb-0 fw-bold" th:text="${pet.name}">Pet Name</h3>
+                                <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle" th:text="${pet.type}">dog</span>
+                            </div>
+                            <p class="text-body-secondary small mb-3">
+                                <i class="bi bi-calendar-event me-1" aria-hidden="true"></i>Birth Date:
+                                <span class="font-monospace" th:text="${#temporals.format(pet.birthDate, 'yyyy-MM-dd')}"></span>
+                            </p>
+                            <div class="d-flex flex-wrap gap-2">
+                                <a class="btn btn-outline-primary btn-sm" th:href="@{__${owner.id}__/pets/__${pet.id}__/edit}">
+                                    <i class="bi bi-pencil me-1" aria-hidden="true"></i>Edit Pet
+                                </a>
+                                <a class="btn btn-outline-success btn-sm" th:href="@{__${owner.id}__/pets/__${pet.id}__/visits/new}">
+                                    <i class="bi bi-calendar-plus me-1" aria-hidden="true"></i>Add Visit
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h4 class="h6 mb-0 text-body-secondary">Visit History</h4>
+                                <span class="badge bg-secondary-subtle text-body-secondary" th:if="${!pet.visits.isEmpty()}" th:text="${pet.visits.size() + ' visits'}"></span>
+                                <span class="badge bg-secondary-subtle text-body-secondary" th:if="${pet.visits.isEmpty()}">No visits</span>
+                            </div>
+                            <div th:if="${!pet.visits.isEmpty()}" class="table-responsive" style="max-height: 210px; overflow-y: auto;">
+                                <table class="table table-sm table-hover mb-0">
+                                    <colgroup>
+                                        <col style="width: 130px;">
+                                        <col>
+                                    </colgroup>
+                                    <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="table-group-divider">
+                                    <tr th:each="visit : ${pet.visits}">
+                                        <td class="font-monospace text-nowrap" th:text="${#temporals.format(visit.date, 'yyyy-MM-dd')}"></td>
+                                        <td th:text="${visit.description}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p th:if="${pet.visits.isEmpty()}" class="text-body-secondary small fst-italic mb-0">
+                                No visits have been recorded for this pet yet.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-            </td>
-        </tr>
-    </table>
-    <p th:if="${owner.pets.isEmpty()}">(No pets have been added to this owner yet.)</p>
-    <p th:if="${!owner.pets.isEmpty()}" class="text-end">Total pets: <span th:text="${owner.pets.size()}">0</span></p>
+            </div>
+        </div>
     </th:block>
 </th:block>
 

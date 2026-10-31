@@ -32,8 +32,9 @@ import org.jspecify.annotations.NonNull;
                 MethodType.GET
         },
         pointcut = {
-                "+: /owners",
-                "+: /owners/**"
+                "+: /owners/**",
+                "+: /vets.html",
+                "+: /vets/**"
         }
 )
 public class FlashMapEchoAspect {

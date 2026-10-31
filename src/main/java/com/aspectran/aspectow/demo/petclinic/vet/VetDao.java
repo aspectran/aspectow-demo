@@ -50,10 +50,19 @@ public class VetDao {
         return entityQuery.find(Vet.class, id);
     }
 
+    public List<Specialty> findSpecialties() {
+        QSpecialty specialty = QSpecialty.specialty;
+        return entityQuery
+                .selectFrom(specialty)
+                .orderBy(specialty.name.asc())
+                .fetch();
+    }
+
     public List<Vet> findAll(@NonNull PageInfo pageInfo) {
         QVet vet = QVet.vet;
         List<Vet> listVets = entityQuery
                 .selectFrom(vet)
+                .orderBy(vet.id.desc())
                 .offset(pageInfo.getOffset())
                 .limit(pageInfo.getSize())
                 .fetch();
@@ -64,6 +73,18 @@ public class VetDao {
 
         pageInfo.setTotalElements(listVets.size(), countQuery::fetchOne);
         return listVets;
+    }
+
+    public void save(@NonNull Vet vet) {
+        if (vet.isNew()) {
+            entityQuery.persist(vet);
+        } else {
+            entityQuery.merge(vet);
+        }
+    }
+
+    public void delete(@NonNull Vet vet) {
+        entityQuery.remove(entityQuery.contains(vet) ? vet : entityQuery.merge(vet));
     }
 
 }

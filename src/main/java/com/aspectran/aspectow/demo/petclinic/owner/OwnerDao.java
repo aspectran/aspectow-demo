@@ -73,13 +73,15 @@ public class OwnerDao {
                 .from(owner)
                 .leftJoin(owner.pets, pet)
                 .where(owner.lastName.startsWith(lastName))
+                .orderBy(owner.id.desc())
                 .offset(pageInfo.getOffset())
                 .limit(pageInfo.getSize())
                 .fetch();
 
         Fetchable<Long> countQuery = entityQuery
                 .select(owner.count())
-                .from(owner);
+                .from(owner)
+                .where(owner.lastName.startsWith(lastName));
 
         pageInfo.setTotalElements(listOwners.size(), countQuery::fetchOne);
         return listOwners;
@@ -129,6 +131,14 @@ public class OwnerDao {
     }
 
 	/**
+	 * Delete an {@link Owner} from the data store.
+	 * @param owner the {@link Owner} to delete
+	 */
+	public void delete(@NonNull Owner owner) {
+        entityQuery.remove(entityQuery.contains(owner) ? owner : entityQuery.merge(owner));
+    }
+
+	/**
 	 * Returns all the owners from data store.
 	 **/
 	public List<Owner> findAll(@NonNull PageInfo pageInfo) {
@@ -137,6 +147,7 @@ public class OwnerDao {
         List<Owner> listOwners = entityQuery
                 .selectFrom(owner)
                 .leftJoin(owner.pets, pet)
+                .orderBy(owner.id.desc())
                 .offset(pageInfo.getOffset())
                 .limit(pageInfo.getSize())
                 .fetch();

@@ -3,27 +3,38 @@
       th:replace="~{fragments/layout :: layout(~{::content}, 'owners')}">
 
 <th:block th:fragment="content">
-    <h2>Find Owners</h2>
+    <th:block th:insert="~{fragments/alert}" />
 
-    <div class="row">
-        <div class="col-auto d-none d-md-block">
-            <img class="img-responsive" th:src="@{/images/pets.png}"/>
+    <div class="row g-4 align-items-center justify-content-center">
+        <div class="col-md-5 col-lg-4 text-center d-none d-md-block">
+            <img class="img-fluid" th:src="@{/images/pets.png}" alt="Pets"/>
         </div>
-        <div class="col">
-            <form th:action="@{/owners}" method="get" class="form-horizontal" id="search-owner-form">
-                <div class="form-group">
-                    <div class="control-group" id="lastNameGroup">
-                        <input th:replace="~{fragments/inputField :: input ('text', 'Last Name', 'lastName', ${owner.lastName})}"/>
-                    </div>
+        <div class="col-md-7 col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header py-3">
+                    <h2 class="h4 mb-0"><i class="bi bi-search me-2" aria-hidden="true"></i>Find Owners</h2>
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-primary">Find Owner</button>
-                    </div>
+                <div class="card-body p-4">
+                    <form th:action="@{/owners}" method="get" id="search-owner-form">
+                        <div id="lastNameGroup">
+                            <input th:replace="~{fragments/inputField :: input ('text', 'Last Name', 'lastName', ${owner.lastName})}"/>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-9 offset-sm-3">
+                                <div class="form-text mb-3">Leave blank to view all registered owners.</div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-search me-1" aria-hidden="true"></i>Find Owner
+                                    </button>
+                                    <a class="btn btn-success" th:href="@{/owners/new}">
+                                        <i class="bi bi-person-plus me-1" aria-hidden="true"></i>Add Owner
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
-                <a class="btn btn-primary" th:href="@{/owners/new}">Add Owner</a>
-            </form>
+            </div>
         </div>
     </div>
 </th:block>

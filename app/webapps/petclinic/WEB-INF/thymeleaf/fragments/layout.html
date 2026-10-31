@@ -4,18 +4,18 @@
       th:fragment="layout (template, menu)">
 
 <th:block th:fragment="content">
-    <nav class="navbar navbar-expand-lg navbar-dark py-md-2 py-lg-0" role="navigation">
-      <a class="navbar-brand mx-sm-auto ms-md-3" th:href="@{/}"><span></span></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark py-md-2 py-lg-0 px-3" role="navigation">
+      <a class="navbar-brand mx-sm-auto ms-md-2" th:href="@{/}"><span></span></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse ps-lg-5" id="main-navbar">
+      <div class="collapse navbar-collapse ps-lg-4" id="main-navbar">
 
         <ul class="navbar-nav me-auto" th:remove="all">
 
-          <li th:fragment="menuItem(link, active, title, glyph, text)" th:class="nav-item">
+          <li th:fragment="menuItem(link, active, title, glyph, text)" class="nav-item">
             <a th:class="${active == menu ? 'nav-link active' : 'nav-link'}" th:href="@{__${link}__}" th:title="${title}">
-              <span th:class="'bi bi-' + ${glyph}"></span>
+              <i th:class="'bi bi-' + ${glyph} + ' me-1'" aria-hidden="true"></i>
               <span th:text="${text}">Template</span>
             </a>
           </li>
@@ -24,44 +24,45 @@
 
         <ul class="nav navbar-nav">
 
-          <li th:replace="~{::menuItem ('/','home','home page','house','Home')}">
-            <span class="bi bi-house" aria-hidden="true"></span>
+          <li th:replace="~{::menuItem ('/','home','Home page','house-door','Home')}">
+            <i class="bi bi-house-door me-1" aria-hidden="true"></i>
             <span>Home</span>
           </li>
 
-          <li th:replace="~{::menuItem ('/owners/find','owners','find owners','search','Find owners')}">
-            <span class="bi bi-search" aria-hidden="true"></span>
+          <li th:replace="~{::menuItem ('/owners/find','owners','Find owners','search','Find owners')}">
+            <i class="bi bi-search me-1" aria-hidden="true"></i>
             <span>Find owners</span>
           </li>
 
-          <li th:replace="~{::menuItem ('/vets.html','vets','veterinarians','list-task','Veterinarians')}">
-            <span class="bi bi-list-task" aria-hidden="true"></span>
+          <li th:replace="~{::menuItem ('/vets.html','vets','Veterinarians','heart-pulse','Veterinarians')}">
+            <i class="bi bi-heart-pulse me-1" aria-hidden="true"></i>
             <span>Veterinarians</span>
           </li>
 
-          <li
-            th:replace="~{::menuItem ('/oups','error','trigger a RuntimeException to see how it is handled','exclamation-triangle','Error')}">
-            <span class="bi bi-exclamation-triangle" aria-hidden="true"></span>
+          <li th:replace="~{::menuItem ('/oups','error','Trigger a RuntimeException to see how it is handled','exclamation-triangle','Error')}">
+            <i class="bi bi-exclamation-triangle me-1" aria-hidden="true"></i>
             <span>Error</span>
           </li>
 
-          <li>
-            <a th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" class="nav-link bi bi-activity" href="https://public.aspectran.com/monitoring/#petclinic"> Monitoring</a>
-            <a th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" class="nav-link bi bi-activity" th:href="@{/../monitoring/#petclinic}"> Monitoring</a>
+          <li class="nav-item">
+            <a th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" class="nav-link text-warning" href="https://public.aspectran.com/monitoring/#petclinic" target="_blank" title="Real-time logs, metrics, and traffic monitoring">
+              <i class="bi bi-activity me-1" aria-hidden="true"></i><span>Monitoring</span>
+            </a>
+            <a th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" class="nav-link text-warning" th:href="@{/../monitoring/#petclinic}" target="_blank" title="Real-time logs, metrics, and traffic monitoring">
+              <i class="bi bi-activity me-1" aria-hidden="true"></i><span>Monitoring</span>
+            </a>
           </li>
 
         </ul>
       </div>
     </nav>
-    <div class="container-fluid xd-container">
+    <div class="container py-4 px-3 px-lg-4 xd-container">
 
         <th:block th:insert="${template}" />
 
-        <div class="container">
-          <div class="row">
-            <div class="col-12 mt-5 mb-5 text-center">
-              <img th:src="@{/images/spring-logo.svg}" alt="VMware Tanzu Logo" class="logo">
-            </div>
+        <div class="row mt-5 pt-4 border-top">
+          <div class="col-12 my-3 text-center">
+            <img th:src="@{/images/spring-logo.svg}" alt="VMware Tanzu Logo" class="logo opacity-75">
           </div>
         </div>
     </div>

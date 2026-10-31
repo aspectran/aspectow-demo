@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::content}, 'vets')}">
+
+<th:block th:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <th:block th:insert="~{fragments/alert}" />
+
+            <div class="card shadow-sm">
+                <div class="card-header py-3">
+                    <h2 class="h4 mb-0">
+                        <i class="bi me-2" th:classappend="${vet['new']} ? 'bi-person-plus' : 'bi-person-gear'" aria-hidden="true"></i>
+                        <span th:text="${vet['new']} ? 'New Veterinarian' : 'Edit Veterinarian'">Veterinarian</span>
+                    </h2>
+                </div>
+                <div class="card-body p-4">
+                    <form id="vet-form" method="post">
+                        <input th:replace="~{fragments/inputField :: input ('text', 'First Name', 'firstName', ${vet.firstName})}"/>
+                        <input th:replace="~{fragments/inputField :: input ('text', 'Last Name', 'lastName', ${vet.lastName})}"/>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label fw-semibold text-sm-end">Specialties</label>
+                            <div class="col-sm-9 pt-2">
+                                <div class="d-flex flex-wrap gap-3">
+                                    <div class="form-check" th:each="specialty : ${specialties}">
+                                        <input class="form-check-input" type="checkbox"
+                                               name="specialtyIds"
+                                               th:id="${'specialty-' + specialty.id}"
+                                               th:value="${specialty.id}"
+                                               th:checked="${vet.hasSpecialty(specialty.id)}"/>
+                                        <label class="form-check-label"
+                                               th:for="${'specialty-' + specialty.id}"
+                                               th:text="${specialty.name}">radiology</label>
+                                    </div>
+                                </div>
+                                <div class="form-text mt-2">Select one or more specialties, or leave unchecked for none.</div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-sm-9 offset-sm-3 d-flex flex-wrap gap-2">
+                                <button th:with="text=${vet['new']} ? 'Add Veterinarian' : 'Update Veterinarian'"
+                                        class="btn btn-primary" type="submit">
+                                    <i class="bi bi-check-lg me-1" aria-hidden="true"></i><span th:text="${text}">Add Veterinarian</span>
+                                </button>
+                                <button th:if="${!param.page}" type="button" class="btn btn-outline-secondary" onclick="history.back();">Cancel</button>
+                                <a th:if="${param.page}" class="btn btn-outline-secondary" th:href="@{/vets.html(page=${param.page})}">Cancel</a>
+                                <button th:if="${!vet['new']}" type="submit"
+                                        class="btn btn-outline-danger ms-sm-auto"
+                                        th:formaction="@{/vets/__${vet.id}__/delete(page=${param.page} ?: '1')}"
+                                        onclick="return confirm('Are you sure you want to delete this veterinarian?');">
+                                    <i class="bi bi-trash me-1" aria-hidden="true"></i>Delete
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+</html>

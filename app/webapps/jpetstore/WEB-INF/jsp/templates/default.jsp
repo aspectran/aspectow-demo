@@ -161,7 +161,7 @@
     </div>
 </nav>
 <section itemscope itemtype="https://schema.org/Article">
-    <div id="masthead">
+    <div id="masthead" class="d-none d-md-block">
         <div class="container">
             <header>
                 <p class="subheadline" itemprop="alternativeHeadline">

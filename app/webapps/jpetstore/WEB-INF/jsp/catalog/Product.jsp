@@ -21,7 +21,7 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 bg-body-secondary px-3 py-2 rounded">
     <h3>${product.name}</h3>
     <a class="btn btn-secondary btn-sm" href="<aspectran:url value="/categories/${product.categoryId}"/>">Return to ${product.categoryId}</a>
 </div>

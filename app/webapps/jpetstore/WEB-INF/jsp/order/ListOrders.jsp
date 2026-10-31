@@ -21,7 +21,7 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 bg-body-secondary px-3 py-2 rounded">
     <h3>My Orders</h3>
     <span><i class="bi bi-basket3-fill"></i> <fmt:formatNumber value="${pageInfo.totalElements}"/></span>
 </div>

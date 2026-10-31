@@ -21,7 +21,7 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div class="row justify-content-center">
+<div class="row justify-content-center mb-4">
     <div class="col-md-8">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Ooops!</h3>

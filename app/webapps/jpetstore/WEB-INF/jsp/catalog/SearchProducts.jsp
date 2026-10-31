@@ -19,7 +19,7 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 bg-body-secondary px-3 py-2 rounded">
     <h3>Search Results for "${param.keyword}"</h3>
     <a class="btn btn-secondary btn-sm" href="<aspectran:url value="/"/>">Return to Main Menu</a>
 </div>

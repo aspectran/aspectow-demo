@@ -21,9 +21,9 @@
 <%@ include file="../common/IncludeTop.jsp"%>
 
 <c:if test="${not empty user.account}">
-    <div class="text-end pb-2">
-        <i class="bi bi-person-circle"></i> <aspectran:message code='welcome' arguments="${user.account.firstName}" htmlEscape="true"/>
-    </div>
+	<div class="d-flex justify-content-center align-items-center mb-4 bg-body-secondary px-3 py-2 rounded">
+		<div><i class="bi bi-person-circle"></i> <aspectran:message code='welcome' arguments="${user.account.firstName}" htmlEscape="true"/></div>
+	</div>
 </c:if>
 
 <div class="row">

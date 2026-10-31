@@ -21,64 +21,73 @@
 
 <div class="row justify-content-center">
     <div class="col-lg-8">
-        <form method="post" action="<aspectran:url value="/order/newOrder"/>">
-            <input type="hidden" name="shippingForm" value="true"/>
-
-            <h3>Shipping Address</h3>
-            <table class="table table-striped">
-                <colgroup>
-                    <col style="width: 25%"/>
-                    <col/>
-                </colgroup>
-                <tbody class="table-group-divider">
-                <tr>
-                    <td>First name:</td>
-                    <td><input type="text" name="shipToFirstName" value="${order.shipToFirstName}" class="form-control"/>
-                        <span class="text-danger">${errors.shipToFirstName}</span></td>
-                </tr>
-                <tr>
-                    <td>Last name:</td>
-                    <td><input type="text" name="shipToLastName" value="${order.shipToLastName}" class="form-control"/>
-                        <span class="text-danger">${errors.shipToLastName}</span></td>
-                </tr>
-                <tr>
-                    <td>Address 1:</td>
-                    <td><input type="text" name="shipAddress1" value="${order.shipAddress1}" class="form-control"/>
-                        <span class="text-danger">${errors.shipAddress1}</span></td>
-                </tr>
-                <tr>
-                    <td>Address 2:</td>
-                    <td><input type="text" name="shipAddress2" value="${order.shipAddress2}" class="form-control"/>
-                        <span class="text-danger">${errors.shipAddress2}</span></td>
-                </tr>
-                <tr>
-                    <td>City:</td>
-                    <td><input type="text" name="shipCity" value="${order.shipCity}" class="form-control"/>
-                        <span class="text-danger">${errors.shipCity}</span></td>
-                </tr>
-                <tr>
-                    <td>State:</td>
-                    <td><input type="text" name="shipState" value="${order.shipState}" class="form-control"/>
-                        <span class="text-danger">${errors.shipState}</span></td>
-                </tr>
-                <tr>
-                    <td>Zip:</td>
-                    <td><input type="text" name="shipZip" value="${order.shipZip}" class="form-control"/>
-                        <span class="text-danger">${errors.shipZip}</span></td>
-                </tr>
-                <tr>
-                    <td>Country:</td>
-                    <td><input type="text" name="shipCountry" value="${order.shipCountry}" class="form-control"/>
-                        <span class="text-danger">${errors.shipCountry}</span></td>
-                </tr>
-                </tbody>
-            </table>
-
-            <div class="text-center">
-                <button type="submit" class="btn btn-success">Continue</button>
-                <a href="<aspectran:url value="/order/newOrderForm"/>" class="btn btn-secondary">Back</a>
+        <div class="card shadow-sm">
+            <div class="card-header py-3">
+                <h2 class="h4 mb-0">
+                    <i class="bi bi-truck me-2" aria-hidden="true"></i>
+                    <span>Shipping Address</span>
+                </h2>
             </div>
-        </form>
+            <div class="card-body p-4">
+                <form method="post" action="<aspectran:url value="/order/newOrder"/>">
+                    <input type="hidden" name="shippingForm" value="true"/>
+
+                    <table class="table table-striped">
+                        <colgroup>
+                            <col style="width: 25%"/>
+                            <col/>
+                        </colgroup>
+                        <tbody class="table-group-divider">
+                        <tr>
+                            <td>First name:</td>
+                            <td><input type="text" name="shipToFirstName" value="${order.shipToFirstName}" class="form-control"/>
+                                <span class="text-danger">${errors.shipToFirstName}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Last name:</td>
+                            <td><input type="text" name="shipToLastName" value="${order.shipToLastName}" class="form-control"/>
+                                <span class="text-danger">${errors.shipToLastName}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Address 1:</td>
+                            <td><input type="text" name="shipAddress1" value="${order.shipAddress1}" class="form-control"/>
+                                <span class="text-danger">${errors.shipAddress1}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Address 2:</td>
+                            <td><input type="text" name="shipAddress2" value="${order.shipAddress2}" class="form-control"/>
+                                <span class="text-danger">${errors.shipAddress2}</span></td>
+                        </tr>
+                        <tr>
+                            <td>City:</td>
+                            <td><input type="text" name="shipCity" value="${order.shipCity}" class="form-control"/>
+                                <span class="text-danger">${errors.shipCity}</span></td>
+                        </tr>
+                        <tr>
+                            <td>State:</td>
+                            <td><input type="text" name="shipState" value="${order.shipState}" class="form-control"/>
+                                <span class="text-danger">${errors.shipState}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Zip:</td>
+                            <td><input type="text" name="shipZip" value="${order.shipZip}" class="form-control"/>
+                                <span class="text-danger">${errors.shipZip}</span></td>
+                        </tr>
+                        <tr>
+                            <td>Country:</td>
+                            <td><input type="text" name="shipCountry" value="${order.shipCountry}" class="form-control"/>
+                                <span class="text-danger">${errors.shipCountry}</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success">Continue</button>
+                        <a href="<aspectran:url value="/order/newOrderForm"/>" class="btn btn-secondary">Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 

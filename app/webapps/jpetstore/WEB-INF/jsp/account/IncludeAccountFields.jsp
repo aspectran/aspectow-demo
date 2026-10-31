@@ -17,7 +17,7 @@
        limitations under the License.
 
 --%>
-<h3>Account Information</h3>
+<h3 class="h5 mt-4 mb-2">Account Information</h3>
 <table class="table table-striped">
 	<colgroup>
 		<col style="width: 25%"/>
@@ -97,7 +97,7 @@
     </tbody>
 </table>
 
-<h3>Profile Information</h3>
+<h3 class="h5 mt-4 mb-2">Profile Information</h3>
 <table class="table table-striped">
 	<colgroup>
 		<col style="width: 25%"/>

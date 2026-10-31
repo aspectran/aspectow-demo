@@ -4,7 +4,7 @@
       th:fragment="layout (template, menu)">
 
 <th:block th:fragment="content">
-    <nav class="navbar navbar-expand-lg navbar-dark py-md-2 py-lg-0 px-3" role="navigation">
+    <nav class="navbar navbar-expand-lg navbar-dark py-md-2 py-lg-0 ps-2 ps-lg-3" role="navigation">
       <a class="navbar-brand mx-sm-auto ms-md-2" th:href="@{/}"><span></span></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -46,10 +46,10 @@
 
           <li class="nav-item">
             <a th:if="${#{currentEnvironment}.acceptsProfiles('prod')}" class="nav-link text-warning" href="https://public.aspectran.com/monitoring/#petclinic" target="_blank" title="Real-time logs, metrics, and traffic monitoring">
-              <i class="bi bi-activity me-1" aria-hidden="true"></i><span>Monitoring</span>
+              <i class="bi bi-speedometer2 me-1" aria-hidden="true"></i><span>Monitoring</span>
             </a>
             <a th:if="${#{currentEnvironment}.acceptsProfiles('!prod')}" class="nav-link text-warning" th:href="@{/../monitoring/#petclinic}" target="_blank" title="Real-time logs, metrics, and traffic monitoring">
-              <i class="bi bi-activity me-1" aria-hidden="true"></i><span>Monitoring</span>
+              <i class="bi bi-speedometer2 me-1" aria-hidden="true"></i><span>Monitoring</span>
             </a>
           </li>
 

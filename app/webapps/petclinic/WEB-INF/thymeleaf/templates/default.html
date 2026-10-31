@@ -146,8 +146,8 @@
     </div>
 </nav>
 <section itemscope itemtype="https://schema.org/Article">
-    <div id="masthead"
-         th:class="${page != null and !#strings.isEmpty(page.headimageinclude) ? 'masthead-with-image' : ''}">
+    <div id="masthead" class="d-none d-md-block"
+         th:classappend="${page != null and !#strings.isEmpty(page.headimageinclude) ? 'masthead-with-image' : ''}">
         <div class="container" th:classappend="${pageStyle}">
             <header>
                 <p class="subheadline" itemprop="alternativeHeadline">

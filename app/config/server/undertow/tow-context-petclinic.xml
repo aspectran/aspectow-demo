@@ -30,8 +30,8 @@
                 <property name="sessionTrackingModes" type="set">
                     <value>#{class:jakarta.servlet.SessionTrackingMode^COOKIE}</value>
                 </property>
-                <property name="name" value="JSESSIONID"/>
-                <property name="path" value="/"/>
+                <property name="name" value="JSESSIONID_%{tow.context.petclinic.name}"/>
+                <property name="path">/</property>
                 <property name="domain" value="%{tow.server.domain}"/>
             </bean>
         </property>

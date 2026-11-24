@@ -151,6 +151,7 @@ public class AccountActivity {
                        String username,
                        String password,
                        String referer) {
+        sessionManager.expire();
         Account account = accountService.getAccount(username, password);
         if (account == null) {
             translet.redirect("/account/signonForm?retry=true");

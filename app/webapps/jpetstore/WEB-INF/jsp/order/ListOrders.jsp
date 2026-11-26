@@ -21,9 +21,29 @@
 --%>
 <%@ include file="../common/IncludeTop.jsp"%>
 
-<div class="d-flex justify-content-between align-items-center mb-3 bg-body-secondary px-3 py-2 rounded">
-    <h3>My Orders</h3>
-    <span><i class="bi bi-basket3-fill"></i> <fmt:formatNumber value="${pageInfo.totalElements}"/></span>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3 bg-body-secondary px-3 py-2 rounded">
+    <div class="d-flex align-items-center gap-2">
+        <h3 class="mb-0 text-nowrap">My Orders</h3>
+        <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fw-semibold text-nowrap">
+            <i class="bi bi-basket3-fill me-1"></i><fmt:formatNumber value="${pageInfo.totalElements}"/>
+        </span>
+    </div>
+    <div class="d-flex flex-wrap align-items-center gap-2">
+        <div class="input-group input-group-sm w-auto">
+            <span class="input-group-text"><i class="bi bi-calendar3"></i></span>
+            <input type="date" id="startDate" class="form-control" value="${param.startDate}" aria-label="Start Date" title="Start Date">
+            <span class="input-group-text">~</span>
+            <input type="date" id="endDate" class="form-control" value="${param.endDate}" aria-label="End Date" title="End Date">
+            <button class="btn btn-outline-secondary" type="button" onclick="performSearch()" title="Search">
+                <i class="bi bi-search"></i>
+            </button>
+            <c:if test="${not empty param.startDate or not empty param.endDate}">
+                <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()" title="Clear filter">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </c:if>
+        </div>
+    </div>
 </div>
 
 <table class="table table-striped">
@@ -58,66 +78,47 @@
     </tbody>
 </table>
 
-<c:if test="${pageInfo.totalPages > 1}">
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            <li class="page-item">
-                <c:if test="${pageInfo.number > 1}">
-                    <a class="page-link" href="<aspectran:url value="/order/listOrders?page=1"/>" title="First" aria-label="First page">First</a>
-                </c:if>
-                <c:if test="${pageInfo.number <= 1}">
-                    <span class="page-link disabled" title="First" aria-label="First page">First</span>
-                </c:if>
-            </li>
-            <li class="page-item">
-                <c:if test="${pageInfo.number > 5 and pageInfo.number % 5 == 1}">
-                    <a class="page-link" href="<aspectran:url value="/order/listOrders?page={pageNumber}"><aspectran:param name="pageNumber" value="${pageInfo.number - 1}"/></aspectran:url>" title="Previous" aria-label="Previous page">&laquo;</a>
-                </c:if>
-                <c:if test="${pageInfo.number > 5 and pageInfo.number % 5 != 1}">
-                    <a class="page-link" href="<aspectran:url value="/order/listOrders?page={pageNumber}"><aspectran:param name="pageNumber" value="${pageInfo.number - 5}"/></aspectran:url>" title="Previous" aria-label="Previous page">&laquo;</a>
-                </c:if>
-                <c:if test="${pageInfo.number <= 5}">
-                    <span class="page-link disabled" title="Previous" aria-label="Previous page">&laquo;</span>
-                </c:if>
-            </li>
-            <c:forEach var="i" begin="${pageInfo.number - (pageInfo.number - 1) % 5}" end="${pageInfo.number - (pageInfo.number - 1) % 5 + 4}">
-                <c:if test="${i <= pageInfo.totalPages}">
-                    <li class="page-item">
-                        <c:if test="${i != pageInfo.number}">
-                            <a class="page-link" href="<aspectran:url value="/order/listOrders?page={pageNumber}"><aspectran:param name="pageNumber" value="${i}"/></aspectran:url>" aria-label="Page ${i}">${i}</a>
-                        </c:if>
-                        <c:if test="${i == pageInfo.number}">
-                            <span class="page-link active" aria-label="Page ${i}">${i}</span>
-                        </c:if>
-                    </li>
-                </c:if>
-            </c:forEach>
-            <li class="page-item">
-                <c:if test="${pageInfo.number < pageInfo.totalPages - (pageInfo.totalPages - 1) % 5}">
-                    <c:if test="${pageInfo.number < pageInfo.totalPages - 5 and pageInfo.number % 5 == 0}">
-                        <a class="page-link" href="<aspectran:url value="/order/listOrders?page={pageNumber}"><aspectran:param name="pageNumber" value="${pageInfo.number + 1}"/></aspectran:url>" title="Next" aria-label="Next page">&raquo;</a>
-                    </c:if>
-                    <c:if test="${pageInfo.number < pageInfo.totalPages - 5 and pageInfo.number % 5 != 0}">
-                        <a class="page-link" href="<aspectran:url value="/order/listOrders?page={pageNumber}"><aspectran:param name="pageNumber" value="${pageInfo.number + 5}"/></aspectran:url>" title="Next" aria-label="Next page">&raquo;</a>
-                    </c:if>
-                    <c:if test="${pageInfo.number >= pageInfo.totalPages - 5 and pageInfo.number < pageInfo.totalPages - (pageInfo.totalPages - 1) % 5}">
-                        <a class="page-link" href="<aspectran:url value="/order/listOrders?page={pageNumber}"><aspectran:param name="pageNumber" value="${pageInfo.totalPages}"/></aspectran:url>" title="Next" aria-label="Next page">&raquo;</a>
-                    </c:if>
-                </c:if>
-                <c:if test="${pageInfo.number >= pageInfo.totalPages - (pageInfo.totalPages - 1) % 5}">
-                    <span class="page-link disabled" title="Next" aria-label="Next page">&raquo;</span>
-                </c:if>
-            </li>
-            <li class="page-item">
-                <c:if test="${pageInfo.number < pageInfo.totalPages}">
-                    <a class="page-link" href="<aspectran:url value="/order/listOrders?page={pageNumber}"><aspectran:param name="pageNumber" value="${pageInfo.totalPages}"/></aspectran:url>" title="Last" aria-label="Last page">Last</a>
-                </c:if>
-                <c:if test="${pageInfo.number >= pageInfo.totalPages}">
-                    <span class="page-link disabled" title="Last" aria-label="Last page">Last</span>
-                </c:if>
-            </li>
-        </ul>
-    </nav>
-</c:if>
+<%@ include file="../common/IncludePagination.jsp"%>
+
+<script>
+    function performSearch() {
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+        if (startDate && endDate && startDate > endDate) {
+            alert('The start date cannot be later than the end date.');
+            return;
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        if (startDate) {
+            urlParams.set('startDate', startDate);
+        } else {
+            urlParams.delete('startDate');
+        }
+        if (endDate) {
+            urlParams.set('endDate', endDate);
+        } else {
+            urlParams.delete('endDate');
+        }
+        urlParams.set('page', '1');
+        window.location.search = urlParams.toString();
+    }
+
+    function clearSearch() {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.delete('startDate');
+        urlParams.delete('endDate');
+        urlParams.set('page', '1');
+        window.location.search = urlParams.toString();
+    }
+
+    $(function() {
+        $('#startDate, #endDate').on('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                performSearch();
+            }
+        });
+    });
+</script>
 
 <%@ include file="../common/IncludeBottom.jsp"%>

@@ -15,32 +15,17 @@
  */
 package com.aspectran.aspectow.demo.jpetstore.user;
 
+import com.aspectran.core.activity.InstantActivitySupport;
 import com.aspectran.core.adapter.SessionAdapter;
 import com.aspectran.core.component.bean.annotation.Bean;
 import com.aspectran.core.component.bean.annotation.Component;
-import com.aspectran.core.component.bean.aware.ActivityContextAware;
-import com.aspectran.core.context.ActivityContext;
-import com.aspectran.utils.Assert;
 import org.jspecify.annotations.NonNull;
 
 @Component
-@Bean("userSessionManager")
-public class UserSessionManager implements ActivityContextAware {
+@Bean("userSessionHolder")
+public class UserSessionHolder extends InstantActivitySupport {
 
     public static final String USER_SESSION_KEY = "user";
-
-    private ActivityContext context;
-
-    @NonNull
-    protected ActivityContext getActivityContext() {
-        Assert.state(context != null, "No ActivityContext injected");
-        return context;
-    }
-
-    @Override
-    public void setActivityContext(@NonNull ActivityContext context) {
-        this.context = context;
-    }
 
     public UserSession get() {
         return get(true);
@@ -78,13 +63,6 @@ public class UserSessionManager implements ActivityContextAware {
 
     public void expire() {
         getSessionAdapter().invalidate();
-    }
-
-    public void checkAuthentication() {
-        UserSession userSession = get(false);
-        if (userSession == null || !userSession.isAuthenticated()) {
-            throw new UserAuthRequiredException();
-        }
     }
 
     @NonNull

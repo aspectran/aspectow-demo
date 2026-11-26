@@ -19,7 +19,7 @@ import com.aspectran.aspectow.demo.jpetstore.cart.domain.Cart;
 import com.aspectran.aspectow.demo.jpetstore.cart.domain.CartItem;
 import com.aspectran.aspectow.demo.jpetstore.catalog.service.CatalogService;
 import com.aspectran.aspectow.demo.jpetstore.order.domain.Item;
-import com.aspectran.aspectow.demo.jpetstore.user.UserSessionManager;
+import com.aspectran.aspectow.demo.jpetstore.user.UserSessionHolder;
 import com.aspectran.core.component.bean.annotation.Autowired;
 import com.aspectran.core.component.bean.annotation.Component;
 
@@ -35,10 +35,10 @@ public class CartService {
 
     private final CatalogService catalogService;
 
-    private final UserSessionManager sessionManager;
+    private final UserSessionHolder sessionManager;
 
     @Autowired
-    public CartService(CatalogService catalogService, UserSessionManager sessionManager) {
+    public CartService(CatalogService catalogService, UserSessionHolder sessionManager) {
         this.catalogService = catalogService;
         this.sessionManager = sessionManager;
     }

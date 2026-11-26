@@ -65,6 +65,11 @@ public class UserSessionHolder extends InstantActivitySupport {
         getSessionAdapter().invalidate();
     }
 
+    public boolean isAuthenticated() {
+        UserSession userSession = get(false);
+        return (userSession != null && userSession.isAuthenticated());
+    }
+
     @NonNull
     private SessionAdapter getSessionAdapter() {
         return getActivityContext().getCurrentActivity().getSessionAdapter();

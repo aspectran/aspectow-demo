@@ -16,15 +16,13 @@
 package com.aspectran.aspectow.demo.jpetstore.cart.domain;
 
 import com.aspectran.aspectow.demo.jpetstore.order.domain.Item;
-import org.jspecify.annotations.NonNull;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,26 +36,25 @@ public class Cart implements Serializable {
     @Serial
     private static final long serialVersionUID = 8329559983943337176L;
 
-    private final Map<String, CartItem> itemMap = Collections.synchronizedMap(new HashMap<>());
-    private final List<CartItem> itemList = new ArrayList<>();
+    private final Map<String, CartItem> itemMap = new LinkedHashMap<>();
 
-    public Iterator<CartItem> getCartItems() {
-        return itemList.iterator();
+    public synchronized Iterator<CartItem> getCartItems() {
+        return itemMap.values().iterator();
     }
 
-    public List<CartItem> getCartItemList() {
-        return itemList;
+    public synchronized List<CartItem> getCartItemList() {
+        return new ArrayList<>(itemMap.values());
     }
 
-    public int getNumberOfItems() {
-        return itemList.size();
+    public synchronized int getNumberOfItems() {
+        return itemMap.size();
     }
 
-    public Iterator<CartItem> getAllCartItems() {
-        return itemList.iterator();
+    public synchronized Iterator<CartItem> getAllCartItems() {
+        return itemMap.values().iterator();
     }
 
-    public boolean containsItemId(String itemId) {
+    public synchronized boolean containsItemId(String itemId) {
         return (itemId != null && itemMap.containsKey(itemId));
     }
 
@@ -66,7 +63,7 @@ public class Cart implements Serializable {
      * @param item the item to be added to the cart; must not be null
      * @param isInStock a flag indicating whether the item is in stock
      */
-    public void addItem(@NonNull Item item, boolean isInStock) {
+    public synchronized void addItem(Item item, boolean isInStock) {
         if (item == null) {
             return;
         }
@@ -77,7 +74,6 @@ public class Cart implements Serializable {
             cartItem.setQuantity(0);
             cartItem.setInStock(isInStock);
             itemMap.put(item.getItemId(), cartItem);
-            itemList.add(cartItem);
         }
         cartItem.incrementQuantity();
     }
@@ -87,24 +83,19 @@ public class Cart implements Serializable {
      * @param itemId the item id
      * @return the item
      */
-    public Item removeItemById(String itemId) {
+    public synchronized Item removeItemById(String itemId) {
         if (itemId == null) {
             return null;
         }
         CartItem cartItem = itemMap.remove(itemId);
-        if (cartItem != null) {
-            itemList.remove(cartItem);
-            return cartItem.getItem();
-        } else {
-            return null;
-        }
+        return (cartItem != null ? cartItem.getItem() : null);
     }
 
     /**
      * Increment quantity by item id.
      * @param itemId the item id
      */
-    public void incrementQuantityByItemId(String itemId) {
+    public synchronized void incrementQuantityByItemId(String itemId) {
         if (itemId == null) {
             return;
         }
@@ -114,7 +105,7 @@ public class Cart implements Serializable {
         }
     }
 
-    public void setQuantityByItemId(String itemId, int quantity) {
+    public synchronized void setQuantityByItemId(String itemId, int quantity) {
         if (itemId == null) {
             return;
         }
@@ -128,15 +119,14 @@ public class Cart implements Serializable {
      * Gets the sub total.
      * @return the sub total
      */
-    public BigDecimal getSubTotal() {
-        return itemList.stream()
+    public synchronized BigDecimal getSubTotal() {
+        return itemMap.values().stream()
                 .map(cartItem -> cartItem.getItem().getListPrice().multiply(new BigDecimal(cartItem.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public void clear() {
+    public synchronized void clear() {
         itemMap.clear();
-        itemList.clear();
     }
 
 }

@@ -61,7 +61,10 @@ public class AccountActivity {
 
     @Request("/account/newAccountForm")
     @Dispatch("account/NewAccountForm")
-    public void newAccountForm() {
+    public void newAccountForm(Translet translet) {
+        if (userSessionHolder.isAuthenticated()) {
+            translet.redirect("/");
+        }
     }
 
     /**
@@ -72,6 +75,10 @@ public class AccountActivity {
     public void newAccount(Translet translet,
                            Account account,
                            @NonNull BeanValidator beanValidator) {
+        if (userSessionHolder.isAuthenticated()) {
+            translet.redirect("/");
+            return;
+        }
         beanValidator.validate(account, Account.Create.class);
         if (beanValidator.hasErrors()) {
             HttpStatusSetter.badRequest(translet);
@@ -139,7 +146,10 @@ public class AccountActivity {
      */
     @Request("/account/signonForm")
     @Dispatch("account/SignonForm")
-    public void signonForm() {
+    public void signonForm(Translet translet) {
+        if (userSessionHolder.isAuthenticated()) {
+            translet.redirect("/");
+        }
     }
 
     /**

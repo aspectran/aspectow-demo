@@ -11,10 +11,23 @@
             <span class="badge bg-secondary-subtle text-body-secondary fs-6 ms-2 fw-normal">Total: <span th:text="${pageInfo.totalElements}">0</span></span>
         </h2>
         <div>
-            <a class="btn btn-success btn-sm" th:href="@{/vets/new(page=${param.page} ?: '1')}">
+            <a class="btn btn-success btn-sm" th:href="@{/vets/new(page=${param.page} ?: '1', specialtyId=${param.specialtyId})}">
                 <i class="bi bi-person-plus me-1" aria-hidden="true"></i>Add Veterinarian
             </a>
         </div>
+    </div>
+
+    <!-- Specialty Filter Buttons -->
+    <div class="d-flex flex-wrap align-items-center gap-1 mb-3">
+        <span class="text-body-secondary small me-2"><i class="bi bi-funnel me-1" aria-hidden="true"></i>Specialty:</span>
+        <a class="btn btn-sm rounded-pill"
+           th:classappend="${selectedSpecialtyId == null} ? 'btn-primary' : 'btn-outline-secondary'"
+           th:href="@{/vets.html}">All</a>
+        <a th:each="spec : ${specialties}"
+           class="btn btn-sm rounded-pill"
+           th:classappend="${selectedSpecialtyId != null and selectedSpecialtyId == spec.id} ? 'btn-primary' : 'btn-outline-secondary'"
+           th:href="@{/vets.html(specialtyId=${spec.id})}"
+           th:text="${spec.name}">Specialty</a>
     </div>
 
     <div class="table-responsive">
@@ -32,10 +45,15 @@
             </tr>
             </thead>
             <tbody class="table-group-divider">
+            <tr th:if="${#lists.isEmpty(listVets)}">
+                <td colspan="3" class="text-center py-4 text-body-secondary">
+                    <i class="bi bi-info-circle me-1" aria-hidden="true"></i>No veterinarians found.
+                </td>
+            </tr>
             <tr th:each="vet : ${listVets}">
                 <td>
                     <a class="fw-semibold text-decoration-none"
-                       th:href="@{/vets/__${vet.id}__/edit(page=${param.page} ?: '1')}"
+                       th:href="@{/vets/__${vet.id}__/edit(page=${param.page} ?: '1', specialtyId=${param.specialtyId})}"
                        th:text="${vet.firstName + ' ' + vet.lastName}"></a>
                 </td>
                 <td>
@@ -46,11 +64,11 @@
                 </td>
                 <td class="text-end text-nowrap">
                     <a class="btn btn-outline-primary btn-sm"
-                       th:href="@{/vets/__${vet.id}__/edit(page=${param.page} ?: '1')}"
+                       th:href="@{/vets/__${vet.id}__/edit(page=${param.page} ?: '1', specialtyId=${param.specialtyId})}"
                        title="Edit Veterinarian">
                         <i class="bi bi-pencil" aria-hidden="true"></i> Edit
                     </a>
-                    <form th:action="@{/vets/__${vet.id}__/delete(page=${param.page} ?: '1')}"
+                    <form th:action="@{/vets/__${vet.id}__/delete(page=${param.page} ?: '1', specialtyId=${param.specialtyId})}"
                           method="post" class="d-inline"
                           onsubmit="return confirm('Are you sure you want to delete this veterinarian?');">
                         <button type="submit" class="btn btn-outline-danger btn-sm" title="Delete Veterinarian">
@@ -63,43 +81,7 @@
         </table>
     </div>
 
-    <nav th:if="${pageInfo.totalPages > 1}" aria-label="Page navigation" class="mt-4">
-        <ul class="pagination justify-content-center mb-0">
-            <li class="page-item">
-                <a th:if="${pageInfo.number > 1}" th:href="@{'/vets.html?page=1'}" title="First"
-                   class="page-link">First</a>
-                <span th:unless="${pageInfo.number > 1}" title="First" class="page-link disabled">First</span>
-            </li>
-            <li class="page-item">
-                <a th:if="${pageInfo.number > 5 and pageInfo.number % 5 == 1}" th:href="@{'/vets.html?page=__${pageInfo.number - 1}__'}" title="Previous"
-                   class="page-link">&laquo;</a>
-                <a th:if="${pageInfo.number > 5 and pageInfo.number % 5 != 1}" th:href="@{'/vets.html?page=__${pageInfo.number - 5}__'}" title="Previous"
-                   class="page-link">&laquo;</a>
-                <span th:unless="${pageInfo.number > 5}" title="Previous" class="page-link disabled">&laquo;</span>
-            </li>
-            <li class="page-item"
-                th:if="${i <= pageInfo.totalPages}"
-                th:each="i: ${#numbers.sequence(pageInfo.number - (pageInfo.number - 1) % 5, pageInfo.number - (pageInfo.number - 1) % 5 + 4)}">
-                <a th:if="${pageInfo.number != i}" th:href="@{'/vets.html?page=__${i}__'}"
-                   th:text="${i}" class="page-link"></a>
-                <span th:if="${pageInfo.number == i}" th:text="${i}" class="page-link active"></span>
-            </li>
-            <li class="page-item">
-                <a th:if="${pageInfo.number < pageInfo.totalPages - 5 and pageInfo.number % 5 == 0}" th:href="@{'/vets.html?page=__${pageInfo.number + 1}__'}"
-                   title="Next" class="page-link">&raquo;</a>
-                <a th:if="${pageInfo.number < pageInfo.totalPages - 5 and pageInfo.number % 5 != 0}" th:href="@{'/vets.html?page=__${pageInfo.number + 5}__'}"
-                   title="Next" class="page-link">&raquo;</a>
-                <a th:if="${pageInfo.number >= pageInfo.totalPages - 5 and pageInfo.number < pageInfo.totalPages - (pageInfo.totalPages - 1) % 5}"
-                   th:href="@{'/vets.html?page=__${pageInfo.totalPages}__'}" title="Next" class="page-link">&raquo;</a>
-                <span th:if="${pageInfo.number >= pageInfo.totalPages - (pageInfo.totalPages - 1) % 5}" title="Next" class="page-link disabled">&raquo;</span>
-            </li>
-            <li class="page-item">
-                <a th:if="${pageInfo.number < pageInfo.totalPages}" th:href="@{'/vets.html?page=__${pageInfo.totalPages}__'}"
-                   title="Last" class="page-link">Last</a>
-                <span th:unless="${pageInfo.number < pageInfo.totalPages}" title="Last" class="page-link disabled">Last</span>
-            </li>
-        </ul>
-    </nav>
+    <th:block th:insert="~{fragments/pagination :: pagination(${pageInfo})}" />
 </th:block>
 
 </html>

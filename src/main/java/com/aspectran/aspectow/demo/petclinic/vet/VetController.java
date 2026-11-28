@@ -28,6 +28,7 @@ import com.aspectran.core.component.bean.annotation.RequestToPost;
 import org.jspecify.annotations.NonNull;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,16 +53,18 @@ public class VetController {
 
     @Request("/vets.html")
     @Dispatch("vets/vetList")
-    public void vetList(@NonNull Translet translet) {
+    public void vetList(@NonNull Translet translet, Integer specialtyId) {
         PageInfo pageInfo = PageInfo.of(translet);
-        List<Vet> listVets = vetDao.findAll(pageInfo);
+        List<Vet> listVets = vetDao.findAll(pageInfo, specialtyId);
         if (listVets.isEmpty() && pageInfo.getNumber() > 1) {
             pageInfo = PageInfo.of(pageInfo.getNumber() - 1, pageInfo.getSize());
-            listVets = vetDao.findAll(pageInfo);
+            listVets = vetDao.findAll(pageInfo, specialtyId);
         }
 
         translet.setAttribute("listVets", listVets);
         translet.setAttribute("pageInfo", pageInfo);
+        translet.setAttribute("specialties", populateSpecialties());
+        translet.setAttribute("selectedSpecialtyId", specialtyId);
     }
 
     @RequestToGet("/vets/new")
@@ -73,7 +76,8 @@ public class VetController {
     }
 
     @RequestToPost("/vets/new")
-    public void processCreationForm(@NonNull Translet translet, @NonNull Vet vet, Integer[] specialtyIds, Integer page) {
+    public void processCreationForm(@NonNull Translet translet, @NonNull Vet vet, Integer[] specialtyIds,
+                                    Integer page, Integer specialtyId) {
         Collection<Specialty> allSpecialties = populateSpecialties();
         bindSpecialties(vet, specialtyIds, allSpecialties);
 
@@ -91,8 +95,7 @@ public class VetController {
         assert vet.getId() != null;
 
         translet.getOutputFlashMap().put("message", "New Veterinarian Created");
-        translet.redirect("/vets.html",
-                (page != null ? Map.of("page", Integer.toString(page)) : null));
+        translet.redirect("/vets.html", redirectParams(page, specialtyId));
     }
 
     @RequestToGet("/vets/${vetId}/edit")
@@ -105,7 +108,7 @@ public class VetController {
 
     @RequestToPost("/vets/${vetId}/edit")
     public void processUpdateVetForm(@NonNull Translet translet, @NonNull Vet vet, @NonNull Integer vetId,
-                                     Integer[] specialtyIds, Integer page) {
+                                     Integer[] specialtyIds, Integer page, Integer specialtyId) {
         Collection<Specialty> allSpecialties = populateSpecialties();
         bindSpecialties(vet, specialtyIds, allSpecialties);
 
@@ -125,18 +128,30 @@ public class VetController {
         vetDao.save(existingVet);
 
         translet.getOutputFlashMap().put("message", "Veterinarian Information Updated");
-        translet.redirect("/vets.html",
-                (page != null ? Map.of("page", Integer.toString(page)) : null));
+        translet.redirect("/vets.html", redirectParams(page, specialtyId));
     }
 
     @RequestToPost("/vets/${vetId}/delete")
-    public void deleteVet(@NonNull Translet translet, @NonNull Integer vetId, Integer page) {
+    public void deleteVet(@NonNull Translet translet, @NonNull Integer vetId, Integer page, Integer specialtyId) {
         Vet existingVet = findVet(vetId);
         vetDao.delete(existingVet);
 
         translet.getOutputFlashMap().put("message", "Veterinarian Deleted");
-        translet.redirect("/vets.html",
-                (page != null ? Map.of("page", Integer.toString(page)) : null));
+        translet.redirect("/vets.html", redirectParams(page, specialtyId));
+    }
+
+    private static Map<String, String> redirectParams(Integer page, Integer specialtyId) {
+        if (page == null && specialtyId == null) {
+            return null;
+        }
+        Map<String, String> params = new LinkedHashMap<>();
+        if (page != null) {
+            params.put("page", Integer.toString(page));
+        }
+        if (specialtyId != null) {
+            params.put("specialtyId", Integer.toString(specialtyId));
+        }
+        return params;
     }
 
     private Collection<Specialty> populateSpecialties() {

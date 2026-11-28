@@ -59,17 +59,39 @@ public class VetDao {
     }
 
     public List<Vet> findAll(@NonNull PageInfo pageInfo) {
+        return findAll(pageInfo, null);
+    }
+
+    public List<Vet> findAll(@NonNull PageInfo pageInfo, Integer specialtyId) {
         QVet vet = QVet.vet;
-        List<Vet> listVets = entityQuery
-                .selectFrom(vet)
+        QSpecialty specialty = QSpecialty.specialty;
+
+        var query = entityQuery
+                .selectDistinct(vet)
+                .from(vet);
+
+        Fetchable<Long> countQuery;
+
+        if (specialtyId != null) {
+            query.innerJoin(vet.specialties, specialty)
+                    .where(specialty.id.eq(specialtyId));
+
+            countQuery = entityQuery
+                    .select(vet.countDistinct())
+                    .from(vet)
+                    .innerJoin(vet.specialties, specialty)
+                    .where(specialty.id.eq(specialtyId));
+        } else {
+            countQuery = entityQuery
+                    .select(vet.count())
+                    .from(vet);
+        }
+
+        List<Vet> listVets = query
                 .orderBy(vet.id.desc())
                 .offset(pageInfo.getOffset())
                 .limit(pageInfo.getSize())
                 .fetch();
-
-        Fetchable<Long> countQuery = entityQuery
-                .select(vet.count())
-                .from(vet);
 
         pageInfo.setTotalElements(listVets.size(), countQuery::fetchOne);
         return listVets;

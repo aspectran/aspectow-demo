@@ -60,7 +60,7 @@
     <c:forEach var="order" items="${orderList}">
         <tr>
             <td>
-                <a href="<aspectran:url value="/order/viewOrder?orderId=${order.orderId}"/>">${order.orderId}</a>
+                <a href="<aspectran:url value="/order/viewOrder?orderId=${order.orderId}${not empty param.startDate ? '&startDate='.concat(param.startDate) : ''}${not empty param.endDate ? '&endDate='.concat(param.endDate) : ''}${not empty param.page ? '&page='.concat(param.page) : ''}"/>">${order.orderId}</a>
             </td>
             <td><fmt:formatDate value="${order.orderDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
             <td><fmt:formatNumber value="${order.totalPrice}" pattern="$#,##0.00"/></td>

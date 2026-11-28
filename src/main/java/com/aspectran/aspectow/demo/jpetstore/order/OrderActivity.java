@@ -210,11 +210,28 @@ public class OrderActivity {
      * Delete order.
      */
     @Request("/order/deleteOrder/${orderId}")
-    @Redirect("/order/listOrders")
-    public void deleteOrder(Integer orderId) {
+    public void deleteOrder(Translet translet,
+                            Integer orderId,
+                            String startDate,
+                            String endDate,
+                            Integer page) {
         if (orderId != null) {
             orderService.deleteOrder(orderId);
         }
+        StringBuilder redirectUrl = new StringBuilder("/order/listOrders");
+        String sep = "?";
+        if (StringUtils.hasText(startDate)) {
+            redirectUrl.append(sep).append("startDate=").append(startDate);
+            sep = "&";
+        }
+        if (StringUtils.hasText(endDate)) {
+            redirectUrl.append(sep).append("endDate=").append(endDate);
+            sep = "&";
+        }
+        if (page != null && page > 1) {
+            redirectUrl.append(sep).append("page=").append(page);
+        }
+        translet.redirect(redirectUrl.toString());
     }
 
 }

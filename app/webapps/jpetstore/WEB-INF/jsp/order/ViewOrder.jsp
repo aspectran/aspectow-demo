@@ -226,7 +226,7 @@
                     </c:if>
                     <c:if test="${param.submitted ne 'true'}">
                         <button type="button" class="btn btn-danger"
-                                onclick="location.href='<aspectran:url value="/order/deleteOrder/${order.orderId}"/>';">Delete Order</button>
+                                onclick="location.href='<aspectran:url value="/order/deleteOrder/${order.orderId}${not empty param.startDate ? '?startDate='.concat(param.startDate) : ''}${not empty param.endDate ? (not empty param.startDate ? '&' : '?').concat('endDate=').concat(param.endDate) : ''}${not empty param.page ? (not empty param.startDate or not empty param.endDate ? '&' : '?').concat('page=').concat(param.page) : ''}"/>';">Delete Order</button>
                         <button type="button" class="btn btn-secondary" onclick="history.back();">Back</button>
                     </c:if>
                 </div>
